@@ -13,7 +13,7 @@
 
 ## 1. Nguyễn Tiến Tài ( Technical Leader-FullStack ) .
 
-## 2. Gia Bảo ( Developer and QA (Quality Assurance),FE ) .
+## 2. Gia Bảo ( Developer and QA Quality Assurance,FE ) .
 
 ## 3. Nguyễn Duy Thinh ( Developer-BE ) .
 
