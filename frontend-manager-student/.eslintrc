@@ -12,7 +12,7 @@
     "prettier/prettier": [
       "warn",
       {
-        "arrowParents": "always",
+        "arrowParens": "always",
         "bracketSameLine": false,
         "bracketSpacing": true,
         "embeddedLanguageFormatting": "auto",
