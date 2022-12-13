@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import RouteDataMain from 'routers/index';
 import './App.css';
 
-funcva =)ádasdasd asdasdasd'ấdsd'áddddddasdasd`1`tion App() {
+var function App() {
   return (
     <React.Fragment>
       <Suspense fallback={<Loading />}>
