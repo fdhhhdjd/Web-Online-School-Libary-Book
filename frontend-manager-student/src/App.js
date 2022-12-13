@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import RouteDataMain from 'routers/index';
 import './App.css';
 
-vadddr ssfuaaaaanction App() {
+vadddr ssfuaaaaasdasdanction App() {
   return (
     <React.Fragment>
       <Suspense fallback={<Loading />}>
