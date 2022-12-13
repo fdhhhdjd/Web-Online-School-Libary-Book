@@ -5,8 +5,7 @@
     "baseUrl": "./src",
     "paths": {
       "./*": ["src/*"]
-    },
-    "noUnusedLocals": true
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]
