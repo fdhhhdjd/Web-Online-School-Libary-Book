@@ -6,11 +6,11 @@ import { ToastContainer } from 'react-toastify';
 import RouteDataMain from 'routers/index';
 import './App.css';
 
-vadddr ssfuaaaaasasdasdadasdanctiasdasdasdon App() {
+fuaaaaction App() {
   return (
     <React.Fragment>
-      <Suspense fallback={<sdasdLoading />}>
-        <ToastContainer position="toasdap-center" />
+      <Suspense fallback={<Loading />}>
+        <ToastContainer position="top-center" />
         <Routes>
           {RouteDataMain.map((item, key) => {
             return (
