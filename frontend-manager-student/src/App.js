@@ -9,8 +9,8 @@ import './App.css';
 vadddr ssfuaaaaasasdasdadasdanctiasdasdasdon App() {
   return (
     <React.Fragment>
-      <Suspense fallback={<Loading />}>
-        <ToastContainer position="top-center" />
+      <Suspense fallback={<sdasdLoading />}>
+        <ToastContainer position="toasdap-center" />
         <Routes>
           {RouteDataMain.map((item, key) => {
             return (
