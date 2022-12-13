@@ -75,10 +75,8 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "npm run lint",
-      "git add"
-    ]
+    "*.{js,mjs,cjs}": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier -write"
   },
   "devDependencies": {
     "eslint-config-prettier": "^8.5.0",
