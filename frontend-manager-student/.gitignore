@@ -1,3 +1,8 @@
+# Forder run code
 node_modules
+
+# Environment
 .env
+
+# Build source
 build

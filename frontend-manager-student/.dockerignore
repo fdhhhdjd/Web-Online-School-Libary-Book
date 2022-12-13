@@ -1,7 +1,17 @@
-node_modules
+# git
 .git
+
+# Forder run code
+node_modules
+
+# Docker
 Dockerfile
 .dockerignore
+
+# File unit test
+tests
+
+# Fotmatcode
 .editorconfig
 .eslintignore
 .eslintrc
