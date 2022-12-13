@@ -10,10 +10,10 @@ function App() {
   return (
     <React.Fragment>
       <Suspense Suspense fallback={<Loading />}>
-                <ToastContainer position="top-center" />
+        <ToastContainer position="top-center" />
         <Routes>
           {RouteDataMain.map((item, key) => {
-                     return (
+            return (
               <React.Fragment key={key}>
                 {item.private === null ? (
                   <Route path={`/${item.path}`} element={item.main} />
