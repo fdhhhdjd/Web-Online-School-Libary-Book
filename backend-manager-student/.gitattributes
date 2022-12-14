@@ -25,6 +25,7 @@
 *.tagx            eol=lf
 *.xml             eol=lf
 *.yml             eol=lf
+*.env             eol=lf
 
 .gitignore        eol=lf
 .gitattributes    eol=lf
