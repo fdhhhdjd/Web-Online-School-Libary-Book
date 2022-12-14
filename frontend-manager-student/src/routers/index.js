@@ -2,7 +2,7 @@ import TabHome from 'pages/Home/components/TabHome';
 
 const RouteDataMain = [
   {
-    path: '/',
+    path: '',
     main: <TabHome />,
   },
 ];

@@ -9,7 +9,7 @@ Dockerfile
 .dockerignore
 
 # File unit test
-tests
+./src/tests
 
 # Fotmatcode
 .editorconfig

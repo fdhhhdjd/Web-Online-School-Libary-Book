@@ -1,7 +1,7 @@
 const helpers = {
-    Demo: () => {
-        console.log("Helper");
-    },
-}
+  Demo: () => {
+    console.log('Helper');
+  },
+};
 
 export default helpers;
