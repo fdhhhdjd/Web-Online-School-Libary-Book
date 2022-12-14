@@ -9,7 +9,8 @@ module.exports = {
         ecmaVersion: 12,
     },
     rules: {
-        'arrow-parens': 'off',
+        // 'arrow-parens': 'off',
+        'arrow-parens': ['error', 'always'],
         eqeqeq: 'error',
         'function-paren-newline': 'off',
         indent: ['error', 4],

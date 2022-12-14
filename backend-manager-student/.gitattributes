@@ -6,9 +6,7 @@
 # The above will handle all files NOT found below
 #
 # These files are text and should be normalized (Convert crlf => lf)
-*.css             eol=lf
 *.df              eol=lf
-*.htm             eol=lf
 *.html            eol=lf
 *.java            eol=lf
 *.json            eol=lf
@@ -30,7 +28,10 @@
 .gitattributes    eol=lf
 .eslintignore     eol=lf
 .prettierignore   eol=lf
-.js              eol=lf
+.js               eol=lf
+.css              eol=lf
+.htm              eol=lf
+
 
 
 # These files are binary and should be left untouched
