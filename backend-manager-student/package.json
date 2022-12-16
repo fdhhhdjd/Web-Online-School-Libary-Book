@@ -7,9 +7,11 @@
     "author": "Tai <nguyentientai10@gmail.com",
     "scripts": {
         "user:live": "node src/user_api/server.js",
+        "user:dev": "nodemon --legacy-watch src/user_api/server.js",
         "admin:live": "node src/admin_api/server.js",
         "admin:dev": "nodemon --legacy-watch src/admin_api/server.js",
-        "user:dev": "nodemon --legacy-watch src/user_api/server.js",
+        "cron:dev": "nodemon --legacy-watch src/cron_job/cron.js",
+        "cron:live": "node src/cron_job/cron.js",
         "test": "jest --watchAll --detectOpenHandles --runInBand",
         "test:config": "jest --watchAll --coverage --verbose --silent --runInBand",
         "test:code": "jest --no-cache --silent --coverage",

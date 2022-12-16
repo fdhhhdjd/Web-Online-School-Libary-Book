@@ -14,6 +14,7 @@ module.exports = {
         'arrow-parens': ['error', 'always'],
         eqeqeq: 'error',
         'function-paren-newline': 'off',
+
         indent: ['error', 4],
         camelcase: 'off',
         'linebreak-style': [2, 'unix'],
@@ -24,7 +25,9 @@ module.exports = {
                 allow: ['info', 'warn', 'error', 'time', 'timeEnd'],
             },
         ],
+        'no-unused-expressions': ['error', { allowTernary: true }],
         'no-duplicate-imports': 'error',
+        'no-underscore-dangle': 'off',
         'no-extra-parens': 'error',
         'no-return-await': 'error',
         'no-return-assign': 'off',

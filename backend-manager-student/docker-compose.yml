@@ -1,0 +1,112 @@
+version: "3.7"
+
+services:
+  ###! admin_api ###
+  admin_api:
+    container_name: server_admin_api
+    depends_on:
+      - redis
+      - postgresql
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - ${PORT_ADMIN_API}:${PORT_ADMIN_API}
+    volumes:
+      # - ./:/app
+      - "./src:/usr/src/app/src"
+    env_file:
+      - .env
+    command: npm run admin:dev
+    networks:
+      - libary_school
+
+  ###! user_api ###
+  user_api:
+    container_name: server_user_api
+    depends_on:
+      - redis
+      - postgresql
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - ${PORT_USER_API}:${PORT_USER_API}
+    volumes:
+      - "./src:/usr/src/app/src"
+    env_file:
+      - .env
+    command: npm run user:dev
+    networks:
+      - libary_school
+
+    ###! user_api ###
+  cron_job:
+    container_name: cron_job
+    build:
+      dockerfile: Dockerfile.dev
+      context: .    
+    depends_on:
+      - redis
+      - postgresql
+    restart: always
+    environment:
+      NODE_ENV: development
+    volumes:
+      - "./src:/usr/src/app/src"
+    env_file:
+      - .env
+    command: npm run cron:dev
+    networks:
+      - libary_school
+
+  ###! Redis ###
+  redis:
+    image: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    command:
+      - --appendonly yes
+    env_file:
+      - .env
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - libary_school
+
+  ###! postgresql ###
+  postgresql:
+    container_name: postgresql
+    image: postgres:12
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./migrations/init:/docker-entrypoint-initdb.d
+    ports:
+      - ${POSTGRES_PORT_EDIT}:${POSTGRES_PORT}
+    env_file:
+      - .env    
+    networks:
+      - libary_school
+
+###! NETWORD GENERAL ###
+networks:
+  libary_school:
+    driver: bridge
+volumes:
+    db_data:
+        driver: local
+    redis-data:
+        driver: local
+
