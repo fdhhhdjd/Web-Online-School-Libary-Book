@@ -1,0 +1,7 @@
+backend/db_data
+frontnend-user/.eslintrc
+frontnend-user/.eslintignore
+frontnend-user/.prettierignore
+frontnend-user/.prettierrc
+minio_data
+.env
