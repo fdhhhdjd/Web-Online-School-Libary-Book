@@ -10,19 +10,24 @@ module.exports = {
     },
     rules: {
         // 'arrow-parens': 'off',
+        'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
         'arrow-parens': ['error', 'always'],
         eqeqeq: 'error',
         'function-paren-newline': 'off',
+
         indent: ['error', 4],
         camelcase: 'off',
         'linebreak-style': [2, 'unix'],
+        'no-useless-escape': 'off',
         'no-console': [
             'error',
             {
                 allow: ['info', 'warn', 'error', 'time', 'timeEnd'],
             },
         ],
+        'no-unused-expressions': ['error', { allowTernary: true }],
         'no-duplicate-imports': 'error',
+        'no-underscore-dangle': 'off',
         'no-extra-parens': 'error',
         'no-return-await': 'error',
         'no-return-assign': 'off',
