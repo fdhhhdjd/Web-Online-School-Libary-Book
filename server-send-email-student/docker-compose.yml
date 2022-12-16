@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  ###! send_email_student ###
+  send_email_student:
+    container_name: send_email_student
+    image: send_email_student
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - ${PORT_EMAI}:${PORT_EMAI}
+    volumes:
+      - "./src:/usr/src/app/src"
+    env_file:
+      - .env
+    command: npm run email:dev
+    networks:
+      - libary_school
+
+###! NETWORD GENERAL ###
+networks:
+  libary_school:
+    driver: bridge
+
