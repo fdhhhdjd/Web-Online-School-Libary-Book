@@ -1,0 +1,7 @@
+build/_.js
+config/_.js
+[Bb]uild*
+[Dd]ist*
+[Bb]in\*
+package-lock.json
+docker-compose.yml
