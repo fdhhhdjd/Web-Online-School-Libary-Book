@@ -46,7 +46,7 @@ services:
     networks:
       - libary_school
 
-    ###! user_api ###
+    ###! cront general ###
   cron_job:
     container_name: cron_job
     build:
