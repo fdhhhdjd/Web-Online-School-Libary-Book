@@ -1,6 +1,6 @@
-build/*.js
-config/*.js
+build/_.js
+config/_.js
 [Bb]uild*
 [Dd]ist*
-[Bb]in*
+[Bb]in\*
 package-lock.json

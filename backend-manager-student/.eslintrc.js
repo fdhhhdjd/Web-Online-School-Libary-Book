@@ -14,6 +14,7 @@ module.exports = {
         eqeqeq: 'error',
         'function-paren-newline': 'off',
         indent: ['error', 4],
+        camelcase: 'off',
         'linebreak-style': [2, 'unix'],
         'no-console': [
             'error',
@@ -24,6 +25,7 @@ module.exports = {
         'no-duplicate-imports': 'error',
         'no-extra-parens': 'error',
         'no-return-await': 'error',
+        'no-return-assign': 'off',
         'no-shadow': [
             'error',
             {
