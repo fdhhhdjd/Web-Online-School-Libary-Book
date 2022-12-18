@@ -1,0 +1,7 @@
+FROM nginx
+
+RUN  apt-get -y update  && apt -y install sudo && apt -y install nano 
+
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+
+STOPSIGNAL SIGTERM
