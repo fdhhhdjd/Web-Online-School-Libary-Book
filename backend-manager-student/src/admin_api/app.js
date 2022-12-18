@@ -6,11 +6,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
-//! MIDDLEWARE
 
 //! IMPORT ROUTES
-const AUTH_ADMIN = require('./v1/routes/admin.controller');
+const AUTH_ADMIN = require('./v1/routes/admin.route');
 
 //! USED LIBRARY
 const app = express();
@@ -44,7 +42,6 @@ app.use(
         },
     }),
 );
-app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
 app.use('/api/v1/admin', AUTH_ADMIN);

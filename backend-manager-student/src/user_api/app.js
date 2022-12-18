@@ -1,4 +1,4 @@
-//! Library
+//! LIBRARY
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
@@ -7,7 +7,13 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 
-//! used library
+//! IMPORT MIDDLEWARE
+const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
+
+//! IMPORT ROUTES
+const AUTH_USER = require('./v1/routes/user.route');
+
+//! USED LIBRARY
 const app = express();
 if (process.env.NODE_ENV === 'PRODUCTION') {
     app.enable('trust proxy');
@@ -39,5 +45,10 @@ app.use(
         },
     }),
 );
+
+app.use(DEVICE_MIDDLEWARE);
+
+//! ROUTE
+app.use('/api/v1/user', AUTH_USER);
 
 module.exports = app;
