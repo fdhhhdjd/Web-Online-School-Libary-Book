@@ -46,7 +46,7 @@ services:
         networks:
             - libary_school
 
-        ###! cront general ###
+    ###! cront general ###
     cron_job:
         container_name: cron_job
         build:
@@ -80,6 +80,11 @@ services:
             - ./redis-data:/data
         networks:
             - libary_school
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 30s
+            timeout: 10s
+            retries: 5
 
     ###! postgresql ###
     postgresql:
@@ -99,6 +104,12 @@ services:
             - .env
         networks:
             - libary_school
+        healthcheck:
+            test: ['CMD-SHELL', "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+            interval: 10s
+            timeout: 3s
+            retries: 3
+
     ###! WebServer:NGINX ###
     nginx:
         image: nginx:1.21.3
