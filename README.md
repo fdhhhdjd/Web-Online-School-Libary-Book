@@ -13,7 +13,7 @@
 
 ## Team Word: Liên hệ công việc https://profile-forme.cf
 
-## 1. Nguyễn Tiến Tài ( Technical Leader-FullStack ).
+## 1. Nguyễn Tiến Tài ( Technical Leader  ).
 
 ## 2. Gia Bảo ( Developer and QA Quality Assurance,FE ).
 
