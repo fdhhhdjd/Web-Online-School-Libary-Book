@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+    ###! upload-api ###
+    uploadapi:
+        container_name: upload-api
+        image: cloundinary
+        restart: always
+        build:
+            dockerfile: Dockerfile.dev
+            context: .
+        environment:
+            NODE_ENV: development
+        ports:
+            - ${PORT_MEDIA}:${PORT_MEDIA}
+        volumes:
+            - './src:/usr/src/app/src'
+        env_file:
+            - .env
+        command: npm run media:dev
+        networks:
+            - upload-network
+
+###! NETWORD GENERAL ###
+networks:
+    upload-network:
+        driver: bridge

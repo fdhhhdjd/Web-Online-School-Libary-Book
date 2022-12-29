@@ -22,4 +22,17 @@ run-sendemail:
 	cd server-send-email-student && \
 	make run-dev
 
+# Run Server media
+run-media:
+	cd server-media-service && \
+	docker-compose up -d --build
+	
+# Run all server
+run-all:
+	cd backend-manager-student && \
+	docker-compose up -d --build
+	cd server-send-email-student && \
+	docker-compose up -d --build
+	cd server-media-service && \
+	docker-compose up -d --build
 	
