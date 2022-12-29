@@ -7,17 +7,17 @@
 <a href = "mailto:nguyentientai10@gmail.com"><img src="https://img.icons8.com/fluency/48/000000/send-mass-email.png" alt="License"></a>
 </p>
 
-# System: Business Microservice.
+# System 🤖: Business Microservice. 
 
-# Project Job: WebSite Online School Libary Book.
+# Project Job ✏️: WebSite Online School Libary Book .  
 
 ## Team Word: Liên hệ công việc https://profile-forme.cf
 
-## 1. Nguyễn Tiến Tài ( Technical Leader  ).
+## 1. Nguyễn Tiến Tài ( Technical Leader 🚩).
 
-## 2. Gia Bảo ( Developer and QA Quality Assurance,FE ).
+## 2. Gia Bảo ( Developer and QA Quality Assurance,FE ❤️‍🔥).
 
-## 3. Nguyễn Duy Thinh ( Developer-BE ).
+## 3. Nguyễn Duy Thinh ( Developer-BE ❤️‍🔥 ).
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄.
 
