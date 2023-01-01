@@ -27,3 +27,4 @@ services:
 networks:
     server-media-service_upload-network:
         driver: bridge
+        external: true

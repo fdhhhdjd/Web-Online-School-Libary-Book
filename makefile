@@ -26,7 +26,12 @@ run-sendemail:
 run-media:
 	cd server-media-service && \
 	docker-compose up -d --build
-	
+
+# Run Network
+run-network:
+	docker network create server-send-email-student_sendemail
+	docker network create server-media-service_upload-network
+
 # Run all server
 run-all:
 	cd backend-manager-student && \
