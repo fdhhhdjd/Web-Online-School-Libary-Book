@@ -41,6 +41,6 @@ module.exports = {
         ],
         'operator-linebreak': [2, 'before', { overrides: { '?': 'after' } }],
         'import/prefer-default-export': 'off',
-        'import/no-unresolved': 'off'
+        'import/no-unresolved': 'off',
     },
 };
