@@ -167,10 +167,8 @@ networks:
     libary_school:
         driver: bridge
     server-send-email-student_sendemail:
-        driver: bridge
         external: true
     server-media-service_upload-network:
-        driver: bridge
         external: true
 volumes:
     db_data:
