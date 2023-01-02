@@ -1,6 +1,7 @@
-#!@ Nguyen Tien Tai
-#!@ Created_At : 20-12-2022
-#!@ Update_At: 28-12-2022
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Make run auto service all.
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 28-12-2022.
 
 # Not file pre-commit 
 install-husky:
@@ -12,27 +13,23 @@ install-dev:
 	npm i -D
 	npx husky-init
 
-# Run server main
-run-backend:
-	cd backend-manager-student && \
-	docker-compose up -d --build
-
 # Run Server Email
 run-sendemail:
 	cd server-send-email-student && \
-	docker-compose up -d --build
+	make run-email
 
 # Run Server media
 run-media:
 	cd server-media-service && \
-	docker-compose up -d --build
+	make run-media
+
+# Run Server Main 
+run-backend:
+	cd backend-manager-student && \
+	make run-backend
 
 # Run all server
 run-all:
-	cd server-send-email-student && \
-	docker-compose up -d --build
-	cd server-media-service && \
-	docker-compose up -d --build
-	cd backend-manager-student && \
-	docker-compose up -d --build
-	
+	make run-sendemail
+	make run-media
+	make run-backend
