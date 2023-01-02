@@ -21,10 +21,9 @@ services:
             - .env
         command: npm run email:dev
         networks:
-            - server-send-email-student_sendemail
+            - sendemail
 
 ###! NETWORD GENERAL ###
 networks:
-    server-send-email-student_sendemail:
+    sendemail:
         driver: bridge
-        external: true

@@ -21,10 +21,9 @@ services:
             - .env
         command: npm run media:dev
         networks:
-            - server-media-service_upload-network
+            - upload-network
 
 ###! NETWORD GENERAL ###
 networks:
-    server-media-service_upload-network:
+    upload-network:
         driver: bridge
-        external: true
