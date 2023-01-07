@@ -24,4 +24,13 @@ module.exports = {
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_USER: process.env.REDIS_USER,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 06/01/2023
+   * @description REDIS SLAVE Settings
+   */
+    REDIS_PORT_SLAVE: process.env.REDIS_PORT_SLAVE,
+    REDIS_HOST_SLAVE: process.env.REDIS_HOST_SLAVE,
+    REDIS_USER_SLAVE: process.env.REDIS_USER_SLAVE,
+    REDIS_PASSWORD_SLAVE: process.env.REDIS_PASSWORD_SLAVE,
 };
