@@ -4,3 +4,4 @@ redis-master
 redis-slave
 migrations
 docker-entrypoint-initdb.d
+setup
