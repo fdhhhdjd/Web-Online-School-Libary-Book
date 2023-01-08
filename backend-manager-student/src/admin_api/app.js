@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 
 //! DB
-require('../share/db/init_multiple_redis')
+require('../share/db/init_multiple_redis');
 
 //! IMPORT ROUTES
 const AUTH_ADMIN = require('./v1/routes/admin.route');
