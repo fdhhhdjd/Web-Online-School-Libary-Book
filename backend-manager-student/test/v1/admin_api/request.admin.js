@@ -1,9 +1,9 @@
 const axios = require('axios');
-const CONFIGS = require('../../v1/configs/config');
+const CONSTANTS = require('../configs/constants');
 const HELPERS = require('../../v1/utils/helper');
 require('dotenv').config();
 
-const URL_ADMIN_API = CONFIGS.URL_API_ADMIN;
+const URL_ADMIN_API = CONSTANTS.URL_API_ADMIN;
 
 module.exports = {
     /**
