@@ -11,7 +11,7 @@ const compression = require('compression');
 require('../share/db/init_multiple_redis');
 
 //! IMPORT ROUTES
-const AUTH_ADMIN = require('./v1/routes/admin.route');
+const ADMIN_API = require('./v1/routes/index.route');
 
 //! USED LIBRARY
 const app = express();
@@ -47,6 +47,6 @@ app.use(
 );
 
 //! ROUTE
-app.use('/api/v1/admin', AUTH_ADMIN);
+app.use(ADMIN_API);
 
 module.exports = app;

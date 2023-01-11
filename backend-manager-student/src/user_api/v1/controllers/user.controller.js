@@ -1,4 +1,5 @@
 const admin_service = require('../../../share/services/admin.service');
+const user_service = require('../../../share/models/user.model');
 const helper = require('../../../share/utils/helper');
 
 const adminController = {
@@ -20,6 +21,10 @@ const adminController = {
             const geo = helper.findingLocationByIP(ip) || helper.findingLocationByIP('14.165.41.226');
             console.info(geo, '-------------', device);
             const data = await admin_service.createAdmin('oke');
+            const user_service_data = await user_service.addUser({
+                name: 'Tài Heo',
+            });
+            console.info(user_service_data);
             if (data !== 'oke') {
                 return res.status(400).json({
                     status: 400,
@@ -38,6 +43,7 @@ const adminController = {
                 message: 'success',
             });
         } catch (err) {
+            console.error(err);
             return res.status(503).json({
                 status: 503,
                 message: 'Out Of Service',

@@ -33,4 +33,11 @@ module.exports = {
     REDIS_HOST_SLAVE: process.env.REDIS_HOST_SLAVE,
     REDIS_USER_SLAVE: process.env.REDIS_USER_SLAVE,
     REDIS_PASSWORD_SLAVE: process.env.REDIS_PASSWORD_SLAVE,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 11/01/2023
+     * @description Limit data Settings
+     *
+     */
+    MAX_LRU: process.env.MAX_LRU,
 };

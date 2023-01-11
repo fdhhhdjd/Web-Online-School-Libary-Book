@@ -11,7 +11,7 @@ const compression = require('compression');
 const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
 
 //! IMPORT ROUTES
-const AUTH_USER = require('./v1/routes/user.route');
+const USER_API = require('./v1/routes/index.router');
 
 //! USED LIBRARY
 const app = express();
@@ -49,6 +49,6 @@ app.use(
 app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
-app.use('/api/v1/user', AUTH_USER);
+app.use(USER_API);
 
 module.exports = app;
