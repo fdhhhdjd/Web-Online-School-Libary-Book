@@ -66,6 +66,9 @@
         "nodemailer-express-handlebars": "^6.0.0",
         "sonyflake": "^1.1.2",
         "uuid": "^9.0.0",
-        "validator": "^13.7.0"
+        "validator": "^13.7.0",
+        "pg": "^8.8.0",
+        "lru-cache": "^7.14.1",
+        "node-xlsx": "^0.21.0"
     }
 }

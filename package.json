@@ -4,7 +4,7 @@
   "description": "Setup Environment Source developer",
   "main": "husky",
   "scripts": {
-    "lint": "eslint --ext  .js server.js src/",
+    "lint": "eslint --ext  .js backend-manager-student/src",
     "lint:fix": "eslint --fix --ext .js backend-manager-student/src && npm run prettier ",
     "prettier": "npx @btmills/prettier --write --ignore-unknown backend-manager-student/src",
     "demo": "npx lint-staged",

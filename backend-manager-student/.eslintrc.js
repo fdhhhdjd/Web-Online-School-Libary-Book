@@ -43,6 +43,9 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
         'no-return-await': 'off',
-        'func-names': 'off'
+        'func-names': 'off',
+        'eqeqeq': 'off',
+        'no-ternary': 0,
+        'no-unneeded-ternary': 0
     },
 };
