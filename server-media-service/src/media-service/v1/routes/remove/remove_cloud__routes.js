@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { removeCloudController } = require('../controllers/remove.controller');
+const { removeCloudController } = require('../../controllers/remove.controller');
 
 /**
  * @author Nguyễn Tiến Tài

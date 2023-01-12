@@ -3,11 +3,13 @@ const { handleUpload } = require('../../../share/services/upload.service');
 const { handleRemoveTmp } = require('../../../share/services/remove_tmp.service');
 const CONSTANTS = require('../../../share/configs/constants');
 const STORAGE = require('../../../share/utils/storage');
+const HELPER = require('../../../share/utils/helper');
 
 const uploadController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 29/12/2022
+     * @update_at 12/01/2023
      * @description Upload image storage cloud
      * @function uploadCloudinary
      * @param { files }
@@ -20,6 +22,7 @@ const uploadController = {
             const path_image = file_upload.tempFilePath;
             const size_image = file_upload.size;
             const mime_image = file_upload.mimetype;
+            const name_image = file_upload.name
             if (!file || Object.keys(file).length === 0) {
                 return res.status(400).json({
                     status: 400,
@@ -33,8 +36,11 @@ const uploadController = {
                     message: returnReasons('400'),
                 });
             }
-
             const check_type = STORAGE.detectedFileType(mime_image);
+            const name_image_new = STORAGE.removeFileExtension(name_image);
+            const media_id = HELPER.createID(check_type)
+            let date = new Date().getTime()
+
             const is_type = (type) =>
                 type !== CONSTANTS.MIME_IMAGE ||
                 type !== CONSTANTS.MIME_VIDEO ||
@@ -47,7 +53,34 @@ const uploadController = {
                     message: returnReasons('415'),
                 };
             }
-            await handleUpload(path_image)
+            let template_upload
+            let cloud_bucket
+            switch (check_type) {
+                case CONSTANTS.MIME_IMAGE:
+                    template_upload = CONSTANTS.STORAGE_FOLDER_IMAGES_TEMPLATE
+                    cloud_bucket = CONSTANTS.MIME_IMAGE
+                    break;
+                case CONSTANTS.MIME_VIDEO:
+                    template_upload = CONSTANTS.STORAGE_FOLDER_VIDEOS_TEMPLATE
+                    cloud_bucket = CONSTANTS.MIME_VIDEO
+                    break;
+                case CONSTANTS.MIME_AUDIO:
+                    template_upload = CONSTANTS.STORAGE_FOLDER_AUDIO_TEMPLATE
+                    cloud_bucket = CONSTANTS.MIME_AUDIO
+                    break;
+                default:
+                    return res.status(400).json({
+                        status: 400,
+                        message: returnReasons('400'),
+                    });
+            }
+            const uri_key = STORAGE.getURIFromTemplate(template_upload, {
+                'user_id': '123456',
+                'file_name': name_image_new,
+                'time': date,
+                'media_id': media_id
+            })
+            await handleUpload(path_image, uri_key)
                 .then((result) =>
                     res.status(200).json({
                         status: 200,
