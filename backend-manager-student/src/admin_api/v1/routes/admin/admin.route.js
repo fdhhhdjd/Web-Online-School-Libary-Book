@@ -7,5 +7,6 @@ const adminController = require('../../controllers/admin.controller');
  * @description Route login admin
  */
 router.post('/login', adminController.LoginAdmin);
+router.post('/add/student', adminController.AddStudent);
 
 module.exports = router;
