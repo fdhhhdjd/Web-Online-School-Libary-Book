@@ -7,8 +7,7 @@ const compression = require('compression');
 const fileUpload = require('express-fileupload');
 
 const RateLimitMiddleware = require('../share/middlewares/ratelimit.middleware');
-const UPLOAD_CLOUD = require('./v1/routes/upload_cloud_routes');
-const REMOVE_CLOUD = require('./v1/routes/remove_cloud__routes');
+const MEDIA_API = require('./v1/routes/index.route');
 
 //! used library
 const app = express();
@@ -46,7 +45,6 @@ app.use(
 app.use(RateLimitMiddleware);
 
 //! ROUTE
-app.use('/api/v1', UPLOAD_CLOUD);
-app.use('/api/v1', REMOVE_CLOUD);
+app.use(MEDIA_API);
 
 module.exports = app;

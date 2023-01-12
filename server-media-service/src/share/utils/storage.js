@@ -1,3 +1,5 @@
+const path = require('path')
+
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 29/12/2022
@@ -45,4 +47,26 @@ module.exports = {
         // not found return null
         return null;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description remove mime type
+     * @param { string }
+     */
+    removeFileExtension(your_file_path) {
+        return path.basename(your_file_path, path.extname(your_file_path))
+    },
+    /**
+   * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+   * 
+   * @description from String template to URI
+   * @param {object} data or {string} template
+   * @returns {string}
+   */
+    getURIFromTemplate(template, data) {
+        const { user_id, id, file_name, slug, time, extension, media_id } = data
+        return eval('`' + template.replace(/`/g, '\\`') + '`');
+    },
+
 };

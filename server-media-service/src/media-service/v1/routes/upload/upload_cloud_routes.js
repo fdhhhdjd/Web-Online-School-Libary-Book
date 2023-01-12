@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { uploadController } = require('../controllers/upload.controller');
+const { uploadController } = require('../../controllers/upload.controller');
 
 /**
  * @author Nguyễn Tiến Tài

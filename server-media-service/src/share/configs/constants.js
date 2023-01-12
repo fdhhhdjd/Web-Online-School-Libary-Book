@@ -112,4 +112,14 @@ module.exports = {
     MIME_IMAGE: 'image',
     MIME_VIDEO: 'video',
     MIME_AUDIO: 'audio',
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 12/01/2023
+    * @description storage
+    * @param { user_id,time,file_name}
+    */
+    STORAGE_FOLDER_VIDEOS_TEMPLATE: 'videos/${user_id}/${media_id}/${time}-${file_name}',
+    STORAGE_FOLDER_IMAGES_TEMPLATE: 'images/${user_id}/${media_id}/${time}-${file_name}',
+    STORAGE_FOLDER_AUDIO_TEMPLATE: 'audio/${user_id}/${media_id}/${time}-${file_name}',
+    STORAGE_UPLOAD_ID: 'data/${id}/origin/${file_name}',
 };
