@@ -2,7 +2,6 @@ const geo_ip = require('geoip-lite');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
 
-
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 16/12/2022
@@ -94,12 +93,12 @@ module.exports = {
         return null;
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 12/01/2023
-    * @description data excel
-    * @returns {Array}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description data excel
+     * @returns {Array}
+     */
     getDataExcel() {
         return xlsx.parse(fs.readFileSync('src/file/Demo.xlsx'));
-    }
+    },
 };

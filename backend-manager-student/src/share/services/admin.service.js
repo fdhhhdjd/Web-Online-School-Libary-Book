@@ -17,7 +17,6 @@ module.exports = {
      * @return {Json}
      */
     takeDataStudent: (sheets) => {
-
         // Lấy sheet đầu tiên trong file
         const sheet = sheets[0];
 
@@ -43,6 +42,6 @@ module.exports = {
             // Thêm object vào mảng data
             data.push(rowData);
         }
-        return data
-    }
+        return data;
+    },
 };

@@ -9,6 +9,5 @@ module.exports = {
      * @param { code }
      * @return { String }
      */
-    returnReasons: (code) =>
-        reasonPhraseCodeProNewMap().get(code) || reasonPhraseCodeProNewMap().get('default'),
+    returnReasons: (code) => reasonPhraseCodeProNewMap().get(code) || reasonPhraseCodeProNewMap().get('default'),
 };
