@@ -10,7 +10,7 @@ services:
         restart: always
         build:
             dockerfile: Dockerfile
-            target: node_media
+            context: .
         environment:
             NODE_ENV: PRODUCTION
         volumes:

@@ -10,7 +10,7 @@ services:
         restart: always
         build:
             dockerfile: Dockerfile
-            target: node_main
+            context: .
         environment:
             NODE_ENV: PRODUCTION
         volumes:
@@ -31,7 +31,7 @@ services:
         restart: always
         build:
             dockerfile: Dockerfile
-            target: node_main
+            context: .
         environment:
             NODE_ENV: PRODUCTION
         volumes:
@@ -47,7 +47,7 @@ services:
         container_name: cron_job
         build:
             dockerfile: Dockerfile
-            target: node_main
+            context: .
         depends_on:
             - redis-master
             - postgresql
