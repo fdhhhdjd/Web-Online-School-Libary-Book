@@ -1,7 +1,8 @@
 const { globalCache } = require('../../../share/patterns/LRU_Strategy.patterns');
-const { returnReasons } = require('../../../share/middleware/handle_error')
+const { returnReasons } = require('../../../share/middleware/handle_error');
 const { takeDataStudent } = require('../../../share/services/admin.service');
 const HELPER = require('../../../share/utils/helper');
+
 const adminController = {
     /**
      * @author Nguyễn Tiến Tài
@@ -32,22 +33,22 @@ const adminController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 12/01/2023
-    * @description add feature take excel
-    * @function LoginAdmin
-    * @return {Object}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description add feature take excel
+     * @function LoginAdmin
+     * @return {Object}
+     */
     AddStudent: async (req, res) => {
-        const sheets = HELPER.getDataExcel()
+        const sheets = HELPER.getDataExcel();
 
-        let result = takeDataStudent(sheets)
+        const result = takeDataStudent(sheets);
 
         return res.status(200).json({
             status: 200,
             message: returnReasons('200'),
-            element: result
+            element: result,
         });
-    }
+    },
 };
 module.exports = adminController;

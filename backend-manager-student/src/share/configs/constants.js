@@ -27,11 +27,11 @@ module.exports = {
     _5_SECONDS_CRON: '*/5 * * * *',
 
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 12/01/2023
-   * @description Error general
-   * @param { "Name":"message" }
-   */
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description Error general
+     * @param { "Name":"message" }
+     */
     reasonPhraseCodeProNewMap: () => {
         const result = new Map([
             ['100', 'Continue'],
