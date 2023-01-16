@@ -1,3 +1,7 @@
+//"editor.formatOnSave": true sẽ kích hoạt chức năng tự động định dạng (format) mã nguồn khi lưu file.
+//"editor.defaultFormatter": "esbenp.prettier-vscode" chỉ định sử dụng thư viện esbenp.prettier-vscode để định dạng mã nguồn.
+//"editor.codeActionsOnSave": { "source.fixAll": true } sẽ kích hoạt chức năng tự động sửa lỗi khi lưu file.
+//"files.eol": "\n" sẽ chỉ định ký tự kết thúc dòng là dấu xuống dòng (new line)
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
