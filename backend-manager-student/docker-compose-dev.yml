@@ -9,16 +9,18 @@ services:
             - postgresql
         restart: always
         build:
-            dockerfile: Dockerfile
-            target: node_main
+            dockerfile: Dockerfile.dev
+            context: .
         environment:
-            NODE_ENV: PRODUCTION
+            NODE_ENV: development
+        ports:
+            - ${PORT_ADMIN_API}:${PORT_ADMIN_API}
         volumes:
             # - ./:/app
             - './src:/usr/src/app/src'
         env_file:
             - .env
-        command: npm run admin:live
+        command: npm run admin:dev
         networks:
             - libary_school
 
@@ -30,15 +32,17 @@ services:
             - postgresql
         restart: always
         build:
-            dockerfile: Dockerfile
-            target: node_main
+            dockerfile: Dockerfile.dev
+            context: .
         environment:
-            NODE_ENV: PRODUCTION
+            NODE_ENV: development
+        ports:
+            - ${PORT_USER_API}:${PORT_USER_API}
         volumes:
             - './src:/usr/src/app/src'
         env_file:
             - .env
-        command: npm run user:live
+        command: npm run user:dev
         networks:
             - libary_school
 
@@ -46,19 +50,19 @@ services:
     cron_job:
         container_name: cron_job
         build:
-            dockerfile: Dockerfile
-            target: node_main
+            dockerfile: Dockerfile.dev
+            context: .
         depends_on:
             - redis-master
             - postgresql
         restart: always
         environment:
-            NODE_ENV: PRODUCTION
+            NODE_ENV: development
         volumes:
             - './src:/usr/src/app/src'
         env_file:
             - .env
-        command: npm run cron:live
+        command: npm run cron:dev
         networks:
             - libary_school
 
@@ -69,7 +73,6 @@ services:
         restart: always
         environment:
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
-            NODE_ENV: PRODUCTION
         command: redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
         env_file:
             - .env
@@ -91,7 +94,6 @@ services:
         container_name: redis-slave
         environment:
             REDIS_PASSWORD: ${REDIS_PASSWORD_SLAVE}
-            NODE_ENV: PRODUCTION
         image: redis
         volumes:
             - redis-slave:/data
@@ -123,7 +125,6 @@ services:
             POSTGRES_DB: '${POSTGRES_DB}'
             POSTGRES_USER: '${POSTGRES_USER}'
             POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-            NODE_ENV: PRODUCTION
         volumes:
             - db_data:/var/lib/postgresql/data
             - ./migrations/init:/docker-entrypoint-initdb.d
@@ -151,7 +152,7 @@ services:
             - cron_job
         restart: always
         build:
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
             context: ../server-gateway/nginx
         ports:
             - '${PORT_NGINX_SERVER}'

@@ -1,0 +1,16 @@
+FROM node:14-alpine3.12 as node_email
+
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
+
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm install  
+
+COPY . . 
+# SendEmail
+HEALTHCHECK --interval=60s --timeout=2s --retries=3 CMD wget localhost:5002/ -q -O - > /dev/null 2>&1
+

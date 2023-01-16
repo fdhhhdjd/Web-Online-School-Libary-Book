@@ -9,15 +9,17 @@ services:
         image: send_email_student
         restart: always
         build:
-            dockerfile: Dockerfile
-            target: node_email
+            dockerfile: Dockerfile.dev
+            context: .
         environment:
-            NODE_ENV: PRODUCTION
+            NODE_ENV: development
+        ports:
+            - ${PORT_EMAIL}:${PORT_EMAIL}
         volumes:
             - './src:/usr/src/app/src'
         env_file:
             - .env
-        command: npm run email:live
+        command: npm run email:dev
         networks:
             - sendemail
 

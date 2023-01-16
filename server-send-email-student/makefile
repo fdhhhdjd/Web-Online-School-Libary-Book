@@ -2,24 +2,33 @@
 #! Description: Make run auto service Send-Email.
 #!@ Created_At : 20-12-2022.
 #!@ Update_At: 02-01-2023.
+#!@ Update_At_2: 16-01-2023.
+
+###################################### !GENERAL ######################################
 
 ## Watch Container Active
 default:
 	docker ps
 
-## Down Container
-devdown:
-	docker-compose -f docker-compose.yml down
-
 ## Run Container Backgroud (Deamon)
 stg:
 	docker-compose up -d
+###################################### !DEVELOPER ######################################
+
+## Down Container 
+run-devdown:
+	docker-compose -f docker-compose-dev.yml down
 
 ## Run Container Backgroud (Deamon) and Build Container
 run-email:
-	docker-compose up -d --build
+	docker-compose -f docker-compose-dev.yml up -d --build
+
+###################################### !PRODUCTION ######################################
+
+## Down Container 
+run-down-live-email:
+	docker-compose -f docker-compose.yml down
 
 ## Run Container Backgroud (Deamon) and Build Container  && Run File docker-compose.yml
-run-dev:
-	docker-compose up -d --build
+run-live-email:
 	docker-compose -f docker-compose.yml up -d --build

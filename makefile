@@ -3,6 +3,8 @@
 #!@ Created_At : 20-12-2022.
 #!@ Update_At: 28-12-2022.
 
+###################################### !DEVELOPER ######################################
+
 ###################! SETTING HUSKY ###################
 # Not file pre-commit 
 install-husky:
@@ -41,42 +43,90 @@ run-all-build:
 # Run Server Email 
 run-send-email:
 	cd server-send-email-student && \
-	make stg
+	make run-email
 
 # Run Server media 
 run-media:
 	cd server-media-service && \
-	make stg
+	make run-media
 
 # Run Server Main 
 run-backend:
 	cd backend-manager-student && \
-	make stg
+	make run-backend
 
 # Run All Server
-run-all:
+run-all-dev:
 	make run-send-email
 	make run-media
 	make run-backend
 
 ###################! RUN AUTO DOWN CONTAINER DOCKER  ##########################
 # Run Down Container Server Email 
-run-send-email-down:
+run-send-email-dev-down:
 	cd server-send-email-student && \
-	make devdown
+	make run-devdown
 
 # Run Down Container Server media 
-run-media-down:
+run-media-dev-down:
 	cd server-media-service && \
-	make devdown
+	make run-devdown
 
 # Run Down Container Server Main 
-run-backend-down:
+run-backend-dev-down:
 	cd backend-manager-student && \
-	make devdown
+	make run-devdown
 
 # Run Down Container All Server
-run-all-down:
-	make run-backend-down
-	make run-send-email-down
-	make run-media-down
+run-all-dev-down:
+	make run-backend-dev-down
+	make run-send-email-dev-down
+	make run-media-dev-down
+
+###################################### !PRODUCTION ######################################
+
+##############! RUN AUTO DOWN CONTAINER DOCKER  #####################
+
+# Down service email
+run-down-live-email:
+	cd server-send-email-student && \
+	make run-down-live-email
+
+# Down service media 
+run-down-live-media:
+	cd server-media-service && \
+	make run-down-live-media
+
+# Down service backend
+run-down-live-backend:
+	cd backend-manager-student && \
+	make run-down-live-backend
+
+# Down all service  
+run-down-all-live-service:
+	make run-down-live-email
+	make run-down-live-media
+	make run-down-live-backend
+
+###################! RUN AUTO BACKGROUND (DEAMON) DOCKER  ###################
+
+# Run service email
+run-live-email:
+	cd server-send-email-student && \
+	make run-live-email
+
+# run service media 
+run-live-media:
+	cd server-media-service && \
+	make run-live-media
+
+# run service backend
+run-live-backend:
+	cd backend-manager-student && \
+	make run-live-backend
+
+# Run All Service
+run-all-live-service:
+	make run-live-backend
+	make run-live-email
+	make run-live-media
