@@ -127,6 +127,6 @@ run-live-backend:
 
 # Run All Service
 run-all-live-service:
-	make run-live-backend
 	make run-live-email
 	make run-live-media
+	make run-live-backend
