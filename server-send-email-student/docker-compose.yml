@@ -10,7 +10,7 @@ services:
         restart: always
         build:
             dockerfile: Dockerfile
-            target: node_email
+            context: .
         environment:
             NODE_ENV: PRODUCTION
         volumes:
