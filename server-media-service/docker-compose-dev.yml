@@ -9,15 +9,17 @@ services:
         image: cloundinary
         restart: always
         build:
-            dockerfile: Dockerfile
-            target: node_media
+            dockerfile: Dockerfile.dev
+            context: .
         environment:
-            NODE_ENV: PRODUCTION
+            NODE_ENV: development
+        ports:
+            - ${PORT_MEDIA}:${PORT_MEDIA}
         volumes:
             - './src:/usr/src/app/src'
         env_file:
             - .env
-        command: npm run media:live
+        command: npm run media:dev
         networks:
             - upload-network
 

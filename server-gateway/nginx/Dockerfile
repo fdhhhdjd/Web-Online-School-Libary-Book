@@ -1,0 +1,10 @@
+FROM nginx as nginx_load_balancer
+
+RUN  apt-get update  && apt install sudo && apt install nano -y
+
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+
+HEALTHCHECK  --interval=5m --timeout=3s \
+  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+
+STOPSIGNAL SIGTERM
