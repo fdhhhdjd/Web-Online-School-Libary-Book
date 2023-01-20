@@ -1,4 +1,4 @@
-const { reasonPhraseCodeProNewMap } = require('../configs/constants');
+const CONSTANTS = require('../configs/constants');
 
 module.exports = {
     /**
@@ -9,5 +9,6 @@ module.exports = {
      * @param { code }
      * @return { String }
      */
-    returnReasons: (code) => reasonPhraseCodeProNewMap().get(code) || reasonPhraseCodeProNewMap().get('default'),
+    returnReasons: (code) =>
+        CONSTANTS.reasonPhraseCodeProNewMap().get(code) || CONSTANTS.reasonPhraseCodeProNewMap().get('default'),
 };

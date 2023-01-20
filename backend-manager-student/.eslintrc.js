@@ -46,6 +46,7 @@ module.exports = {
         'func-names': 'off',
         'eqeqeq': 'off',
         'no-ternary': 0,
-        'no-unneeded-ternary': 0
+        'no-unneeded-ternary': 0,
+        'import/order': 'off'
     },
 };

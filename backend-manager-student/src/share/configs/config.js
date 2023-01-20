@@ -37,7 +37,13 @@ module.exports = {
      * @author Nguyễn Tiến Tài
      * @created_at 11/01/2023
      * @description Limit data Settings
-     *
      */
     MAX_LRU: process.env.MAX_LRU,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/01/2023
+     * @description KEY PHONE
+     */
+    ACCOUNT_SID_KEY: process.env.ACCOUNT_SID_KEY,
+    AUTH_TOKEN_KEY: process.env.AUTH_TOKEN_KEY,
 };
