@@ -9,5 +9,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  }
 }

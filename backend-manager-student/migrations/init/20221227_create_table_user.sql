@@ -9,8 +9,12 @@ CREATE TABLE public.user (
     password text NOT NULL,
     role smallint DEFAULT '0' :: smallint,
     phone_number text NOT NULL,
+    phone_hidden text,
+    phone_id smallint,
     email text,
     dob date,
     address text,
     gender smallint,
+    class text NOT NULL,
+    public_id_avatar text,
 );
