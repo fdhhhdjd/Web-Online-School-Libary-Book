@@ -11,8 +11,9 @@ default:
 	docker ps
 
 ## Run Container Backgroud (Deamon)
-stg:
-	docker-compose up -d
+stg-dev:
+	docker-compose -f docker-compose-dev.yml up -d
+	
 ###################################### !DEVELOPER ######################################
 
 ## Down Container 

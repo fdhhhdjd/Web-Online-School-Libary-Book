@@ -45,7 +45,7 @@ const adminController = {
                     mobile_network_code,
                     mobile_network_country_code,
                     mobile_network_name,
-                    password
+                    password,
                 },
                 message: returnReasons('200'),
                 // element1: globalCache.getCache(phone),

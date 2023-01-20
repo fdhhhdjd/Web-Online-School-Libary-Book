@@ -43,17 +43,17 @@ run-all-build:
 # Run Server Email 
 run-send-email:
 	cd server-send-email-student && \
-	make run-email
+	make stg-dev
 
 # Run Server media 
 run-media:
 	cd server-media-service && \
-	make run-media
+	make stg-dev
 
 # Run Server Main 
 run-backend:
 	cd backend-manager-student && \
-	make run-backend
+	make stg-dev
 
 # Run All Server
 run-all-dev:

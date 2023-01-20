@@ -121,10 +121,10 @@ module.exports = {
         return result;
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 19/01/2023
-    * @description mobile network
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/01/2023
+     * @description mobile network
+     */
     _COUNTRY_CODE: 'VN',
     _SERVICE_PROVIDER: 'carrier',
 };

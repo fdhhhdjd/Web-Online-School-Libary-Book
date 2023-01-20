@@ -21,7 +21,8 @@ module.exports = {
      * @returns {boolean} true: this email is valid, false: this is not a email
      */
     validateEmail(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         const emailParts = email.split('@');
 
@@ -120,15 +121,17 @@ module.exports = {
         return xlsx.parse(fs.readFileSync('src/file/Demo.xlsx'));
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 19/01/2023
-    * @description Data phone
-    * @returns {Array}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/01/2023
+     * @description Data phone
+     * @returns {Array}
+     */
     getDataPhone(phoneNumber) {
-        return CLIENT.lookups.phoneNumbers(phoneNumber)
+        return CLIENT.lookups
+            .phoneNumbers(phoneNumber)
             .fetch({ countryCode: CONSTANTS._COUNTRY_CODE, type: [CONSTANTS._SERVICE_PROVIDER] })
-            .then((phone_number) => phone_number).catch((error) => {
+            .then((phone_number) => phone_number)
+            .catch((error) => {
                 console.error(error);
                 return null;
             });
@@ -139,7 +142,8 @@ module.exports = {
      * @description Mobile network
      * @returns {String}
      */
-    returnMobileNetWork: (code) => CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
+    returnMobileNetWork: (code) =>
+        CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 20/01/2023
@@ -152,5 +156,4 @@ module.exports = {
     maskLastPhoneNumber(phoneNumber) {
         return '*'.repeat(phoneNumber.length - 4) + phoneNumber.substring(phoneNumber.length - 4);
     },
-
 };
