@@ -1,4 +1,4 @@
-const { globalCache } = require('../../../share/patterns/LRU_Strategy.patterns');
+// const { globalCache } = require('../../../share/patterns/LRU_Strategy.patterns');
 const { returnReasons } = require('../../../share/middleware/handle_error');
 const { takeDataStudent } = require('../../../share/services/admin.service');
 const HELPER = require('../../../share/utils/helper');
@@ -7,23 +7,48 @@ const adminController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 17/12/2022
-     * @update_at 11/01/2023
+     * @update_at 11/01/2023,19/01/2023
      * @description Login admin,add cache demo
      * @function LoginAdmin
      * @return {Object:{Number,String}
      */
     LoginAdmin: async (req, res) => {
-        const { user_name, password } = req.body.input.admin_login_input;
-        globalCache.putCache(user_name, password);
+        const { phone, email, password } = req.body.input.admin_login_input;
+        // globalCache.putCache(phone, password);
         try {
+            const check_email = HELPER.validateEmail(email);
+            if (!check_email) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+            const phone_data = await HELPER.getDataPhone(phone);
+            if (Object.is(phone_data, null)) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+            const mask_phone = HELPER.maskFistPhoneNumber(phone);
+
+            const { mobile_network_code } = phone_data.carrier;
+            const mobile_network_country_code = phone_data.carrier.mobile_country_code;
+
+            const mobile_network_name = HELPER.returnMobileNetWork(mobile_network_code);
+
             return res.status(200).json({
                 status: 200,
                 data: {
-                    user_name,
-                    password,
+                    phone,
+                    mask_phone,
+                    mobile_network_code,
+                    mobile_network_country_code,
+                    mobile_network_name,
+                    password
                 },
                 message: returnReasons('200'),
-                element1: globalCache.getCache(user_name),
+                // element1: globalCache.getCache(phone),
             });
         } catch (err) {
             return res.status(503).json({

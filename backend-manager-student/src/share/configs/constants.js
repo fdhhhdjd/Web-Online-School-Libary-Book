@@ -101,4 +101,30 @@ module.exports = {
         ]);
         return result;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/01/2023
+     * @description mobile code
+     * @param { "Name":"message" }
+     */
+    mobileCodeProNewMap: () => {
+        const result = new Map([
+            ['01', 'MobiFone'],
+            ['02', 'Vinaphone'],
+            ['03', 'S-Fone'],
+            ['04', 'Viettel Mobile'],
+            ['05', 'Vietnamobile'],
+            ['06', 'E-Mobile'],
+            ['07', 'Beeline VN'],
+            ['default', 'No code'],
+        ]);
+        return result;
+    },
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 19/01/2023
+    * @description mobile network
+    */
+    _COUNTRY_CODE: 'VN',
+    _SERVICE_PROVIDER: 'carrier',
 };
