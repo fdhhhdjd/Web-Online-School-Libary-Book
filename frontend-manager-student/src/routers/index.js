@@ -1,9 +1,14 @@
-import TabHome from 'pages/Home/components/TabHome';
+import Layout from 'components/Layout/Layout';
+import Home from 'pages/Customer/Home';
 
 const RouteDataMain = [
   {
     path: '',
-    main: <TabHome />,
+    main: (
+      <>
+        <Layout content={<Home />} />
+      </>
+    ),
   },
 ];
 export default RouteDataMain;
