@@ -5,6 +5,9 @@
   "author": "Tai <nguyentientai10@gmail.com",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -32,6 +35,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.8",
     "toast": "^0.3.47",

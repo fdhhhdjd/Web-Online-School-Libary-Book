@@ -1,4 +1,3 @@
-import Layout from 'components/Layout/Layout';
 import Loading from 'components/Loading/Loading';
 import { NotFound } from 'imports/notfound_import/index';
 import React, { Suspense } from 'react';
@@ -12,7 +11,6 @@ function App() {
     <React.Fragment>
       <Suspense Suspense fallback={<Loading />}>
         <ToastContainer position="top-center" />
-        <Layout />
         <Routes>
           {RouteDataMain.map((item, key) => {
             return (
