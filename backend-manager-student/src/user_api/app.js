@@ -8,8 +8,8 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 
 //! Share
-const CONFIGS = require('../share/configs/config')
-const CONSTANTS = require('../share/configs/constants')
+const CONFIGS = require('../share/configs/config');
+const CONSTANTS = require('../share/configs/constants');
 
 //! IMPORT MIDDLEWARE
 const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
