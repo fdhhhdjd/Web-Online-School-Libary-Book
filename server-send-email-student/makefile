@@ -13,6 +13,9 @@ default:
 ## Run Container Backgroud (Deamon)
 stg-dev:
 	docker-compose -f docker-compose-dev.yml up -d
+
+stg-prod:
+	docker-compose -f docker-compose.yml up -d
 ###################################### !DEVELOPER ######################################
 
 ## Down Container 
