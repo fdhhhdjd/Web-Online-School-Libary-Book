@@ -1,7 +1,7 @@
 #!@ Author: Nguyễn Tiến Tài.
 #! Description: Make run auto service all.
 #!@ Created_At : 20-12-2022.
-#!@ Update_At: 28-12-2022.
+#!@ Update_At: 28-12-2022,22-01-2023
 
 ###################################### !DEVELOPER ######################################
 
@@ -85,6 +85,51 @@ run-all-dev-down:
 
 ###################################### !PRODUCTION ######################################
 
+###################! RUN BUILD AUTO BACKGROUND (DEAMON) DOCKER  ###################
+
+# Run service email
+run-build-live-email:
+	cd server-send-email-student && \
+	make run-live-email
+
+# run service media 
+run-build-live-media:
+	cd server-media-service && \
+	make run-live-media
+
+# run service backend
+run-build-live-backend:
+	cd backend-manager-student && \
+	make run-live-backend
+
+# Run All Service
+run-all-build-live-service:
+	make run-build-live-email
+	make run-build-live-media
+	make run-build-live-backend
+
+###################! RUN AUTO BACKGROUND (DEAMON) DOCKER  ###################
+# Run service email
+run-live-email:
+	cd server-send-email-student && \
+	make stg-prod
+
+# run service media 
+run-live-media:
+	cd server-media-service && \
+	make stg-prod
+
+# run service backend
+run-live-backend:
+	cd backend-manager-student && \
+	make stg-prod
+
+# Run All Service
+run-all-live-service:
+	make run-live-email
+	make run-live-media
+	make run-live-backend
+
 ##############! RUN AUTO DOWN CONTAINER DOCKER  #####################
 
 # Down service email
@@ -107,26 +152,3 @@ run-down-all-live-service:
 	make run-down-live-email
 	make run-down-live-media
 	make run-down-live-backend
-
-###################! RUN AUTO BACKGROUND (DEAMON) DOCKER  ###################
-
-# Run service email
-run-live-email:
-	cd server-send-email-student && \
-	make run-live-email
-
-# run service media 
-run-live-media:
-	cd server-media-service && \
-	make run-live-media
-
-# run service backend
-run-live-backend:
-	cd backend-manager-student && \
-	make run-live-backend
-
-# Run All Service
-run-all-live-service:
-	make run-live-email
-	make run-live-media
-	make run-live-backend
