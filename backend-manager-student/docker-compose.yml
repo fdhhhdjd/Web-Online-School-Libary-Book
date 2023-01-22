@@ -89,10 +89,12 @@ services:
     ###! Redis Slave from Master ###
     redis-slave:
         container_name: redis-slave
+        restart: always
         environment:
             REDIS_PASSWORD: ${REDIS_PASSWORD_SLAVE}
             NODE_ENV: PRODUCTION
         image: redis
+
         volumes:
             - redis-slave:/data
         ports:

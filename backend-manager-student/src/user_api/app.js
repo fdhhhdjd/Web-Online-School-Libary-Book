@@ -7,6 +7,10 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 
+//! Share
+const CONFIGS = require('../share/configs/config')
+const CONSTANTS = require('../share/configs/constants')
+
 //! IMPORT MIDDLEWARE
 const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
 
@@ -15,7 +19,7 @@ const USER_API = require('./v1/routes/index.router');
 
 //! USED LIBRARY
 const app = express();
-if (process.env.NODE_ENV === 'PRODUCTION') {
+if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT) {
     app.enable('trust proxy');
 }
 app.use(helmet());

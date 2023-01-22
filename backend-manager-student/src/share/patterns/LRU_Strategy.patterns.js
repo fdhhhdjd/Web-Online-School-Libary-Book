@@ -1,6 +1,10 @@
 const LRU = require('lru-cache');
 const CONFIGS = require('../configs/config');
-
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 22/12/2022
+ * @description File Algorithm Cache LRU 
+ */
 class LRUCache {
     constructor(size) {
         this._cache = new LRU({ max: +size || 100 });

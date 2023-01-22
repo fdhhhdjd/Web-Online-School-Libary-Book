@@ -2,6 +2,7 @@
 const { returnReasons } = require('../../../share/middleware/handle_error');
 const { takeDataStudent } = require('../../../share/services/admin.service');
 const HELPER = require('../../../share/utils/helper');
+const PASSWORD = require('../../../share/utils/password');
 
 const adminController = {
     /**
@@ -17,7 +18,12 @@ const adminController = {
         // globalCache.putCache(phone, password);
         try {
             const check_email = HELPER.validateEmail(email);
-            if (!check_email) {
+
+            const check_phone = HELPER.validatePhone(phone);
+
+            const check_password = PASSWORD.isValidPassword(password);
+
+            if (!check_email || !check_phone || !check_password) {
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),

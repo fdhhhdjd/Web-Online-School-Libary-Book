@@ -1,4 +1,5 @@
 const { SonyFlake } = require('sonyflake');
+const REGEX = require('../configs/regex')
 
 const SONY_FLAKE = new SonyFlake({
     machineId: 2, // in range 2^16
@@ -20,7 +21,7 @@ module.exports = {
      */
     randomString(length) {
         let result = '';
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = REGEX.REGEX_RANDOM;
         const charactersLength = characters.length;
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));

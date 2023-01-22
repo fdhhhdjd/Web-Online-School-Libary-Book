@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 const app = require('./app');
-
 dotenv.config();
 
 app.get('/', async (req, res) => {
