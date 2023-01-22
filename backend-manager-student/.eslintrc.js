@@ -47,6 +47,7 @@ module.exports = {
         'eqeqeq': 'off',
         'no-ternary': 0,
         'no-unneeded-ternary': 0,
-        'import/order': 'off'
+        'import/order': 'off',
+        'no-restricted-globals': 'off'
     },
 };

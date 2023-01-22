@@ -1,4 +1,4 @@
-const knex = require('../db/posgresql');
+const knex = require('../db/postgresql');
 
 module.exports = {
     /**
