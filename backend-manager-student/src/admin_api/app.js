@@ -8,8 +8,8 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 
 //! Share
-const CONFIGS = require('../share/configs/config')
-const CONSTANTS=require('../share/configs/constants')
+const CONFIGS = require('../share/configs/config');
+const CONSTANTS = require('../share/configs/constants');
 
 //! DB
 require('../share/db/init_multiple_redis');

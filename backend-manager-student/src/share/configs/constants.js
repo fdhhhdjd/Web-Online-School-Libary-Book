@@ -128,16 +128,16 @@ module.exports = {
     _COUNTRY_CODE: 'VN',
     _SERVICE_PROVIDER: 'carrier',
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 12/01/2023
-    * @description environment
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description environment
+     */
     ENVIRONMENT_PRODUCT: 'PRODUCTION',
     ENVIRONMENT_DEV: 'DEVELOPER',
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 12/01/2023
-   * @description Name DB
-   */
-    CLIENT_PG: 'pg'
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description Name DB
+     */
+    CLIENT_PG: 'pg',
 };

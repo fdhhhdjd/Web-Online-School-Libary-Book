@@ -42,5 +42,5 @@ module.exports = {
      * @created_at 22/01/2022
      * @description REGEX CHARACTER
      */
-    REGEX_RANDOM: 'ABCDEFGHIJKLMNOPQWXYZa/~12&89b11cdefghijklmnopq+-rstuvwxyz0123456asdasd9'
+    REGEX_RANDOM: 'ABCDEFGHIJKLMNOPQWXYZa/~12&89b11cdefghijklmnopq+-rstuvwxyz0123456asdasd9',
 };

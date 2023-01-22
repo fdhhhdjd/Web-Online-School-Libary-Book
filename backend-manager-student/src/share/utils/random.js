@@ -1,5 +1,5 @@
 const { SonyFlake } = require('sonyflake');
-const REGEX = require('../configs/regex')
+const REGEX = require('../configs/regex');
 
 const SONY_FLAKE = new SonyFlake({
     machineId: 2, // in range 2^16

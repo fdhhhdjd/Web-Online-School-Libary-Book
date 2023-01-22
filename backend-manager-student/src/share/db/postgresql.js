@@ -1,5 +1,5 @@
-const CONFIGS = require('../configs/config')
-const CONSTANTS = require('../configs/constants')
+const CONFIGS = require('../configs/config');
+const CONSTANTS = require('../configs/constants');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 22/01/2023

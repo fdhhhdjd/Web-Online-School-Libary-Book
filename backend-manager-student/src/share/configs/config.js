@@ -47,26 +47,26 @@ module.exports = {
     ACCOUNT_SID_KEY: process.env.ACCOUNT_SID_KEY,
     AUTH_TOKEN_KEY: process.env.AUTH_TOKEN_KEY,
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 22/01/2023
-   * @description INFO CONNECT DB
-   */
+     * @author Nguyễn Tiến Tài
+     * @created_at 22/01/2023
+     * @description INFO CONNECT DB
+     */
     POSTGRES_HOST: process.env.POSTGRES_HOST,
     POSTGRES_USER: process.env.POSTGRES_USER,
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
     POSTGRES_DB: process.env.POSTGRES_DB,
     POSTGRES_PORT: process.env.POSTGRES_PORT,
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 22/01/2023
-    * @description MAX MIN CONNECT DB
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 22/01/2023
+     * @description MAX MIN CONNECT DB
+     */
     POSTGRES_CONNECT_MIN: process.env.POSTGRES_CONNECT_MIN,
     POSTGRES_CONNECT_MAX: process.env.POSTGRES_CONNECT_MAX,
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 22/01/2023
-    * @description ENVIRONMENT
-    */
-    NODE_ENV: process.env.NODE_ENV
+     * @author Nguyễn Tiến Tài
+     * @created_at 22/01/2023
+     * @description ENVIRONMENT
+     */
+    NODE_ENV: process.env.NODE_ENV,
 };

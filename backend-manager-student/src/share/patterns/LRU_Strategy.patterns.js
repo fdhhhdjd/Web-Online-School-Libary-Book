@@ -3,7 +3,7 @@ const CONFIGS = require('../configs/config');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 22/12/2022
- * @description File Algorithm Cache LRU 
+ * @description File Algorithm Cache LRU
  */
 class LRUCache {
     constructor(size) {
