@@ -1,6 +1,7 @@
-const admin_service = require('../../../share/services/admin.service');
 const user_service = require('../../../share/models/user.model');
-const helper = require('../../../share/utils/helper');
+const HELPER = require('../../../share/utils/helper');
+const RANDOM = require('../../../share/utils/random');
+const { returnReasons } = require('../../../share/middleware/handle_error');
 
 const adminController = {
     /**
@@ -18,17 +19,21 @@ const adminController = {
 
             const { device } = req;
 
-            const geo = helper.findingLocationByIP(ip) || helper.findingLocationByIP('14.165.41.226');
+            const geo = HELPER.findingLocationByIP(ip) || HELPER.findingLocationByIP('14.165.41.226');
             console.info(geo, '-------------', device);
-            const data = await admin_service.createAdmin('oke');
-            const user_service_data = await user_service.addUser({
+            const data_insert = {
                 name: 'Tài Heo',
-            });
-            console.info(user_service_data);
-            if (data !== 'oke') {
+            };
+            let err;
+            let result;
+            [err, result] = await await HELPER.handleRequest(user_service.addUser(data_insert));
+            console.info(result, '----Insert data success------');
+            const _OTP = RANDOM.generatorOtp();
+            const _ID = RANDOM.createID();
+            if (err) {
                 return res.status(400).json({
                     status: 400,
-                    message: 'error',
+                    message: returnReasons('400'),
                 });
             }
             return res.status(200).json({
@@ -39,14 +44,19 @@ const adminController = {
                     geo,
                     ip,
                     device,
+                    _OTP,
+                    _ID,
                 },
-                message: 'success',
+                message: returnReasons('200'),
             });
         } catch (err) {
             console.error(err);
             return res.status(503).json({
                 status: 503,
-                message: 'Out Of Service',
+                message: returnReasons('503'),
+                element: {
+                    service: 'Out Of Service',
+                },
             });
         }
     },

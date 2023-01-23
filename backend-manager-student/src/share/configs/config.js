@@ -69,4 +69,12 @@ module.exports = {
      * @description ENVIRONMENT
      */
     NODE_ENV: process.env.NODE_ENV,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/01/2023
+     * @description OPTION OTP
+     */
+    ALGORITHM_OTP_OPTION: process.env.ALGORITHM_OTP_OPTION,
+    CUSTOM_SEED_OTP_OPTION: process.env.CUSTOM_SEED_OTP_OPTION,
+    RANDOM_NUMBER_OTP: process.env.RANDOM_NUMBER_OTP,
 };
