@@ -1,10 +1,22 @@
-const { SonyFlake } = require('sonyflake');
+const { Sonyflake } = require('sonyflake');
+const OtpGenerator = require('otp-generator');
 const REGEX = require('../configs/regex');
+const CONFIGS = require('../configs/config');
+const CONSTANTS = require('../configs/constants');
 
-const SONY_FLAKE = new SonyFlake({
-    machineId: 2, // in range 2^16
-    epoch: Date.UTC(2020, 4, 18, 0, 0, 0), // timestamp
+const SONY_FLAKE = new Sonyflake({
+    machineId: CONSTANTS.DETERMINED_COMPUTER, // in range 2^16
+    epoch: CONSTANTS.TIME_START_SYSTEMS, // timestamp
 });
+const OPTION_OTP = {
+    algorithm: CONFIGS.ALGORITHM_OTP_OPTION,
+    seed: CONFIGS.CUSTOM_SEED_OTP_OPTION,
+    time: CONSTANTS._30_SECONDS,
+    digits: true,
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+};
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 16/12/2022
@@ -42,11 +54,11 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @param {null}
-     * @created_at 16/12/2022
-     * @description Method decode sony_flake detail
-     * @returns data decode (json)
+     * @created_at 23/01/2023
+     * @description Random OTP
+     * @returns {Number}
      */
-    decodeID(u_code) {
-        return SONY_FLAKE.deconstruct(u_code);
+    generatorOtp() {
+        return OtpGenerator.generate(CONFIGS.RANDOM_NUMBER_OTP, OPTION_OTP);
     },
 };

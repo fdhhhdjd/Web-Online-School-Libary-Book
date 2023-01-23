@@ -11,6 +11,7 @@ module.exports = {
      * @description Milisecond / Second
      * @param { "Name":"value" => Example: Male: 1 }
      */
+    _30_SECONDS: 30 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
     _1_DAY: 24 * 60 * 60 * 1000,
@@ -140,4 +141,11 @@ module.exports = {
      * @description Name DB
      */
     CLIENT_PG: 'pg',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/01/2023
+     * @description sony random id
+     */
+    DETERMINED_COMPUTER: 2,
+    TIME_START_SYSTEMS: Date.UTC(2020, 4, 18, 0, 0, 0), // timestamp tránh trùng lặp ID hệ thống
 };

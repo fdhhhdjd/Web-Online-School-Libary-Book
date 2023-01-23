@@ -48,6 +48,8 @@ module.exports = {
         'no-ternary': 0,
         'no-unneeded-ternary': 0,
         'import/order': 'off',
-        'no-restricted-globals': 'off'
+        'no-restricted-globals': 'off',
+        'prefer-const': 'off',
+        'max-len': 'off'
     },
 };

@@ -144,8 +144,7 @@ module.exports = {
      * @description Mobile network
      * @returns {String}
      */
-    returnMobileNetWork: (code) =>
-        CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
+    returnMobileNetWork: (code) => CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 20/01/2023
@@ -158,4 +157,11 @@ module.exports = {
     maskLastPhoneNumber(phoneNumber) {
         return '*'.repeat(phoneNumber.length - 4) + phoneNumber.substring(phoneNumber.length - 4);
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/01/2023
+     * @description Promise Level 3
+     * @returns {promise}
+     */
+    handleRequest: (promise) => promise.then((data) => [undefined, data]).catch((error) => [error, undefined]),
 };
