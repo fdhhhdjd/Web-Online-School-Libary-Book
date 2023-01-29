@@ -144,7 +144,8 @@ module.exports = {
      * @description Mobile network
      * @returns {String}
      */
-    returnMobileNetWork: (code) => CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
+    returnMobileNetWork: (code) =>
+        CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 20/01/2023
