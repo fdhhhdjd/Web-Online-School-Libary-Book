@@ -7,12 +7,13 @@ module.exports = {
      * @update_at 23/01/2022
      * @description Add user
      */
-    addUser: (data) => new Promise((resolve, reject) => {
-        try {
-            const result = knex('users').insert(data).returning(['name']);
-            resolve(result);
-        } catch (error) {
-            reject(error);
-        }
-    }),
+    addUser: (data) =>
+        new Promise((resolve, reject) => {
+            try {
+                const result = knex('users').insert(data).returning(['name']);
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        }),
 };

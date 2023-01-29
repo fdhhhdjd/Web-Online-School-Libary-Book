@@ -70,15 +70,20 @@ services:
     redis-master:
         container_name: redis-master
         image: redis
+        build:
+            dockerfile: dockerfile.redis.dev
+            context: .
         restart: always
         environment:
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
-        command: redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
+            TZ: '${TIME_DATE_TZ}'
+        command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh"
         env_file:
             - .env
         volumes:
             - redis-master:/data
-            - /setup/redis.conf:/usr/local/etc/redis/redis.conf
+            - ./setup:/usr/local/etc/redis/redis.conf
+            - ./scrip:/usr/local/bin/scrip
         ports:
             - ${REDIS_PORT}:${REDIS_PORT}
         networks:
@@ -107,7 +112,19 @@ services:
         networks:
             - libary_school
         healthcheck:
-            test: ['CMD', 'redis-cli', '-h', 'redis-slave', '-p', '${REDIS_PORT_SLAVE}', 'PING']
+            test:
+                [
+                    'CMD',
+                    'redis-cli',
+                    '-h',
+                    '${REDIS_HOST_SLAVE}',
+                    '-a',
+                    '${REDIS_PASSWORD}',
+                    redis-slave',
+                    '-p',
+                    '${REDIS_PORT_SLAVE}',
+                    'PING',
+                ]
             interval: 30s
             timeout: 10s
             retries: 3
