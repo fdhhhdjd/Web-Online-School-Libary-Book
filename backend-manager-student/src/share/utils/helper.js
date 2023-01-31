@@ -1,10 +1,11 @@
 const geo_ip = require('geoip-lite');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
+const axios = require('axios');
 const CONFIGS = require('../configs/config');
 const CONSTANTS = require('../configs/constants');
-const CLIENT = require('twilio')(CONFIGS.ACCOUNT_SID_KEY, CONFIGS.AUTH_TOKEN_KEY);
 const REGEX = require('../configs/regex');
+const CLIENT = require('twilio')(CONFIGS.ACCOUNT_SID_KEY, CONFIGS.AUTH_TOKEN_KEY);
 
 /**
  * @author Nguyễn Tiến Tài
@@ -121,6 +122,18 @@ module.exports = {
      */
     getDataExcel() {
         return xlsx.parse(fs.readFileSync('src/file/Demo.xlsx'));
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description data excel cloud online
+     * @returns {url}
+     */
+    async getDataExcelCloud(url_document) {
+        const response = await axios.get(`${url_document}`, {
+            responseType: CONSTANTS.RESPONSE_TYPE,
+        });
+        return xlsx.parse(response.data);
     },
     /**
      * @author Nguyễn Tiến Tài
