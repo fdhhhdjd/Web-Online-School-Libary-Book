@@ -49,6 +49,8 @@
         "express-fileupload": "^1.4.0",
         "express-rate-limit": "^6.7.0",
         "helmet": "^6.0.1",
-        "sonyflake": "^1.1.2"
+        "sonyflake": "^1.1.2",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^4.6.0"
     }
 }

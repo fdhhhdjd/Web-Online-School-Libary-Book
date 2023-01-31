@@ -44,7 +44,9 @@ const uploadController = {
             const is_type = (type) =>
                 type !== CONSTANTS.MIME_IMAGE ||
                 type !== CONSTANTS.MIME_VIDEO ||
-                type !== CONSTANTS.MIME_AUDIO;
+                type !== CONSTANTS.MIME_AUDIO ||
+                type !== CONSTANTS.MIME_DOCUMENT
+
 
             if (!is_type(check_type)) {
                 handleRemoveTmp(path_image);
@@ -64,9 +66,9 @@ const uploadController = {
                     template_upload = CONSTANTS.STORAGE_FOLDER_VIDEOS_TEMPLATE
                     cloud_bucket = CONSTANTS.MIME_VIDEO
                     break;
-                case CONSTANTS.MIME_AUDIO:
-                    template_upload = CONSTANTS.STORAGE_FOLDER_AUDIO_TEMPLATE
-                    cloud_bucket = CONSTANTS.MIME_AUDIO
+                case CONSTANTS.MIME_DOCUMENT:
+                    template_upload = CONSTANTS.STORAGE_FOLDER_DOCUMENT_TEMPLATE
+                    cloud_bucket = CONSTANTS.MIME_DOCUMENT
                     break;
                 default:
                     return res.status(400).json({
@@ -74,13 +76,14 @@ const uploadController = {
                         message: returnReasons('400'),
                     });
             }
+
             const uri_key = STORAGE.getURIFromTemplate(template_upload, {
                 'user_id': '123456',
                 'file_name': name_image_new,
                 'time': date,
                 'media_id': media_id
             })
-            await handleUpload(path_image, uri_key)
+            await handleUpload(path_image, uri_key, cloud_bucket)
                 .then((result) =>
                     res.status(200).json({
                         status: 200,
