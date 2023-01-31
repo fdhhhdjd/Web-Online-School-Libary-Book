@@ -73,7 +73,7 @@ services:
         environment:
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
             NODE_ENV: PRODUCTION
-        command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh"
+        command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh & logrotate /usr/local/bin/logs/logrotate.conf"
         env_file:
             - .env
         volumes:
