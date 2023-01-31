@@ -148,4 +148,43 @@ module.exports = {
      */
     DETERMINED_COMPUTER: 2,
     TIME_START_SYSTEMS: Date.UTC(2020, 4, 18, 0, 0, 0), // timestamp tránh trùng lặp ID hệ thống
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description Setup Swagger general
+     */
+    OPEN_API_SWAGGER: '3.0.0',
+    VERSION_SWAGGER: '1.0.0',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description Setup Swagger admin
+     */
+    URL_ADMIN_SWAGGER: 'http://localhost:5000',
+    TITLE_ADMIN_SWAGGER: 'Document Admin API',
+    DESCRIPTION_ADMIN_SWAGGER: 'Document API Library School',
+    APIS_ADMIN_SWAGGER: './src/admin_api/v1/Swagger/*/*.yaml',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description Setup Swagger user
+     */
+    URL_USER_SWAGGER: 'http://localhost:5001',
+    TITLE_USER_SWAGGER: 'Document User API',
+    DESCRIPTION_USER_SWAGGER: 'Document API Library School',
+    APIS_USER_SWAGGER: './src/user_api/v1/Swagger/*/*.yaml',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description proxy accept proxy reliable
+     */
+    TRUST_PROXY: 'trust proxy',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description compression zip send server
+     */
+    COMPRESSION_ZIP_SEND_SERVER_LEVER: 6,
+    COMPRESSION_ZIP_SEND_THRESHOLD: 100 * 1000,
+    COMPRESSION_ZIP_SEND_SERVER: 'x-no-compression',
 };

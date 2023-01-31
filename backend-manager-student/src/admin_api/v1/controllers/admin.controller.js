@@ -71,15 +71,22 @@ const adminController = {
      * @return {Object}
      */
     AddStudent: async (req, res) => {
-        const sheets = HELPER.getDataExcel();
+        try {
+            const sheets = HELPER.getDataExcel();
 
-        const result = takeDataStudent(sheets);
+            const result = takeDataStudent(sheets);
 
-        return res.status(200).json({
-            status: 200,
-            message: returnReasons('200'),
-            element: result,
-        });
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
+                element: result,
+            });
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+            });
+        }
     },
 };
 module.exports = adminController;

@@ -71,7 +71,9 @@
         "lru-cache": "^7.14.1",
         "node-xlsx": "^0.21.0",
         "twilio": "^3.84.1",
-        "otp-generator": "^4.0.0"
+        "otp-generator": "^4.0.0",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^4.6.0"
     },
     "devDependencies": {
         "jest": "^29.3.1"

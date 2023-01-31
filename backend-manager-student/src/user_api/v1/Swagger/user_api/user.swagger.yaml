@@ -1,0 +1,74 @@
+#!@author Nguyễn Tiến Tài
+#!created_at 31/01/2023
+#!description: Login User
+paths:
+    /api/v1/user/login:
+        post:
+            summary: Login User
+            tags: [Login User]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                user_name:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                200:
+                    description: Successfuly auth
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    data:
+                                        type: object
+                                        example:
+                                            {
+                                                user_name: string,
+                                                password: string,
+                                                geo: number,
+                                                ip: number,
+                                                device: string,
+                                                _OTP: number,
+                                                _ID: number,
+                                            }
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Insert data fail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                503:
+                    description: Service die
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 503
+                                    message:
+                                        type: string
+                                        example: Service Unavailable
+                                    element:
+                                        type: object
+                                        example: Out Of Service

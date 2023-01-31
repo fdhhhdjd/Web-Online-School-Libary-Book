@@ -3,7 +3,7 @@ const app = require('./app');
 
 dotenv.config();
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     const health_check = {
         uptime: process.uptime(),
         message: 'Server Admin Api',
