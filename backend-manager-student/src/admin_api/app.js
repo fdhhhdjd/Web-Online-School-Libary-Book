@@ -6,10 +6,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
 
-//! Share
+//! SHARE GENERAL
 const CONFIGS = require('../share/configs/config');
 const CONSTANTS = require('../share/configs/constants');
+const OPTIONS = require('../share/configs/option');
 
 //! DB
 require('../share/db/init_multiple_redis');
@@ -19,9 +22,17 @@ const ADMIN_API = require('./v1/routes/index.route');
 
 //! USED LIBRARY
 const app = express();
+
 if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT) {
-    app.enable('trust proxy');
+    app.enable(CONSTANTS.TRUST_PROXY);
 }
+
+//! SWAGGER API ADMIN
+if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV) {
+    const specs = swaggerJsDoc(OPTIONS.SWAGGER_ADMIN);
+    app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+}
+
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -39,10 +50,10 @@ app.use(
 );
 app.use(
     compression({
-        level: 6,
-        threshold: 100 * 1000,
+        level: CONSTANTS.COMPRESSION_ZIP_SEND_SERVER_LEVER,
+        threshold: CONSTANTS.COMPRESSION_ZIP_SEND_THRESHOLD,
         filter: (req, res) => {
-            if (req.headers['x-no-compression']) {
+            if (req.headers[CONSTANTS.COMPRESSION_ZIP_SEND_SERVER]) {
                 return false;
             }
             return compression.filter(req, res);

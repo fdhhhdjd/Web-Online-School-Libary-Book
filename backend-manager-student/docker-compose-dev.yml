@@ -12,7 +12,7 @@ services:
             dockerfile: Dockerfile.dev
             context: .
         environment:
-            NODE_ENV: development
+            NODE_ENV: DEVELOPER
         ports:
             - ${PORT_ADMIN_API}:${PORT_ADMIN_API}
         volumes:
@@ -35,7 +35,7 @@ services:
             dockerfile: Dockerfile.dev
             context: .
         environment:
-            NODE_ENV: development
+            NODE_ENV: DEVELOPER
         ports:
             - ${PORT_USER_API}:${PORT_USER_API}
         volumes:
@@ -57,7 +57,7 @@ services:
             - postgresql
         restart: always
         environment:
-            NODE_ENV: development
+            NODE_ENV: DEVELOPER
         volumes:
             - './src:/usr/src/app/src'
         env_file:

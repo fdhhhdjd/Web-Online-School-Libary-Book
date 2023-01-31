@@ -1,0 +1,119 @@
+#!@author Nguyễn Tiến Tài
+#!created_at 31/01/2023
+#!description: Login Admin
+paths:
+    /api/v1/admin/login:
+        post:
+            summary: Login Admin
+            tags: [Login Admin]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                phone:
+                                    type: integer
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                200:
+                    description: Successful authentication
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    data:
+                                        type: object
+                                        example:
+                                            {
+                                                phone: number,
+                                                mask_phone: string,
+                                                mobile_network_code: number,
+                                                mobile_network_country_code: number,
+                                                mobile_network_name: string,
+                                                password: string,
+                                            }
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Email,Phone,Password Invalid and Phone not exit
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                503:
+                    description: Service die
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 503
+                                    message:
+                                        type: string
+                                        example: Service Unavailable
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 31/01/2023
+    #!description Add Student
+    /api/v1/admin/add/student:
+        post:
+            summary: Add Student
+            tags: [Add Student For Excel]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                files:
+                                    type: object
+            responses:
+                200:
+                    description: Add Student Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    result:
+                                        type: array
+                                        example: []
+                503:
+                    description: Service die
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 503
+                                    message:
+                                        type: string
+                                        example: Service Unavailable
