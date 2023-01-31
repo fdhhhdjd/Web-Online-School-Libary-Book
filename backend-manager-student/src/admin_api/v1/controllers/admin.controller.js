@@ -72,7 +72,9 @@ const adminController = {
      */
     AddStudent: async (req, res) => {
         try {
-            const sheets = HELPER.getDataExcel();
+            const { url_document } = req.body.input.admin_add_student_input;
+
+            const sheets = await HELPER.getDataExcelCloud(url_document);
 
             const result = takeDataStudent(sheets);
 

@@ -175,16 +175,22 @@ module.exports = {
     APIS_USER_SWAGGER: './src/user_api/v1/Swagger/*/*.yaml',
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 30/01/2023
+     * @created_at 31/01/2023
      * @description proxy accept proxy reliable
      */
     TRUST_PROXY: 'trust proxy',
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 30/01/2023
+     * @created_at 31/01/2023
      * @description compression zip send server
      */
     COMPRESSION_ZIP_SEND_SERVER_LEVER: 6,
     COMPRESSION_ZIP_SEND_THRESHOLD: 100 * 1000,
     COMPRESSION_ZIP_SEND_SERVER: 'x-no-compression',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description read document
+     */
+    RESPONSE_TYPE: 'arraybuffer',
 };
