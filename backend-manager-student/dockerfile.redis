@@ -14,6 +14,4 @@ RUN apt-get update && apt-get install logrotate -y \
         && chown root:root /usr/local/bin/scrip \
             && chmod 755 /usr/local/bin/scrip
 
-# Run logrotate
-RUN logrotate /usr/local/bin/logs/logrotate.conf
 
