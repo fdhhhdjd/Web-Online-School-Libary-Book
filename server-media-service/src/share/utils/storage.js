@@ -25,6 +25,7 @@ module.exports = {
             'application/pdf',
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         ];
         const audio = ['audio/aac', 'audio/mpeg', 'audio/ogg', 'audio/wav'];
 

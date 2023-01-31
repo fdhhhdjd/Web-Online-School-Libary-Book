@@ -20,4 +20,10 @@ module.exports = {
      */
     IPA_API_RATE_LIMIT_DURATION: process.env.IPA_API_RATE_LIMIT_DURATION,
     IPA_API_RATE_LIMIT: process.env.IPA_API_RATE_LIMIT,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description ENVIRONMENT
+     */
+    NODE_ENV: process.env.NODE_ENV,
 };
