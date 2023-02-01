@@ -1,19 +1,8 @@
 FROM redis AS redis-master
 # Create foder
 
-RUN mkdir -p /usr/local/bin/scrip
-RUN mkdir -p /usr/local/bin/logs
-
-# Copy
-COPY logs /usr/local/bin/logs/
-COPY scrip /usr/local/bin/scrip/
-
-# Install logrotate
 RUN apt-get update && apt-get install logrotate -y \ 
     && chmod +x /usr/local/bin/scrip/scrip_redis.sh \
         && chown root:root /usr/local/bin/scrip \
             && chmod 755 /usr/local/bin/scrip
-
-# Run logrotate
-RUN logrotate /usr/local/bin/logs/logrotate.conf
 
