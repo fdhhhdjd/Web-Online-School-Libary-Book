@@ -48,13 +48,18 @@ h6 {
   color: $iq-title-text;
 }
 
+h2 {
+  font-size: 2.3em;
+  line-height: 1.2em;
+}
+
 h5 {
   font-size: 1.2em;
 }
 
 h6 {
-  font-size: 1em;
-  line-height: 1.3em;
+  font-size: 18px;
+  line-height: 1.5em;
 }
 
 h4 {
@@ -126,6 +131,13 @@ a,
   line-height: 40px;
 }
 
+.avatar-60 {
+  height: 60px;
+  width: 60px;
+  min-width: 60px;
+  line-height: 60px;
+}
+
 .font-size-11 {
   font-size: 11px !important;
 }
@@ -191,6 +203,16 @@ a,
   -ms-flex-align: center !important;
   align-items: center !important;
   border-bottom: 1px solid $iq-border-light;
+}
+
+.iq-card-transparent {
+  background: transparent;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  border: none;
+  box-shadow: none;
 }
 
 .iq-card.browse-bookcontent,
@@ -306,4 +328,14 @@ li .image-overlap-shadow .view-book {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.form-control {
+  height: 45px;
+  line-height: 45px;
+  background: transparent;
+  border: 1px solid $iq-border-light;
+  font-size: 14px;
+  color: $iq-secondary;
+  border-radius: 5px;
 }
