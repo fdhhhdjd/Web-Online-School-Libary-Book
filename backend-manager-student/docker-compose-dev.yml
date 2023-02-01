@@ -16,7 +16,6 @@ services:
         ports:
             - ${PORT_ADMIN_API}:${PORT_ADMIN_API}
         volumes:
-            # - ./:/app
             - './src:/usr/src/app/src'
         env_file:
             - .env
@@ -77,13 +76,14 @@ services:
         environment:
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
             TZ: '${TIME_DATE_TZ}'
-        command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh & logrotate /usr/local/bin/logs/logrotate.conf"
+        command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh && logrotate /usr/local/bin/logs/logrotate.conf"
         env_file:
             - .env
         volumes:
             - redis-master:/data
             - ./setup:/usr/local/etc/redis/redis.conf
             - ./scrip:/usr/local/bin/scrip
+            - ./scrip:/usr/local/bin/logs
         ports:
             - ${REDIS_PORT}:${REDIS_PORT}
         networks:
