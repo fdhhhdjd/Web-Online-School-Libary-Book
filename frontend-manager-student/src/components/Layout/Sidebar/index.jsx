@@ -1,6 +1,7 @@
 import { SCHOOL_LOGO } from 'imports/home_import/index';
 import { useState } from 'react';
 import './style.scss';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   const [mainTabSelect, setMainTabSelect] = useState(0);
@@ -11,11 +12,11 @@ const Sidebar = () => {
       submenu: [
         {
           name: 'Home Page',
-          route: '',
+          route: '/',
         },
         {
           name: 'Category Page',
-          route: '',
+          route: '/category',
         },
         {
           name: 'Book Page',
@@ -118,7 +119,7 @@ const Sidebar = () => {
       <div className="sidebar-scrollbar" style={{ overflow: 'hidden', outline: 'none' }}>
         <div className="scroll-content" style={{ transform: 'translate3d(0px, 0px, 0px)' }}>
           <nav className="sidebar-menu">
-            <ul className="menu" id="sidebar-toggle">
+            <ul className="iq-menu" id="sidebar-toggle">
               {sideBarData.map((item, index) => (
                 <li
                   key={index}
@@ -140,13 +141,13 @@ const Sidebar = () => {
                     <span>{item.display}</span>
                     <i className="fas fa-chevron-right arrow-right"></i>
                   </a>
-                  <ul id={`submenu-${index}`} className="submenu collapse" data-parent="#sidebar-toggle">
+                  <ul id={`submenu-${index}`} className="iq-submenu collapse" data-parent="#sidebar-toggle">
                     {item?.submenu.map((item, idx) => (
                       <li key={idx} className="active">
-                        <a href="itc.edu.vn">
+                        <Link to={item.route}>
                           <i className="fal fa-home"></i>
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
