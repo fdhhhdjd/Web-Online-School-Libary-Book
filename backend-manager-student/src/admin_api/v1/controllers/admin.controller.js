@@ -71,7 +71,7 @@ const adminController = {
      * @author Nguyễn Tiến Tài
      * @created_at 12/01/2023 -> 02/02/2023
      * @description add feature take excel
-     * @function LoginAdmin
+     * @function AddStudent
      * @return {Object}
      */
     AddStudent: async (req, res) => {
