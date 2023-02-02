@@ -89,7 +89,7 @@ paths:
                                     type: object
             responses:
                 200:
-                    description: Add Student Success
+                    description: Data exit database
                     content:
                         application/json:
                             schema:
@@ -101,9 +101,41 @@ paths:
                                     message:
                                         type: string
                                         example: Success
-                                    result:
+                                    element:
+                                        type: object
+                                        example: Nothing changes to update
+                201:
+                    description: Add student success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 201
+                                    message:
+                                        type: string
+                                        example: Success
+                                    element:
                                         type: array
-                                        example: []
+                                        example: [{ user_id: string }]
+                400:
+                    description: Email,Phone Invalid or Email or Phone or Email or Mssv exits
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                                    element:
+                                        type: object
+                                        example: { result: string }
                 503:
                     description: Service die
                     content:

@@ -32,4 +32,29 @@ module.exports = {
             return error;
         }
     },
+    /**
+    * @Author Nguyễn Tiến Tài
+    * @Created_at 02/02/2023
+    * @Description Add Student
+    */
+    add_student_admin_test: async (url_file) => {
+        try {
+            const res = await axios.post(
+                `${URL_ADMIN_API}/add/student`,
+                {
+                    input: {
+                        admin_add_student_input: {
+                            url_document: url_file
+                        },
+                    },
+                },
+                {
+                    headers: HELPERS.headerAPi(),
+                },
+            );
+            return res;
+        } catch (error) {
+            return error;
+        }
+    },
 };

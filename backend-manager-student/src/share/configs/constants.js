@@ -193,4 +193,27 @@ module.exports = {
      * @description read document
      */
     RESPONSE_TYPE: 'arraybuffer',
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 01/02/2023
+     * @description SALT_ROUNDS
+     */
+    SALT_ROUNDS: 10,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2023
+     * @description DELETE FLAG
+     */
+    DELETED_ENABLE: true,
+    DELETED_DISABLE: false,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2023
+     * @description Gender and Image
+     */
+    GENDER_MALE: 1,
+    GENDER_FEMALE: 0,
+    GENDER_IMAGE_MALE: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg',
+    GENDER_IMAGE_FEMALE: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/female_n_pkrjdg.jpg',
 };

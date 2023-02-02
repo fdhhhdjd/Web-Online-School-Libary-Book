@@ -1,3 +1,4 @@
+// jest.config.js
 module.exports = {
     moduleFileExtensions: ['js'],
     'collectCoverage': false,
@@ -5,6 +6,6 @@ module.exports = {
         'lcov',
         'text-summary'
     ],
-    // testURL: 'http://localhost/',
-    setupFiles: ['<rootDir>/.jest/someModuleForTest.js']
+    setupFiles: ['<rootDir>/.jest/someModuleForTest.js', '<rootDir>/.jest/defaultTimeout.js']
 }
+

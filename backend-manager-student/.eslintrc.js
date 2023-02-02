@@ -50,6 +50,8 @@ module.exports = {
         'import/order': 'off',
         'no-restricted-globals': 'off',
         'prefer-const': 'off',
-        'max-len': 'off'
+        'max-len': 'off',
+        'no-restricted-syntax': 'off',
+        'no-await-in-loop': 'off'
     },
 };

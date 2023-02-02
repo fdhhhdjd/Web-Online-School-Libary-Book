@@ -1,4 +1,6 @@
 const REGEX = require('../configs/regex');
+const bcrypt = require('bcrypt');
+const CONSTANTS = require('../configs/constants');
 
 module.exports = {
     /**
@@ -77,4 +79,20 @@ module.exports = {
         const reg = new RegExp(REGEX.REGEX_PASSWORD).test(password);
         return reg;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} password
+     * @created_at 01/02/2022
+     * @description encode password
+     * @returns {boolean}
+     */
+    encodePassword: (password) => bcrypt.hash(password, CONSTANTS.SALT_ROUNDS),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} password
+     * @created_at 01/02/2022
+     * @description compare password
+     * @returns {boolean}
+     */
+    comparePassword: (password, password_hash) => bcrypt.compare(password, password_hash),
 };
