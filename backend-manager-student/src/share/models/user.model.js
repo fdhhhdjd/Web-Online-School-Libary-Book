@@ -10,10 +10,24 @@ module.exports = {
     addUser: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('users').insert(data).returning(['name']);
+                const result = knex('user')
+                    .insert(data)
+                    .onConflict('user_id', 'email', 'phone_number', 'mssv')
+                    .merge()
+                    .returning(['user_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);
             }
         }),
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/01/2023
+     * @description Get student info by ID
+     */
+    getStudentById: async (student_query, return_data) => {
+        const student = await knex('user').select(return_data).where(student_query);
+        return student;
+    },
 };

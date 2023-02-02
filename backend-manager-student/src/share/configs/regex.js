@@ -43,4 +43,10 @@ module.exports = {
      * @description REGEX CHARACTER
      */
     REGEX_RANDOM: 'ABCDEFGHIJKLMNOPQWXYZa/~12&89b11cdefghijklmnopq+-rstuvwxyz0123456asdasd9',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/01/2022
+     * @description REGEX date -
+     */
+    REGEX_DATE_HYPHEN: /-/g,
 };

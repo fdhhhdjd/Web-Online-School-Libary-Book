@@ -3,6 +3,10 @@ const { returnReasons } = require('../../../share/middleware/handle_error');
 const { takeDataStudent } = require('../../../share/services/admin.service');
 const HELPER = require('../../../share/utils/helper');
 const PASSWORD = require('../../../share/utils/password');
+const RANDOMS = require('../../../share/utils/random');
+const CONSTANTS = require('../../../share/configs/constants');
+const user_model = require('../../../share/models/user.model');
+const knex = require('../../../share/db/postgresql');
 
 const adminController = {
     /**
@@ -65,7 +69,7 @@ const adminController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 12/01/2023
+     * @created_at 12/01/2023 -> 02/02/2023
      * @description add feature take excel
      * @function LoginAdmin
      * @return {Object}
@@ -73,15 +77,102 @@ const adminController = {
     AddStudent: async (req, res) => {
         try {
             const { url_document } = req.body.input.admin_add_student_input;
-
+            // return data excel
             const sheets = await HELPER.getDataExcelCloud(url_document);
 
+            // repeat excel return json
             const result = takeDataStudent(sheets);
 
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
-                element: result,
+            // Check Object undefined remove
+            let filteredData = result.filter((x) => Object.values(x).every((val) => val !== undefined));
+
+            // Check data and add array
+            let upsert_student = [];
+            for (const student of filteredData) {
+                const check_email = HELPER.validateEmail(student.email);
+
+                const check_phone = HELPER.validatePhone(student.phone);
+
+                if (!check_email || !check_phone) {
+                    return res.status(400).json({
+                        status: 400,
+                        message: returnReasons('400'),
+                        element: {
+                            result: 'Invalid email or phone number!',
+                        },
+                    });
+                }
+                const phone_hide = HELPER.maskLastPhoneNumber(student.phone);
+                const password = HELPER.handleRemoveHyphen(student.dob);
+
+                const password_student = await PASSWORD.encodePassword(password);
+                let data_query = {
+                    mssv: student.student_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                };
+                let data_return = {
+                    gender: 'gender',
+                };
+                const student_exits = await user_model.getStudentById(data_query, data_return);
+
+                if (!student_exits.length) {
+                    upsert_student.push({
+                        user_id: RANDOMS.createID(),
+                        name: student.full_name,
+                        mssv: student.student_id,
+                        password: password_student,
+                        phone_number: student.phone,
+                        phone_hidden: phone_hide,
+                        dob: student.dob,
+                        class: student.class,
+                        email: student.email,
+                        gender:
+                            student.gender.toLowerCase() === 'male' ? CONSTANTS.GENDER_MALE : CONSTANTS.GENDER_FEMALE,
+                        avatar_uri:
+                            student.gender.toLowerCase() === 'male'
+                                ? CONSTANTS.GENDER_IMAGE_MALE
+                                : CONSTANTS.GENDER_IMAGE_FEMALE,
+                    });
+                }
+            }
+            const arr_length = upsert_student.length === 0;
+            if (arr_length) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                    element: {
+                        result: 'Nothing changes to update',
+                    },
+                });
+            }
+
+            let err;
+            let data;
+            // start transaction
+            const trx = await knex.transaction();
+
+            // insert student object into database
+            [err, data] = await HELPER.handleRequest(user_model.addUser(upsert_student));
+
+            // error rollback data
+            if (err) {
+                trx.rollback();
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Email or Phone or Email or Mssv exits !',
+                    },
+                });
+            }
+            // commit transaction succcess
+            trx.commit();
+            return res.status(201).json({
+                status: 201,
+                message: returnReasons('201'),
+                element: {
+                    result: data,
+                },
             });
         } catch (error) {
             return res.status(503).json({

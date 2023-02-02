@@ -178,4 +178,18 @@ module.exports = {
      * @returns {promise}
      */
     handleRequest: (promise) => promise.then((data) => [undefined, data]).catch((error) => [error, undefined]),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/01/2023
+     * @description Convert 'DD/MM/YYYY' => 'YYYY-MM-DD';
+     * @returns {promise}
+     */
+    handleConvertDate: (date) => new Date(date).toISOString().substring(0, 10),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/01/2023
+     * @description remove - in  YYYY-MM-DD
+     * @returns {promise}
+     */
+    handleRemoveHyphen: (date) => date.replace(REGEX.REGEX_DATE_HYPHEN, ''),
 };
