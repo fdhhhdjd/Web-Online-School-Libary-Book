@@ -127,9 +127,11 @@ const adminController = {
                         class: student.class,
                         email: student.email,
                         gender:
-                            student.gender.toLowerCase() === 'male' ? CONSTANTS.GENDER_MALE : CONSTANTS.GENDER_FEMALE,
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
+                                ? CONSTANTS.GENDER_MALE
+                                : CONSTANTS.GENDER_FEMALE,
                         avatar_uri:
-                            student.gender.toLowerCase() === 'male'
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
                                 ? CONSTANTS.GENDER_IMAGE_MALE
                                 : CONSTANTS.GENDER_IMAGE_FEMALE,
                     });

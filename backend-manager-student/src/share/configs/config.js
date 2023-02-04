@@ -77,4 +77,36 @@ module.exports = {
     ALGORITHM_OTP_OPTION: process.env.ALGORITHM_OTP_OPTION,
     CUSTOM_SEED_OTP_OPTION: process.env.CUSTOM_SEED_OTP_OPTION,
     RANDOM_NUMBER_OTP: process.env.RANDOM_NUMBER_OTP,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY_SESSION
+     */
+    KEY_SESSION: process.env.KEY_SESSION,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY_SESSION
+     */
+    KEY_COOKIE: process.env.KEY_COOKIE,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY Refetch Token
+     */
+    REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+    EXPIRES_REFRESH_TOKEN: process.env.EXPIRES_REFRESH_TOKEN,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY Accept Token
+     */
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    EXPIRES_ACCESS_TOKEN: process.env.EXPIRES_ACCESS_TOKEN,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY Accept Token
+     */
+    IP_ADMIN: process.env.IP_ADMIN,
 };

@@ -1,7 +1,9 @@
 const geo_ip = require('geoip-lite');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
+const UAParser = require('ua-parser-js');
 const axios = require('axios');
+
 const CONFIGS = require('../configs/config');
 const CONSTANTS = require('../configs/constants');
 const REGEX = require('../configs/regex');
@@ -182,14 +184,36 @@ module.exports = {
      * @author Nguyễn Tiến Tài
      * @created_at 02/01/2023
      * @description Convert 'DD/MM/YYYY' => 'YYYY-MM-DD';
-     * @returns {promise}
+     * @returns {date}
      */
     handleConvertDate: (date) => new Date(date).toISOString().substring(0, 10),
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 02/01/2023
      * @description remove - in  YYYY-MM-DD
-     * @returns {promise}
+     * @returns {date}
      */
     handleRemoveHyphen: (date) => date.replace(REGEX.REGEX_DATE_HYPHEN, ''),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2023
+     * @description isNumeric
+     * @returns {Number}
+     */
+    isNumeric: (value) => {
+        const number = REGEX.REGEX_IS_NUMBER;
+        return number.test(value);
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description operating system
+     * @returns {Object}
+     */
+    operatingSystem: (header) => {
+        // window.navigator.userAgent
+        const parser = new UAParser();
+        parser.setUA(header);
+        return parser.getResult();
+    },
 };

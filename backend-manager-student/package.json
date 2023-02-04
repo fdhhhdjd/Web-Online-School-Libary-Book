@@ -74,7 +74,8 @@
         "twilio": "^3.84.1",
         "otp-generator": "^4.0.0",
         "swagger-jsdoc": "^6.2.8",
-        "swagger-ui-express": "^4.6.0"
+        "swagger-ui-express": "^4.6.0",
+        "ua-parser-js": "^1.0.33"
     },
     "devDependencies": {
         "jest": "^29.3.1"

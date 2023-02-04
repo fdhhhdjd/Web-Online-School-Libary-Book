@@ -8,11 +8,12 @@ const userRouter = require('./users/user.route');
  */
 router.use('/api/v1/user', userRouter);
 
-router.get('/check-status', (req, res) => {
+router.get('/check-status', (req, res) =>
     res.status(200).json({
         status: 'success',
         message: 'OK',
-    });
-});
+        view: req.session.views,
+    }),
+);
 
 module.exports = router;

@@ -52,6 +52,7 @@ module.exports = {
         'prefer-const': 'off',
         'max-len': 'off',
         'no-restricted-syntax': 'off',
-        'no-await-in-loop': 'off'
+        'no-await-in-loop': 'off',
+        'consistent-return': 'off'
     },
 };

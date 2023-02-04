@@ -1,5 +1,6 @@
 #!@author Nguyễn Tiến Tài
 #!created_at 31/01/2023
+#!updated_at 04/02/2023
 #!description: Login User
 paths:
     /api/v1/user/login:
@@ -13,13 +14,13 @@ paths:
                         schema:
                             type: object
                             properties:
-                                user_name:
-                                    type: string
+                                mssv:
+                                    type: number
                                 password:
                                     type: string
             responses:
                 200:
-                    description: Successfuly auth
+                    description: Login Success
                     content:
                         application/json:
                             schema:
@@ -28,23 +29,23 @@ paths:
                                     status:
                                         type: integer
                                         example: 200
-                                    data:
-                                        type: object
-                                        example:
-                                            {
-                                                user_name: string,
-                                                password: string,
-                                                geo: number,
-                                                ip: number,
-                                                device: string,
-                                                _OTP: number,
-                                                _ID: number,
-                                            }
                                     message:
                                         type: string
                                         example: Success
+                                    element:
+                                        type: object
+                                        example:
+                                            {
+                                                result:
+                                                    {
+                                                        access_token: string,
+                                                        refresh_token: string,
+                                                        role: number,
+                                                        user_id: string,
+                                                    },
+                                            }
                 400:
-                    description: Insert data fail
+                    description: IStudent Not Exist! or Password Is Incorrect ! or Input Mssv or Password or Mssv not number
                     content:
                         application/json:
                             schema:
@@ -56,6 +57,9 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
+                                    element:
+                                        type: object
+                                        example: { result: string }
                 503:
                     description: Service die
                     content:

@@ -8,11 +8,16 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const session = require('express-session');
 
 //! SHARE GENERAL
 const CONFIGS = require('../share/configs/config');
 const CONSTANTS = require('../share/configs/constants');
 const OPTIONS = require('../share/configs/option');
+
+//! CACHE MEMORY
+const { REDIS_MASTER } = require('../share/db/init_multiple_redis');
+let RedisStore = require('connect-redis')(session);
 
 //! IMPORT MIDDLEWARE
 const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
@@ -32,6 +37,21 @@ if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV) {
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 }
 
+//! Session
+app.use(
+    session({
+        store: new RedisStore({ client: REDIS_MASTER }),
+        secret: CONFIGS.KEY_SESSION,
+        resave: process.env.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+        saveUninitialized: true,
+        cookie: {
+            secure: process.env.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+            rolling: true,
+            httpOnly: true,
+            maxAge: CONSTANTS._1_HOURS_S,
+        },
+    }),
+);
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -47,6 +67,7 @@ app.use(
         verify: (req, res, buffer) => (req.rawBody = buffer),
     }),
 );
+
 app.use(
     compression({
         level: CONSTANTS.COMPRESSION_ZIP_SEND_SERVER_LEVER,

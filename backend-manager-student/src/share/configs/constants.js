@@ -14,11 +14,24 @@ module.exports = {
     _30_SECONDS: 30 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
-    _1_DAY: 24 * 60 * 60 * 1000,
-    _1_DAY_S: 24 * 60 * 60,
-    _1_HOURS_S: 60 * 60,
+    _1_DAY_S: 1 * 60 * 60 * 1000,
+    _7_DAY_S: 7 * 60 * 60 * 1000,
+    _1_HOURS_S: 60 * 60 * 1000,
     _1_YEAR: 365 * 24 * 60 * 60 * 1000,
     _1_MONTH: 30 * 24 * 60 * 60 * 1000,
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2023
+     * @description Time,Date,Moth,Year Redis ( Second - Minutes - Hour - Day)
+     * @param { "Name":"value" => Example: Male: 1 }
+     */
+    _30_SECONDS_REDIS: 30,
+    _1_MINUTES_REDIS: 60 * 1,
+    _5_MINUTES_REDIS: 60 * 5,
+    _1_HOURS_S_REDIS: 60 * 60 * 1,
+    _1_DAY_S_REDIS: 60 * 60 * 24 * 1,
+    _7_DAY_S_REDIS: 60 * 60 * 24 * 7,
 
     /**
      * @author Nguyễn Tiến Tài
@@ -213,7 +226,18 @@ module.exports = {
      * @description Gender and Image
      */
     GENDER_MALE: 1,
+    GENDER_MALE_STRING: 'male',
     GENDER_FEMALE: 0,
+    GENDER_FEMALE_STRING: 'female',
+
     GENDER_IMAGE_MALE: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg',
     GENDER_IMAGE_FEMALE: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/female_n_pkrjdg.jpg',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description req.header
+     */
+    HEADER_HEADER_FORWARDED_HOST: 'x-forwarded-host',
+    HEADER_FORWARDED_FOR: 'x-forwarded-for',
+    HEADER_DEVICE: 'user-agent',
 };
