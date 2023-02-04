@@ -4,9 +4,7 @@ const CONSTANTS = require('../../../share/configs/constants');
 const PASSWORD = require('../../../share/utils/password');
 const CONFIGS = require('../../../share/configs/config');
 const TOKENS = require('../../../share/utils/token');
-
-//! DB
-const { REDIS_MASTER, REDIS_SLAVE } = require('../../../share/db/init_multiple_redis');
+const MEMORY_CACHE = require('../../../share/utils/limited_redis');
 
 //! Model
 const user_model = require('../../../share/models/user.model');
@@ -84,7 +82,7 @@ const userController = {
             const random_character = RANDOM.randomString(50);
 
             // Check Token Redis
-            let refresh_token_redis = await REDIS_SLAVE.get(user.user_id);
+            let refresh_token_redis = await MEMORY_CACHE.getCache(user.user_id);
 
             // Save Refresh_token
             let refresh_token;
@@ -93,11 +91,11 @@ const userController = {
                 refresh_token = TOKENS.createRefreshToken({ id: random_character });
 
                 // Save Redis
-                REDIS_MASTER.set(user.user_id, refresh_token, 'EX', CONSTANTS._7_DAY_S_REDIS);
+                MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
+            } else {
+                // Refresh_token will is token redis
+                refresh_token = refresh_token_redis;
             }
-
-            // Refresh_token will is token redis
-            refresh_token = refresh_token_redis;
 
             // Create accept_token
             const access_token = TOKENS.createAcceptToken({ id: random_character });
