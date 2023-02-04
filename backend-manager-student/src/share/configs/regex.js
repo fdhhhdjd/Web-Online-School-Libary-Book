@@ -49,4 +49,10 @@ module.exports = {
      * @description REGEX date -
      */
     REGEX_DATE_HYPHEN: /-/g,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2022
+     * @description REGEX is number
+     */
+    REGEX_IS_NUMBER: /^\d+$/,
 };
