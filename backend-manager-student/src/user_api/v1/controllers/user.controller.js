@@ -1,5 +1,4 @@
 const HELPER = require('../../../share/utils/helper');
-const RANDOM = require('../../../share/utils/random');
 const CONSTANTS = require('../../../share/configs/constants');
 const PASSWORD = require('../../../share/utils/password');
 const CONFIGS = require('../../../share/configs/config');
@@ -22,7 +21,7 @@ const userController = {
      * @param { mssv,password }
      * @return { Object }
      */
-    LoginStudent: async (req, res) => {
+    loginStudent: async (req, res) => {
         const { mssv, password } = req.body.input.user_login_input;
         let { device } = req;
 
@@ -78,9 +77,6 @@ const userController = {
             // Save Db device
             const geo = HELPER.findingLocationByIP(ip) || HELPER.findingLocationByIP(CONFIGS.IP_ADMIN);
 
-            // Random character
-            const random_character = RANDOM.randomString(50);
-
             // Check Token Redis
             let refresh_token_redis = await MEMORY_CACHE.getCache(user.user_id);
 
@@ -88,7 +84,7 @@ const userController = {
             let refresh_token;
             if (!refresh_token_redis) {
                 // Refresh_token new
-                refresh_token = TOKENS.createRefreshToken({ id: random_character });
+                refresh_token = TOKENS.createRefreshToken({ id: user.user_id });
 
                 // Save Redis
                 MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
@@ -98,7 +94,7 @@ const userController = {
             }
 
             // Create accept_token
-            const access_token = TOKENS.createAcceptToken({ id: random_character });
+            const access_token = TOKENS.createAcceptToken({ id: user.user_id });
 
             // Save session
             const save_session = req.session;
@@ -165,6 +161,188 @@ const userController = {
                     },
                 });
             }
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/02/2023
+     * @description New Token
+     * @function reNewToken
+     * @param { mssv,password }
+     * @return { Object }
+     */
+    reNewToken: async (req, res) => {
+        try {
+            // Take cookie and device
+            let refresh_token_cookie = req.cookies.libary_school;
+
+            // Check exit token
+            if (refresh_token_cookie) {
+                // Decode
+                const { device } = req;
+
+                // Check black_list redis
+                const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
+                const check_exits = token_black_list.indexOf(refresh_token_cookie) > -1;
+                if (check_exits) {
+                    return res.status(400).json({
+                        status: 400,
+                        message: returnReasons('400'),
+                        element: {
+                            result: 'Invalid Token',
+                        },
+                    });
+                }
+                // Check device and cookie
+                if (device && refresh_token_cookie) {
+                    let err;
+                    let result;
+                    [err, result] = await HELPER.handleRequest(
+                        user_device_model.checkUserByToken(refresh_token_cookie, device.device_id),
+                    );
+
+                    // Student exits
+                    if (result) {
+                        // Refresh_token cookie
+                        const refresh_token_exit = refresh_token_cookie;
+
+                        // Check token expired
+                        const decoded = HELPER.isRefreshTokenValid(refresh_token_exit);
+
+                        let access_token;
+                        let refresh_token;
+                        if (decoded) {
+                            // Create accept_token
+                            access_token = TOKENS.createAcceptToken({ id: result[0].user_id });
+                            refresh_token = refresh_token_cookie;
+                        } else {
+                            // Create accept_token
+                            access_token = TOKENS.createAcceptToken({ id: result[0].user_id });
+
+                            // Refresh_token new
+                            refresh_token = TOKENS.createRefreshToken({ id: result[0].user_id });
+
+                            // Save Redis
+                            MEMORY_CACHE.setCacheEx(result.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
+
+                            // Save cookie
+                            res.cookie(CONFIGS.KEY_COOKIE, refresh_token, {
+                                httpOnly: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+                                sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+                                secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+                                domain: req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0] || '',
+                                maxAge: CONSTANTS._1_MONTH,
+                            });
+                            // Time create token
+                            const access_time = new Date();
+                            let data_device_update = {
+                                last_access_time: access_time,
+                            };
+                            await HELPER.handleRequest(
+                                user_device_model.updateDevice(data_device_update, result[0].user_id),
+                            );
+                        }
+
+                        return res.status(200).json({
+                            status: 200,
+                            message: returnReasons('200'),
+                            element: {
+                                result: {
+                                    access_token,
+                                    refresh_token,
+                                    role: result[0].role,
+                                    user_id: result[0].user_id,
+                                    name: result[0].name,
+                                },
+                            },
+                        });
+                    }
+                    if (err) {
+                        return res.status(500).json({
+                            status: 500,
+                            message: returnReasons('500'),
+                        });
+                    }
+                }
+            } else {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Invalid Header',
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/02/2023
+     * @description Logout sutdent
+     * @function logoutStudent
+     * @param { token }
+     * @return { Object }
+     */
+    logoutStudent: async (req, res) => {
+        try {
+            // Take accessToken header
+            const { access_token } = req;
+
+            // Take refresh token cookie
+            let refresh_token_cookie = req.cookies.libary_school;
+
+            const { session } = req;
+
+            // Take user Id
+            const user_id = req.auth_user.id;
+
+            // Save blackList
+            MEMORY_CACHE.setBlackListCache(
+                CONSTANTS.KEY_BACK_LIST,
+                user_id,
+                access_token,
+                refresh_token_cookie,
+                CONSTANTS._20_DAY_S_REDIS,
+            )
+                .then((result) => {
+                    if (result) {
+                        // Remove cookie
+                        res.clearCookie(CONFIGS.KEY_COOKIE);
+
+                        // Remove Cookie
+                        session.destroy();
+
+                        return res.status(200).json({
+                            status: 200,
+                            message: returnReasons('200'),
+                        });
+                    }
+                })
+                .catch((err) => {
+                    if (err) {
+                        res.status(500).json({
+                            status: 500,
+                            message: returnReasons('500'),
+                        });
+                    }
+                });
         } catch (err) {
             console.error(err, '===== Server Fail =====');
             return res.status(503).json({

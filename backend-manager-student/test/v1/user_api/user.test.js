@@ -10,7 +10,7 @@ describe('user_api', () => {
     * @created_at 04/02/2023
     * @description Unit test Auth Login
     */
-    describe('Authentication - Login student ', () => {
+    describe('Authentication - Login Student ', () => {
         test('Success - Login student', async () => {
             const res = await requestUser.login_user_test('60137255', '20000531');
             expect(res.status).toBe(200);
@@ -58,4 +58,21 @@ describe('user_api', () => {
             });
         });
     });
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 05/02/2023
+     * @description Renew token
+     */
+    describe('Authentication - Renew Token Student ', () => {
+        test('Error - Missing Device', async () => {
+            const res = await requestUser.new_token_user_test();
+            console.log(res)
+            expect(res.response.status).toBe(400);
+            expect(res.response.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String)
+            });
+        });
+    });
+
 });

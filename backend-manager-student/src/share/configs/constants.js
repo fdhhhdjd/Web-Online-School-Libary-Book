@@ -32,6 +32,7 @@ module.exports = {
     _1_HOURS_S_REDIS: 60 * 60 * 1,
     _1_DAY_S_REDIS: 60 * 60 * 24 * 1,
     _7_DAY_S_REDIS: 60 * 60 * 24 * 7,
+    _20_DAY_S_REDIS: 60 * 60 * 24 * 20,
 
     /**
      * @author Nguyễn Tiến Tài
@@ -240,4 +241,17 @@ module.exports = {
     HEADER_HEADER_FORWARDED_HOST: 'x-forwarded-host',
     HEADER_FORWARDED_FOR: 'x-forwarded-for',
     HEADER_DEVICE: 'user-agent',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 05/02/2023
+     * @description Key all redis
+     */
+    KEY_BACK_LIST: 'black_list_token',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 05/02/2023
+     * @description crypto
+     */
+    TYPE_CRYPTO: 'aes192',
+    DIGEST_CRYPTO: 'hex',
 };
