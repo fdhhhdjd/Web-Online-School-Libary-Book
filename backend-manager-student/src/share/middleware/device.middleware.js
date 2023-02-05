@@ -1,7 +1,7 @@
-const helper = require('../utils/helper');
+const HELPER = require('../utils/helper');
 
 module.exports = (req, res, next) => {
-    const device = helper.getDeviceFromHeaders(req.headers);
+    const device = HELPER.getDeviceFromHeaders(req.headers);
     if (device) {
         req.device = device;
         return next();

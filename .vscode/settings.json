@@ -12,5 +12,6 @@
   "files.eol": "\n",
   "[sql]": {
     "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
-  }
+  },
+  "cSpell.words": ["Middlawre"]
 }

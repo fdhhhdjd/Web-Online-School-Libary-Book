@@ -7,6 +7,7 @@ const axios = require('axios');
 const CONFIGS = require('../configs/config');
 const CONSTANTS = require('../configs/constants');
 const REGEX = require('../configs/regex');
+const TOKENS = require('./token');
 const CLIENT = require('twilio')(CONFIGS.ACCOUNT_SID_KEY, CONFIGS.AUTH_TOKEN_KEY);
 
 /**
@@ -215,5 +216,43 @@ module.exports = {
         const parser = new UAParser();
         parser.setUA(header);
         return parser.getResult();
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/02/2023
+     * @description Verify time exp refreshToken
+     * @returns {boolean}
+     */
+    isRefreshTokenValid(refreshToken) {
+        try {
+            const decoded = TOKENS.verifyToken(refreshToken);
+            // Check if token has expired
+            const currentTime = Math.floor(Date.now() / 1000);
+            if (decoded.exp <= currentTime) {
+                return false;
+            }
+            return true;
+        } catch (err) {
+            return false;
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 05/02/2023
+     * @description Verify time exp accessToken
+     * @returns {boolean}
+     */
+    isAccessTokenValid(accessToken) {
+        try {
+            const decoded = TOKENS.verifyAccessToken(accessToken);
+            // Check if token has expired
+            const currentTime = Date.now().getTime() / 1000;
+            if (decoded.exp < currentTime) {
+                return false;
+            }
+            return true;
+        } catch (err) {
+            return false;
+        }
     },
 };

@@ -25,4 +25,22 @@ module.exports = {
             expiresIn: CONFIGS.EXPIRES_REFRESH_TOKEN,
         });
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/02/2023
+     * @description Very refreshToken
+     * @returns {boolean}
+     */
+    verifyToken(refreshToken) {
+        return jwt.verify(refreshToken, CONFIGS.REFRESH_TOKEN_SECRET);
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 05/02/2023
+     * @description Very accessToken
+     * @returns {boolean}
+     */
+    verifyAccessToken(accessToken) {
+        return jwt.verify(accessToken, CONFIGS.ACCESS_TOKEN_SECRET);
+    },
 };

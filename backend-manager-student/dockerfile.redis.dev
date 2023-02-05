@@ -1,8 +1,15 @@
 FROM redis AS redis-master
 # Create foder
 
+RUN mkdir -p /usr/local/bin/scrip
+
+RUN if [ ! -f /usr/local/bin/scrip/log_script_redis_date.txt ]; then \
+    touch /usr/local/bin/scrip/log_script_redis_date.txt && \
+    chmod 600 /usr/local/bin/scrip/log_script_redis_date.txt; fi
+
+COPY scrip /usr/local/bin/scrip/
+
 RUN apt-get update && apt-get install logrotate -y \ 
     && chmod +x /usr/local/bin/scrip/scrip_redis.sh \
-        && chown root:root /usr/local/bin/scrip \
             && chmod 755 /usr/local/bin/scrip
 

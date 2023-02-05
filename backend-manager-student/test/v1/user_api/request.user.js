@@ -31,5 +31,23 @@ module.exports = {
         } catch (error) {
             return error;
         }
+    },
+    /**
+     * @Author Nguyễn Tiến Tài
+     * @Created_at 05/02/2023
+     * @Description Call api Route renew token
+     */
+    new_token_user_test: async () => {
+        try {
+            const res = await axios.post(
+                `${URL_USER_API}/v1/user/renew-token`,
+                {
+                    headers: HELPERS.headerAPi(),
+                },
+            );
+            return res;
+        } catch (error) {
+            return error;
+        }
     }
 };

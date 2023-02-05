@@ -2,6 +2,12 @@
 #!created_at 31/01/2023
 #!updated_at 04/02/2023
 #!description: Login User
+components:
+    headers:
+        AuthHeader:
+            description: Header info student.
+            type: string
+            required: true
 paths:
     /api/v1/user/login:
         post:
@@ -60,6 +66,133 @@ paths:
                                     element:
                                         type: object
                                         example: { result: string }
+                503:
+                    description: Service die
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 503
+                                    message:
+                                        type: string
+                                        example: Service Unavailable
+                                    element:
+                                        type: object
+                                        example: Out Of Service
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 05/02/2023
+    #!description: New Token
+    /api/v1/user/renew-token:
+        post:
+            summary: New Token
+            tags: [New Token]
+            parameters:
+                - in: header
+                  name: Authorization Bearer
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: New Token Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    element:
+                                        type: object
+                                        example:
+                                            {
+                                                result:
+                                                    {
+                                                        access_token: string,
+                                                        refresh_token: string,
+                                                        role: number,
+                                                        user_id: string,
+                                                        name: string,
+                                                    },
+                                            }
+                400:
+                    description: Token is Blacklist or Invalid Header
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: string
+                                    element:
+                                        type: object
+                                        example: { result: string }
+                503:
+                    description: Service die
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 503
+                                    message:
+                                        type: string
+                                        example: Service Unavailable
+                                    element:
+                                        type: object
+                                        example: Out Of Service
+    #!@author Nguyễn Tiến Tài
+    #!created_at 05/02/2023
+    #!description: Logout student
+    /api/v1/user/logout:
+        post:
+            summary: Logout Student
+            tags: [Logout student]
+            parameters:
+                - in: header
+                  name: Authorization Bearer
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Logout Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                500:
+                    description: Insert Blacklist Redis Fail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 500
+                                    message:
+                                        type: string
+                                        example: Bad Request
                 503:
                     description: Service die
                     content:
