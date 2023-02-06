@@ -13,7 +13,7 @@ module.exports = {
             try {
                 const result = knex('user_device')
                     .insert(data)
-                    .onConflict('device_uuid')
+                    .onConflict('user_id', 'device_uuid')
                     .merge()
                     .returning(['device_uuid']);
                 resolve(result);
