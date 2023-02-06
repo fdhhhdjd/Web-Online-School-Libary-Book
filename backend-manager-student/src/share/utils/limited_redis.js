@@ -4,7 +4,7 @@ const { REDIS_MASTER } = require('../db/init_multiple_redis');
  * @param {key, value, ttl}
  * @created_at 04/02/2023
  * @description set key value ttl
- *  @returns {string:"OK"}
+ *  @returns {string}
  */
 const setCacheEx = (key, value, ttl) => REDIS_MASTER.set(key, value, 'EX', ttl);
 /**
@@ -29,7 +29,7 @@ const getRangeCache = (key, start, end) => REDIS_MASTER.lrange(key, start, end);
  * @param {key, accept_token, refresh_token, ttl}
  * @created_at 05/02/2023
  * @description Set multi
- *  @returns {string}
+ *  @returns {Array}
  */
 const setBlackListCache = (key, user_id, accept_token, refresh_token, ttl) =>
     REDIS_MASTER.multi()
@@ -51,10 +51,31 @@ const setBlackListCache = (key, user_id, accept_token, refresh_token, ttl) =>
  *  @returns {string}
  */
 const delKeyCache = (key) => REDIS_MASTER.del(key);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 06/02/2023
+ * @description Set and Del key
+ *  @returns {Array}
+ */
+const setAndDelKeyCache = (key, value, ttl) => {
+    REDIS_MASTER.multi()
+        .del(key)
+        .set(key, value, 'EX', ttl)
+        .exec((err, replies) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.info(replies);
+            }
+        });
+};
 module.exports = {
     setCacheEx,
     getCache,
     getRangeCache,
     setBlackListCache,
     delKeyCache,
+    setAndDelKeyCache,
 };

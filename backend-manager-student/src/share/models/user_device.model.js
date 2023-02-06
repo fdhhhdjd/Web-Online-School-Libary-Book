@@ -48,7 +48,7 @@ module.exports = {
     updateDevice: (data, user) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('user_device').where('user_id', user).update(data).returning('id');
+                const result = knex('user_device').where('user_id', user).update(data).returning(['device_uuid']);
                 resolve(result);
             } catch (error) {
                 reject(error);
