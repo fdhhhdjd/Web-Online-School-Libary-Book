@@ -209,7 +209,6 @@ const userController = {
                     [err, result] = await HELPER.handleRequest(
                         user_device_model.checkUserByToken(refresh_token_cookie, device.device_id),
                     );
-
                     // Student exits
                     if (result) {
                         // Refresh_token cookie
@@ -217,7 +216,6 @@ const userController = {
 
                         // Check token expired
                         const decoded = HELPER.isRefreshTokenValid(refresh_token_exit);
-
                         let access_token;
                         let refresh_token;
                         if (decoded) {
@@ -232,7 +230,7 @@ const userController = {
                             refresh_token = TOKENS.createRefreshToken({ id: result[0].user_id });
 
                             // Save Redis
-                            MEMORY_CACHE.setCacheEx(result.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
+                            MEMORY_CACHE.setAndDelKeyCache(result[0].user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
 
                             // Save cookie
                             res.cookie(CONFIGS.KEY_COOKIE, refresh_token, {
@@ -246,7 +244,9 @@ const userController = {
                             const access_time = new Date();
                             let data_device_update = {
                                 last_access_time: access_time,
+                                refresh_token,
                             };
+                            // Update Device
                             await HELPER.handleRequest(
                                 user_device_model.updateDevice(data_device_update, result[0].user_id),
                             );
