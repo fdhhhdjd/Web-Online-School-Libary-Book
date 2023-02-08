@@ -1,11 +1,141 @@
 #!@author Nguyễn Tiến Tài
+#!created_at 08/02/2023
+#!description: General
+# Info Swagger User APi
+info:
+    title: Document Admin
+    description: Login,Add Multiple Student
+    version: 1.0.0
+servers:
+    - url: http://localhost:5000
+      description: Local development server admin api
+# General
+components:
+    # Check type header
+    headers:
+        AuthHeader:
+            description: Header info student.
+            type: string
+            required: true
+    #Save cookie client
+    SaveCookie:
+        Set-Cookie:
+            description: '`refreshToken`'
+            schema:
+                type: string
+                example: refreshToken=51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550; Path=/; Expires=Tue, 8 Feb 2023 09:14:17 GMT; HttpOnly
+    # Parameter
+    parameters:
+        COOKIE-CLIENT:
+            in: cookie
+            name: refreshToken
+            description: The `refreshToken` cookie
+            schema:
+                type: string
+                example: 51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550
+        X-DEVICE-ID:
+            in: header
+            name: X-DEVICE-ID
+            required: true
+            schema:
+                type: string
+        X-OS-TYPE:
+            in: header
+            name: X-OS-TYPE
+            required: true
+            schema:
+                type: string
+        X-OS-VERSION:
+            in: header
+            name: X-OS-VERSION
+            required: true
+            schema:
+                type: string
+        X-APP-VERSION:
+            in: header
+            name: X-APP-VERSION
+            required: true
+            schema:
+                type: string
+        X-DEVICE-NAME:
+            in: header
+            name: X-DEVICE-NAME
+            required: true
+            schema:
+                type: string
+        TOKEN:
+            in: header
+            name: Authorization
+            type: string
+            description: Bearer Token
+            required: true
+            schema:
+                type: bearerToken
+    # Unauthorized
+    responses:
+        UnauthorizedError:
+            description: Access token is missing or invalid, or the user does not have access to perform the action,or or Device Invalid
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 400
+                            message:
+                                type: string
+                                example: 'Unauthorized'
+        # Fail CURD Fail
+        ServerCURDFail:
+            description: CURD Fail !!!
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 500
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Internal Server Error
+        ServerFail:
+            description: Service die
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 503
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Out Of Service
+#!@author Nguyễn Tiến Tài
 #!created_at 31/01/2023
+#!created_at 08/02/2023
 #!description: Login Admin
 paths:
     /api/v1/admin/login:
         post:
             summary: Login Admin
             tags: [Login Admin]
+            operationId: loginAdmin
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
             requestBody:
                 required: true
                 content:
@@ -13,15 +143,26 @@ paths:
                         schema:
                             type: object
                             properties:
-                                phone:
-                                    type: integer
-                                email:
-                                    type: string
-                                password:
-                                    type: string
+                                input:
+                                    type: object
+                                    properties:
+                                        admin_login_input:
+                                            type: object
+                                            properties:
+                                                phone:
+                                                    type: number
+                                                    example: 0791483642
+                                                password:
+                                                    type: string
+                                                    example: '20000531'
+                        required:
+                            - phone
+                            - password
             responses:
                 200:
                     description: Successful authentication
+                    headers:
+                        $ref: '#/components/SaveCookie'
                     content:
                         application/json:
                             schema:
@@ -58,26 +199,25 @@ paths:
                                         type: string
                                         example: Bad Request
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
+                    $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
     #!created_at 31/01/2023
+    #!updated_at 08/02/2023
     #!description Add Student
     /api/v1/admin/add/student:
         post:
             summary: Add Student
             tags: [Add Student For Excel]
+            operationId: AddStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
             requestBody:
                 required: true
                 content:
@@ -137,15 +277,4 @@ paths:
                                         type: object
                                         example: { result: string }
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
+                    $ref: '#/components/responses/ServerFail'

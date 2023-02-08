@@ -21,6 +21,7 @@ const accessStudentMiddleware = async (req, res, next) => {
         console.info('[Request Time]:', now.toLocaleTimeString(), req.baseUrl, req.body, req.query);
 
         const refresh_token_cookie = req.cookies.libary_school;
+
         // Check header authorization
         if (req.headers.authorization || refresh_token_cookie) {
             // Take token

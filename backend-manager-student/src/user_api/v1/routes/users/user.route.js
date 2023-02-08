@@ -19,5 +19,11 @@ router.post('/renew-token', userController.reNewToken);
  * @description Route logout Student
  */
 router.post('/logout', accessStudentMiddleware, userController.logoutStudent);
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 06/02/2023
+ * @description Route get profile Student
+ */
+router.get('/profile', accessStudentMiddleware, userController.getProfileStudent);
 
 module.exports = router;

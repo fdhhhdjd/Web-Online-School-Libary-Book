@@ -53,6 +53,7 @@ module.exports = {
         'max-len': 'off',
         'no-restricted-syntax': 'off',
         'no-await-in-loop': 'off',
-        'consistent-return': 'off'
+        'consistent-return': 'off',
+        'no-template-curly-in-string': 'off'
     },
 };

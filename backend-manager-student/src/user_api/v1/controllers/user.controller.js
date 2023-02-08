@@ -16,7 +16,7 @@ const userController = {
      * @author Nguyễn Tiến Tài
      * @created_at 17/12/2022
      * @updated_at 03/02/2023 && 04/02/2023
-     * @description Login user
+     * @description Login student
      * @function LoginUser
      * @param { mssv,password }
      * @return { Object }
@@ -230,7 +230,7 @@ const userController = {
                             refresh_token = TOKENS.createRefreshToken({ id: result[0].user_id });
 
                             // Save Redis
-                            MEMORY_CACHE.setAndDelKeyCache(result[0].user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
+                            MEMORY_CACHE.setCacheEx(result[0].user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
 
                             // Save cookie
                             res.cookie(CONFIGS.KEY_COOKIE, refresh_token, {
@@ -295,7 +295,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 04/02/2023
-     * @description Logout sutdent
+     * @description Logout student
      * @function logoutStudent
      * @param { token }
      * @return { Object }
@@ -303,20 +303,15 @@ const userController = {
     logoutStudent: async (req, res) => {
         try {
             // Take accessToken header
-            const { access_token } = req;
+            const { access_token, session, auth_user } = req;
 
             // Take refresh token cookie
             let refresh_token_cookie = req.cookies.libary_school;
 
-            const { session } = req;
-
-            // Take user Id
-            const user_id = req.auth_user.id;
-
             // Save blackList
             MEMORY_CACHE.setBlackListCache(
                 CONSTANTS.KEY_BACK_LIST,
-                user_id,
+                auth_user.id,
                 access_token,
                 refresh_token_cookie,
                 CONSTANTS._20_DAY_S_REDIS,
@@ -343,6 +338,108 @@ const userController = {
                         });
                     }
                 });
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/02/2023
+     * @description Profile student
+     * @function getProfileStudent
+     * @param { token }
+     * @return { Object }
+     */
+    getProfileStudent: async (req, res) => {
+        try {
+            // Take user Id
+            const user_id = req.auth_user.id;
+
+            // Check user_id
+            if (!user_id) {
+                res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Check student exit database
+            let data_return = {
+                user_id: 'user_id',
+                role: 'role',
+                mssv: 'mssv',
+                name: 'name',
+                avatar_uri: 'avatar_uri',
+                email: 'email',
+                address: 'address',
+                dob: 'dob',
+                gender: 'gender',
+                class: 'class',
+                phone_hidden: 'phone_hidden',
+            };
+            let data_query = {
+                user_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            };
+            // Create key redis  profile
+            const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+                user_id,
+            });
+
+            // Take data cache
+            let user_cache = await MEMORY_CACHE.getCache(key_profile_student).catch((error) => {
+                console.error(error);
+                return null;
+            });
+
+            // If cache exit take cache else take database
+            if (user_cache) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                    element: {
+                        result: JSON.parse(user_cache),
+                    },
+                });
+            }
+
+            // Take data database
+            let users = await user_model.getStudentById(data_query, data_return).catch((error) => {
+                console.error(error);
+                return [];
+            });
+
+            // Check account exits
+            const user = users[0];
+            if (!user || user.length === 0) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Random time expire key difference
+            const time_cache = HELPER.addTimeRandomNumber(CONSTANTS._7_DAY_S_REDIS, 1000);
+
+            // Save Cache
+            MEMORY_CACHE.setCacheEx(key_profile_student, JSON.stringify(user), time_cache).catch((error) => {
+                console.error(error);
+            });
+
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
+                element: {
+                    result: user,
+                },
+            });
         } catch (err) {
             console.error(err, '===== Server Fail =====');
             return res.status(503).json({
