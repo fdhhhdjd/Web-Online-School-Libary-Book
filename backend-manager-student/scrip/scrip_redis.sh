@@ -19,6 +19,6 @@ while true; do
     do
         echo $key
     done
-    # 5 minutes
-    sleep 300
+    # 20 minutes
+    sleep 1200
 done
