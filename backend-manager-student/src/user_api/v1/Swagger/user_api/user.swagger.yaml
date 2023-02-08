@@ -1,18 +1,144 @@
 #!@author Nguyễn Tiến Tài
-#!created_at 31/01/2023
-#!updated_at 04/02/2023
-#!description: Login User
+#!created_at 08/02/2023
+#!description: General
+# Info Swagger User APi
+info:
+    title: Document Student
+    description: Login,RenewToken,Logout,Get Profile
+    version: 1.0.0
+servers:
+    - url: http://localhost:5001
+      description: Local development server user api
+# General
 components:
+    # Check type header
     headers:
         AuthHeader:
             description: Header info student.
             type: string
             required: true
+    #Save cookie client
+    SaveCookie:
+        Set-Cookie:
+            description: '`refreshToken`'
+            schema:
+                type: string
+                example: refreshToken=51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550; Path=/; Expires=Tue, 8 Feb 2023 09:14:17 GMT; HttpOnly
+    # Parameter
+    parameters:
+        COOKIE-CLIENT:
+            in: cookie
+            name: refreshToken
+            description: The `refreshToken` cookie
+            schema:
+                type: string
+                example: 51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550
+        X-DEVICE-ID:
+            in: header
+            name: X-DEVICE-ID
+            required: true
+            schema:
+                type: string
+        X-OS-TYPE:
+            in: header
+            name: X-OS-TYPE
+            required: true
+            schema:
+                type: string
+        X-OS-VERSION:
+            in: header
+            name: X-OS-VERSION
+            required: true
+            schema:
+                type: string
+        X-APP-VERSION:
+            in: header
+            name: X-APP-VERSION
+            required: true
+            schema:
+                type: string
+        X-DEVICE-NAME:
+            in: header
+            name: X-DEVICE-NAME
+            required: true
+            schema:
+                type: string
+        TOKEN:
+            in: header
+            name: Authorization
+            type: string
+            description: Bearer Token
+            required: true
+            schema:
+                type: bearerToken
+    # Unauthorized
+    responses:
+        UnauthorizedError:
+            description: Access token is missing or invalid, or the user does not have access to perform the action,or or Device Invalid
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 400
+                            message:
+                                type: string
+                                example: 'Unauthorized'
+        # Fail CURD Fail
+        ServerCURDFail:
+            description: CURD Fail !!!
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 500
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Internal Server Error
+        # Server Die
+        ServerFail:
+            description: Service die
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 503
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Out Of Service
+
+#!@author Nguyễn Tiến Tài
+#!created_at 31/01/2023
+#!updated_at 04/02/2023
+#!description: Login Student
 paths:
     /api/v1/user/login:
         post:
             summary: Login User
             tags: [Login User]
+            operationId: loginStudent
+            parameters:
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
             requestBody:
                 required: true
                 content:
@@ -20,13 +146,26 @@ paths:
                         schema:
                             type: object
                             properties:
-                                mssv:
-                                    type: number
-                                password:
-                                    type: string
+                                input:
+                                    type: object
+                                    properties:
+                                        user_login_input:
+                                            type: object
+                                            properties:
+                                                mssv:
+                                                    type: number
+                                                    example: 60137255
+                                                password:
+                                                    type: string
+                                                    example: '20000531'
+                        required:
+                            - mssv
+                            - password
             responses:
                 200:
                     description: Login Success
+                    headers:
+                        $ref: '#/components/SaveCookie'
                     content:
                         application/json:
                             schema:
@@ -51,7 +190,7 @@ paths:
                                                     },
                                             }
                 400:
-                    description: IStudent Not Exist! or Password Is Incorrect ! or Input Mssv or Password or Mssv not number
+                    description: IStudent Not Exist! or Password Is Incorrect ! or Input Mssv or Password or Mssv not number or Device Invalid
                     content:
                         application/json:
                             schema:
@@ -67,38 +206,32 @@ paths:
                                         type: object
                                         example: { result: string }
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
-                                    element:
-                                        type: object
-                                        example: Out Of Service
+                    $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
     #!created_at 05/02/2023
+    #!updated_at 08/02/2023
     #!description: New Token
     /api/v1/user/renew-token:
         post:
             summary: New Token
             tags: [New Token]
+            operationId: reNewToken
             parameters:
-                - in: header
-                  name: Authorization Bearer
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
                   schema:
                       $ref: '#/components/headers/AuthHeader'
             responses:
                 200:
                     description: New Token Success
-                    content:
+                    headers:
+                        $ref: '#/components/SaveCookie'
                         application/json:
                             schema:
                                 type: object
@@ -123,7 +256,7 @@ paths:
                                                     },
                                             }
                 400:
-                    description: Token is Blacklist or Invalid Header
+                    description: Token is Blacklist or Invalid Header or The refresh token is invalid or Device Invalid
                     content:
                         application/json:
                             schema:
@@ -139,31 +272,25 @@ paths:
                                         type: object
                                         example: { result: string }
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
-                                    element:
-                                        type: object
-                                        example: Out Of Service
+                    $ref: '#/components/responses/ServerFail'
+
     #!@author Nguyễn Tiến Tài
     #!created_at 05/02/2023
+    #!updated_at 08/02/2023
     #!description: Logout student
     /api/v1/user/logout:
         post:
             summary: Logout Student
             tags: [Logout student]
+            operationId: logoutStudent
             parameters:
-                - in: header
-                  name: Authorization Bearer
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
                   schema:
                       $ref: '#/components/headers/AuthHeader'
             responses:
@@ -180,8 +307,38 @@ paths:
                                     message:
                                         type: string
                                         example: Success
+                401:
+                    $ref: '#/components/responses/UnauthorizedError'
                 500:
-                    description: Insert Blacklist Redis Fail
+                    $ref: '#/components/responses/ServerCURDFail'
+
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 05/02/2023
+    #!updated_at 08/02/2023
+    #!description: Get Profile Student
+    /api/v1/user/profile:
+        get:
+            summary: Profile Student
+            tags: [Profile Student]
+            operationId: getProfileStudent
+            security:
+                - bearerAuth: []
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Get Profile Success
                     content:
                         application/json:
                             schema:
@@ -189,23 +346,43 @@ paths:
                                 properties:
                                     status:
                                         type: integer
-                                        example: 500
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    element:
+                                        type: object
+                                        example:
+                                            {
+                                                result:
+                                                    {
+                                                        user_id: string,
+                                                        role: number,
+                                                        mssv": number,
+                                                        name": string,
+                                                        avatar_uri": string,
+                                                        email": string,
+                                                        address": string,
+                                                        dob": string,
+                                                        gender": number,
+                                                        class": string,
+                                                        phone_hidden": string,
+                                                    },
+                                            }
+                400:
+                    description: user_id or user in database not exits
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
                                     message:
                                         type: string
                                         example: Bad Request
+                401:
+                    $ref: '#/components/responses/UnauthorizedError'
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
-                                    element:
-                                        type: object
-                                        example: Out Of Service
+                    $ref: '#/components/responses/ServerFail'

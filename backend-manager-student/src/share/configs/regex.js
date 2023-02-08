@@ -55,4 +55,10 @@ module.exports = {
      * @description REGEX is number
      */
     REGEX_IS_NUMBER: /^\d+$/,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/02/2022
+     * @description REGEX is Replace string param
+     */
+    REGEX_IS_STRING_PARAM: /\${(\w+)}/g,
 };

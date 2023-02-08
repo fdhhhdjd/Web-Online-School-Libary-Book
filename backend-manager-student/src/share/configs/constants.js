@@ -247,6 +247,7 @@ module.exports = {
      * @description Key all redis
      */
     KEY_BACK_LIST: 'black_list_token',
+    KEY_PROFILE_STUDENT: 'profile-${user_id}',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 05/02/2023

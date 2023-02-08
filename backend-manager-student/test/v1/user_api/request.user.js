@@ -49,5 +49,23 @@ module.exports = {
         } catch (error) {
             return error;
         }
+    },
+    /**
+     * @Author Nguyễn Tiến Tài
+     * @Created_at 08/02/2023
+     * @Description Call api Route Profile
+     */
+    get_profile_user_test: async () => {
+        try {
+            const res = await axios.get(
+                `${URL_USER_API}/v1/user/profile`,
+                {
+                    headers: HELPERS.headerAPi(),
+                },
+            );
+            return res;
+        } catch (error) {
+            return error;
+        }
     }
 };

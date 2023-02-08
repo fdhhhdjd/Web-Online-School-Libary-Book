@@ -107,7 +107,6 @@ module.exports = {
             os_version: headers['X-OS-VERSION'] || headers['x-os-version'],
             app_version: headers['X-APP-VERSION'] || headers['x-app-version'],
             device_name: headers['X-DEVICE-NAME'] || headers['x-device-name'] || '',
-            // push_token: headers['X-PUSH-TOKEN'] || headers['x-push-token'] || '',
             // ip: headers['X-FORWARDED-FOR'] || headers['x-forwarded-for'] || '',
         };
 
@@ -254,5 +253,25 @@ module.exports = {
         } catch (err) {
             return false;
         }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/02/2023
+     * @description from String template to URI
+     * @param {template,data}
+     * @returns {string}
+     */
+    getURIFromTemplate(template, data) {
+        return template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/02/2023
+     * @description random time
+     * @param {time,maxNumber}
+     * @returns {string}
+     */
+    addTimeRandomNumber(time, maxNumber) {
+        return time + Math.floor(Math.random() * maxNumber);
     },
 };

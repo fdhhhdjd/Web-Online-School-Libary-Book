@@ -74,5 +74,20 @@ describe('user_api', () => {
             });
         });
     });
-
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 08/02/2023
+    * @description Get Profile Student
+    */
+    describe('Authentication - Get Profile Student ', () => {
+        test('Success', async () => {
+            const res = await requestUser.get_profile_user_test();
+            expect(res.status).toBe(200);
+            expect(res.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String),
+                element: expect.any(Object)
+            });
+        });
+    });
 });
