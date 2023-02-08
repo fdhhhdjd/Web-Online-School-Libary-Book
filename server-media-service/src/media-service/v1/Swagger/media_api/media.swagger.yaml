@@ -1,11 +1,86 @@
 #!@author Nguyễn Tiến Tài
+#!created_at: 08/02/2023
+#!description: General
+# Info Swagger Media
+info:
+    title: Document Media
+    description: UpLoad,Remove
+    version: 1.0.0
+servers:
+    - url: http://localhost:8000
+      description: Local development server media api
+# General
+components:
+    # Parameter
+    parameters:
+        TOKEN:
+            in: header
+            name: Authorization
+            type: string
+            description: Bearer Token
+            required: true
+            schema:
+                type: bearerToken
+    # Unauthorized
+    responses:
+        UnauthorizedError:
+            description: Access token is missing or invalid, or the user does not have access to perform the action,or or Device Invalid
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 400
+                            message:
+                                type: string
+                                example: 'Unauthorized'
+        # Fail CURD Fail
+        ServerCURDFail:
+            description: CURD Fail !!!
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 500
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Internal Server Error
+        # Server Die
+        ServerFail:
+            description: Service die
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 503
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Out Of Service
+#!@author Nguyễn Tiến Tài
 #!created_at 31/01/2023
+#!created_at 08/02/2023
 #!description: Upload,Remove Media
 paths:
     /api/v1/upload:
         post:
             summary: Upload Media
             tags: [Upload]
+            parameters:
+                - $ref: '#/components/parameters/TOKEN'
             requestBody:
                 required: true
                 content:
@@ -60,32 +135,10 @@ paths:
                                         type: string
                                         example: Unsupported Media Type
                 500:
-                    description: upload cloud return error
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 500
-                                    message:
-                                        type: string
-                                        example: Internal Server Error
+                    $ref: '#/components/responses/ServerCURDFail'
 
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
+                    $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
     #!created_at 31/01/2023
@@ -94,6 +147,8 @@ paths:
         post:
             summary: Remove Cloud
             tags: [Remove]
+            parameters:
+                - $ref: '#/components/parameters/TOKEN'
             requestBody:
                 required: true
                 content:
@@ -121,28 +176,7 @@ paths:
                                         type: string
                                         example: OK
                 500:
-                    description: Remove cloud error
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 500
-                                    message:
-                                        type: string
-                                        example: Internal Server Error
+                    $ref: '#/components/responses/ServerCURDFail'
+
                 503:
-                    description: Service die
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 503
-                                    message:
-                                        type: string
-                                        example: Service Unavailable
+                    $ref: '#/components/responses/ServerFail'
