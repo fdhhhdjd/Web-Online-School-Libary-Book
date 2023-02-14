@@ -65,9 +65,9 @@ const userController = {
             let user = users[0];
             const check_pass = await PASSWORD.comparePassword(password, user.password);
             if (!check_pass) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(401).json({
+                    status: 401,
+                    message: returnReasons('401'),
                     element: {
                         result: 'Password Is Incorrect !',
                     },
@@ -332,7 +332,7 @@ const userController = {
                 })
                 .catch((err) => {
                     if (err) {
-                        res.status(500).json({
+                        return res.status(500).json({
                             status: 500,
                             message: returnReasons('500'),
                         });
@@ -364,7 +364,7 @@ const userController = {
 
             // Check user_id
             if (!user_id) {
-                res.status(400).json({
+                return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),
                 });
@@ -394,10 +394,7 @@ const userController = {
             });
 
             // Take data cache
-            let user_cache = await MEMORY_CACHE.getCache(key_profile_student).catch((error) => {
-                console.error(error);
-                return null;
-            });
+            let user_cache = await MEMORY_CACHE.getCache(key_profile_student);
 
             // If cache exit take cache else take database
             if (user_cache) {
@@ -411,10 +408,7 @@ const userController = {
             }
 
             // Take data database
-            let users = await user_model.getStudentById(data_query, data_return).catch((error) => {
-                console.error(error);
-                return [];
-            });
+            let users = await user_model.getStudentById(data_query, data_return);
 
             // Check account exits
             const user = users[0];
@@ -429,9 +423,7 @@ const userController = {
             const time_cache = HELPER.addTimeRandomNumber(CONSTANTS._7_DAY_S_REDIS, 1000);
 
             // Save Cache
-            MEMORY_CACHE.setCacheEx(key_profile_student, JSON.stringify(user), time_cache).catch((error) => {
-                console.error(error);
-            });
+            MEMORY_CACHE.setCacheEx(key_profile_student, JSON.stringify(user), time_cache);
 
             return res.status(200).json({
                 status: 200,
@@ -439,6 +431,203 @@ const userController = {
                 element: {
                     result: user,
                 },
+            });
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Change password student
+     * @function changePasswordStudent
+     * @param { password, oldPassword, confirmPassword }
+     * @return { Object }
+     */
+    changePasswordStudent: async (req, res) => {
+        try {
+            const { password, oldPassword, confirmPassword } = req.body.input.user_change_password_input;
+
+            // Take user Id
+            const user_id = req.auth_user.id;
+
+            // Check user_id
+            if (!user_id || !password || !oldPassword || !confirmPassword) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Key redis  profile
+            const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+                user_id,
+            });
+
+            // Get Profile student cache
+            let user;
+            const user_redis = await MEMORY_CACHE.getCache(key_profile_student);
+            user = JSON.parse(user_redis);
+
+            if (!user) {
+                // Check student exit database
+                const data_return = {
+                    password: 'password',
+                };
+                const data_query = {
+                    user_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                };
+                // Take data database
+                const new_user = await user_model.getStudentById(data_query, data_return);
+                user = new_user[0];
+            }
+
+            // Check Password true or false
+            const isMatch = await PASSWORD.comparePassword(oldPassword, user.password);
+            if (!isMatch) {
+                return res.status(401).json({
+                    status: 401,
+                    message: returnReasons('401'),
+                    element: {
+                        result: 'Wrong Password!',
+                    },
+                });
+            }
+
+            // Password difference confirmPassword
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password and confirm password does not match!',
+                    },
+                });
+            }
+            // Check Password Security
+            const password_security = PASSWORD.isPassword(password);
+            if (!password_security) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                    },
+                });
+            }
+
+            // Encode Password student
+            const new_password_student = await PASSWORD.encodePassword(password);
+
+            // Data update database
+            const data = {
+                password: new_password_student,
+            };
+            const data_query = {
+                user_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            };
+            const data_return = {
+                user_id: 'user_id',
+            };
+
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(user_model.updateStudent(data, data_query, data_return));
+            if (result) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('503'),
+                });
+            }
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Check password student
+     * @function checkPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
+    checkPasswordStudent: async (req, res) => {
+        try {
+            const { password } = req.body.input.user_check_password_input;
+
+            // Take user Id
+            const user_id = req.auth_user.id;
+
+            // Check user_id
+            if (!user_id || !password) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Key redis  profile
+            const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+                user_id,
+            });
+
+            // Get Profile student cache
+            let user;
+            const user_redis = await MEMORY_CACHE.getCache(key_profile_student);
+            user = JSON.parse(user_redis);
+
+            if (!user) {
+                // Check student exit database
+                const data_return = {
+                    password: 'password',
+                };
+                const data_query = {
+                    user_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                };
+                // Take data database
+                const new_user = await user_model.getStudentById(data_query, data_return);
+                user = new_user[0];
+            }
+
+            // Check Password true or false
+            const isMatch = await PASSWORD.comparePassword(password, user.password);
+            if (!isMatch) {
+                return res.status(401).json({
+                    status: 401,
+                    message: returnReasons('401'),
+                    element: {
+                        result: 'Wrong Password!',
+                    },
+                });
+            }
+
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
             });
         } catch (err) {
             console.error(err, '===== Server Fail =====');

@@ -30,4 +30,18 @@ module.exports = {
         const student = await knex('user').select(return_data).where(student_query);
         return student;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Update student
+     */
+    updateStudent: async (data, student_query, return_data) =>
+        new Promise((resolve, reject) => {
+            try {
+                const result = knex('user').update(data).where(student_query).returning(return_data);
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        }),
 };

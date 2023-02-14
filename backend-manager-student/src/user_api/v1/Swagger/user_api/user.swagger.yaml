@@ -86,6 +86,22 @@ components:
                             message:
                                 type: string
                                 example: 'Unauthorized'
+        isMatchPassword:
+            description: Password Is Incorrect !
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 401
+                            message:
+                                type: string
+                                example: Bad Request
+                            element:
+                                type: object
+                                example: { result: string }
         # Fail CURD Fail
         ServerCURDFail:
             description: CURD Fail !!!
@@ -189,22 +205,8 @@ paths:
                                                         user_id: string,
                                                     },
                                             }
-                400:
-                    description: IStudent Not Exist! or Password Is Incorrect ! or Input Mssv or Password or Mssv not number or Device Invalid
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 400
-                                    message:
-                                        type: string
-                                        example: Bad Request
-                                    element:
-                                        type: object
-                                        example: { result: string }
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
 
@@ -384,5 +386,105 @@ paths:
                                         example: Bad Request
                 401:
                     $ref: '#/components/responses/UnauthorizedError'
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 13/02/2023
+    #!description: Change Password Student
+    /api/v1/user/change-password:
+        post:
+            summary: Change Password Student
+            tags: [Change Password Student]
+            operationId: changePasswordStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Change Password Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: user_id or password or oldPassword or confirmPassword Invalid and Password and confirm password does not match! and  Password not security
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 13/02/2023
+    #!description: Check Password Student
+    /api/v1/user/check-password:
+        post:
+            summary: Check Password Student
+            tags: [Check Password Student]
+            operationId: checkPasswordStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Change Password Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: user_id or password Invalid !!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
