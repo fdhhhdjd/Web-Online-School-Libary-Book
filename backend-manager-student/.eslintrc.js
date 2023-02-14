@@ -54,6 +54,7 @@ module.exports = {
         'no-restricted-syntax': 'off',
         'no-await-in-loop': 'off',
         'consistent-return': 'off',
-        'no-template-curly-in-string': 'off'
+        'no-template-curly-in-string': 'off',
+        'prefer-destructuring': 'off'
     },
 };

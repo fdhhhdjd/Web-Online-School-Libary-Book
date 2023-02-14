@@ -1,4 +1,5 @@
 const requestUser = require('./request.user');
+const CONSTANTS = require('../configs/constants')
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 17/12/2022
@@ -12,7 +13,7 @@ describe('user_api', () => {
     */
     describe('Authentication - Login Student ', () => {
         test('Success - Login student', async () => {
-            const res = await requestUser.login_user_test('60137255', '20000531');
+            const res = await requestUser.login_user_test('60137255', CONSTANTS.PASSWORD);
             expect(res.status).toBe(200);
             expect(res.data).toEqual({
                 status: expect.any(Number),
@@ -87,6 +88,69 @@ describe('user_api', () => {
                 status: expect.any(Number),
                 message: expect.any(String),
                 element: expect.any(Object)
+            });
+        });
+    });
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 14/02/2023
+    * @description Change Password Student
+    */
+    describe('Authentication - Change Password Student', () => {
+        test('Success', async () => {
+            const res = await requestUser.change_password_user_test(CONSTANTS.OLD_PASSWORD, CONSTANTS.PASSWORD, CONSTANTS.CONFIRM_PASSWORD);
+            expect(res.status).toBe(200);
+            expect(res.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String)
+            });
+        });
+        test('Error - Password Wrong! ', async () => {
+            const res = await requestUser.change_password_user_test('1111111', '123123', '123123');
+            expect(res.response.status).toBe(401);
+            expect(res.response.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String),
+                element: expect.objectContaining({
+                    result: expect.any(String)
+                }),
+            });
+        });
+        test('Error - Password and confirm password does not match! ', async () => {
+            const res = await requestUser.change_password_user_test(CONSTANTS.PASSWORD, '123123', '1231231');
+            expect(res.response.status).toBe(400);
+            expect(res.response.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String),
+                element: expect.objectContaining({
+                    result: expect.any(String)
+                }),
+            });
+        });
+    });
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 14/02/2023
+    * @description Check Password Student
+    */
+    describe('Authentication - Check Password Student', () => {
+        test('Success', async () => {
+            const res = await requestUser.check_password_user_test(CONSTANTS.PASSWORD);
+            expect(res.status).toBe(200);
+            expect(res.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String)
+            });
+        });
+        test('Error - Password Wrong! ', async () => {
+            const res = await requestUser.check_password_user_test('1111111', '123123', '123123');
+            expect(res.response.status).toBe(401);
+            expect(res.response.data).toEqual({
+                status: expect.any(Number),
+                message: expect.any(String),
+                element: expect.objectContaining({
+                    result: expect.any(String)
+                }),
             });
         });
     });

@@ -1,3 +1,7 @@
+const dotenv = require('dotenv');
+const path = require('path');
+dotenv.config({ path: path.resolve(__dirname + './../../jest/.env') });
+
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
@@ -5,10 +9,17 @@ module.exports = {
      * @update_at 09/01/2023
      * @description Token admin
      */
-    TOKEN_TEST:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0Mzg1MjI1ODg3Njk4MTI0ODIiLCJpYXQiOjE2NzU4NTAxNzEsImV4cCI6MTY3NTg1MDc3MX0.x2G8CzPCoS5rriIW-d3QFz6UDxTV3Mwcfnh8jgdbet0',
-    URL_API_ADMIN: 'http://localhost:8080/manager',
-    URL_API_USER: 'http://localhost:8080/student',
+    TOKEN_TEST: `${process.env.TOKEN}`,
+    URL_API_ADMIN: `${process.env.URL_API_ADMIN}`,
+    URL_API_USER: `${process.env.URL_API_USER}`,
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 14/02/2023
+    * @description Password 
+    */
+    PASSWORD: `${process.env.PASSWORD}`,
+    OLD_PASSWORD: `${process.env.OLD_PASSWORD}`,
+    CONFIRM_PASSWORD: `${process.env.CONFIRM_PASSWORD}`,
 };
 
 
