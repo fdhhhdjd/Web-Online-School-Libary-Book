@@ -87,7 +87,7 @@ components:
                                 type: string
                                 example: 'Unauthorized'
         isMatchPassword:
-            description: Password Is Incorrect !
+            description: Password Is Incorrect Block Account!
             content:
                 application/json:
                     schema:
