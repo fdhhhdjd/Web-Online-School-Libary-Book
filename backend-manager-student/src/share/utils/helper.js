@@ -274,4 +274,26 @@ module.exports = {
     addTimeRandomNumber(time, maxNumber) {
         return time + Math.floor(Math.random() * maxNumber);
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 15/02/2023
+     * @description Convert date and time
+     * @param {time}
+     * @returns {string}
+     */
+    convertTTLtoDateTime(ttl) {
+        const now = new Date();
+        const expirationTime = now.getTime() + ttl * 1000 + CONSTANTS.TIME_ZONE_VN;
+        const expirationDate = new Date(expirationTime);
+
+        const year = expirationDate.getFullYear();
+        const month = (expirationDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = expirationDate.getDate().toString().padStart(2, '0');
+        const hours = expirationDate.getHours().toString().padStart(2, '0');
+        const minutes = expirationDate.getMinutes().toString().padStart(2, '0');
+        const seconds = expirationDate.getSeconds().toString().padStart(2, '0');
+
+        const formattedDateTime = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        return formattedDateTime;
+    },
 };

@@ -15,7 +15,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 17/12/2022
-     * @updated_at 03/02/2023 && 04/02/2023
+     * @updated_at 03/02/2023 && 04/02/2023 && 15/02/2023
      * @description Login student
      * @function LoginUser
      * @param { mssv,password }
@@ -23,19 +23,21 @@ const userController = {
      */
     loginStudent: async (req, res) => {
         const { mssv, password } = req.body.input.user_login_input;
+
+        // Take device id header
         let { device } = req;
+
+        // Check input mssv password
+        if (!mssv || !password || !HELPER.isNumeric(mssv)) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
 
         try {
             // Take ip computer student
             const ip = req.headers[CONSTANTS.HEADER_FORWARDED_FOR] || req.socket.remoteAddress || null;
-
-            // Check input mssv password
-            if (!mssv || !password || !HELPER.isNumeric(mssv)) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
-            }
 
             // Check student exit database
             let data_return = {
@@ -60,16 +62,45 @@ const userController = {
                     },
                 });
             }
+            // Account database or redis
+            let user = users[0];
+
+            // Create key redis  key block login
+            const key_block_login_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_BLOCK_LOGIN_TIMES_STUDENT, {
+                user_id: user.user_id,
+            });
+
+            // Take count number of customer in redis
+            const student_count_login_api = await MEMORY_CACHE.getCache(key_block_login_student);
+
+            // If count === 5 fail
+            if (Number(student_count_login_api) >= CONSTANTS.LIMIT_LOGIN_BLOCK) {
+                // Take time ttl key
+                const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_login_student);
+
+                if (time_ttl_cache) {
+                    return res.status(401).json({
+                        status: 401,
+                        message: returnReasons('401'),
+                        element: {
+                            result: 'Account of you block 24h!',
+                            time_full: time_ttl_cache,
+                        },
+                    });
+                }
+            }
 
             // Check password student
-            let user = users[0];
             const check_pass = await PASSWORD.comparePassword(password, user.password);
             if (!check_pass) {
+                // Save time login account wrong
+                MEMORY_CACHE.setAccountLoginWrongCache(key_block_login_student, CONSTANTS._1_DAY_S_REDIS);
                 return res.status(401).json({
                     status: 401,
                     message: returnReasons('401'),
                     element: {
-                        result: 'Password Is Incorrect !',
+                        result: 'Password Is Incorrect ! ',
+                        number_login: `Warning number of logins ${Number(student_count_login_api) + 1}`,
                     },
                 });
             }
@@ -146,7 +177,9 @@ const userController = {
                     message: returnReasons('500'),
                 });
             }
-
+            if (student_count_login_api) {
+                MEMORY_CACHE.delKeyCache(key_block_login_student);
+            }
             if (result) {
                 return res.status(200).json({
                     status: 200,
@@ -175,6 +208,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 04/02/2023
+     * @update_at 14/02/2023 && 15/02/2023
      * @description New Token
      * @function reNewToken
      * @param { mssv,password }
@@ -192,6 +226,7 @@ const userController = {
 
                 // Check black_list redis
                 const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
+
                 const check_exits = token_black_list.indexOf(refresh_token_cookie) > -1;
                 if (check_exits) {
                     return res.status(400).json({
@@ -211,7 +246,6 @@ const userController = {
                     );
                     // Student exits
                     if (result) {
-                        // Refresh_token cookie
                         const refresh_token_exit = refresh_token_cookie;
 
                         // Check token expired
@@ -221,16 +255,21 @@ const userController = {
                         if (decoded) {
                             // Create accept_token
                             access_token = TOKENS.createAcceptToken({ id: result[0].user_id });
-                            refresh_token = refresh_token_cookie;
-                        } else {
-                            // Create accept_token
-                            access_token = TOKENS.createAcceptToken({ id: result[0].user_id });
 
                             // Refresh_token new
                             refresh_token = TOKENS.createRefreshToken({ id: result[0].user_id });
 
-                            // Save Redis
-                            MEMORY_CACHE.setCacheEx(result[0].user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
+                            // Save Redis and Save RT old Blacklist
+                            await MEMORY_CACHE.setAndDelKeyBlackListCache(
+                                result[0].user_id,
+                                CONSTANTS.KEY_BACK_LIST,
+                                refresh_token,
+                                refresh_token_cookie,
+                                CONSTANTS._7_DAY_S_REDIS,
+                                CONSTANTS._20_DAY_S_REDIS,
+                            );
+                            // Clear Cookie
+                            res.clearCookie(CONFIGS.KEY_COOKIE);
 
                             // Save cookie
                             res.cookie(CONFIGS.KEY_COOKIE, refresh_token, {
@@ -250,21 +289,20 @@ const userController = {
                             await HELPER.handleRequest(
                                 user_device_model.updateDevice(data_device_update, result[0].user_id),
                             );
-                        }
-
-                        return res.status(200).json({
-                            status: 200,
-                            message: returnReasons('200'),
-                            element: {
-                                result: {
-                                    access_token,
-                                    refresh_token,
-                                    role: result[0].role,
-                                    user_id: result[0].user_id,
-                                    name: result[0].name,
+                            return res.status(200).json({
+                                status: 200,
+                                message: returnReasons('200'),
+                                element: {
+                                    result: {
+                                        access_token,
+                                        refresh_token,
+                                        role: result[0].role,
+                                        user_id: result[0].user_id,
+                                        name: result[0].name,
+                                    },
                                 },
-                            },
-                        });
+                            });
+                        }
                     }
                     if (err) {
                         return res.status(500).json({
@@ -272,6 +310,11 @@ const userController = {
                             message: returnReasons('500'),
                         });
                     }
+                    return res.status(400).json({
+                        status: 400,
+                        message: returnReasons('400'),
+                        element: 'Token Fail !',
+                    });
                 }
             } else {
                 return res.status(400).json({
@@ -283,6 +326,7 @@ const userController = {
                 });
             }
         } catch (error) {
+            console.error(error);
             return res.status(503).json({
                 status: 503,
                 message: returnReasons('503'),

@@ -51,18 +51,19 @@ const setBlackListCache = (key, user_id, accept_token, refresh_token, ttl) =>
  *  @returns {string}
  */
 const delKeyCache = (key) => REDIS_MASTER.del(key);
-
 /**
  * @author Nguyễn Tiến Tài
  * @param {key}
- * @created_at 06/02/2023
- * @description Set and Del key
+ * @created_at 14/02/2023
+ * @description Set and Del key BlackList
  *  @returns {Array}
  */
-const setAndDelKeyCache = (key, value, ttl) => {
+const setAndDelKeyBlackListCache = (key, key_black_lits, refresh_token, refresh_token_cookie, ttl_set, ttl_push) => {
     REDIS_MASTER.multi()
         .del(key)
-        .set(key, value, 'EX', ttl)
+        .set(key, refresh_token, 'EX', ttl_set)
+        .lpush(key_black_lits, refresh_token_cookie)
+        .expire(key_black_lits, ttl_push)
         .exec((err, replies) => {
             if (err) {
                 console.error(err);
@@ -71,11 +72,57 @@ const setAndDelKeyCache = (key, value, ttl) => {
             }
         });
 };
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 15/02/2023
+ * @description Block account 24h wrong password 5 times
+ *  @returns {Array}
+ */
+const setAccountLoginWrongCache = (key, ttl) => {
+    REDIS_MASTER.multi()
+        .incr(key)
+        .expire(key, ttl)
+        .exec((err, replies) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.info(replies);
+            }
+        });
+};
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 15/02/2023
+ * @description Time ttl key redis
+ *  @returns {Array}
+ */
+const getExpirationTime = async (key) => {
+    const ttl = await REDIS_MASTER.pttl(key);
+    const timeToLive = Math.ceil(ttl / 1000);
+    const seconds = timeToLive % 60;
+    const minutes = Math.floor(timeToLive / 60) % 60;
+    const hours = Math.floor(timeToLive / 3600) % 24;
+    const days = Math.floor(timeToLive / (3600 * 24));
+    const timeLeft = `${days} Day, ${hours} Hour, ${minutes} Minute, ${seconds} Millisecond`;
+    const time_full = {
+        days,
+        hours,
+        minutes,
+        seconds,
+        timeLeft,
+    };
+    return time_full;
+};
+
 module.exports = {
     setCacheEx,
     getCache,
     getRangeCache,
     setBlackListCache,
     delKeyCache,
-    setAndDelKeyCache,
+    setAndDelKeyBlackListCache,
+    setAccountLoginWrongCache,
+    getExpirationTime,
 };

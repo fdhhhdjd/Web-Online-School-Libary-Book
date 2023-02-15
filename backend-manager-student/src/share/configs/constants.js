@@ -248,6 +248,7 @@ module.exports = {
      */
     KEY_BACK_LIST: 'black_list_token',
     KEY_PROFILE_STUDENT: 'profile-${user_id}',
+    KEY_BLOCK_LOGIN_TIMES_STUDENT: 'block-login-${user_id}',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 05/02/2023
@@ -255,4 +256,16 @@ module.exports = {
      */
     TYPE_CRYPTO: 'aes192',
     DIGEST_CRYPTO: 'hex',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 15/02/2023
+     * @description Limit login
+     */
+    LIMIT_LOGIN_BLOCK: 4,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 15/02/2023
+     * @description Timezone VietNam
+     */
+    TIME_ZONE_VN: 7 * 3600 * 1000,
 };
