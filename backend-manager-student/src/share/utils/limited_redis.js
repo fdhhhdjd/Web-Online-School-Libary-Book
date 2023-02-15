@@ -115,6 +115,26 @@ const getExpirationTime = async (key) => {
     };
     return time_full;
 };
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 15/02/2023
+ * @description Set Black List if refetch token not exit
+ * @returns {Array}
+ */
+const setBlackListLoginExitTokenCache = (key, user_id, refresh_token, ttl) => {
+    REDIS_MASTER.multi()
+        .lpush(key, refresh_token)
+        .del(user_id)
+        .expire(key, ttl)
+        .exec((err, replies) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.info(replies);
+            }
+        });
+};
 
 module.exports = {
     setCacheEx,
@@ -125,4 +145,5 @@ module.exports = {
     setAndDelKeyBlackListCache,
     setAccountLoginWrongCache,
     getExpirationTime,
+    setBlackListLoginExitTokenCache,
 };

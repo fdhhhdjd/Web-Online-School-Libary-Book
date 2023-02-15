@@ -25,7 +25,7 @@ const userController = {
         const { mssv, password } = req.body.input.user_login_input;
 
         // Take device id header
-        let { device } = req;
+        let { device_id } = req.device;
 
         // Check input mssv password
         if (!mssv || !password || !HELPER.isNumeric(mssv)) {
@@ -105,6 +105,32 @@ const userController = {
                 });
             }
 
+            // Check Token old
+            const refetch_token_old = await user_device_model.getDeviceId(
+                { device_uuid: device_id },
+                { refresh_token: 'refresh_token' },
+            );
+
+            if (!refetch_token_old.length) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('401'),
+                });
+            }
+            // Check Token exit BlackList
+            const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
+
+            const check_exits = token_black_list.indexOf(refetch_token_old[0].refresh_token) > -1;
+            if (!check_exits) {
+                // Save token old backlist
+                MEMORY_CACHE.setBlackListLoginExitTokenCache(
+                    CONSTANTS.KEY_BACK_LIST,
+                    user.user_id,
+                    refetch_token_old[0].refresh_token,
+                    CONSTANTS._20_DAY_S_REDIS,
+                );
+            }
+
             // Save Db device
             const geo = HELPER.findingLocationByIP(ip) || HELPER.findingLocationByIP(CONFIGS.IP_ADMIN);
 
@@ -155,7 +181,7 @@ const userController = {
 
             // Save Db device
             let data_device_insert = {
-                device_uuid: device.device_id,
+                device_uuid: device_id,
                 ua_name: device_systems.browser.name,
                 os_type: device_systems.os.name,
                 user_id: user.user_id,
