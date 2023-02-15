@@ -104,28 +104,6 @@ const userController = {
                 });
             }
 
-            // Check Token old
-            const refetch_token_old = await user_device_model.getDeviceId(
-                { device_uuid: device_id },
-                { refresh_token: 'refresh_token' },
-            );
-
-            if (!refetch_token_old.length === 0) {
-                // Check Token exit BlackList
-                const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
-
-                const check_exits = token_black_list.indexOf(refetch_token_old[0].refresh_token) > -1;
-                if (!check_exits) {
-                    // Save token old backlist
-                    MEMORY_CACHE.setBlackListLoginExitTokenCache(
-                        CONSTANTS.KEY_BACK_LIST,
-                        user.user_id,
-                        refetch_token_old[0].refresh_token,
-                        CONSTANTS._20_DAY_S_REDIS,
-                    );
-                }
-            }
-
             // Save Db device
             const geo = HELPER.findingLocationByIP(ip) || HELPER.findingLocationByIP(CONFIGS.IP_ADMIN);
 
@@ -242,14 +220,37 @@ const userController = {
 
             // Check exit token
             if (refresh_token_cookie) {
-                // Decode
+                // Take device id header
                 const { device } = req;
 
                 // Check black_list redis
                 const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
 
                 const check_exits = token_black_list.indexOf(refresh_token_cookie) > -1;
+
                 if (check_exits) {
+                    // Check Token old
+                    const refetch_token_old = await user_device_model.getDeviceId(
+                        { device_uuid: device.device_id },
+                        { refresh_token: 'refresh_token', user_id: 'user_id' },
+                    );
+                    // Check Token exit BlackList
+                    const token_black_list_new = await MEMORY_CACHE.getRangeCache(
+                        CONSTANTS.KEY_BACK_LIST,
+                        0,
+                        999999999,
+                    );
+
+                    const check_exit_new = token_black_list_new.indexOf(refetch_token_old[0].refresh_token) > -1;
+                    if (!check_exit_new) {
+                        // Save token old backlist
+                        MEMORY_CACHE.setBlackListLoginExitTokenCache(
+                            CONSTANTS.KEY_BACK_LIST,
+                            refetch_token_old[0].user_id,
+                            refetch_token_old[0].refresh_token,
+                            CONSTANTS._20_DAY_S_REDIS,
+                        );
+                    }
                     return res.status(400).json({
                         status: 400,
                         message: returnReasons('400'),
