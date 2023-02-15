@@ -64,7 +64,6 @@ const userController = {
             }
             // Account database or redis
             let user = users[0];
-
             // Create key redis  key block login
             const key_block_login_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_BLOCK_LOGIN_TIMES_STUDENT, {
                 user_id: user.user_id,
@@ -111,24 +110,20 @@ const userController = {
                 { refresh_token: 'refresh_token' },
             );
 
-            if (!refetch_token_old.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('401'),
-                });
-            }
-            // Check Token exit BlackList
-            const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
+            if (!refetch_token_old.length === 0) {
+                // Check Token exit BlackList
+                const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
 
-            const check_exits = token_black_list.indexOf(refetch_token_old[0].refresh_token) > -1;
-            if (!check_exits) {
-                // Save token old backlist
-                MEMORY_CACHE.setBlackListLoginExitTokenCache(
-                    CONSTANTS.KEY_BACK_LIST,
-                    user.user_id,
-                    refetch_token_old[0].refresh_token,
-                    CONSTANTS._20_DAY_S_REDIS,
-                );
+                const check_exits = token_black_list.indexOf(refetch_token_old[0].refresh_token) > -1;
+                if (!check_exits) {
+                    // Save token old backlist
+                    MEMORY_CACHE.setBlackListLoginExitTokenCache(
+                        CONSTANTS.KEY_BACK_LIST,
+                        user.user_id,
+                        refetch_token_old[0].refresh_token,
+                        CONSTANTS._20_DAY_S_REDIS,
+                    );
+                }
             }
 
             // Save Db device
