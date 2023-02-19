@@ -4,6 +4,7 @@ const PASSWORD = require('../../../share/utils/password');
 const CONFIGS = require('../../../share/configs/config');
 const TOKENS = require('../../../share/utils/token');
 const MEMORY_CACHE = require('../../../share/utils/limited_redis');
+const REDIS_PUB_SUB = require('../../../share/utils/redis_pub_sub_helper');
 
 //! Model
 const user_model = require('../../../share/models/user.model');
@@ -44,6 +45,7 @@ const userController = {
                 user_id: 'user_id',
                 role: 'role',
                 name: 'name',
+                email: 'email',
                 password: 'password',
                 public_id_avatar: 'public_id_avatar',
                 phone_hidden: 'phone_hidden',
@@ -114,7 +116,7 @@ const userController = {
             let refresh_token;
             if (!refresh_token_redis) {
                 // Refresh_token new
-                refresh_token = TOKENS.createRefreshToken({ id: user.user_id });
+                refresh_token = TOKENS.createRefreshToken({ id: user.user_id, name: user.name, email: user.email });
 
                 // Save Redis
                 MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
@@ -124,7 +126,7 @@ const userController = {
             }
 
             // Create accept_token
-            const access_token = TOKENS.createAcceptToken({ id: user.user_id });
+            const access_token = TOKENS.createAcceptToken({ id: user.user_id, name: user.name, email: user.email });
 
             // Save session
             const save_session = req.session;
@@ -232,7 +234,15 @@ const userController = {
                     // Check Token old
                     const refetch_token_old = await user_device_model.getDeviceId(
                         { device_uuid: device.device_id },
-                        { refresh_token: 'refresh_token', user_id: 'user_id' },
+                        {
+                            refresh_token: 'refresh_token',
+                            user_id: 'user_id',
+                            last_login_time: 'last_login_time',
+                            login_location: 'login_location',
+                            os_type: 'os_type',
+                            login_ip: 'login_ip',
+                            ua_name: 'ua_name',
+                        },
                     );
                     // Check Token exit BlackList
                     const token_black_list_new = await MEMORY_CACHE.getRangeCache(
@@ -251,6 +261,25 @@ const userController = {
                             CONSTANTS._20_DAY_S_REDIS,
                         );
                     }
+
+                    // Get info account
+                    let data_return = {
+                        name: 'name',
+                        email: 'email',
+                    };
+                    let data_query = {
+                        user_id: refetch_token_old[0].user_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    };
+                    let users = await user_model.getStudentById(data_query, data_return);
+
+                    // Assign from object
+                    refetch_token_old[0].name = users[0].name;
+                    refetch_token_old[0].email = users[0].email;
+
+                    // Publish data queue Redis
+                    REDIS_PUB_SUB.sendEmailWithLock('user_send_email_warning_token', refetch_token_old[0]);
+
                     return res.status(400).json({
                         status: 400,
                         message: returnReasons('400'),
@@ -276,10 +305,18 @@ const userController = {
                         let refresh_token;
                         if (decoded) {
                             // Create accept_token
-                            access_token = TOKENS.createAcceptToken({ id: result[0].user_id });
+                            access_token = TOKENS.createAcceptToken({
+                                id: result[0].user_id,
+                                name: result[0].name,
+                                email: result[0].email,
+                            });
 
                             // Refresh_token new
-                            refresh_token = TOKENS.createRefreshToken({ id: result[0].user_id });
+                            refresh_token = TOKENS.createRefreshToken({
+                                id: result[0].user_id,
+                                name: result[0].name,
+                                email: result[0].email,
+                            });
 
                             // Save Redis and Save RT old Blacklist
                             await MEMORY_CACHE.setAndDelKeyBlackListCache(

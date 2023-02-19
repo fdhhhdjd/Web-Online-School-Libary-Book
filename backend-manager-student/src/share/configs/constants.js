@@ -244,11 +244,13 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 05/02/2023
+     * @update_at 20/02/2023
      * @description Key all redis
      */
     KEY_BACK_LIST: 'black_list_token',
     KEY_PROFILE_STUDENT: 'profile-${user_id}',
     KEY_BLOCK_LOGIN_TIMES_STUDENT: 'block-login-${user_id}',
+    KEY_LOCK_SEND_EMAIL: 'lock:${key_convert}',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 05/02/2023
@@ -268,4 +270,11 @@ module.exports = {
      * @description Timezone VietNam
      */
     TIME_ZONE_VN: 7 * 3600 * 1000,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/02/2023
+     * @description result redis
+     * @param { string }
+     */
+    RESULT_REDIS: 'OK',
 };

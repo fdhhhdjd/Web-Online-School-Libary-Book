@@ -88,6 +88,7 @@ services:
             - ${REDIS_PORT}:${REDIS_PORT}
         networks:
             - libary_school
+            - server-send-email-student_sendemail
         healthcheck:
             test: ['CMD', 'redis-cli', 'ping']
             interval: 30s

@@ -9,6 +9,14 @@ const { REDIS_MASTER } = require('../db/init_multiple_redis');
 const setCacheEx = (key, value, ttl) => REDIS_MASTER.set(key, value, 'EX', ttl);
 /**
  * @author Nguyễn Tiến Tài
+ * @param {key, value, ttl}
+ * @created_at 19/02/2023
+ * @description set key value ttl and check key not exit
+ *  @returns {string}
+ */
+const setCacheExAndNx = (key, value, ttl) => REDIS_MASTER.set(key, value, 'NX', 'EX', ttl);
+/**
+ * @author Nguyễn Tiến Tài
  * @param {key}
  * @created_at 04/02/2023
  * @description get key
@@ -138,6 +146,7 @@ const setBlackListLoginExitTokenCache = (key, user_id, refresh_token, ttl) => {
 
 module.exports = {
     setCacheEx,
+    setCacheExAndNx,
     getCache,
     getRangeCache,
     setBlackListCache,

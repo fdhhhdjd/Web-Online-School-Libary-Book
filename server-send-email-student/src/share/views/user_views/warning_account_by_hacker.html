@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Account Alert Notification</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                color: #333;
+                background-color: #f1f1f1;
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+            h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 0 0 10px 0;
+            }
+
+            p {
+                margin: 0 0 20px 0;
+            }
+
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            li {
+                margin: 0 0 10px 0;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 20px 0 0 0;
+            }
+
+            .btn:hover {
+                background-color: #0069d9;
+            }
+            img {
+                width: 20%;
+                float: right;
+            }
+
+            @media screen and (max-width: 480px) {
+                .container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <img src="cid:image_logo" alt="logo" />
+            <h1>Account Alert Notification</h1>
+            <p class="warning">Warning: Hello <b>{{data.name}}</b> ,Your account is under attack!</p>
+            <p>Please change your password immediately and review recent activity on your account to ensure safety.</p>
+            <p class="info">Details</p>
+            <ul>
+                <li>Alert time: <b>{{data.last_login_time}}</b></li>
+                <li>Alert time: <b>{{data.last_login_time}}</b></li>
+                <li>Os Type: <b>{{data.os_type}}</b></li>
+                <li>Ua Name: <b>{{data.ua_name}}</b></li>
+                <li>
+                    Login Location: Latitude: <b>{{data.login_location.x}}</b> -- longitude:
+                    <b>{{data.login_location.y}}</b>
+                </li>
+                <li>Unauthorized email address: <b>{{data.email}}</b></li>
+            </ul>
+        </div>
+    </body>
+</html>
