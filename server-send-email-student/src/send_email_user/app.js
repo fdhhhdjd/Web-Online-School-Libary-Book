@@ -32,4 +32,7 @@ app.use(
     }),
 );
 
+//! Redis PubSub users
+require('./v1/redis_sub_queue')
+
 module.exports = app;
