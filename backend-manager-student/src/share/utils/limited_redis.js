@@ -143,7 +143,32 @@ const setBlackListLoginExitTokenCache = (key, user_id, refresh_token, ttl) => {
             }
         });
 };
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 22/02/2023
+ * @description Check exit  key
+ *  @returns {string}
+ */
+const existsKeyCache = (key) => REDIS_MASTER.exists(key);
 
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 22/02/2023
+ * @description Time expired  key
+ *  @returns {string}
+ */
+const expiresKeyCache = (key, ttl) => REDIS_MASTER.expire(key, ttl);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @param {key}
+ * @created_at 22/02/2023
+ * @description increase value
+ *  @returns {string}
+ */
+const increaseLoginWrongCache = (key) => REDIS_MASTER.incr(key);
 module.exports = {
     setCacheEx,
     setCacheExAndNx,
@@ -155,4 +180,7 @@ module.exports = {
     setAccountLoginWrongCache,
     getExpirationTime,
     setBlackListLoginExitTokenCache,
+    existsKeyCache,
+    expiresKeyCache,
+    increaseLoginWrongCache,
 };

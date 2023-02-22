@@ -10,13 +10,14 @@ const REDIS_PUB_SUB = require('../../../share/utils/redis_pub_sub_helper');
 const user_model = require('../../../share/models/user.model');
 const user_device_model = require('../../../share/models/user_device.model');
 const geo_service = require('../../../share/services/geo.service');
+const user_service = require('../../../share/services/user_service/user_service');
 const { returnReasons } = require('../../../share/middleware/handle_error');
 
 const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 17/12/2022
-     * @updated_at 03/02/2023 && 04/02/2023 && 15/02/2023
+     * @updated_at 03/02/2023 && 04/02/2023 && 15/02/2023 && 22/02/2023
      * @description Login student
      * @function LoginUser
      * @param { mssv,password }
@@ -55,7 +56,7 @@ const userController = {
                 isdeleted: CONSTANTS.DELETED_DISABLE,
             };
             let users = await user_model.getStudentById(data_query, data_return);
-            if (!users[0]) {
+            if (Array.isArray(users) && !users.length) {
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),
@@ -73,7 +74,6 @@ const userController = {
 
             // Take count number of customer in redis
             const student_count_login_api = await MEMORY_CACHE.getCache(key_block_login_student);
-
             // If count === 5 fail
             if (Number(student_count_login_api) >= CONSTANTS.LIMIT_LOGIN_BLOCK) {
                 // Take time ttl key
@@ -93,15 +93,28 @@ const userController = {
 
             // Check password student
             const check_pass = await PASSWORD.comparePassword(password, user.password);
+
             if (!check_pass) {
-                // Save time login account wrong
-                MEMORY_CACHE.setAccountLoginWrongCache(key_block_login_student, CONSTANTS._1_DAY_S_REDIS);
+                // Check exits key redis
+                const check_key_exit = await MEMORY_CACHE.existsKeyCache(key_block_login_student);
+
+                if (check_key_exit) {
+                    // Increase number block Login
+                    MEMORY_CACHE.increaseLoginWrongCache(key_block_login_student);
+                } else {
+                    // Save time login account wrong
+                    MEMORY_CACHE.setAccountLoginWrongCache(key_block_login_student, CONSTANTS._1_DAY_S_REDIS);
+                }
+
                 return res.status(401).json({
                     status: 401,
                     message: returnReasons('401'),
                     element: {
                         result: 'Password Is Incorrect ! ',
-                        number_login: `Warning number of logins ${Number(student_count_login_api) + 1}`,
+                        number_login: `Warning number of logins ${user_service.calculationBlock(
+                            student_count_login_api,
+                            CONSTANTS.LIMIT_LOGIN_BLOCK,
+                        )}`,
                     },
                 });
             }
@@ -178,10 +191,12 @@ const userController = {
                     message: returnReasons('500'),
                 });
             }
-            if (student_count_login_api) {
-                MEMORY_CACHE.delKeyCache(key_block_login_student);
-            }
+
             if (result) {
+                // Set key expire Block
+                if (student_count_login_api) {
+                    MEMORY_CACHE.expiresKeyCache(key_block_login_student, CONSTANTS._30_MINUTES_REDIS);
+                }
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
@@ -555,20 +570,19 @@ const userController = {
      * @return { Object }
      */
     changePasswordStudent: async (req, res) => {
+        const { password, oldPassword, confirmPassword } = req.body.input.user_change_password_input;
+
+        // Take user Id
+        const user_id = req.auth_user.id;
+
+        // Check user_id
+        if (!user_id || !password || !oldPassword || !confirmPassword) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
         try {
-            const { password, oldPassword, confirmPassword } = req.body.input.user_change_password_input;
-
-            // Take user Id
-            const user_id = req.auth_user.id;
-
-            // Check user_id
-            if (!user_id || !password || !oldPassword || !confirmPassword) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
-            }
-
             // Key redis  profile
             const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
                 user_id,
@@ -646,10 +660,34 @@ const userController = {
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(user_model.updateStudent(data, data_query, data_return));
+
             if (result) {
+                // Save Blacklist
+                const { access_token, session, auth_user } = req;
+
+                // Take refresh token cookie
+                let refresh_token_cookie = req.cookies.libary_school;
+
+                // Save blackList
+                MEMORY_CACHE.setBlackListCache(
+                    CONSTANTS.KEY_BACK_LIST,
+                    auth_user.id,
+                    access_token,
+                    refresh_token_cookie,
+                    CONSTANTS._20_DAY_S_REDIS,
+                );
+                // Remove cookie
+                res.clearCookie(CONFIGS.KEY_COOKIE);
+
+                // Remove Cookie
+                session.destroy();
+
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
+                    element: {
+                        result: 'Login session expired',
+                    },
                 });
             }
             if (err) {
@@ -680,7 +718,6 @@ const userController = {
     checkPasswordStudent: async (req, res) => {
         try {
             const { password } = req.body.input.user_check_password_input;
-
             // Take user Id
             const user_id = req.auth_user.id;
 
@@ -690,6 +727,34 @@ const userController = {
                     status: 400,
                     message: returnReasons('400'),
                 });
+            }
+
+            // Create key redis  key block login
+            const key_block_check_password_student = HELPER.getURIFromTemplate(
+                CONSTANTS.KEY_BLOCK_CHECK_PASSWORD_TIMES_STUDENT,
+                {
+                    user_id,
+                },
+            );
+
+            // Take count number of customer in redis
+            const student_count_login_api = await MEMORY_CACHE.getCache(key_block_check_password_student);
+
+            // If count === 4 fail
+            if (Number(student_count_login_api) >= CONSTANTS.LIMIT_CHECK_PASSWORD_BLOCK) {
+                // Take time ttl key
+                const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_check_password_student);
+
+                if (time_ttl_cache) {
+                    return res.status(401).json({
+                        status: 401,
+                        message: returnReasons('401'),
+                        element: {
+                            result: 'Account of you block 24h!',
+                            time_full: time_ttl_cache,
+                        },
+                    });
+                }
             }
 
             // Key redis  profile
@@ -718,16 +783,35 @@ const userController = {
 
             // Check Password true or false
             const isMatch = await PASSWORD.comparePassword(password, user.password);
+
+            // Check exits key redis
+            const check_key_exit = await MEMORY_CACHE.existsKeyCache(key_block_check_password_student);
             if (!isMatch) {
+                if (check_key_exit) {
+                    // Increase number block Login
+                    MEMORY_CACHE.increaseLoginWrongCache(key_block_check_password_student);
+                } else {
+                    // Save time login account wrong
+                    MEMORY_CACHE.setAccountLoginWrongCache(
+                        key_block_check_password_student,
+                        CONSTANTS._30_MINUTES_REDIS,
+                    );
+                }
                 return res.status(401).json({
                     status: 401,
                     message: returnReasons('401'),
                     element: {
-                        result: 'Wrong Password!',
+                        result: 'Wrong Password ! ',
+                        number_login: `Warning Times Enter Password ${user_service.calculationBlock(
+                            student_count_login_api,
+                            CONSTANTS.LIMIT_CHECK_PASSWORD_BLOCK,
+                        )}`,
                     },
                 });
             }
-
+            if (check_key_exit) {
+                MEMORY_CACHE.delKeyCache(key_block_check_password_student);
+            }
             return res.status(200).json({
                 status: 200,
                 message: returnReasons('200'),
