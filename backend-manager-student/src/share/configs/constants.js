@@ -29,6 +29,7 @@ module.exports = {
     _30_SECONDS_REDIS: 30,
     _1_MINUTES_REDIS: 60 * 1,
     _5_MINUTES_REDIS: 60 * 5,
+    _30_MINUTES_REDIS: 60 * 30,
     _1_HOURS_S_REDIS: 60 * 60 * 1,
     _1_DAY_S_REDIS: 60 * 60 * 24 * 1,
     _7_DAY_S_REDIS: 60 * 60 * 24 * 7,
@@ -250,6 +251,7 @@ module.exports = {
     KEY_BACK_LIST: 'black_list_token',
     KEY_PROFILE_STUDENT: 'profile-${user_id}',
     KEY_BLOCK_LOGIN_TIMES_STUDENT: 'block-login-${user_id}',
+    KEY_BLOCK_CHECK_PASSWORD_TIMES_STUDENT: 'block-check-password-${user_id}',
     KEY_LOCK_SEND_EMAIL: 'lock:${key_convert}',
     /**
      * @author Nguyễn Tiến Tài
@@ -264,6 +266,7 @@ module.exports = {
      * @description Limit login
      */
     LIMIT_LOGIN_BLOCK: 4,
+    LIMIT_CHECK_PASSWORD_BLOCK: 3,
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 15/02/2023
