@@ -15,7 +15,7 @@ const HELPER = require('./helper');
  */
 const sendEmailWithLock = async (key, value) => {
     const key_convert = key;
-    const value_convert = JSON.stringify({ value });
+    const value_convert = JSON.stringify(value);
 
     // Create key redis  profile
     const key_lock_send_email = HELPER.getURIFromTemplate(CONSTANTS.KEY_LOCK_SEND_EMAIL, {

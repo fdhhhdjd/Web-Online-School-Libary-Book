@@ -102,6 +102,7 @@ module.exports = {
     KEY_USER_EXIT_U: 'u*',
     KEY_ADMIN_EXIT_A: 'a*',
     KEY_USER_WARNING_TOKEN: 'user_send_email_warning_token',
+    KEY_USER_LINK_RESET_PASSWORD: 'user_link_reset_password',
     KEY_ADMIN_WARNING_TOKEN: 'admin_send_email_warning_token',
     /**
    * @author Nguyễn Tiến Tài
@@ -109,6 +110,17 @@ module.exports = {
    * @description Number retry
    * @param { Number }
    */
-    NUMBER_RETRY_EMAIL: 3
+    NUMBER_RETRY_EMAIL: 3,
+    /**
+* @author Nguyễn Tiến Tài
+* @created_at 23/02/2023
+* @description Type Folder Email
+* @param {Number}
+*/
+    TYPE_STUDENT: 0,
+    TYPE_ADMIN: 1,
+    STUDENT_FOLDER: 'user_views',
+    ADMIN_FOLDER: 'admin_views',
+    PATH_FOLDER_U_A: './src/share/views/${folder_u_a}'
 
 };

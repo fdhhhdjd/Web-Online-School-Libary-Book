@@ -1,5 +1,9 @@
-const REGEX = require('../configs/regex');
+//! LIBRARY
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+
+//! SHARE
+const REGEX = require('../configs/regex');
 const CONSTANTS = require('../configs/constants');
 
 module.exports = {
@@ -95,4 +99,14 @@ module.exports = {
      * @returns {boolean}
      */
     comparePassword: (password, password_hash) => bcrypt.compare(password, password_hash),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} password
+     * @created_at 23/02/2023
+     * @description Reset Password
+     * @returns {String}
+     */
+    resetStringToken() {
+        return crypto.randomBytes(CONSTANTS.CRYPTO_TOKEN).toString(CONSTANTS.CRYPTO_TYPE);
+    },
 };

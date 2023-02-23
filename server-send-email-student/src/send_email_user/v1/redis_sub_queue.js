@@ -17,6 +17,7 @@ const CONSTANTS = require('../../share/configs/constants')
 //! New Map Users
 const userChannelHandlers = new Map();
 userChannelHandlers.set(CONSTANTS.KEY_USER_WARNING_TOKEN, email_sender_user.sendEmailUserWarningHacker);
+userChannelHandlers.set(CONSTANTS.KEY_USER_LINK_RESET_PASSWORD, email_sender_user.sendEmailUserLinkResetPassword);
 
 //! New Map Admin
 const adminChannelHandlers = new Map();

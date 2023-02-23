@@ -14,6 +14,7 @@ module.exports = {
     _30_SECONDS: 30 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
+    _15_MINUTES: 15 * 60 * 1000,
     _1_DAY_S: 1 * 60 * 60 * 1000,
     _7_DAY_S: 7 * 60 * 60 * 1000,
     _1_HOURS_S: 60 * 60 * 1000,
@@ -280,4 +281,19 @@ module.exports = {
      * @param { string }
      */
     RESULT_REDIS: 'OK',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/02/2023
+     * @description Reset Password
+     * @param { string }
+     */
+    CRYPTO_TOKEN: 20,
+    CRYPTO_TYPE: 'hex',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/02/2023
+     * @description Link Reset Password
+     * @param { String }
+     */
+    LINK_RESET_STRING: '${port_reset}/student/password/reset/${key_reset_random}',
 };

@@ -5,10 +5,12 @@ const CONFIGS = require('../../../share/configs/config');
 const TOKENS = require('../../../share/utils/token');
 const MEMORY_CACHE = require('../../../share/utils/limited_redis');
 const REDIS_PUB_SUB = require('../../../share/utils/redis_pub_sub_helper');
+const RANDOMS = require('../../../share/utils/random');
 
 //! Model
 const user_model = require('../../../share/models/user.model');
 const user_device_model = require('../../../share/models/user_device.model');
+const user_reset_password_model = require('../../../share/models/user_reset_password.model');
 const geo_service = require('../../../share/services/geo.service');
 const user_service = require('../../../share/services/user_service/user_service');
 const { returnReasons } = require('../../../share/middleware/handle_error');
@@ -293,7 +295,9 @@ const userController = {
                     refetch_token_old[0].email = users[0].email;
 
                     // Publish data queue Redis
-                    REDIS_PUB_SUB.sendEmailWithLock('user_send_email_warning_token', refetch_token_old[0]);
+                    REDIS_PUB_SUB.sendEmailWithLock('user_send_email_warning_token', {
+                        data_renew_token: refetch_token_old[0],
+                    });
 
                     return res.status(400).json({
                         status: 400,
@@ -476,18 +480,18 @@ const userController = {
      * @return { Object }
      */
     getProfileStudent: async (req, res) => {
+        // Take user Id
+        const user_id = req.auth_user.id;
+
+        // Check user_id
+        if (!user_id) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
         try {
-            // Take user Id
-            const user_id = req.auth_user.id;
-
-            // Check user_id
-            if (!user_id) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
-            }
-
             // Check student exit database
             let data_return = {
                 user_id: 'user_id',
@@ -583,29 +587,16 @@ const userController = {
             });
         }
         try {
-            // Key redis  profile
-            const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
-                user_id,
-            });
-
-            // Get Profile student cache
-            let user;
-            const user_redis = await MEMORY_CACHE.getCache(key_profile_student);
-            user = JSON.parse(user_redis);
-
-            if (!user) {
-                // Check student exit database
-                const data_return = {
-                    password: 'password',
-                };
-                const data_query = {
+            // Take data database
+            const new_user = await user_model.getStudentById(
+                {
                     user_id,
                     isdeleted: CONSTANTS.DELETED_DISABLE,
-                };
-                // Take data database
-                const new_user = await user_model.getStudentById(data_query, data_return);
-                user = new_user[0];
-            }
+                },
+                { password: 'password' },
+            );
+
+            const user = new_user[0];
 
             // Check Password true or false
             const isMatch = await PASSWORD.comparePassword(oldPassword, user.password);
@@ -660,7 +651,6 @@ const userController = {
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(user_model.updateStudent(data, data_query, data_return));
-
             if (result) {
                 // Save Blacklist
                 const { access_token, session, auth_user } = req;
@@ -716,19 +706,19 @@ const userController = {
      * @return { Object }
      */
     checkPasswordStudent: async (req, res) => {
+        const { password } = req.body.input.user_check_password_input;
+
+        // Take user Id
+        const user_id = req.auth_user.id;
+
+        // Check user_id
+        if (!user_id || !password) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
         try {
-            const { password } = req.body.input.user_check_password_input;
-            // Take user Id
-            const user_id = req.auth_user.id;
-
-            // Check user_id
-            if (!user_id || !password) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
-            }
-
             // Create key redis  key block login
             const key_block_check_password_student = HELPER.getURIFromTemplate(
                 CONSTANTS.KEY_BLOCK_CHECK_PASSWORD_TIMES_STUDENT,
@@ -757,29 +747,17 @@ const userController = {
                 }
             }
 
-            // Key redis  profile
-            const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+            // Check student exit database
+            const data_return = {
+                password: 'password',
+            };
+            const data_query = {
                 user_id,
-            });
-
-            // Get Profile student cache
-            let user;
-            const user_redis = await MEMORY_CACHE.getCache(key_profile_student);
-            user = JSON.parse(user_redis);
-
-            if (!user) {
-                // Check student exit database
-                const data_return = {
-                    password: 'password',
-                };
-                const data_query = {
-                    user_id,
-                    isdeleted: CONSTANTS.DELETED_DISABLE,
-                };
-                // Take data database
-                const new_user = await user_model.getStudentById(data_query, data_return);
-                user = new_user[0];
-            }
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            };
+            // Take data database
+            const new_user = await user_model.getStudentById(data_query, data_return);
+            const user = new_user[0];
 
             // Check Password true or false
             const isMatch = await PASSWORD.comparePassword(password, user.password);
@@ -818,6 +796,100 @@ const userController = {
             });
         } catch (err) {
             console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Forget password student
+     * @function forgetPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
+    forgetPasswordStudent: async (req, res) => {
+        const { email } = req.body.input.user_forget_password_input;
+
+        // Check input
+        if (!email) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        try {
+            // Take data database
+            let users = await user_model.getStudentById(
+                { email, isdeleted: CONSTANTS.DELETED_DISABLE },
+                { user_id: 'user_id', name: 'name', role: 'role' },
+            );
+
+            // Check account exits
+            if (Array.isArray(users) && !users.length) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Link url reset
+            const key_reset_random = PASSWORD.resetStringToken();
+
+            // Link expired
+            const time_expire_reset = Date.now() + CONSTANTS._15_MINUTES;
+
+            // Save Db device
+            let data_device_insert = {
+                id: RANDOMS.createID(),
+                user_id: users[0].user_id,
+                reset_password_token: key_reset_random,
+                reset_password_expire: time_expire_reset,
+            };
+
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(
+                user_reset_password_model.insertResetPassword(data_device_insert),
+            );
+
+            if (result) {
+                // Create key redis  key block login
+                const key_block_login_student = HELPER.getURIFromTemplate(CONSTANTS.LINK_RESET_STRING, {
+                    port_reset: CONFIGS.PORT_FRONTEND_LOCAL,
+                    key_reset_random,
+                });
+                // const resetPasswordUrl = ;
+                // Publish data queue Redis
+                REDIS_PUB_SUB.sendEmailWithLock('user_link_reset_password', {
+                    data_reset: {
+                        link_reset: key_block_login_student,
+                        email,
+                        name: users[0].name,
+                    },
+                });
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+            if (err) {
+                return res.status(503).json({
+                    status: 503,
+                    message: returnReasons('503'),
+                    element: {
+                        result: 'Out Of Service',
+                    },
+                });
+            }
+        } catch (error) {
             return res.status(503).json({
                 status: 503,
                 message: returnReasons('503'),
