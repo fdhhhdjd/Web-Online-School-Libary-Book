@@ -109,4 +109,10 @@ module.exports = {
      * @description KEY Accept Token
      */
     IP_ADMIN: process.env.IP_ADMIN,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/02/2023
+     * @description PORT_FRONTEND_DEV
+     */
+    PORT_FRONTEND_LOCAL: process.env.FRONTEND_URL,
 };

@@ -280,7 +280,7 @@ paths:
     #!created_at 05/02/2023
     #!updated_at 08/02/2023
     #!description: Logout student
-    /api/v1/user/logout:
+    /api/v1/user/private/logout:
         post:
             summary: Logout Student
             tags: [Logout student]
@@ -321,7 +321,7 @@ paths:
     #!created_at 05/02/2023
     #!updated_at 08/02/2023
     #!description: Get Profile Student
-    /api/v1/user/profile:
+    /api/v1/user/private/profile:
         get:
             summary: Profile Student
             tags: [Profile Student]
@@ -392,7 +392,7 @@ paths:
     #!@author Nguyễn Tiến Tài
     #!created_at 13/02/2023
     #!description: Change Password Student
-    /api/v1/user/change-password:
+    /api/v1/user/private/change-password:
         post:
             summary: Change Password Student
             tags: [Change Password Student]
@@ -440,13 +440,13 @@ paths:
                     $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
-    #!created_at 13/02/2023
-    #!description: Check Password Student
-    /api/v1/user/check-password:
+    #!created_at 23/02/2023
+    #!description: Forget Password Student
+    /api/v1/user/forget-password:
         post:
-            summary: Check Password Student
-            tags: [Check Password Student]
-            operationId: checkPasswordStudent
+            summary: Forget Password Student
+            tags: [Forget Password Student]
+            operationId: forgetPasswordStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -454,12 +454,9 @@ paths:
                 - $ref: '#/components/parameters/X-OS-VERSION'
                 - $ref: '#/components/parameters/X-APP-VERSION'
                 - $ref: '#/components/parameters/X-DEVICE-NAME'
-                - $ref: '#/components/parameters/TOKEN'
-                  schema:
-                      $ref: '#/components/headers/AuthHeader'
             responses:
                 200:
-                    description: Change Password Success
+                    description: Success
                     content:
                         application/json:
                             schema:
@@ -472,7 +469,7 @@ paths:
                                         type: string
                                         example: Success
                 400:
-                    description: user_id or password Invalid !!
+                    description: Email Invalid or Email not Exits!!
                     content:
                         application/json:
                             schema:
@@ -484,7 +481,5 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
-                401:
-                    $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
