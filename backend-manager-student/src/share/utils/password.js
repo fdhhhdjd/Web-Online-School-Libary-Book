@@ -118,8 +118,8 @@ module.exports = {
      * @returns {String}
      */
     randomPubPriKey() {
-        const { privateKey, publicKey } = crypto.generateKeyPairSync(CONFIGS.MODULUSLENGTH, {
-            modulusLength: CONFIGS.GENERAL_KEY_RANDOM,
+        const { privateKey, publicKey } = crypto.generateKeyPairSync(CONFIGS.GENERAL_KEY_RANDOM, {
+            modulusLength: Number(CONFIGS.MODULUSLENGTH),
         });
         const all_key = {
             privateKey,
