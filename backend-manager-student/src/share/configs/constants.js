@@ -12,6 +12,7 @@ module.exports = {
      * @param { "Name":"value" => Example: Male: 1 }
      */
     _30_SECONDS: 30 * 1000,
+    _10_SECONDS: 10 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
     _15_MINUTES: 15 * 60 * 1000,
@@ -295,5 +296,5 @@ module.exports = {
      * @description Link Reset Password
      * @param { String }
      */
-    LINK_RESET_STRING: '${port_reset}/student/password/reset/${key_reset_random}',
+    LINK_RESET_STRING: '${port_reset}/password/reset/${key_reset_random}',
 };
