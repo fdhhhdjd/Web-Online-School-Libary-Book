@@ -15,7 +15,7 @@ module.exports = {
             'X-OS-VERSION': '1.0',
             'X-APP-VERSION': '1.0',
             'X-DEVICE-NAME': 'IOS',
-            'Authorization': `Bearer ${CONSTANTS.TOKEN_TEST}`,
+            Authorization: `Bearer ${CONSTANTS.TOKEN_TEST}`,
         };
         return headers;
     },

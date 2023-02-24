@@ -7,9 +7,9 @@
 <a href = "mailto:nguyentientai10@gmail.com"><img src="https://img.icons8.com/fluency/48/000000/send-mass-email.png" alt="License"></a>
 </p>
 
-# System 🤖: Business Microservice. 
+# System 🤖: Business Microservice.
 
-# Project Job ✏️: WebSite Online School Libary Book .  
+# Project Job ✏️: WebSite Online School Libary Book .
 
 ## Team Word: Liên hệ công việc https://profile-forme.cf
 

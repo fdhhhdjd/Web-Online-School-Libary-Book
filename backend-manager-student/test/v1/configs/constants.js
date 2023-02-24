@@ -13,13 +13,11 @@ module.exports = {
     URL_API_ADMIN: `${process.env.URL_API_ADMIN}`,
     URL_API_USER: `${process.env.URL_API_USER}`,
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 14/02/2023
-    * @description Password 
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/02/2023
+     * @description Password
+     */
     PASSWORD: `${process.env.PASSWORD}`,
     OLD_PASSWORD: `${process.env.OLD_PASSWORD}`,
     CONFIRM_PASSWORD: `${process.env.CONFIRM_PASSWORD}`,
 };
-
-

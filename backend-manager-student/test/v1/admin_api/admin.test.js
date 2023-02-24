@@ -1,5 +1,5 @@
 const requestAdmin = require('./request.admin');
-const CONFIGS = require('../configs/config')
+const CONFIGS = require('../configs/config');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 17/12/2022
@@ -7,10 +7,10 @@ const CONFIGS = require('../configs/config')
  */
 describe('admin_api', () => {
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 17/12/2022
-    * @description Unit test Auth Login
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 17/12/2022
+     * @description Unit test Auth Login
+     */
     describe('Authentication - Login Admin ', () => {
         test('Success - Login admin', async () => {
             const res = await requestAdmin.login_Admin_Test('fdhhhdjd', 'Taiheo123@');
@@ -23,10 +23,10 @@ describe('admin_api', () => {
         });
     });
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 02/02/2023
-   * @description Unit test Auth Login
-   */
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/02/2023
+     * @description Unit test Auth Login
+     */
     describe('Admin - Add Student ', () => {
         test('Nothing changes to update -  Success', async () => {
             const res = await requestAdmin.add_student_admin_test(CONFIGS.XLSX_SUCCESS);

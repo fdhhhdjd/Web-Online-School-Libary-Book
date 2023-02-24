@@ -162,8 +162,9 @@ const adminController = {
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),
+                    error: err,
                     element: {
-                        result: 'Email or Phone or Email or Mssv exits !',
+                        result: 'Email or Phone or Mssv exits !',
                     },
                 });
             }

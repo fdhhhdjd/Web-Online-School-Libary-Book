@@ -38,12 +38,9 @@ module.exports = {
      */
     new_token_user_test: async () => {
         try {
-            const res = await axios.post(
-                `${URL_USER_API}/v1/user/renew-token`,
-                {
-                    headers: HELPERS.headerAPi(),
-                },
-            );
+            const res = await axios.post(`${URL_USER_API}/v1/user/renew-token`, {
+                headers: HELPERS.headerAPi(),
+            });
             return res;
         } catch (error) {
             return error;
@@ -56,12 +53,9 @@ module.exports = {
      */
     get_profile_user_test: async () => {
         try {
-            const res = await axios.get(
-                `${URL_USER_API}/v1/user/profile`,
-                {
-                    headers: HELPERS.headerAPi(),
-                },
-            );
+            const res = await axios.get(`${URL_USER_API}/v1/user/profile`, {
+                headers: HELPERS.headerAPi(),
+            });
             return res;
         } catch (error) {
             return error;
@@ -81,7 +75,7 @@ module.exports = {
                         user_change_password_input: {
                             oldPassword: oldPassword,
                             password: password,
-                            confirmPassword: confirmPassword
+                            confirmPassword: confirmPassword,
                         },
                     },
                 },
@@ -118,5 +112,5 @@ module.exports = {
         } catch (error) {
             return error;
         }
-    }
+    },
 };

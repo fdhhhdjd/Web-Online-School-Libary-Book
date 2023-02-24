@@ -114,59 +114,59 @@ module.exports = {
     MIME_AUDIO: 'audio',
     MIME_DOCUMENT: 'document',
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 12/01/2023
-    * @description storage
-    * @param { user_id,time,file_name}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 12/01/2023
+     * @description storage
+     * @param { user_id,time,file_name}
+     */
     STORAGE_FOLDER_VIDEOS_TEMPLATE: 'videos/${user_id}/${media_id}/${time}-${file_name}',
     STORAGE_FOLDER_IMAGES_TEMPLATE: 'images/${user_id}/${media_id}/${time}-${file_name}',
     STORAGE_FOLDER_AUDIO_TEMPLATE: 'audio/${user_id}/${media_id}/${time}-${file_name}',
     STORAGE_FOLDER_DOCUMENT_TEMPLATE: 'document/${user_id}/${media_id}/${time}-${file_name}',
     STORAGE_UPLOAD_ID: 'data/${id}/origin/${file_name}',
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 30/01/2023
-   * @description option
-   */
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description option
+     */
     OPTION_CLOUD: 'auto',
     OPTION_CLOUD_DOCUMENT_FORMAT: 'xlsx',
     OPTION_FOLDER_IMAGE: 'library_school_image',
     OPTION_FOLDER_DOCUMENT: 'library_school_document',
     /**
-  * @author Nguyễn Tiến Tài
-  * @created_at 31/01/2023
-  * @description proxy accept proxy reliable
-  */
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description proxy accept proxy reliable
+     */
     TRUST_PROXY: 'trust proxy',
 
     /**
- * @author Nguyễn Tiến Tài
- * @created_at 31/01/2023
- * @description environment
- */
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description environment
+     */
     ENVIRONMENT_PRODUCT: 'PRODUCTION',
     ENVIRONMENT_DEV: 'DEVELOPER',
     /**
- * @author Nguyễn Tiến Tài
- * @created_at 31/01/2023
- * @description compression zip send server
- */
+     * @author Nguyễn Tiến Tài
+     * @created_at 31/01/2023
+     * @description compression zip send server
+     */
     COMPRESSION_ZIP_SEND_SERVER_LEVER: 6,
     COMPRESSION_ZIP_SEND_THRESHOLD: 100 * 1000,
     COMPRESSION_ZIP_SEND_SERVER: 'x-no-compression',
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 30/01/2023
-    * @description Setup Swagger general
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description Setup Swagger general
+     */
     OPEN_API_SWAGGER: '3.0.0',
     VERSION_SWAGGER: '1.0.0',
     /**
- * @author Nguyễn Tiến Tài
- * @created_at 30/01/2023
- * @description Setup Swagger admin
- */
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/01/2023
+     * @description Setup Swagger admin
+     */
     URL_MEDIA_SWAGGER: 'http://localhost:8000',
     TITLE_MEDIA_SWAGGER: 'Document Media API',
     DESCRIPTION_MEDIA_SWAGGER: 'Document API Library School',

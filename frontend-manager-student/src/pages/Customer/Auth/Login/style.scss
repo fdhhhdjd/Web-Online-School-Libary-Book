@@ -54,7 +54,7 @@
   strong {
     align-items: center;
     border-bottom: 1px solid #acacac;
-    color: $iq-title-text;
+    color: #000;
     display: flex;
     font-size: 25px;
     font-weight: 500;
@@ -73,7 +73,7 @@
     width: 100%;
 
     label {
-      color: $iq-body-text;
+      color: #000;
       display: flex;
       font-size: 18px;
       font-weight: 400;
@@ -96,7 +96,7 @@
       width: 100%;
 
       button {
-        background: $iq-primary;
+        background: #000;
         color: #fff;
         font-weight: 500;
         height: 100%;

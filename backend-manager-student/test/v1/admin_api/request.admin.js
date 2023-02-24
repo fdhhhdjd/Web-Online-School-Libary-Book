@@ -33,10 +33,10 @@ module.exports = {
         }
     },
     /**
-    * @Author Nguyễn Tiến Tài
-    * @Created_at 02/02/2023
-    * @Description Add Student
-    */
+     * @Author Nguyễn Tiến Tài
+     * @Created_at 02/02/2023
+     * @Description Add Student
+     */
     add_student_admin_test: async (url_file) => {
         try {
             const res = await axios.post(
@@ -44,7 +44,7 @@ module.exports = {
                 {
                     input: {
                         admin_add_student_input: {
-                            url_document: url_file
+                            url_document: url_file,
                         },
                     },
                 },

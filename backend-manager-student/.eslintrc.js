@@ -17,7 +17,7 @@ module.exports = {
 
         indent: ['error', 4],
         camelcase: 'off',
-        'linebreak-style': [2, 'unix'],
+        'linebreak-style': ['error', 'windows'],
         'no-useless-escape': 'off',
         'no-console': [
             'error',
@@ -42,9 +42,7 @@ module.exports = {
         'operator-linebreak': [2, 'before', { overrides: { '?': 'after' } }],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
-        'no-return-await': 'off',
         'func-names': 'off',
-        'eqeqeq': 'off',
         'no-ternary': 0,
         'no-unneeded-ternary': 0,
         'import/order': 'off',
@@ -56,6 +54,5 @@ module.exports = {
         'consistent-return': 'off',
         'no-template-curly-in-string': 'off',
         'prefer-destructuring': 'off',
-        'radix': 'off'
     },
 };

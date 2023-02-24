@@ -1,5 +1,9 @@
 FROM postgres:12 
 
-COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
+RUN mkdir /var/lib/postgresql/data/decoderbufs
+RUN chown -R postgres:postgres /var/lib/postgresql/data/decoderbufs \
+    && chmod -R 700 /var/lib/postgresql/data/decoderbufs
+
+# COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
 
 COPY migrations/init/ /docker-entrypoint-initdb.d/7

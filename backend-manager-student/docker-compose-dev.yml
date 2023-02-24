@@ -134,9 +134,9 @@ services:
     ###! postgresql ###
     postgresql:
         container_name: postgresql
-        build:
-            context: .
-            dockerfile: Dockerfile.postgres.dev
+        # build:
+        #     context: .
+        #     dockerfile: Dockerfile.postgres.dev
         image: postgres:12
         restart: unless-stopped
         environment:

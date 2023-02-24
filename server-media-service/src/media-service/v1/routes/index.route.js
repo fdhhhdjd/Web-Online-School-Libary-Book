@@ -6,7 +6,7 @@ const removeRouter = require('../routes/remove/remove_cloud__routes');
  * @created_at 12/01/2022
  * @description Route Media
  */
-//! UPLOAD 
+//! UPLOAD
 router.use('/api/v1', uploadRouter);
 
 //! REMOVE

@@ -19,11 +19,11 @@ module.exports = {
     _1_YEAR: 365 * 24 * 60 * 60 * 1000,
     _1_MONTH: 30 * 24 * 60 * 60 * 1000,
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 19/02/2023
-    * @description Error general
-    * @param { "Name":"message" }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/02/2023
+     * @description Error general
+     * @param { "Name":"message" }
+     */
     reasonPhraseCodeProNewMap: () => {
         const result = new Map([
             ['100', 'Continue'],
@@ -94,33 +94,32 @@ module.exports = {
         return result;
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 19/02/2023
-    * @description Key Redis General
-    * @param { String }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/02/2023
+     * @description Key Redis General
+     * @param { String }
+     */
     KEY_USER_EXIT_U: 'u*',
     KEY_ADMIN_EXIT_A: 'a*',
     KEY_USER_WARNING_TOKEN: 'user_send_email_warning_token',
     KEY_USER_LINK_RESET_PASSWORD: 'user_link_reset_password',
     KEY_ADMIN_WARNING_TOKEN: 'admin_send_email_warning_token',
     /**
-   * @author Nguyễn Tiến Tài
-   * @created_at 19/02/2023
-   * @description Number retry
-   * @param { Number }
-   */
+     * @author Nguyễn Tiến Tài
+     * @created_at 19/02/2023
+     * @description Number retry
+     * @param { Number }
+     */
     NUMBER_RETRY_EMAIL: 3,
     /**
-* @author Nguyễn Tiến Tài
-* @created_at 23/02/2023
-* @description Type Folder Email
-* @param {Number}
-*/
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/02/2023
+     * @description Type Folder Email
+     * @param {Number}
+     */
     TYPE_STUDENT: 0,
     TYPE_ADMIN: 1,
     STUDENT_FOLDER: 'user_views',
     ADMIN_FOLDER: 'admin_views',
-    PATH_FOLDER_U_A: './src/share/views/${folder_u_a}'
-
+    PATH_FOLDER_U_A: './src/share/views/${folder_u_a}',
 };

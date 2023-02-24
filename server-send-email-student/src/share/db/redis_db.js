@@ -7,16 +7,16 @@ const CONFIGS = require('../configs/config');
  * @description Connect Cache Redis Master and Slave
  */
 const ConnectionRedis = (REDIS) => {
-    REDIS.on('connect', function() {
+    REDIS.on('connect', function () {
         console.info(`Client connected to redis Push ${JSON.stringify(this.options.user)}`);
     });
-    REDIS.on('ready', function() {
+    REDIS.on('ready', function () {
         console.info(`Client connected to redis push and ready to use ${JSON.stringify(this.options.host)}...`);
     });
     REDIS.on('error', (error) => {
         console.info(error);
     });
-    REDIS.on('end', function() {
+    REDIS.on('end', function () {
         console.info(`Client disconnected from redis push ${JSON.stringify(this.options.user)}`);
     });
     REDIS.on('SIGINT', () => {

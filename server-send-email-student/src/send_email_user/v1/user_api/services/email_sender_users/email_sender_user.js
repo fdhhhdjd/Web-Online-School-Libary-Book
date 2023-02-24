@@ -1,13 +1,13 @@
 //! LIBARY
 const retry = require('async-retry');
-const path = require('path')
+const path = require('path');
 
 //! SERVICE
 const send_email = require('../../../../../share/configs/email_template');
 
 //! SHARE
-const CONSTANTS = require('../../../../../share/configs/constants')
-const CONFIGS = require('../../../../../share/configs/config')
+const CONSTANTS = require('../../../../../share/configs/constants');
+const CONFIGS = require('../../../../../share/configs/config');
 
 const emailSenderUsers = {
     /**
@@ -18,8 +18,8 @@ const emailSenderUsers = {
      * @return { Object }
      */
     sendEmailUserWarningHacker: async (message_sub) => {
-        const type = CONSTANTS.TYPE_STUDENT
-        const message = message_sub.data_renew_token
+        const type = CONSTANTS.TYPE_STUDENT;
+        const message = message_sub.data_renew_token;
         const option = {
             from: CONFIGS.SMTP_MAIL,
             to: message.email,
@@ -35,27 +35,26 @@ const emailSenderUsers = {
             context: {
                 data: message,
             },
-        }
+        };
         try {
-            await send_email(option, type)
-            console.info('Send_Email Success::::::', message.email)
+            await send_email(option, type);
+            console.info('Send_Email Success::::::', message.email);
         } catch (error) {
             console.error('Lỗi khi gửi email:', error.message);
             await retry(send_email.bind(null, option), { retries: CONSTANTS.NUMBER_RETRY_EMAIL });
         }
-    }
+    },
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 23/02/2023
      * @description Send Email reset Password
      * @function sendEmailUserLinkResetPassword
      * @return { Object }
-     */,
-    sendEmailUserLinkResetPassword: async (message_sub) => {
-        const type = CONSTANTS.TYPE_STUDENT
-        const message = message_sub.data_reset
-        message.support_email = CONFIGS.SMTP_MAIL
-        console.log(message_sub, '----')
+     */ sendEmailUserLinkResetPassword: async (message_sub) => {
+        const type = CONSTANTS.TYPE_STUDENT;
+        const message = message_sub.data_reset;
+        message.support_email = CONFIGS.SMTP_MAIL;
+        console.log(message_sub, '----');
         const option = {
             from: CONFIGS.SMTP_MAIL,
             to: message.email,
@@ -71,14 +70,14 @@ const emailSenderUsers = {
             context: {
                 data: message,
             },
-        }
+        };
         try {
-            await send_email(option, type)
-            console.info('Send_Email Success::::::', message)
+            await send_email(option, type);
+            console.info('Send_Email Success::::::', message);
         } catch (error) {
             console.error('Lỗi khi gửi email:', error.message);
             await retry(send_email.bind(null, option), { retries: CONSTANTS.NUMBER_RETRY_EMAIL });
         }
-    }
-}
+    },
+};
 module.exports = emailSenderUsers;
