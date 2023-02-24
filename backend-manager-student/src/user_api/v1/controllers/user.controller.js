@@ -808,7 +808,7 @@ const userController = {
 
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 13/02/2023
+     * @created_at 23/02/2023
      * @description Forget password student
      * @function forgetPasswordStudent
      * @param { password }
@@ -878,6 +878,7 @@ const userController = {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
+                    key: key_reset_random,
                 });
             }
             if (err) {
@@ -886,6 +887,144 @@ const userController = {
                     message: returnReasons('503'),
                     element: {
                         result: 'Out Of Service',
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/02/2023
+     * @description reset password student
+     * @function resetPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
+    resetPasswordStudent: async (req, res) => {
+        const { password, confirmPassword } = req.body.input.user_reset_password_input;
+        const token_reset = req.params.token_reset;
+
+        // Check input
+        if (!password || !confirmPassword || !token_reset) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        try {
+            // Take time toke_reset
+            const data_reset = await user_reset_password_model.getResetPasswordById(
+                { reset_password_token: token_reset },
+                { reset_password_expire: 'reset_password_expire', user_id: 'user_id', isdeleted: 'isdeleted' },
+            );
+
+            // Check reset_password exits
+            if (Array.isArray(data_reset) && !data_reset.length) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Link Reset NotFound !',
+                    },
+                });
+            }
+
+            // Check Link Already change password
+            if (data_reset[0].isdeleted === CONSTANTS.DELETED_ENABLE) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password has been reset !',
+                    },
+                });
+            }
+
+            // Take database
+            const check_token_reset = HELPER.isExpired(data_reset[0].reset_password_expire);
+
+            // Check token_reset
+            if (check_token_reset) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Link Expired,Please change Link defense !',
+                    },
+                });
+            }
+
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password and confirm password does not match!',
+                    },
+                });
+            }
+
+            // Check Password Security
+            const password_security = PASSWORD.isPassword(password);
+            if (!password_security) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                    },
+                });
+            }
+
+            // Encode Password student
+            const new_password_student = await PASSWORD.encodePassword(password);
+
+            // Data update database
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(
+                user_model.updateStudent(
+                    { password: new_password_student },
+                    {
+                        user_id: data_reset[0].user_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    { user_id: 'user_id' },
+                ),
+            );
+
+            if (result) {
+                // Data update database
+                await user_reset_password_model.updateResetPassword(
+                    { isdeleted: CONSTANTS.DELETED_ENABLE },
+                    {
+                        user_id: data_reset[0].user_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    { user_id: 'user_id' },
+                );
+
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('500'),
+                    element: {
+                        result: 'Reset Password Fail',
                     },
                 });
             }
