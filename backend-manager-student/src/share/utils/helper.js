@@ -222,9 +222,9 @@ module.exports = {
      * @description Verify time exp refreshToken
      * @returns {boolean}
      */
-    isRefreshTokenValid(refreshToken) {
+    isRefreshTokenValid(refreshToken, public_key) {
         try {
-            const decoded = TOKENS.verifyToken(refreshToken);
+            const decoded = TOKENS.verifyToken(refreshToken, public_key);
             // Check if token has expired
             const currentTime = Math.floor(Date.now() / 1000);
             if (decoded.exp <= currentTime) {
@@ -241,9 +241,9 @@ module.exports = {
      * @description Verify time exp accessToken
      * @returns {boolean}
      */
-    isAccessTokenValid(accessToken) {
+    isAccessTokenValid(accessToken, public_key) {
         try {
-            const decoded = TOKENS.verifyAccessToken(accessToken);
+            const decoded = TOKENS.verifyAccessToken(accessToken, public_key);
             // Check if token has expired
             const currentTime = Date.now().getTime() / 1000;
             if (decoded.exp < currentTime) {

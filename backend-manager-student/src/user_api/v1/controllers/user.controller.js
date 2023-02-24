@@ -38,7 +38,6 @@ const userController = {
                 message: returnReasons('400'),
             });
         }
-
         try {
             // Take ip computer student
             const ip = req.headers[CONSTANTS.HEADER_FORWARDED_FOR] || req.socket.remoteAddress || null;
@@ -124,6 +123,12 @@ const userController = {
             // Save Db device
             const geo = HELPER.findingLocationByIP(ip) || HELPER.findingLocationByIP(CONFIGS.IP_ADMIN);
 
+            // Create public and private key
+            const pub_pri_key = PASSWORD.randomPubPriKey();
+
+            // Convert public key to pem
+            const publicKeyString = PASSWORD.encodePemPubKey(pub_pri_key.publicKey);
+
             // Check Token Redis
             let refresh_token_redis = await MEMORY_CACHE.getCache(user.user_id);
 
@@ -131,7 +136,10 @@ const userController = {
             let refresh_token;
             if (!refresh_token_redis) {
                 // Refresh_token new
-                refresh_token = TOKENS.createRefreshToken({ id: user.user_id, name: user.name, email: user.email });
+                refresh_token = TOKENS.createRefreshToken(
+                    { id: user.user_id, name: user.name, email: user.email },
+                    pub_pri_key.privateKey,
+                );
 
                 // Save Redis
                 MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
@@ -141,7 +149,10 @@ const userController = {
             }
 
             // Create accept_token
-            const access_token = TOKENS.createAcceptToken({ id: user.user_id, name: user.name, email: user.email });
+            const access_token = TOKENS.createAcceptToken(
+                { id: user.user_id, name: user.name, email: user.email },
+                pub_pri_key.privateKey,
+            );
 
             // Save session
             const save_session = req.session;
@@ -177,6 +188,7 @@ const userController = {
                 user_id: user.user_id,
                 last_access_time: login_time,
                 login_ip: ip,
+                public_key: publicKeyString,
                 is_active: CONSTANTS.DELETED_ENABLE,
                 login_location: geo_service.geoGPS(geo.range[0], geo.range[1]),
                 refresh_token,
@@ -246,21 +258,22 @@ const userController = {
                 const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
 
                 const check_exits = token_black_list.indexOf(refresh_token_cookie) > -1;
+                // Check Token old
+                const refetch_token_old = await user_device_model.getDeviceId(
+                    { device_uuid: device.device_id },
+                    {
+                        refresh_token: 'refresh_token',
+                        user_id: 'user_id',
+                        last_login_time: 'last_login_time',
+                        login_location: 'login_location',
+                        os_type: 'os_type',
+                        login_ip: 'login_ip',
+                        ua_name: 'ua_name',
+                        public_key: 'public_key',
+                    },
+                );
 
                 if (check_exits) {
-                    // Check Token old
-                    const refetch_token_old = await user_device_model.getDeviceId(
-                        { device_uuid: device.device_id },
-                        {
-                            refresh_token: 'refresh_token',
-                            user_id: 'user_id',
-                            last_login_time: 'last_login_time',
-                            login_location: 'login_location',
-                            os_type: 'os_type',
-                            login_ip: 'login_ip',
-                            ua_name: 'ua_name',
-                        },
-                    );
                     // Check Token exit BlackList
                     const token_black_list_new = await MEMORY_CACHE.getRangeCache(
                         CONSTANTS.KEY_BACK_LIST,
@@ -307,6 +320,7 @@ const userController = {
                         },
                     });
                 }
+
                 // Check device and cookie
                 if (device && refresh_token_cookie) {
                     let err;
@@ -318,24 +332,40 @@ const userController = {
                     if (result) {
                         const refresh_token_exit = refresh_token_cookie;
 
+                        // Encode public key
+                        const public_key_db = PASSWORD.decodePemPubKey(refetch_token_old[0].public_key);
+
                         // Check token expired
-                        const decoded = HELPER.isRefreshTokenValid(refresh_token_exit);
+                        const decoded = HELPER.isRefreshTokenValid(refresh_token_exit, public_key_db);
+
                         let access_token;
                         let refresh_token;
                         if (decoded) {
+                            // Create public and private key
+                            const pub_pri_key = PASSWORD.randomPubPriKey();
+
+                            // Convert public key to pem
+                            const publicKeyString = PASSWORD.encodePemPubKey(pub_pri_key.publicKey);
+
                             // Create accept_token
-                            access_token = TOKENS.createAcceptToken({
-                                id: result[0].user_id,
-                                name: result[0].name,
-                                email: result[0].email,
-                            });
+                            access_token = TOKENS.createAcceptToken(
+                                {
+                                    id: result[0].user_id,
+                                    name: result[0].name,
+                                    email: result[0].email,
+                                },
+                                pub_pri_key.privateKey,
+                            );
 
                             // Refresh_token new
-                            refresh_token = TOKENS.createRefreshToken({
-                                id: result[0].user_id,
-                                name: result[0].name,
-                                email: result[0].email,
-                            });
+                            refresh_token = TOKENS.createRefreshToken(
+                                {
+                                    id: result[0].user_id,
+                                    name: result[0].name,
+                                    email: result[0].email,
+                                },
+                                pub_pri_key.privateKey,
+                            );
 
                             // Save Redis and Save RT old Blacklist
                             await MEMORY_CACHE.setAndDelKeyBlackListCache(
@@ -362,6 +392,7 @@ const userController = {
                             let data_device_update = {
                                 last_access_time: access_time,
                                 refresh_token,
+                                public_key: publicKeyString,
                             };
                             // Update Device
                             await HELPER.handleRequest(

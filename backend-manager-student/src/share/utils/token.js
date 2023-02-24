@@ -1,5 +1,7 @@
+//! Library
 const jwt = require('jsonwebtoken');
 
+//! Share
 const CONFIGS = require('../configs/config');
 
 module.exports = {
@@ -9,8 +11,9 @@ module.exports = {
      * @description Create accept Token
      * @returns {Number}
      */
-    createAcceptToken(character_access_token) {
-        return jwt.sign(character_access_token, CONFIGS.ACCESS_TOKEN_SECRET, {
+    createAcceptToken(character_access_token, privateKey) {
+        return jwt.sign(character_access_token, privateKey, {
+            algorithm: CONFIGS.ALGORITHM_TOKEN,
             expiresIn: CONFIGS.EXPIRES_ACCESS_TOKEN,
         });
     },
@@ -20,27 +23,28 @@ module.exports = {
      * @description Create Refresh Token
      * @returns {Number}
      */
-    createRefreshToken(character_refresh_token) {
-        return jwt.sign(character_refresh_token, CONFIGS.REFRESH_TOKEN_SECRET, {
+    createRefreshToken(character_refresh_token, privateKey) {
+        return jwt.sign(character_refresh_token, privateKey, {
+            algorithm: CONFIGS.ALGORITHM_TOKEN,
             expiresIn: CONFIGS.EXPIRES_REFRESH_TOKEN,
         });
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 04/02/2023
+     * @created_at 24/02/2023
      * @description Very refreshToken
      * @returns {boolean}
      */
-    verifyToken(refreshToken) {
-        return jwt.verify(refreshToken, CONFIGS.REFRESH_TOKEN_SECRET);
+    verifyToken(refreshToken, public_key) {
+        return jwt.verify(refreshToken, public_key, { algorithms: [CONFIGS.ALGORITHM_TOKEN] }, (err, decode) => decode);
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 05/02/2023
+     * @created_at 24/02/2023
      * @description Very accessToken
      * @returns {boolean}
      */
-    verifyAccessToken(accessToken) {
-        return jwt.verify(accessToken, CONFIGS.ACCESS_TOKEN_SECRET);
+    verifyAccessToken(accessToken, public_key) {
+        return jwt.verify(accessToken, public_key, { algorithms: [CONFIGS.ALGORITHM_TOKEN] }, (err, decode) => decode);
     },
 };
