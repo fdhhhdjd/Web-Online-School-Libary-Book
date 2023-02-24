@@ -332,7 +332,7 @@ const userController = {
                     if (result) {
                         const refresh_token_exit = refresh_token_cookie;
 
-                        // Encode public key
+                        // Decode public key
                         const public_key_db = PASSWORD.decodePemPubKey(refetch_token_old[0].public_key);
 
                         // Check token expired

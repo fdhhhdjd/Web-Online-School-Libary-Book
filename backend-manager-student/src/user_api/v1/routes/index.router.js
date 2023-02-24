@@ -23,11 +23,10 @@ router.use('/api/v1/user/private', accessStudentMiddleware, userPrivateRouter);
  */
 router.use('/api/v1/user', userRouter);
 
-router.get('/check-status', (req, res) =>
-    res.status(200).json({
-        status: 'success',
-        message: 'OK',
-    }),
+router.get('/check-status', (req, res) => res.status(200).json({
+    status: 'success',
+    message: 'OK',
+}),
 );
 
 module.exports = router;
