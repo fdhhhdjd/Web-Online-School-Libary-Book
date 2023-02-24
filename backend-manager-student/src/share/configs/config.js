@@ -115,4 +115,14 @@ module.exports = {
      * @description PORT_FRONTEND_DEV
      */
     PORT_FRONTEND_LOCAL: process.env.FRONTEND_URL,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/02/2023
+     * @description Public Private Key Token
+     */
+    ALGORITHM_TOKEN: process.env.ALGORITHM_TOKEN,
+    ENCODE_PEM: process.env.ENCODE_PEM,
+    TYPE_PEM: process.env.TYPE_PEM,
+    MODULUSLENGTH: process.env.MODULUSLENGTH,
+    GENERAL_KEY_RANDOM: process.env.GENERAL_KEY_RANDOM,
 };

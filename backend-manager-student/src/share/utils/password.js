@@ -5,6 +5,7 @@ const crypto = require('crypto');
 //! SHARE
 const REGEX = require('../configs/regex');
 const CONSTANTS = require('../configs/constants');
+const CONFIGS = require('../configs/config');
 
 module.exports = {
     /**
@@ -108,5 +109,51 @@ module.exports = {
      */
     resetStringToken() {
         return crypto.randomBytes(CONSTANTS.CRYPTO_TOKEN).toString(CONSTANTS.CRYPTO_TYPE);
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} password
+     * @created_at 24/02/2023
+     * @description Reset Password
+     * @returns {String}
+     */
+    randomPubPriKey() {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync(CONFIGS.MODULUSLENGTH, {
+            modulusLength: CONFIGS.GENERAL_KEY_RANDOM,
+        });
+        const all_key = {
+            privateKey,
+            publicKey,
+        };
+        return all_key;
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} public_key
+     * @created_at 25/02/2023
+     * @description Encode Pem Public Key
+     * @returns {String}
+     */
+    encodePemPubKey(public_key) {
+        return public_key
+            .export({
+                type: CONFIGS.TYPE_PEM,
+                format: CONFIGS.ENCODE_PEM,
+            })
+            .toString();
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {string} public_key
+     * @created_at 24/02/2023
+     * @description decode pem key
+     * @returns {String}
+     */
+    decodePemPubKey(public_key) {
+        return crypto.createPublicKey({
+            key: public_key,
+            type: CONFIGS.TYPE_PEM,
+            format: CONFIGS.ENCODE_PEM,
+        });
     },
 };
