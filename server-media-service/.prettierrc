@@ -15,5 +15,5 @@
     "trailingComma": "all",
     "useTabs": false,
     "vueIndentScriptAndStyle": false,
-    "endOfLine": "lf"
+    "endOfLine": "auto"
 }

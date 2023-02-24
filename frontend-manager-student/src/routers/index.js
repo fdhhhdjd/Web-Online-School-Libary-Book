@@ -1,11 +1,11 @@
-import Navbar from 'components/Navbar';
+import Header from 'components/Header';
 
 const RouteDataMain = [
   {
     path: '',
     main: (
       <>
-        <Navbar />
+        <Header />
       </>
     ),
   },
