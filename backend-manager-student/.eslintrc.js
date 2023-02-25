@@ -56,6 +56,7 @@ module.exports = {
         'consistent-return': 'off',
         'no-template-curly-in-string': 'off',
         'prefer-destructuring': 'off',
-        'radix': 'off'
+        'radix': 'off',
+        "no-else-return": "off"
     },
 };
