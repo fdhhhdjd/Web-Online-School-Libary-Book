@@ -2,4 +2,4 @@ FROM postgres:12
 
 COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
 
-COPY migrations/init/ /docker-entrypoint-initdb.d/
+COPY migrations/init/ /docker-entrypoint-initdb.d/7

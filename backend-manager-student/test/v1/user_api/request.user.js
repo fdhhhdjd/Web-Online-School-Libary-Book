@@ -57,7 +57,7 @@ module.exports = {
     get_profile_user_test: async () => {
         try {
             const res = await axios.get(
-                `${URL_USER_API}/v1/user/private/profile`,
+                `${URL_USER_API}/v1/user/profile`,
                 {
                     headers: HELPERS.headerAPi(),
                 },
@@ -75,7 +75,7 @@ module.exports = {
     change_password_user_test: async (oldPassword, password, confirmPassword) => {
         try {
             const res = await axios.post(
-                `${URL_USER_API}/v1/user/private/change-password`,
+                `${URL_USER_API}/v1/user/change-password`,
                 {
                     input: {
                         user_change_password_input: {
@@ -102,7 +102,7 @@ module.exports = {
     check_password_user_test: async (password) => {
         try {
             const res = await axios.post(
-                `${URL_USER_API}/v1/user/private/check-password`,
+                `${URL_USER_API}/v1/user/check-password`,
                 {
                     input: {
                         user_check_password_input: {
