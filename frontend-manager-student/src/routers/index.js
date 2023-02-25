@@ -1,23 +1,29 @@
-import Layout from 'components/Layout/Layout';
-import CategoryPage from 'pages/Customer/CategoryPage';
-import Home from 'pages/Customer/Home';
+import Header from 'components/Header';
 
 const RouteDataMain = [
   {
     path: '',
     main: (
       <>
-        <Layout content={<Home />} />
+        <Header />
       </>
     ),
   },
-  {
-    path: '/category',
-    main: (
-      <>
-        <Layout content={<CategoryPage />} />
-      </>
-    ),
-  },
+  // {
+  //   path: '/category',
+  //   main: (
+  //     <>
+  //       <Layout content={<CategoryPage />} />
+  //     </>
+  //   ),
+  // },
+  // {
+  //   path: '/detail',
+  //   main: (
+  //     <>
+  //       <Layout content={<DetailBook />} />
+  //     </>
+  //   ),
+  // },
 ];
 export default RouteDataMain;
