@@ -14,18 +14,18 @@ const Login = ({ showLogin, setShowLogin }) => {
               Student ID <span>*</span>
             </label>
             <div className="iq-input-group">
-              <i class="far fa-id-card"></i>
-              <input type="email" name="" id="email" required />
+              <i className="far fa-id-card"></i>
+              <input type="text" name="" id="email" required />
             </div>
 
             <label htmlFor="">
               Password <span>*</span>
             </label>
             <div className="iq-input-group">
-              <i class="fas fa-lock"></i>
+              <i className="fas fa-lock"></i>
               <input type="password" name="" id="password" required />
             </div>
-            <div class="btns">
+            <div className="btns">
               <button type="submit">Login</button>
             </div>
             <a href="helo" className="forget">

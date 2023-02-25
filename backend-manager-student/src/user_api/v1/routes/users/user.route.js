@@ -28,12 +28,4 @@ router.post('/renew-token', userController.reNewToken);
  */
 router.post('/forget-password', userController.forgetPasswordStudent);
 
-/**
- * @author Nguyễn Tiến Tài
- * @created_at 24/02/2023
- * @description Route reset password Student
- * @param {('POST')} [method='POST'] The request's method
- */
-router.post('/reset/:token_reset', userController.resetPasswordStudent);
-
 module.exports = router;

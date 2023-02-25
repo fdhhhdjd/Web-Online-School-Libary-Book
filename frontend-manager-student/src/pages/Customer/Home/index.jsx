@@ -49,10 +49,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -93,10 +93,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -137,10 +137,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -181,10 +181,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -225,10 +225,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -269,10 +269,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -313,10 +313,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>
@@ -357,10 +357,10 @@ const Home = () => {
                             </div>
                             <div className="iq-product-action">
                               <a href="hello">
-                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <i className="fas fa-shopping-cart text-primary"></i>
                               </a>
                               <a href="helo" className="ml-2">
-                                <i class="fas fa-heart text-danger"></i>
+                                <i className="fas fa-heart text-danger"></i>
                               </a>
                             </div>
                           </div>

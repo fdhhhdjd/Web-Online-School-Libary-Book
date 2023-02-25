@@ -300,15 +300,4 @@ module.exports = {
         const formattedDateTime = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         return formattedDateTime;
     },
-    isExpired(time_expire_reset) {
-        const now = Date.now();
-        const diff = time_expire_reset - now;
-
-        if (diff > 0) {
-            // Not expired yet
-            return false;
-        }
-        // Expired
-        return true;
-    },
 };
