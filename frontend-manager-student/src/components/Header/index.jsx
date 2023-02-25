@@ -4,7 +4,7 @@ import { SCHOOL_LOGO } from '../../imports/home_import/index';
 
 const navInfo = [
   {
-    displayText: 'Trang chủ',
+    displayText: 'Giới thiệu',
     path: '/',
   },
   {
@@ -62,6 +62,14 @@ const Header = () => {
               ))}
             </div>
             <div className="header__menu__right">
+              <div className="hotline-wrap">
+                <a href="tel:0938861080">
+                  <i className="bx bxs-phone"></i>
+                  <span>
+                    Hotline / ZALO:<strong> 093 886 1080</strong>
+                  </span>
+                </a>
+              </div>
               <div className="header__menu__item header__menu__right__item">
                 <i className="bx bx-search"></i>
               </div>

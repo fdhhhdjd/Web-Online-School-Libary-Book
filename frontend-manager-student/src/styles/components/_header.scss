@@ -35,7 +35,12 @@
     @include flex(center, center);
     position: absolute;
     inset: 0;
+    left: -5rem;
     pointer-events: none;
+
+    @include tablet {
+      left: 0;
+    }
 
     img {
       height: 80px;
@@ -73,11 +78,15 @@
 
     &__item.active {
       font-weight: 600;
-      color: $main-color;
+      background: $txt-hologram;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text !important;
     }
 
     &__item:hover {
-      color: $main-color;
+      background: $txt-hologram;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text !important;
     }
 
     &__left,
@@ -88,6 +97,52 @@
 
     &__right {
       font-size: 2.25rem;
+
+      .hotline-wrap {
+        margin-right: 3rem;
+        @include tablet {
+          visibility: hidden;
+          display: none;
+        }
+        a {
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          -webkit-align-items: center;
+          align-items: center;
+          background: -webkit-linear-gradient(240deg, #ec1d25, #0d296b);
+          background: linear-gradient(-150deg, #ec1d25, #0d296b);
+          border-radius: 20px;
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          height: 40px;
+          -webkit-justify-content: center;
+          justify-content: center;
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+          color: $txt-white;
+
+          span {
+            font-size: 1.6rem;
+            font-weight: 800;
+          }
+
+          strong {
+            font-size: 2.2rem;
+          }
+
+          i {
+            display: inline-block;
+            font-size: 30px;
+            height: 18px;
+            line-height: 18px;
+            margin-right: 0.5rem;
+          }
+        }
+      }
 
       &__item {
         @include flex(center, center);
