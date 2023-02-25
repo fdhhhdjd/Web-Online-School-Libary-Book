@@ -159,7 +159,8 @@ module.exports = {
      * @description Mobile network
      * @returns {String}
      */
-    returnMobileNetWork: (code) => CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
+    returnMobileNetWork: (code) =>
+        CONSTANTS.mobileCodeProNewMap().get(code) || CONSTANTS.mobileCodeProNewMap().get('default'),
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 20/01/2023
@@ -223,9 +224,9 @@ module.exports = {
      */
     isRefreshTokenValid(refreshToken, public_key) {
         try {
-
             // Check verify accessToken
             const decoded = TOKENS.verifyToken(refreshToken, public_key);
+
             // Check if token has expired
             const currentTime = Math.floor(Date.now() / 1000);
             if (decoded.exp <= currentTime) {

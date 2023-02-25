@@ -19,7 +19,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 17/12/2022
-     * @updated_at 03/02/2023 && 04/02/2023 && 15/02/2023 && 22/02/2023
+     * @updated_at 03/02/2023 && 04/02/2023 && 15/02/2023 && 22/02/2023 && 25/02/2023
      * @description Login student
      * @function LoginUser
      * @param { mssv,password }
@@ -238,7 +238,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 04/02/2023
-     * @update_at 14/02/2023 && 15/02/2023
+     * @update_at 14/02/2023 && 15/02/2023 && 25/02/2023
      * @description New Token
      * @function reNewToken
      * @param { mssv,password }
@@ -252,7 +252,7 @@ const userController = {
             // Check exit token
             if (refresh_token_cookie) {
                 // Take device id header
-                const { device } = req;
+                const { device, session } = req;
 
                 // Check black_list redis
                 const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
@@ -306,6 +306,12 @@ const userController = {
                     // Assign from object
                     refetch_token_old[0].name = users[0].name;
                     refetch_token_old[0].email = users[0].email;
+
+                    // Remove cookie
+                    res.clearCookie(CONFIGS.KEY_COOKIE);
+
+                    // Remove Cookie
+                    session.destroy();
 
                     // Publish data queue Redis
                     REDIS_PUB_SUB.sendEmailWithLock('user_send_email_warning_token', {
@@ -409,6 +415,26 @@ const userController = {
                                         user_id: result[0].user_id,
                                         name: result[0].name,
                                     },
+                                },
+                            });
+                        } else {
+                            MEMORY_CACHE.setBlackListCache(
+                                CONSTANTS.KEY_BACK_LIST,
+                                result[0].user_id,
+                                refresh_token_cookie,
+                                CONSTANTS._20_DAY_S_REDIS,
+                            );
+                            // Remove cookie
+                            res.clearCookie(CONFIGS.KEY_COOKIE);
+
+                            // Remove Cookie
+                            session.destroy();
+
+                            return res.status(401).json({
+                                status: 401,
+                                message: returnReasons('401'),
+                                element: {
+                                    result: 'Refresh_token Expired !!!!',
                                 },
                             });
                         }
