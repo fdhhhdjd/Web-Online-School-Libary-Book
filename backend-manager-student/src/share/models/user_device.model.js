@@ -34,7 +34,7 @@ module.exports = {
                     .where('user.isdeleted', '=', CONSTANTS.DELETED_DISABLE)
                     .andWhere('user_device.refresh_token', refresh_token)
                     .andWhere('user_device.device_uuid', device_uuid)
-                    .select('user.user_id', 'user.role', 'user.name');
+                    .select('user.user_id', 'user.role', 'user.name', 'user.email');
                 resolve(user);
             } catch (error) {
                 reject(error);

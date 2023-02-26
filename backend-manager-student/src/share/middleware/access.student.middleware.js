@@ -59,7 +59,7 @@ const accessStudentMiddleware = async (req, res, next) => {
 
             // Check time Expired token
             let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
-            if (check_access_token) {
+            if (!check_access_token) {
                 return res.status(401).json({
                     status: 401,
                     message: returnReasons('401'),

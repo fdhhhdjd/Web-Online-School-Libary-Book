@@ -483,3 +483,120 @@ paths:
                                         example: Bad Request
                 503:
                     $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 24/02/2023
+    #!description: Reset Password Student
+    /api/v1/user/reset/:token_reset:
+        post:
+            summary: Reset Password Student
+            tags: [Reset Password Student]
+            operationId: forgetPasswordStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        user_reset_password_input:
+                                            type: object
+                                            properties:
+                                                password:
+                                                    type: string
+                                                    example: '20000531'
+                                                confirmPassword:
+                                                    type: string
+                                                    example: '20000531'
+                        required:
+                            - password
+                            - confirmPassword
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Link Reset NotFound or Password has been reset or Link Expired,Please change Link defense or Password Fail!!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 26/02/2023
+    #!description: Change Password Student
+    /api/v1/user/private/check-email:
+        get:
+            summary: Check Email Student
+            tags: [Check Email Student]
+            operationId: checkEmailStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Check Email Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Header and Token Invalid!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'

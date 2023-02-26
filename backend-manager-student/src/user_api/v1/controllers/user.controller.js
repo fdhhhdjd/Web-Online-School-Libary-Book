@@ -11,8 +11,14 @@ const RANDOMS = require('../../../share/utils/random');
 const user_model = require('../../../share/models/user.model');
 const user_device_model = require('../../../share/models/user_device.model');
 const user_reset_password_model = require('../../../share/models/user_reset_password.model');
+const user_verification_model = require('../../../share/models/user_verification.model');
+
+//! Service
 const geo_service = require('../../../share/services/geo.service');
 const user_service = require('../../../share/services/user_service/user_service');
+const verification_service = require('../../../share/services/user_service/verification.service');
+
+//! Middleware
 const { returnReasons } = require('../../../share/middleware/handle_error');
 
 const userController = {
@@ -68,6 +74,7 @@ const userController = {
             }
             // Account database or redis
             let user = users[0];
+
             // Create key redis  key block login
             const key_block_login_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_BLOCK_LOGIN_TIMES_STUDENT, {
                 user_id: user.user_id,
@@ -129,24 +136,14 @@ const userController = {
             // Convert public key to pem
             const publicKeyString = PASSWORD.encodePemPubKey(pub_pri_key.publicKey);
 
-            // Check Token Redis
-            let refresh_token_redis = await MEMORY_CACHE.getCache(user.user_id);
+            // Refresh_token new
+            let refresh_token = TOKENS.createRefreshToken(
+                { id: user.user_id, name: user.name, email: user.email },
+                pub_pri_key.privateKey,
+            );
 
-            // Save Refresh_token
-            let refresh_token;
-            if (!refresh_token_redis) {
-                // Refresh_token new
-                refresh_token = TOKENS.createRefreshToken(
-                    { id: user.user_id, name: user.name, email: user.email },
-                    pub_pri_key.privateKey,
-                );
-
-                // Save Redis
-                MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
-            } else {
-                // Refresh_token will is token redis
-                refresh_token = refresh_token_redis;
-            }
+            // Save Redis
+            MEMORY_CACHE.setCacheEx(user.user_id, refresh_token, CONSTANTS._7_DAY_S_REDIS);
 
             // Create accept_token
             const access_token = TOKENS.createAcceptToken(
@@ -944,6 +941,241 @@ const userController = {
                     element: {
                         result: 'Out Of Service',
                     },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/02/2023
+     * @description reset password student
+     * @function resetPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
+    resetPasswordStudent: async (req, res) => {
+        const { password, confirmPassword } = req.body.input.user_reset_password_input;
+
+        // Take Param Routes
+        const token_reset = req.params.token_reset;
+
+        // Check input
+        if (!password || !confirmPassword || !token_reset) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+        try {
+            // Take time toke_reset
+            const data_reset = await user_reset_password_model.getResetPasswordById(
+                { reset_password_token: token_reset },
+                { reset_password_expire: 'reset_password_expire', user_id: 'user_id', isdeleted: 'isdeleted' },
+            );
+
+            // Check reset_password exits
+            if (Array.isArray(data_reset) && !data_reset.length) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Link Reset NotFound !',
+                    },
+                });
+            }
+
+            // Check Link Already change password
+            if (data_reset[0].isdeleted === CONSTANTS.DELETED_ENABLE) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password has been reset !',
+                    },
+                });
+            }
+
+            // Take database
+            const check_token_reset = HELPER.isExpired(data_reset[0].reset_password_expire);
+
+            // Check token_reset
+            if (check_token_reset) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Link Expired,Please change Link defense !',
+                    },
+                });
+            }
+
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password and confirm password does not match!',
+                    },
+                });
+            }
+
+            // Check Password Security
+            const password_security = PASSWORD.isPassword(password);
+            if (!password_security) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                    },
+                });
+            }
+
+            // Encode Password student
+            const new_password_student = await PASSWORD.encodePassword(password);
+
+            // Data update database
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(
+                user_model.updateStudent(
+                    { password: new_password_student },
+                    {
+                        user_id: data_reset[0].user_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    { user_id: 'user_id' },
+                ),
+            );
+
+            if (result) {
+                // Data update database
+                await user_reset_password_model.updateResetPassword(
+                    { isdeleted: CONSTANTS.DELETED_ENABLE },
+                    {
+                        user_id: data_reset[0].user_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    { user_id: 'user_id' },
+                );
+
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('500'),
+                    element: {
+                        result: 'Reset Password Fail',
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 25/02/2023
+     * @description Check email
+     * @function checkEmailStudent
+     * @param { password }
+     * @return { Object }
+     */
+    checkEmailStudent: async (req, res) => {
+        // Take user Id
+        const { id, name, email } = req.auth_user;
+
+        // Check user_id
+        if (!id || !name || !email) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+        try {
+            // Get data verification student
+            const check_email_verification_student = await user_verification_model.getStudentVerificationById(
+                { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+            );
+
+            // Variable setup Link
+            const protocol_verification = req.protocol;
+            const host_verification = req.get(CONSTANTS.HOST_PRODUCT);
+
+            // Check Data verification
+            if (Array.isArray(check_email_verification_student) && !check_email_verification_student.length) {
+                // Send Email verification
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Please check Email!',
+                    },
+                });
+            }
+
+            // Take arr new in table verification
+            const new_verification = check_email_verification_student[check_email_verification_student.length - 1];
+
+            // Check expired verification
+            const time_expire_verification = HELPER.isExpired(new_verification.link_email_expire);
+
+            if (time_expire_verification !== CONSTANTS.DELETED_DISABLE) {
+                // delete verification expire
+                await user_verification_model.updateVerification(
+                    { isdeleted: CONSTANTS.DELETED_ENABLE },
+                    { verify_id: new_verification.verify_id },
+                    { verify_id: 'verify_id' },
+                );
+
+                // Send Email verification
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
+
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Please check Email!',
+                    },
+                });
+            } else {
+                // Verification expire exit not send Email
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
                 });
             }
         } catch (error) {

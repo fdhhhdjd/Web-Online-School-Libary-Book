@@ -249,7 +249,7 @@ module.exports = {
             const decoded = TOKENS.verifyAccessToken(accessToken, public_key);
 
             // Check if token has expired
-            const currentTime = Date.now().getTime() / 1000;
+            const currentTime = Math.floor(Date.now() / 1000);
             if (decoded.exp < currentTime) {
                 return false;
             }
@@ -299,5 +299,15 @@ module.exports = {
 
         const formattedDateTime = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         return formattedDateTime;
+    },
+    isExpired(time_expire_reset) {
+        const now = Date.now();
+        const diff = time_expire_reset - now;
+        if (diff > 0) {
+            // Not expired yet
+            return false;
+        }
+        // Expired
+        return true;
     },
 };

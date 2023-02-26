@@ -35,4 +35,12 @@ router.post('/change-password', userController.changePasswordStudent);
  */
 router.post('/check-password', userController.checkPasswordStudent);
 
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 25/02/2023
+ * @description Route check email Student
+ * @param {('POST')} [method='POST'] The request's method
+ */
+router.get('/check-email', userController.checkEmailStudent);
+
 module.exports = router;
