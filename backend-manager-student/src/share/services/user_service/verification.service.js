@@ -37,9 +37,7 @@ module.exports = {
             };
 
             // Insert database
-            await HELPER.handleRequest(
-                user_verification_model.insertVerificationEmail(data_insert),
-            );
+            await HELPER.handleRequest(user_verification_model.insertVerificationEmail(data_insert));
 
             // Data publish redis
             const data_link_email = {

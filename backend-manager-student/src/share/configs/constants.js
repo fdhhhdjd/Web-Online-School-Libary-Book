@@ -303,11 +303,11 @@ module.exports = {
     LINK_RESET_STRING: '${port_reset}/password/reset/${key_reset_random}',
     LINK_VERIFY_EMAIL_STUDENT: '${protocol}://${host}/api/v1/user/email/${user_id}/${uniqueString}',
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 25/02/2023
-    * @description Setup Link
-    * @param { String }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 25/02/2023
+     * @description Setup Link
+     * @param { String }
+     */
     PROTOCOl_DEV: 'http',
     HOST_DEV: 'localhost:8080',
     HOST_PRODUCT: 'host',

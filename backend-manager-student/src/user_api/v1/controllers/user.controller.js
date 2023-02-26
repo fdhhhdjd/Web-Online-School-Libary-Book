@@ -1092,13 +1092,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 25/02/2023
-    * @description Check email
-    * @function checkEmailStudent
-    * @param { password }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 25/02/2023
+     * @description Check email
+     * @function checkEmailStudent
+     * @param { password }
+     * @return { Object }
+     */
     checkEmailStudent: async (req, res) => {
         // Take user Id
         const { id, name, email } = req.auth_user;
@@ -1114,7 +1114,8 @@ const userController = {
             // Get data verification student
             const check_email_verification_student = await user_verification_model.getStudentVerificationById(
                 { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' });
+                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+            );
 
             // Variable setup Link
             const protocol_verification = req.protocol;
@@ -1123,7 +1124,13 @@ const userController = {
             // Check Data verification
             if (Array.isArray(check_email_verification_student) && !check_email_verification_student.length) {
                 // Send Email verification
-                await verification_service.handleSendEmailVerification(protocol_verification, host_verification, id, name, email);
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),
@@ -1141,10 +1148,20 @@ const userController = {
 
             if (time_expire_verification !== CONSTANTS.DELETED_DISABLE) {
                 // delete verification expire
-                await user_verification_model.updateVerification({ isdeleted: CONSTANTS.DELETED_ENABLE }, { verify_id: new_verification.verify_id }, { verify_id: 'verify_id' });
+                await user_verification_model.updateVerification(
+                    { isdeleted: CONSTANTS.DELETED_ENABLE },
+                    { verify_id: new_verification.verify_id },
+                    { verify_id: 'verify_id' },
+                );
 
                 // Send Email verification
-                await verification_service.handleSendEmailVerification(protocol_verification, host_verification, id, name, email);
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
 
                 return res.status(400).json({
                     status: 400,
@@ -1170,6 +1187,5 @@ const userController = {
             });
         }
     },
-
 };
 module.exports = userController;
