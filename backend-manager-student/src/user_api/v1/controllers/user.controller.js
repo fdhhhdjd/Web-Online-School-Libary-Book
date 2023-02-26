@@ -963,6 +963,8 @@ const userController = {
      */
     resetPasswordStudent: async (req, res) => {
         const { password, confirmPassword } = req.body.input.user_reset_password_input;
+
+        // Take Param Routes
         const token_reset = req.params.token_reset;
 
         // Check input
