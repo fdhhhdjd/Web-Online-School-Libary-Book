@@ -1,4 +1,4 @@
-import Loading from 'components/Loading/Loading';
+import Loading from 'components/Loading';
 import { NotFound } from 'imports/notfound_import/index';
 import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';

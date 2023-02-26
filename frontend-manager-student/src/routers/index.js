@@ -1,11 +1,12 @@
-import Header from 'components/Header';
+import Layout from 'components/Layout';
+import Home from 'pages/Customer/Home';
 
 const RouteDataMain = [
   {
     path: '',
     main: (
       <>
-        <Header />
+        <Layout content={<Home />} />
       </>
     ),
   },

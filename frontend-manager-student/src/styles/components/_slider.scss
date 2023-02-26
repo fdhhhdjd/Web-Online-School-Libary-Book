@@ -1,0 +1,157 @@
+.carousel {
+  position: relative;
+  width: 50vw;
+  height: 33vw;
+  overflow: hidden;
+  box-shadow: -1px 2px 10px 2px rgba(0, 0, 0, 0.5);
+
+  &_slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    background-color: black;
+    display: flex;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &_history {
+    position: absolute;
+    z-index: 2;
+    bottom: 10px;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      height: 3px;
+
+      li {
+        width: 15%;
+        box-sizing: border-box;
+        height: inherit;
+        position: relative;
+        &:not(:last-of-type) {
+          margin-right: 5%;
+        }
+
+        button {
+          border: none;
+          outline: none;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: rgba(255, 255, 255, 0.5);
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          transition: background-color 300ms ease;
+          &.active {
+            background-color: rgba(255, 255, 255, 0.95);
+          }
+        }
+      }
+    }
+  }
+
+  &_control {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    height: 100%;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 0;
+    padding: 0 5px;
+    width: 10%;
+    overflow: hidden;
+    transition: background-color 300ms ease;
+    cursor: pointer;
+
+    span {
+      display: inline-block;
+      width: 2vw;
+      height: 2vw;
+      position: relative;
+      box-sizing: border-box;
+      opacity: 0.65;
+      border-bottom: 3px solid white;
+      border-left: 3px solid white;
+      transition: opacity 300ms ease;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+
+      span {
+        opacity: 0.95;
+      }
+    }
+
+    &__prev {
+      left: 0;
+      padding-left: 12px;
+      span {
+        transform: rotate(45deg);
+      }
+    }
+
+    &__next {
+      right: 0;
+      padding-right: 12px;
+      span {
+        transform: rotate(-135deg);
+      }
+    }
+  }
+}
+
+.slider-main {
+  position: relative;
+  height: 80vh;
+  width: 100vw;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// animation for slide
+.leave {
+  transform: translateX(0);
+}
+
+.enter-active.enter-next,
+.enter-active.enter-prev {
+  transform: translateX(0);
+  transition: transform 500ms linear;
+}
+
+.enter-next {
+  transform: translateX(100%);
+}
+
+.enter-prev {
+  transform: translateX(-100%);
+  transition: transform 500ms linear;
+}
+
+.leave-active-next {
+  transform: translateX(-100%);
+  transition: transform 500ms linear;
+}
+
+.leave.leave-active-prev {
+  transform: translateX(100%);
+  transition: transform 500ms linear;
+}
