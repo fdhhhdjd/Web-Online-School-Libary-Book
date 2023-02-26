@@ -15,6 +15,7 @@ module.exports = {
     _10_SECONDS: 10 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
+    _10_MINUTES: 10 * 60 * 1000,
     _15_MINUTES: 15 * 60 * 1000,
     _1_DAY_S: 1 * 60 * 60 * 1000,
     _7_DAY_S: 7 * 60 * 60 * 1000,
@@ -161,10 +162,13 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 23/01/2023
-     * @description sony random id
+     * @updated_at 25/02/2023
+     * @description random id
      */
     DETERMINED_COMPUTER: 2,
     TIME_START_SYSTEMS: Date.UTC(2020, 4, 18, 0, 0, 0), // timestamp tránh trùng lặp ID hệ thống
+    RANDOM_STRING_LENGTH_UNIQUE: 10,
+
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 30/01/2023
@@ -297,4 +301,14 @@ module.exports = {
      * @param { String }
      */
     LINK_RESET_STRING: '${port_reset}/password/reset/${key_reset_random}',
+    LINK_VERIFY_EMAIL_STUDENT: '${protocol}://${host}/api/v1/user/email/${user_id}/${uniqueString}',
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 25/02/2023
+    * @description Setup Link
+    * @param { String }
+    */
+    PROTOCOl_DEV: 'http',
+    HOST_DEV: 'localhost:8080',
+    HOST_PRODUCT: 'host',
 };
