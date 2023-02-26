@@ -862,7 +862,7 @@ const userController = {
 
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 23/02/2023
+     * @created_at 13/02/2023
      * @description Forget password student
      * @function forgetPasswordStudent
      * @param { password }
@@ -932,7 +932,6 @@ const userController = {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
-                    key: key_reset_random,
                 });
             }
             if (err) {

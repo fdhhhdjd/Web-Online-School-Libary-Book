@@ -15,20 +15,3 @@
     @content;
   }
 }
-
-@mixin desktop {
-  @media (min-width: $desktop-width) {
-    @content;
-  }
-}
-
-@mixin large-screen {
-  @media (min-width: $extra-large) {
-    @content;
-  }
-}
-
-$mobile-width: 600px;
-$tablet-width: 1024px;
-$desktop-width: 992px;
-$extra-large: 1300px;
