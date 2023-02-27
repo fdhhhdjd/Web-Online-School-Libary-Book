@@ -15,3 +15,9 @@
     @content;
   }
 }
+
+@mixin hologram_text {
+  background: $txt-hologram;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text !important;
+}
