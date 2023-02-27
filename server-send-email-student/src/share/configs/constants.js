@@ -99,10 +99,13 @@ module.exports = {
     * @description Key Redis General
     * @param { String }
     */
+    //Student
     KEY_USER_EXIT_U: 'u*',
-    KEY_ADMIN_EXIT_A: 'a*',
     KEY_USER_WARNING_TOKEN: 'user_send_email_warning_token',
     KEY_USER_LINK_RESET_PASSWORD: 'user_link_reset_password',
+    KEY_USER_LINK_VERIFICATION: 'user_check_link_email',
+    //Admin
+    KEY_ADMIN_EXIT_A: 'a*',
     KEY_ADMIN_WARNING_TOKEN: 'admin_send_email_warning_token',
     /**
    * @author Nguyễn Tiến Tài

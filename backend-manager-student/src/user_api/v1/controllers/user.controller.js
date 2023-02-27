@@ -88,9 +88,9 @@ const userController = {
                 const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_login_student);
 
                 if (time_ttl_cache) {
-                    return res.status(401).json({
-                        status: 401,
-                        message: returnReasons('401'),
+                    return res.status(423).json({
+                        status: 423,
+                        message: returnReasons('423'),
                         element: {
                             result: 'Account of you block 24h!',
                             time_full: time_ttl_cache,
@@ -790,9 +790,9 @@ const userController = {
                 const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_check_password_student);
 
                 if (time_ttl_cache) {
-                    return res.status(401).json({
-                        status: 401,
-                        message: returnReasons('401'),
+                    return res.status(423).json({
+                        status: 423,
+                        message: returnReasons('423'),
                         element: {
                             result: 'Account of you block 24h!',
                             time_full: time_ttl_cache,
@@ -1095,6 +1095,7 @@ const userController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 25/02/2023
+     * @updated_at 27/02/2023
      * @description Check email
      * @function checkEmailStudent
      * @param { password }
@@ -1112,6 +1113,24 @@ const userController = {
             });
         }
         try {
+            // Get data verification student already check email
+            const check_email_verification_student_success = await user_verification_model.getStudentVerificationById(
+                {
+                    user_id: id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                    verified: CONSTANTS.DELETED_ENABLE,
+                    check_login: CONSTANTS.DELETED_ENABLE,
+                },
+                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+            );
+
+            if (check_email_verification_student_success.length > 0) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+
             // Get data verification student
             const check_email_verification_student = await user_verification_model.getStudentVerificationById(
                 { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
@@ -1164,8 +1183,8 @@ const userController = {
                     email,
                 );
 
-                return res.status(400).json({
-                    status: 400,
+                return res.status(401).json({
+                    status: 401,
                     message: returnReasons('400'),
                     element: {
                         result: 'Please check Email!',
@@ -1173,9 +1192,12 @@ const userController = {
                 });
             } else {
                 // Verification expire exit not send Email
-                return res.status(200).json({
-                    status: 200,
+                return res.status(400).json({
+                    status: 400,
                     message: returnReasons('200'),
+                    element: {
+                        result: 'Link reset Exit Please check Email !',
+                    },
                 });
             }
         } catch (error) {
@@ -1187,6 +1209,189 @@ const userController = {
                 },
             });
         }
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 27/02/2023
+     * @description send Link Verification email
+     * @function sendEmailVerification
+     * @return { Object }
+     */
+    sendEmailVerification: async (req, res) => {
+        // Take user Id
+        const { id, name, email } = req.auth_user;
+
+        // Check user_id
+        if (!id || !name || !email) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        try {
+            // Get data verification student already check email
+            const check_email_verification_student_success = await user_verification_model.getStudentVerificationById(
+                {
+                    user_id: id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                    verified: CONSTANTS.DELETED_ENABLE,
+                    check_login: CONSTANTS.DELETED_ENABLE,
+                },
+                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+            );
+
+            // Check Link already check verify
+            if (check_email_verification_student_success.length > 0) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                    element: {
+                        result: 'Link already check verify !!',
+                    },
+                });
+            }
+
+            // Get data verification student
+            const check_email_verification_student = await user_verification_model.getStudentVerificationById(
+                { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+            );
+
+            // Variable setup Link
+            const protocol_verification = req.protocol;
+            const host_verification = req.get(CONSTANTS.HOST_PRODUCT);
+
+            // Check Data verification
+            if (Array.isArray(check_email_verification_student) && !check_email_verification_student.length) {
+                // Send Email verification
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
+            } else {
+                // Take arr new in table verification
+                const new_verification = check_email_verification_student[check_email_verification_student.length - 1];
+
+                // delete verification expire
+                await user_verification_model.updateVerification(
+                    { isdeleted: CONSTANTS.DELETED_ENABLE },
+                    { verify_id: new_verification.verify_id },
+                    { verify_id: 'verify_id' },
+                );
+
+                // Send Email verification
+                await verification_service.handleSendEmailVerification(
+                    protocol_verification,
+                    host_verification,
+                    id,
+                    name,
+                    email,
+                );
+            }
+
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
+                element: {
+                    result: 'Please check Email!',
+                },
+            });
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 27/02/2023
+     * @description Update Link Verification email
+     * @function sendEmailVerification
+     * @return { Object }
+     */
+    updateVerificationEmailStudent: async (req, res) => {
+        const user_id = req.params.user_id;
+        const uniqueString = req.params.uniqueString;
+
+        // Get data verification student already check email
+        const check_email_verification_student_success = await user_verification_model.getStudentVerificationById(
+            {
+                user_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+                verified: CONSTANTS.DELETED_ENABLE,
+                check_login: CONSTANTS.DELETED_ENABLE,
+            },
+            { verified: 'verified', verify_id: 'verify_id', link_email_expire: 'link_email_expire' },
+        );
+
+        // Check Link already check verify
+        if (check_email_verification_student_success.length > 0) {
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
+                element: {
+                    result: 'Link already check verify !!',
+                },
+            });
+        }
+
+        // Check input
+        if (!user_id || !uniqueString) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        // Get data verification student
+        const check_email_verification_student = await user_verification_model.getStudentVerificationById(
+            { verify_id: uniqueString, isdeleted: CONSTANTS.DELETED_DISABLE },
+            { verify_id: 'verify_id', user_id: 'user_id', link_email_expire: 'link_email_expire' },
+        );
+
+        // Take arr new in table verification
+        const new_verification = check_email_verification_student[check_email_verification_student.length - 1];
+
+        // Check expired verification
+        const time_expire_verification = HELPER.isExpired(new_verification.link_email_expire);
+
+        if (time_expire_verification !== CONSTANTS.DELETED_DISABLE) {
+            // delete verification expire
+            await user_verification_model.updateVerification(
+                { isdeleted: CONSTANTS.DELETED_ENABLE },
+                { verify_id: uniqueString },
+                { verify_id: 'verify_id' },
+            );
+
+            return res.status(401).json({
+                status: 401,
+                message: returnReasons('400'),
+                element: {
+                    result: 'Link expired !!',
+                },
+            });
+        }
+
+        // Update verification link
+        await user_verification_model.updateVerification(
+            { verified: CONSTANTS.DELETED_ENABLE, check_login: CONSTANTS.DELETED_ENABLE },
+            { verify_id: uniqueString },
+            { verify_id: 'verify_id' },
+        );
+
+        return res.status(200).json({
+            status: 200,
+            message: returnReasons('200'),
+        });
     },
 };
 module.exports = userController;

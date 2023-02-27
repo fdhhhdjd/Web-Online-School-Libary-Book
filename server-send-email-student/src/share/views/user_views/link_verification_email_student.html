@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Verify Your Account</title>
+    </head>
+    <body style="background-color: #f2f2f2; font-family: Arial, sans-serif">
+        <div
+            style="
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+                border: 1px solid #e5e5e5;
+            "
+        >
+            <img src="cid:image_logo" alt="logo" style="display: block; margin: 0 auto; max-width: 200px" />
+            <h1 style="text-align: center; margin-top: 20px">Verify Your Account</h1>
+            <p style="color: #555">Dear <b>{{data.name}}</b>,</p>
+            <p style="color: #555">
+                Thank you for creating an account with us. Please click the button below to verify your email address
+                and activate your account:
+            </p>
+            <div style="text-align: center; margin-top: 20px">
+                <a
+                    href="{{data.link_verify_email_student}}"
+                    style="
+                        background-color: #4caf50;
+                        color: #ffffff;
+                        padding: 10px 20px;
+                        text-decoration: none;
+                        border-radius: 4px;
+                    "
+                    >Verify Email Address</a
+                >
+            </div>
+            <p style="color: #555">If you did not create an account with us, you can safely ignore this email.</p>
+            <p>Thank you for choosing our service.</p>
+            <p style="font-style: italic">
+                This message was sent to <b>{{data.email}}</b> because you signed up for an account with our service.
+            </p>
+        </div>
+    </body>
+</html>
