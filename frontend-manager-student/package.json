@@ -5,6 +5,7 @@
   "author": "Tai <nguyentientai10@gmail.com",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.6",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -35,6 +36,7 @@
     "react-scripts": "^5.0.1",
     "react-slick": "^0.29.0",
     "react-toastify": "^8.1.1",
+    "react-transition-group": "^4.4.5",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",

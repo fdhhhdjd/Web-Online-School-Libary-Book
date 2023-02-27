@@ -1,0 +1,63 @@
+.section {
+  margin-bottom: 80px;
+  padding: 0 100px;
+
+  @include tablet {
+    padding: 0 50px;
+  }
+
+  & > * ~ * {
+    margin-top: 40px;
+  }
+
+  &__title {
+    letter-spacing: 0.1rem;
+    margin-top: 5rem;
+    text-transform: uppercase;
+
+    @include flex(center, space-between);
+
+    & > span {
+      font-size: 3rem;
+      font-weight: 600;
+      @include hologram_text;
+      @include tablet {
+        font-size: 2rem;
+      }
+    }
+
+    & > a {
+      font-size: 1.8rem;
+      text-transform: capitalize;
+      letter-spacing: normal;
+      color: $txt-main-color;
+
+      @include tablet {
+        font-size: 1.5rem;
+      }
+
+      &:hover,
+      &:hover i {
+        text-decoration: underline;
+        @include hologram_text;
+      }
+
+      i {
+        position: absolute;
+        font-size: 3rem;
+
+        @include tablet {
+          font-size: 2.5rem;
+        }
+      }
+    }
+
+    &.left {
+      text-align: left;
+    }
+
+    &.center {
+      text-align: center;
+    }
+  }
+}

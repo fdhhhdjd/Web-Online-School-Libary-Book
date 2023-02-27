@@ -1,511 +1,227 @@
+import BookCard from 'components/BookCard';
+import CategoryCard from 'components/CategoryCard';
+import Grid from 'components/Grid';
+import Helmet from 'components/Helmet';
+import Section, { SectionBody, SectionTitle } from 'components/Section';
 import React from 'react';
-import './style.scss';
+import { Link } from 'react-router-dom';
+import Slider from '../../../components/Slider/Slider';
+import SlickSlider from 'react-slick';
+
+const mockDataBook = [
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+  {
+    title: 'Harry Porter',
+    image01:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
+    image02:
+      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
+    author: 'JK. Rowling',
+    categorySlug: 'ao-thun',
+    colors: ['white', 'red', 'orange'],
+    slug: 'ao-thun-dinosaur-01',
+    size: ['s', 'm', 'l', 'xl'],
+    description:
+      'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+];
 
 const Home = () => {
-  const arr = ['', '', '', '', '', '', '', ''];
+  const settings = {
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    initialSlide: 0,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          infinite: true,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-lg-12">
-          <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
-            <div className="iq-card-header d-flex justify-content-between align-items-center position-relative">
-              <div className="iq-header-title">
-                <h4 className="card-title mb-0">Tài liệu</h4>
-              </div>
-              <div className="iq-card-header-toolbar d-flex align-items-center">
-                <div className="btn btn-sm btn-primary view-more">Xem thêm</div>
-              </div>
-            </div>
-            <div className="iq-card-body">
-              <div className="row">
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://www.pngfind.com/pngs/b/532-5329145_harry-potter-books-png.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <Helmet title="Trang chủ">
+      <Slider
+        slides={[
+          'https://itc.edu.vn/Data/Sites/1/Banner/z3808283905781_681dab358770e28d1496b2c7bf4a0a7e.jpg',
+          'https://itc.edu.vn/Data/Sites/1/Banner/z3808283892948_c9a110004b96d1ed63fb14faf8fa5fc3.jpg',
+          'https://itc.edu.vn/Data/Sites/1/Banner/z3808283894038_e794c65b8037e3c1d278c59c89b11f27.jpg',
+          'https://itc.edu.vn/Data/Sites/1/Banner/z3808283892263_29e7b01f7b643b96efa2712b470cf52d.jpg',
+        ]}
+        autoPlay
+        timeOut={3000}
+      />
+      <Section>
+        <SectionTitle subTitle={'All Categories'} left>
+          Danh mục nổi bật
+        </SectionTitle>
+        <SectionBody>
+          <Grid col={4} mdCol={2} smCol={1} gap={20}>
+            {[
+              {
+                name: 'Nghệ thuật & nhiếp ảnh',
+                icon: 'bx bx-images',
+              },
+              {
+                name: 'Ẩm thực',
+                icon: 'bx bx-restaurant',
+              },
+              {
+                name: 'Tình cảm & lãng mạn',
+                icon: 'bx bx-book-heart',
+              },
+              {
+                name: 'Sức khỏe',
+                icon: 'bx bx-plus-medical',
+              },
+            ].map((item, index) => (
+              <Link to="/category" key={index}>
+                <CategoryCard name={item.name} icon={item.icon} />
+              </Link>
+            ))}
+          </Grid>
+        </SectionBody>
+      </Section>
 
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969672/ca-nhan/pngfind.com-harry-potter-books-png-5329069_iihtn8.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969767/ca-nhan/pngfind.com-harry-potter-books-png-5329239_vixskt.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969954/ca-nhan/pngfind.com-fantastic-beasts-png-4426843_znt6h1.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969672/ca-nhan/pngfind.com-harry-potter-books-png-5329069_iihtn8.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent">
-                    <div className="iq-card-body p-0">
-                      <div className="d-flex align-items-center">
-                        <div className="col-6 p-0 position-relative image-overlap-shadow">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969672/ca-nhan/pngfind.com-harry-potter-books-png-5329069_iihtn8.png"
-                            alt=""
-                            className="img-fluid rounded w-100 book-img"
-                          />
-                          <div className="view-book">
-                            <a href="sad" className="btn btn-sm btn-white">
-                              View Book
-                            </a>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="mb-2">
-                            <h6 className="mb-1">Chau Gia Bao</h6>
-                            <p className="font-size-13 line-height mb-1">Gia Bao</p>
-                            <div className="d-block line-height">
-                              <div className="font-size-11 text-warning">
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </div>
-                            </div>
-                            <div className="iq-product-action">
-                              <a href="hello">
-                                <i className="fas fa-shopping-cart text-primary"></i>
-                              </a>
-                              <a href="helo" className="ml-2">
-                                <i className="fas fa-heart text-danger"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-6">
-          <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
-            <div className="iq-card-header d-flex justify-content-between mb-0">
-              <div className="iq-header-title">
-                <h4 className="card-title">Tài liệu đặc sắc</h4>
-              </div>
-
-              <div className="iq-card-header-toolbar d-flex align-items-center">
-                <div className="dropdown">
-                  <span
-                    className="dropdown-toggle p-0 text-body"
-                    id="dropdownMenuButton2"
-                    data-toggle="dropdown"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    This Week
-                  </span>
-                  <div className="dropdown-menu dropdown-menu-right shadow-none" aria-labelledby="dropdownMenuButton2">
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="iq-card-body">
-              <div className="row align-items-center">
-                <div className="col-sm-5 pr-0">
-                  <a href="hello">
-                    <img
-                      src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png"
-                      alt=""
-                      className="img-fluid rounded w-100"
-                    />
-                  </a>
-                </div>
-                <div className="col-sm-7 mt-3 mt-sm-0">
-                  <h4 className="mb-2">Casey Christie night book into find...</h4>
-                  <p className="mb-2">Author: Gheg origin</p>
-                  <div className="mb-2 d-block">
-                    <span className="font-size-12 text-warning">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                    </span>
-                  </div>
-                  <div className="text-dark mb-3 d-block">
-                    Lorem Ipsum is simply dummy test in find a of the printing and typeset ing industry into end.
-                  </div>
-                  <button type="submit" className="btn btn-primary learn-more">
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-6">
-          <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
-            <div className="iq-card-header d-flex justify-content-between mb-0">
-              <div className="iq-header-title">
-                <h4 className="card-title">Tác giả đặc sắc</h4>
-              </div>
-
-              <div className="iq-card-header-toolbar d-flex align-items-center">
-                <div className="dropdown">
-                  <span
-                    className="dropdown-toggle p-0 text-body"
-                    id="dropdownMenuButton2"
-                    data-toggle="dropdown"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    This Week
-                  </span>
-                  <div className="dropdown-menu dropdown-menu-right shadow-none" aria-labelledby="dropdownMenuButton2">
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                    <a className="dropdown-item" href="helo">
-                      HAHA
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="iq-card-body">
-              <ul className="list-inline row mb-0 align-items-center iq-scrollable-block">
-                {arr.map((item) => {
-                  return (
-                    <li className="col-sm-6 d-flex mb-5 align-items-center">
-                      <div className="icon iq-icon-box mr-3">
-                        <a href="heloo">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1669712298/ca-nhan/avatar_cvkuph.jpg"
-                            alt=""
-                            className="img-fluid avatar-60 rounded-circle"
-                          />
-                        </a>
-                      </div>
-                      <div className="mt-1">
-                        <h6>Brandon Guidelines</h6>
-                        <p className="mb-0 text-primary">
-                          Publish Books:
-                          <span className="text-body">2831</span>
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <Section>
+        <SectionTitle subTitle={'View more'}>Tài liệu nổi bật</SectionTitle>
+        <SectionBody>
+          {/* <Grid col={5} mdCol={2} smCol={1} gap={20}></Grid> */}
+          <SlickSlider {...settings}>
+            {mockDataBook.map((item, index) => (
+              <BookCard
+                key={index}
+                img01={item.image01}
+                img02={item.image02}
+                name={item.title}
+                slug={item.slug}
+                author={item.author}
+              />
+            ))}
+          </SlickSlider>
+        </SectionBody>
+      </Section>
+    </Helmet>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SCHOOL_LOGO } from '../../imports/home_import/index';
+import { SCHOOL_LOGO } from '../imports/home_import/index';
 
 const navInfo = [
   {
