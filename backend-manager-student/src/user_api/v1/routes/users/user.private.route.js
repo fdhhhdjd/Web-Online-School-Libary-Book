@@ -43,4 +43,12 @@ router.post('/check-password', userController.checkPasswordStudent);
  */
 router.get('/check-email', userController.checkEmailStudent);
 
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 27/02/2023
+ * @description Route send email verification Student
+ * @param {('POST')} [method='POST'] The request's method
+ */
+router.get('/verification-email', userController.sendEmailVerification);
+
 module.exports = router;

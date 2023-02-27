@@ -600,3 +600,100 @@ paths:
                     $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 27/02/2023
+    #!description: Verification link email Student
+    /api/v1/user/email/:user_id/:uniqueString:
+        get:
+            summary: Verification Email Student
+            tags: [Verification Email Student]
+            operationId: updateVerificationEmailStudent
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+            responses:
+                200:
+                    description: Verification Email Success or Link already check verify
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Routes param user_id,uniqueString invalid !
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 27/02/2023
+    #!description: send link repeat email Student
+    /api/v1/user/private/verification-email:
+        get:
+            summary: Send Link Email repeat Student
+            tags: [Send Link Email Repeat Student]
+            operationId: sendEmailVerification
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Send Email Success or Link already check verify.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Token invalid !
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'

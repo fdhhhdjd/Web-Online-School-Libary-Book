@@ -79,6 +79,41 @@ const emailSenderUsers = {
             console.error('Lỗi khi gửi email:', error.message);
             await retry(send_email.bind(null, option), { retries: CONSTANTS.NUMBER_RETRY_EMAIL });
         }
+    },
+    /**
+ * @author Nguyễn Tiến Tài
+ * @created_at 27/02/2023
+ * @description Send Email verification 
+ * @function sendEmailUserLinkVerification
+ * @return { Object }
+ */
+    sendEmailUserLinkVerification: async (message_sub) => {
+        const type = CONSTANTS.TYPE_STUDENT
+        const message = message_sub
+        message.support_email = CONFIGS.SMTP_MAIL
+        const option = {
+            from: CONFIGS.SMTP_MAIL,
+            to: message.email,
+            subject: `Verification Email ${message.name}`,
+            template: 'link_verification_email_student',
+            attachments: [
+                {
+                    filename: 'logo.png',
+                    path: path.resolve('./src/share/assets', 'logo', 'logo.png'),
+                    cid: 'image_logo',
+                },
+            ],
+            context: {
+                data: message,
+            },
+        }
+        try {
+            await send_email(option, type)
+            console.info('Send_Email Success::::::', message)
+        } catch (error) {
+            console.error('Lỗi khi gửi email:', error.message);
+            await retry(send_email.bind(null, option), { retries: CONSTANTS.NUMBER_RETRY_EMAIL });
+        }
     }
 }
 module.exports = emailSenderUsers;

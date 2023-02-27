@@ -300,7 +300,7 @@ module.exports = {
      * @param { String }
      */
     LINK_RESET_STRING: '${port_reset}/password/reset/${key_reset_random}',
-    LINK_VERIFY_EMAIL_STUDENT: '${protocol}://${host}/api/v1/user/email/${user_id}/${uniqueString}',
+    LINK_VERIFY_EMAIL_STUDENT: '${protocol}://${host}/student/api/v1/user/email/${user_id}/${uniqueString}',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 25/02/2023
