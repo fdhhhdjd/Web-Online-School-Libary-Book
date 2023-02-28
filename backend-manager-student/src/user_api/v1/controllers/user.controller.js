@@ -390,6 +390,7 @@ const userController = {
                                 domain: req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0] || '',
                                 maxAge: CONSTANTS._1_MONTH,
                             });
+
                             // Time create token
                             const access_time = new Date();
                             let data_device_update = {
@@ -397,6 +398,7 @@ const userController = {
                                 refresh_token,
                                 public_key: publicKeyString,
                             };
+
                             // Update Device
                             await HELPER.handleRequest(
                                 user_device_model.updateDevice(data_device_update, result[0].user_id),
@@ -415,12 +417,6 @@ const userController = {
                                 },
                             });
                         } else {
-                            MEMORY_CACHE.setBlackListCache(
-                                CONSTANTS.KEY_BACK_LIST,
-                                result[0].user_id,
-                                refresh_token_cookie,
-                                CONSTANTS._20_DAY_S_REDIS,
-                            );
                             // Remove cookie
                             res.clearCookie(CONFIGS.KEY_COOKIE);
 
@@ -436,12 +432,15 @@ const userController = {
                             });
                         }
                     }
+
+                    // Call Data Fail
                     if (err) {
                         return res.status(500).json({
                             status: 500,
                             message: returnReasons('500'),
                         });
                     }
+
                     return res.status(400).json({
                         status: 400,
                         message: returnReasons('400'),
