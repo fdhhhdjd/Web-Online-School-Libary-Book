@@ -1,3 +1,4 @@
+//! Share
 const HELPER = require('../../../share/utils/helper');
 const CONSTANTS = require('../../../share/configs/constants');
 const PASSWORD = require('../../../share/utils/password');

@@ -12,6 +12,7 @@ module.exports = {
      * @param { "Name":"value" => Example: Male: 1 }
      */
     _30_SECONDS: 30 * 1000,
+    _10_SECONDS: 10 * 1000,
     _1_MINUTES: 60 * 1000,
     _5_MINUTES: 5 * 60 * 1000,
     _10_MINUTES: 10 * 60 * 1000,
