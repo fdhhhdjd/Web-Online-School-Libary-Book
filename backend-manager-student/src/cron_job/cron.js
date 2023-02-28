@@ -1,14 +1,24 @@
-const cron = require('node-cron');
-const cronCtrl = require('./v1/controllers/cron.controller');
+//! SHARE
 const CONSTANTS = require('../share/configs/constants');
+
+//! LIBRARY
+const cron = require('node-cron');
+
+//! MODEL
+const cron_verification_student = require('./v1/cron_student/controllers/cron_verification.controller');
+const cron_reset_password_student = require('./v1/cron_student/controllers/cron_reset_password.controller');
 
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 16/12/2022
- * @description Run all Cron
+ * @updated_at 28/02/2022
+ * @description Run Cron delete verification
  */
-
 cron.schedule(CONSTANTS._5_SECONDS_CRON, () => {
-    cronCtrl.cron_demo();
+    // Delete verification
+    cron_verification_student.cron_deleted_verification_student();
+
+    // Delete reset password
+    cron_reset_password_student.cron_deleted_reset_password_student();
 });
 console.info('Server cron running !!!');

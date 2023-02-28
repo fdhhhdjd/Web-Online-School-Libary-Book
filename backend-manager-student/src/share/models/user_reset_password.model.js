@@ -1,3 +1,7 @@
+//! Share
+const CONSTANTS = require('../configs/constants');
+
+//! Database
 const knex = require('../db/postgresql');
 
 module.exports = {
@@ -41,5 +45,23 @@ module.exports = {
             } catch (error) {
                 reject(error);
             }
+        }),
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 28/02/2023
+     * @description List all reset password
+     */
+    getResetPasswordList: async () =>
+        new Promise((resolve, reject) => {
+            knex('reset_password')
+                .where('isdeleted', CONSTANTS.DELETED_DISABLE)
+                .orderBy('created_at', 'asc')
+                .then((result) => {
+                    resolve(result);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         }),
 };

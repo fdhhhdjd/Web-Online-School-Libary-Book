@@ -1,3 +1,7 @@
+//! Share
+const CONSTANTS = require('../configs/constants');
+
+//! Database
 const knex = require('../db/postgresql');
 
 module.exports = {
@@ -42,5 +46,24 @@ module.exports = {
             } catch (error) {
                 reject(error);
             }
+        }),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 26/02/2023
+     * @description Update verification
+     */
+    getVerificationList: async () =>
+        new Promise((resolve, reject) => {
+            knex('verification')
+                .where('isdeleted', CONSTANTS.DELETED_DISABLE)
+                .where('verified', CONSTANTS.DELETED_DISABLE)
+                .where('check_login', CONSTANTS.DELETED_DISABLE)
+                .orderBy('created_at', 'asc')
+                .then((result) => {
+                    resolve(result);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         }),
 };
