@@ -125,4 +125,11 @@ module.exports = {
     TYPE_PEM: process.env.TYPE_PEM,
     MODULUSLENGTH: process.env.MODULUSLENGTH,
     GENERAL_KEY_RANDOM: process.env.GENERAL_KEY_RANDOM,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 28/02/2023
+     * @description Limit request
+     */
+    IPA_API_RATE_LIMIT_DURATION: process.env.IPA_API_RATE_LIMIT_DURATION,
+    IPA_API_RATE_LIMIT: process.env.IPA_API_RATE_LIMIT,
 };
