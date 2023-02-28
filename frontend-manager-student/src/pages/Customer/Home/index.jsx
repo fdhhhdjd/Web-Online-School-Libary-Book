@@ -7,6 +7,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from '../../../components/Slider/Slider';
 import SlickSlider from 'react-slick';
+import NewsCard from 'components/NewsCard';
 
 const mockDataBook = [
   {
@@ -123,6 +124,46 @@ const mockDataBook = [
   },
 ];
 
+const mockDataCategory = [
+  {
+    name: 'Nghệ thuật & nhiếp ảnh',
+    icon: 'bx bx-images',
+  },
+  {
+    name: 'Ẩm thực',
+    icon: 'bx bx-restaurant',
+  },
+  {
+    name: 'Tình cảm & lãng mạn',
+    icon: 'bx bx-book-heart',
+  },
+  {
+    name: 'Sức khỏe',
+    icon: 'bx bx-plus-medical',
+  },
+];
+
+const mockDataEvents = [
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4114/thuvienitc-web.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
+  },
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4114/thuvienitc-web.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
+  },
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4101/20209252146107tb-20220721055929-e.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
+  },
+];
+
 const Home = () => {
   const settings = {
     infinite: true,
@@ -171,8 +212,45 @@ const Home = () => {
         autoPlay
         timeOut={3000}
       />
+
       <Section>
-        <SectionTitle subTitle={'All Categories'} left>
+        <SectionTitle subTitle={'Xem thêm'} left>
+          Sự kiện & bảng tin
+        </SectionTitle>
+        <Grid col={2} gap={20}>
+          <SectionBody>
+            <Grid col={1} mdCol={2} smCol={1} gap={20}>
+              <Link to="/category">
+                <NewsCard
+                  date={mockDataEvents[0].date}
+                  name={mockDataEvents[0].name}
+                  thumbnail={mockDataEvents[0].thumbnail}
+                  desc={mockDataEvents[0].desc}
+                />
+              </Link>
+            </Grid>
+          </SectionBody>
+          <SectionBody>
+            <Grid col={1} mdCol={2} smCol={1} gap={20}>
+              {mockDataEvents.map((item, index) => (
+                <Link to="/category" key={index}>
+                  <NewsCard
+                    date={item.date}
+                    horizontal
+                    name={item.name}
+                    thumbnail={item.thumbnail}
+                    thumbnailSize={'sm'}
+                    desc={'Xem thêm'}
+                  />
+                </Link>
+              ))}
+            </Grid>
+          </SectionBody>
+        </Grid>
+      </Section>
+
+      <Section>
+        <SectionTitle subTitle={'Tất cả danh mục'} left>
           Danh mục nổi bật
         </SectionTitle>
         <SectionBody>
@@ -204,7 +282,7 @@ const Home = () => {
       </Section>
 
       <Section>
-        <SectionTitle subTitle={'View more'}>Tài liệu nổi bật</SectionTitle>
+        <SectionTitle subTitle={'Xem thêm'}>Tài liệu nổi bật</SectionTitle>
         <SectionBody>
           {/* <Grid col={5} mdCol={2} smCol={1} gap={20}></Grid> */}
           <SlickSlider {...settings}>

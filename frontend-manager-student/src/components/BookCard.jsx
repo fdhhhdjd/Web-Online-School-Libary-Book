@@ -14,9 +14,7 @@ const BookCard = (props) => {
         <h3 className="book-card__author">{props.author}</h3>
       </Link>
       <div className="book-card__btn">
-        <Button size="sm" icon="bx bx-cart" animate={true}>
-          Xem chi tiết
-        </Button>
+        <Button size="sm">Xem chi tiết</Button>
       </div>
     </div>
   );

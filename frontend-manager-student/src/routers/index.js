@@ -1,23 +1,24 @@
 import Layout from 'components/Layout';
+import Book from 'pages/Customer/Book';
 import Home from 'pages/Customer/Home';
 
 const RouteDataMain = [
   {
-    path: '',
+    path: '/',
     main: (
       <>
         <Layout content={<Home />} />
       </>
     ),
   },
-  // {
-  //   path: '/category',
-  //   main: (
-  //     <>
-  //       <Layout content={<CategoryPage />} />
-  //     </>
-  //   ),
-  // },
+  {
+    path: '/book',
+    main: (
+      <>
+        <Layout content={<Book />} />
+      </>
+    ),
+  },
   // {
   //   path: '/detail',
   //   main: (

@@ -57,7 +57,7 @@
   &__menu {
     @include flex(center, space-between);
     height: 100%;
-    font-size: 1.8rem;
+    font-size: 2rem;
 
     &__mobile-toggle {
       display: none;
@@ -82,6 +82,11 @@
 
     &__item:hover {
       @include hologram_text;
+
+      .header__submenu {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
     &__left,
@@ -223,5 +228,43 @@
         font-size: 2.5rem;
       }
     }
+  }
+
+  &__submenu {
+    position: absolute;
+    border-top: 3px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(250deg, #ec1d25, #0d296b);
+    transform: translateX(-10%);
+    opacity: 0;
+    visibility: hidden;
+    top: $header-height;
+    transition: top 0.3s;
+    z-index: 1000;
+    background-color: #fff;
+    -webkit-text-fill-color: initial;
+    transition: all 0.4s ease-in-out;
+    font-weight: 600;
+    font-size: 1.8rem;
+
+    @include tablet {
+    }
+    &__item {
+      border-bottom: 1px solid #ccc;
+      padding: 1.5rem 0;
+      span {
+        color: $txt-second-color;
+        padding-left: 1.5rem;
+        padding-right: 10rem;
+
+        &:hover {
+          @include hologram_text;
+        }
+      }
+    }
+  }
+
+  .loginBtn:hover {
+    -webkit-text-fill-color: initial;
   }
 }

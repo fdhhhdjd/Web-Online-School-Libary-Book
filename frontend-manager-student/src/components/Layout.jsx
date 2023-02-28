@@ -1,11 +1,17 @@
 import Header from 'components/Header';
-import React from 'react';
+import Login from 'pages/Customer/Auth/Login';
+import React, { useState } from 'react';
+import Footer from './Footer';
 
 const Layout = (props) => {
+  const [showLogin, setShowLogin] = useState(true);
+
   return (
     <>
-      <Header />
+      <Header setShowLogin={setShowLogin} />
+      <Login showLogin={showLogin} setShowLogin={setShowLogin} />
       {props.content}
+      <Footer />
     </>
   );
 };
