@@ -1,5 +1,8 @@
+//! LIBRARY
 const { Sonyflake } = require('sonyflake');
 
+//! SHARE
+const TOKENS = require('../../share/utils/token')
 /**
 * @author Nguyễn Tiến Tài
 * @created_at 12/01/2023
@@ -38,5 +41,49 @@ module.exports = {
         else if (type == 'audio') return SONYFLAKE_AUD.nextId();
 
         return false
+    },
+    /**
+    * @author Nguyễn Tiến Tài
+    * @param {Request.headers} headers
+    * @created_at 03/01/2022
+    * @description validate device
+    * @returns {object}
+    */
+    getDeviceFromHeaders(headers) {
+        const device = {
+            device_id: headers['X-DEVICE-ID'] || headers['x-device-id'],
+            os_type: headers['X-OS-TYPE'] || headers['x-os-type'],
+            os_version: headers['X-OS-VERSION'] || headers['x-os-version'],
+            app_version: headers['X-APP-VERSION'] || headers['x-app-version'],
+            device_name: headers['X-DEVICE-NAME'] || headers['x-device-name'] || '',
+            // ip: headers['X-FORWARDED-FOR'] || headers['x-forwarded-for'] || '',
+        };
+
+        if (device.device_id && device.os_type && device.os_version && device.app_version) {
+            return device;
+        }
+        console.error('Wrong header!', headers);
+        return null;
+    },
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 05/02/2023
+    * @description Verify time exp accessToken
+    * @returns {boolean}
+    */
+    isAccessTokenValid(accessToken, public_key) {
+        try {
+            // Check verify accessToken
+            const decoded = TOKENS.verifyAccessToken(accessToken, public_key);
+
+            // Check if token has expired
+            const currentTime = Math.floor(Date.now() / 1000);
+            if (decoded.exp < currentTime) {
+                return false;
+            }
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 }

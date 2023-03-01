@@ -11,8 +11,51 @@ servers:
       description: Local development server media api
 # General
 components:
+    # Check type header
+    headers:
+        AuthHeader:
+            description: Header info student.
+            type: string
+            required: true
     # Parameter
     parameters:
+        COOKIE-CLIENT:
+            in: cookie
+            name: refreshToken
+            description: The `refreshToken` cookie
+            schema:
+                type: string
+                example: 51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550
+        X-DEVICE-ID:
+            in: header
+            name: X-DEVICE-ID
+            required: true
+            schema:
+                type: string
+        X-OS-TYPE:
+            in: header
+            name: X-OS-TYPE
+            required: true
+            schema:
+                type: string
+        X-OS-VERSION:
+            in: header
+            name: X-OS-VERSION
+            required: true
+            schema:
+                type: string
+        X-APP-VERSION:
+            in: header
+            name: X-APP-VERSION
+            required: true
+            schema:
+                type: string
+        X-DEVICE-NAME:
+            in: header
+            name: X-DEVICE-NAME
+            required: true
+            schema:
+                type: string
         TOKEN:
             in: header
             name: Authorization
@@ -72,15 +115,23 @@ components:
                                 example: Out Of Service
 #!@author Nguyễn Tiến Tài
 #!created_at 31/01/2023
-#!created_at 08/02/2023
+#!update_at 03/01/2023
 #!description: Upload,Remove Media
 paths:
-    /api/v1/upload:
+    /api/v1/media/private/upload:
         post:
             summary: Upload Media
             tags: [Upload]
             parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
                 - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
             requestBody:
                 required: true
                 content:
@@ -142,13 +193,22 @@ paths:
 
     #!@author Nguyễn Tiến Tài
     #!created_at 31/01/2023
+    #!update_at 03/01/2023
     #!description Remove Id Cloud
-    /api/v1/remove:
+    /api/v1/media/private/remove:
         post:
             summary: Remove Cloud
             tags: [Remove]
             parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
                 - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
             requestBody:
                 required: true
                 content:
