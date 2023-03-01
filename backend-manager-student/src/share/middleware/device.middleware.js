@@ -3,6 +3,7 @@ const HELPER = require('../utils/helper');
 
 //! MIDDLAWARE
 const { returnReasons } = require('./handle_error');
+
 module.exports = (req, res, next) => {
     const device = HELPER.getDeviceFromHeaders(req.headers);
     if (device) {
@@ -13,7 +14,7 @@ module.exports = (req, res, next) => {
         status: 400,
         message: returnReasons('400'),
         element: {
-            result: 'Missing Device'
+            result: 'Missing Device',
         },
     });
 };
