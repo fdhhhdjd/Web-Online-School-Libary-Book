@@ -7,6 +7,13 @@ const adminController = require('../../controllers/admin.controller');
  * @description Route login admin
  */
 router.post('/login', adminController.LoginAdmin);
-router.post('/add/student', adminController.AddStudent);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 28/02/2023
+ * @description Route renew-token token
+ * @param {('POST')} [method='POST'] The request's method
+ */
+router.post('/renew-token', adminController.reNewToken);
 
 module.exports = router;

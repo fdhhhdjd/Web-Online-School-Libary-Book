@@ -311,4 +311,15 @@ module.exports = {
     PROTOCOl_DEV: 'http',
     HOST_DEV: 'localhost:8080',
     HOST_PRODUCT: 'host',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 28/02/2023
+     * @description ROLE
+     * @param { String }
+     */
+    ROLE: {
+        ROLE_STUDENT: 0,
+        ROLE_MANAGER: 1,
+        ROLE_ADMIN: 2,
+    },
 };

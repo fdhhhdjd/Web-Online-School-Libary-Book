@@ -1,40 +1,33 @@
-// Share
+//! SHARE
 const HELPER = require('../utils/helper');
 const TOKENS = require('../utils/token');
-const CONSTANTS = require('../configs/constants');
 const PASSWORD = require('../utils/password');
 
-// Cache
-const MEMORY_CACHE = require('../utils/limited_redis');
-
-// Model Database
+//! DATABASE
 const user_device_model = require('../models/user_device.model');
 
-// Handle Error
+//! MIDDLAWARE
 const { returnReasons } = require('./handle_error');
 
 /**
  * @author Nguyễn Tiến Tài
- * @created_at 05/02/2023
+ * @created_at 03/01/2023
  * @description Check Middlawre
- * @function accessStudentMiddleware
+ * @function accessTokenMiddleware
  */
-const accessStudentMiddleware = async (req, res, next) => {
+const accessTokenMiddleware = async (req, res, next) => {
+    // Date Now
+    let now = new Date();
+
+    // Log request
+    console.info('[Request Time]:', now.toLocaleTimeString(), req.baseUrl, req.body, req.query);
+
+    // Take accessToken at headers
+    const accessToken = req.headers.authorization.split(' ')[1];
     try {
-        // Date Now
-        let now = new Date();
-
-        // Log request
-        console.info('[Request Time]:', now.toLocaleTimeString(), req.baseUrl, req.body, req.query);
-
-        // Take refresh Token from cookie
-        const refresh_token_cookie = req.cookies.libary_school;
-
-        // Take accessToken at headers
-        const accessToken = req.headers.authorization.split(' ')[1];
 
         // Check header authorization
-        if (!refresh_token_cookie || !accessToken) {
+        if (!accessToken) {
             return res.status(401).json({
                 status: 401,
                 message: returnReasons('401'),
@@ -46,7 +39,7 @@ const accessStudentMiddleware = async (req, res, next) => {
 
         // Take token
         const { device_id } = req.device;
-
+        console.log(device_id, 'device_id')
         // Take data device student
         const data_device = await user_device_model.getDeviceId(
             { device_uuid: device_id },
@@ -79,37 +72,14 @@ const accessStudentMiddleware = async (req, res, next) => {
             });
         }
 
-        // Check BlackList
-        try {
-            const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
 
-            // Check 2 token
-            const check_exits_refresh_token = token_black_list.indexOf(refresh_token_cookie) > -1;
-            const check_exits_access_token = token_black_list.indexOf(accessToken) > -1;
+        req.auth_user = auth_user_decode;
 
-            if (check_exits_refresh_token || check_exits_access_token) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                    element: {
-                        result: 'Invalid Token',
-                    },
-                });
-            }
+        // Continue
+        return next();
 
-            // save request
-            req.auth_user = auth_user_decode;
-            req.access_token = accessToken;
-
-            // Continue
-            next();
-        } catch (error) {
-            return res.status(500).json({
-                status: 500,
-                message: returnReasons('500'),
-            });
-        }
     } catch (error) {
+        console.log(error)
         return res.status(503).json({
             status: 503,
             message: returnReasons('503'),
@@ -119,4 +89,4 @@ const accessStudentMiddleware = async (req, res, next) => {
         });
     }
 };
-module.exports = accessStudentMiddleware;
+module.exports = accessTokenMiddleware;

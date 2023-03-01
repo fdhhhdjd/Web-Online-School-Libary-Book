@@ -32,7 +32,7 @@ components:
             description: The `refreshToken` cookie
             schema:
                 type: string
-                example: 51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550
+                example: 51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85AuthHeaderd18dcd5e4ad6e3f08607550
         X-DEVICE-ID:
             in: header
             name: X-DEVICE-ID

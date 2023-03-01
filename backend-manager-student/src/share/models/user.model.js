@@ -1,3 +1,7 @@
+//! SHARE
+const CONSTANTS = require('../configs/constants');
+
+//! DATABASE
 const knex = require('../db/postgresql');
 
 module.exports = {
@@ -44,4 +48,16 @@ module.exports = {
                 reject(error);
             }
         }),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 28/02/2023
+     * @description GET ID DIFFERENCE STUDENT
+     */
+    getAdminId: async (student_query, return_data) => {
+        const admins = await knex('user')
+            .select(return_data)
+            .where(student_query)
+            .whereNot('role', CONSTANTS.ROLE.ROLE_STUDENT);
+        return admins;
+    },
 };

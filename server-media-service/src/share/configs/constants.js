@@ -171,4 +171,16 @@ module.exports = {
     TITLE_MEDIA_SWAGGER: 'Document Media API',
     DESCRIPTION_MEDIA_SWAGGER: 'Document API Library School',
     APIS_MEDIA_SWAGGER: './src/media-service/v1/Swagger/*/*.yaml',
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 03/01/2023
+    * @description Key all redis
+    */
+    KEY_BACK_LIST: 'black_list_token',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description Name DB
+     */
+    CLIENT_PG: 'pg',
 };

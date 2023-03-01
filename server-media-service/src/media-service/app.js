@@ -9,7 +9,9 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
 //! SHARE GENERAL
-const RateLimitMiddleware = require('../share/middlewares/ratelimit.middleware');
+const DEVICE_MIDDLEWARE = require('../share/middlewares/device.middleware');
+
+//! SHARE
 const MEDIA_API = require('./v1/routes/index.route');
 const CONSTANTS = require('../share/configs/constants')
 const OPTIONS = require('../share/configs/option');
@@ -53,9 +55,8 @@ app.use(
         },
     }),
 );
-
-//! MIDDLEWARE
-app.use(RateLimitMiddleware);
+//! MIDDLAWARE
+app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
 app.use(MEDIA_API);

@@ -1,5 +1,7 @@
+//! SHARE
 const CONSTANTS = require('../configs/constants');
 
+//! DATABASE
 const knex = require('../db/postgresql');
 
 module.exports = {
