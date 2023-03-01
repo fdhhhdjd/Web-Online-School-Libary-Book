@@ -3,8 +3,12 @@ const HELPER = require('../utils/helper');
 
 //! MIDDLAWARE
 const { returnReasons } = require('./handle_error');
+
 module.exports = (req, res, next) => {
+    // Take header
     const device = HELPER.getDeviceFromHeaders(req.headers);
+
+    // Check device
     if (device) {
         req.device = device;
         return next();

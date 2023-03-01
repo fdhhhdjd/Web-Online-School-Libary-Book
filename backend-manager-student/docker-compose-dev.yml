@@ -89,6 +89,7 @@ services:
         networks:
             - libary_school
             - server-send-email-student_sendemail
+            - server-media-service_upload-network
         healthcheck:
             test: ['CMD', 'redis-cli', 'ping']
             interval: 30s
@@ -152,6 +153,7 @@ services:
             - .env
         networks:
             - libary_school
+            - server-media-service_upload-network
         healthcheck:
             test: ['CMD-SHELL', "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
             interval: 10s

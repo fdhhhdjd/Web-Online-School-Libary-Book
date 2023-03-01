@@ -1,5 +1,8 @@
-const { returnReasons } = require('../../../share/middlewares/handle_error');
+//! SERVICE
 const { removeStorage } = require('../../../share/services/remove_cloud_service');
+
+//! MIDDLAWARE
+const { returnReasons } = require('../../../share/middlewares/handle_error');
 
 const removeCloudController = {
     /**

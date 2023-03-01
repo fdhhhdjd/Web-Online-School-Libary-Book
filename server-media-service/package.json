@@ -1,9 +1,9 @@
 {
-    "name": "server-send-email-student",
+    "name": "server-media-service",
     "version": "1.0.0",
     "license": "Proprietary",
     "private": true,
-    "description": "Web SendEmail student library school",
+    "description": "Web media student library school",
     "author": "Tai <nguyentientai10@gmail.com",
     "scripts": {
         "media:live": "node src/media-service/server.js",
@@ -51,6 +51,10 @@
         "helmet": "^6.0.1",
         "sonyflake": "^1.1.2",
         "swagger-jsdoc": "^6.2.8",
-        "swagger-ui-express": "^4.6.0"
+        "swagger-ui-express": "^4.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "pg": "^8.8.0",
+        "ioredis": "^5.2.4",
+        "knex": "^2.3.0"
     }
 }

@@ -88,7 +88,8 @@ module.exports = {
      * @created_at 03/02/2023
      * @description KEY_SESSION
      */
-    KEY_COOKIE: process.env.KEY_COOKIE,
+    KEY_COOKIE: process.env.KEY_COOKIE_STUDENT,
+    KEY_COOKIE_ADMIN: process.env.KEY_COOKIE_ADMIN,
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023

@@ -81,6 +81,7 @@ app.use(
     }),
 );
 
+//! CHECK DEVICE
 app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
