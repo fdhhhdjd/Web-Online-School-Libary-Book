@@ -1,5 +1,6 @@
 import Layout from 'components/Layout';
-import Book from 'pages/Customer/Book';
+import AllBook from 'pages/Customer/Book/AllBooks';
+import DetailBook from 'pages/Customer/Book/DetailBook';
 import Home from 'pages/Customer/Home';
 
 const RouteDataMain = [
@@ -15,17 +16,17 @@ const RouteDataMain = [
     path: '/book',
     main: (
       <>
-        <Layout content={<Book />} />
+        <Layout content={<AllBook />} />
       </>
     ),
   },
-  // {
-  //   path: '/detail',
-  //   main: (
-  //     <>
-  //       <Layout content={<DetailBook />} />
-  //     </>
-  //   ),
-  // },
+  {
+    path: '/detail-book',
+    main: (
+      <>
+        <Layout content={<DetailBook />} />
+      </>
+    ),
+  },
 ];
 export default RouteDataMain;

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Footer from './Footer';
 
 const Layout = (props) => {
-  const [showLogin, setShowLogin] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>

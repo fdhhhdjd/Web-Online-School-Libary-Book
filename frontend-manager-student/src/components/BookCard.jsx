@@ -8,7 +8,6 @@ const BookCard = (props) => {
       <Link to={`/catalogue/${props.slug}`}>
         <div className="book-card__image">
           <img src={props.img01} alt="" />
-          <img src={props.img02} alt="" />
         </div>
         <h3 className="book-card__name">{props.name}</h3>
         <h3 className="book-card__author">{props.author}</h3>

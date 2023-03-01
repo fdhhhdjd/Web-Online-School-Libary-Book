@@ -234,7 +234,7 @@
     position: absolute;
     border-top: 3px solid;
     border-image-slice: 1;
-    border-image-source: linear-gradient(250deg, #ec1d25, #0d296b);
+    border-image-source: $txt-hologram;
     transform: translateX(-10%);
     opacity: 0;
     visibility: hidden;

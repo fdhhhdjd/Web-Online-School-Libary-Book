@@ -14,8 +14,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -28,8 +26,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -42,8 +38,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -56,8 +50,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -70,8 +62,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -84,8 +74,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -98,8 +86,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -112,8 +98,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -284,17 +268,9 @@ const Home = () => {
       <Section>
         <SectionTitle subTitle={'Xem thêm'}>Tài liệu nổi bật</SectionTitle>
         <SectionBody>
-          {/* <Grid col={5} mdCol={2} smCol={1} gap={20}></Grid> */}
           <SlickSlider {...settings}>
             {mockDataBook.map((item, index) => (
-              <BookCard
-                key={index}
-                img01={item.image01}
-                img02={item.image02}
-                name={item.title}
-                slug={item.slug}
-                author={item.author}
-              />
+              <BookCard key={index} img01={item.image01} name={item.title} slug={item.slug} author={item.author} />
             ))}
           </SlickSlider>
         </SectionBody>

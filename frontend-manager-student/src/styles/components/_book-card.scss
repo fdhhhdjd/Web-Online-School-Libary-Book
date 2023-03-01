@@ -19,19 +19,11 @@
       &:nth-child(1) {
         transform: translateX(-50%) scale(1);
       }
-
-      &:nth-child(2) {
-        transform: translateX(-50%) scale(0);
-      }
     }
 
     &:hover img {
       &:nth-child(1) {
-        transform: translateX(-50%) scale(0);
-      }
-
-      &:nth-child(2) {
-        transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1.1);
       }
     }
   }
