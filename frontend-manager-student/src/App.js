@@ -1,18 +1,24 @@
-import Loading from 'components/Loading';
-import { NotFound } from 'imports/notfound_import/index';
+//!LIBRARY
 import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
+//! COMPONENT
+import Loading from 'components/Loading';
+
+//! PAGE
+
+//! ROUTES
 import RouteDataMain from 'routers/index';
-import './App.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
+//! IMPORT
+import { NotFound } from 'imports/notfound_import/index';
 
 function App() {
   return (
     <React.Fragment>
       <Suspense Suspense fallback={<Loading />}>
-        <ToastContainer position="top-center" />
+        <ToastContainer />
         <Routes>
           {RouteDataMain.map((item, key) => {
             return (

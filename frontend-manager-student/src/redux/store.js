@@ -1,9 +1,17 @@
+//! LIBRARY
 import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import AuthenticationSlice from './authentication_slice/auth_slice';
+
+//! SHARE
+import CONSTANTS from 'configs/constants';
+
+//! DATA TOOLKIT
+import AuthenticationSlice from './student/authentication_slice/auth_slice';
+import CONFIGS from 'configs/configs';
 const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
 };
+
 let store;
 store = configureStore({
   reducer: {
@@ -11,10 +19,10 @@ store = configureStore({
     reducer: rootReducer,
   },
   middleware:
-    process.env.NODE_ENV !== 'production'
+    CONFIGS.REACT_APP_NODE_ENV !== CONSTANTS.REACT_ENV_PR
       ? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
       : (getDefaultMiddleware) => getDefaultMiddleware(),
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: CONFIGS.REACT_APP_NODE_ENV !== CONSTANTS.REACT_ENV_PR,
 });
 
 export default store;
