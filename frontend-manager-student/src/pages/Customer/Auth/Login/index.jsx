@@ -1,4 +1,4 @@
-import './style.scss';
+import { Link } from 'react-router-dom';
 
 const Login = ({ showLogin, setShowLogin }) => {
   return (
@@ -8,10 +8,10 @@ const Login = ({ showLogin, setShowLogin }) => {
       </div>
       <div className="content">
         <div className="login">
-          <strong>Sign In</strong>
+          <strong>Đăng nhập</strong>
           <form action="">
             <label htmlFor="">
-              Student ID <span>*</span>
+              Mã số sinh viên <span>*</span>
             </label>
             <div className="iq-input-group">
               <i className="far fa-id-card"></i>
@@ -19,18 +19,18 @@ const Login = ({ showLogin, setShowLogin }) => {
             </div>
 
             <label htmlFor="">
-              Password <span>*</span>
+              Mật khẩu <span>*</span>
             </label>
             <div className="iq-input-group">
               <i className="fas fa-lock"></i>
               <input type="password" name="" id="password" required />
             </div>
             <div className="btns">
-              <button type="submit">Login</button>
+              <button type="submit">Đăng nhập</button>
             </div>
-            <a href="helo" className="forget">
-              Forgot Your Password
-            </a>
+            <Link to="/helo" className="forget">
+              Quên mật khẩu?
+            </Link>
           </form>
         </div>
       </div>

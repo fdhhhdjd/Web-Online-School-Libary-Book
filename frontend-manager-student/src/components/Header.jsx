@@ -1,15 +1,44 @@
 import { useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SCHOOL_LOGO } from '../imports/home_import/index';
+import Button from './Button';
 
 const navInfo = [
   {
     displayText: 'Giới thiệu',
     path: '/',
+    submenu: [
+      {
+        displayText: 'Submenu 1',
+        path: '/sub',
+      },
+      {
+        displayText: 'Submenu 1',
+        path: '/sub',
+      },
+      {
+        displayText: 'Submenu 1',
+        path: '/sub',
+      },
+    ],
   },
   {
-    displayText: 'Sản phẩm',
-    path: '/catalogue',
+    displayText: 'Tra cứu',
+    path: '/book',
+    submenu: [
+      {
+        displayText: 'Thể loại',
+        path: '/category',
+      },
+      {
+        displayText: 'Tất cả tài liệu',
+        path: '/book',
+      },
+      {
+        displayText: 'Submenu 1',
+        path: '/sub',
+      },
+    ],
   },
   {
     displayText: 'Phụ kiện',
@@ -21,7 +50,7 @@ const navInfo = [
   },
 ];
 
-const Header = () => {
+const Header = (props) => {
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
@@ -55,9 +84,27 @@ const Header = () => {
                   header__menu__left__item ${index === activeNavIdx ? 'active' : ''}`}
                   onClick={menuToggle}
                 >
-                  <Link to={item.path}>
-                    <span>{item.displayText}</span>
-                  </Link>
+                  {item?.submenu?.length > 0 ? (
+                    <>
+                      <Link to={item.path}>
+                        <span>{item.displayText}</span>
+                        <i className="bx bx-chevron-down"></i>
+                      </Link>
+                      <div className="header__submenu">
+                        {item.submenu.map((subItem, idx) => (
+                          <div className="header__submenu__item" key={idx}>
+                            <Link to={subItem.path}>
+                              <span>{subItem.displayText}</span>
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <Link to={item.path}>
+                      <span>{item.displayText}</span>
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
@@ -79,16 +126,18 @@ const Header = () => {
                 </Link>
               </div>
               <div className="header__menu__item header__menu__right__item">
-                <Link to={`/user/account/profile/test`}>
+                {/* <Link to={`/user/account/profile/test`}>
                   <img
                     src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1669712298/ca-nhan/avatar_cvkuph.jpg"
                     alt=""
                   />
-                </Link>
+                </Link> */}
 
-                {/* <Link to="/login">
-                <button className="login-btn">Đăng nhập</button>
-              </Link> */}
+                <div className="loginBtn" onClick={(e) => props.setShowLogin(true)}>
+                  <Button size="sm" color="rgb(9 30 75/1)">
+                    Đăng nhập
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

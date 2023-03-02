@@ -1,0 +1,68 @@
+.book__container {
+  margin-top: $header-height;
+
+  &__header {
+    @include flex(center, space-between);
+
+    font-size: 1.6rem;
+    color: $txt-main-color;
+    margin-bottom: 45px;
+
+    .header__sort {
+      span {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.book__list {
+  &__item ~ &__item {
+    margin-top: 2.5rem;
+  }
+  .book__data {
+    div ~ div {
+      margin-top: 0.8rem;
+    }
+    font-size: 1.8rem;
+    color: $txt-main-color;
+    font-weight: 700;
+    margin-left: 2rem;
+
+    a {
+      color: $txt-second-color;
+      font-weight: normal;
+    }
+
+    &__author {
+      color: #ec1d25;
+    }
+
+    &__category {
+      @include flex(center, space-between);
+    }
+  }
+
+  &__item {
+    &__name {
+      a {
+        color: $txt-second-color;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+    &__img {
+      width: 100px;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
