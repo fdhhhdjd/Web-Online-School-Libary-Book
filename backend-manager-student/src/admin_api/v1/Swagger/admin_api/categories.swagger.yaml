@@ -101,13 +101,13 @@ components:
                                 example: Out Of Service
     #!@author Nguyễn Tiến Tài
     #!created_at 03/02/2023
-    #!description: create Book
+    #!description: create categories
 paths:
-    /v1/admin/private/book/create:
+    /v1/admin/private/categories/create:
         post:
-            summary: Create Book
-            tags: [Create Book]
-            operationId: createBook
+            summary: Create categories
+            tags: [Create categories]
+            operationId: createcategories
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -126,42 +126,14 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        author_input:
+                                        categories_input:
                                             type: object
                                             properties:
                                                 name:
                                                     type: string
                                                     example: Tai
-                                                author_id:
-                                                    type: string
-                                                    example: 1475794147142008834
-                                                avatar_uri:
-                                                    type: string
-                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1677663849/library_school_image/images/123456/1629883834625425408/1677663846991-tuy%E1%BB%81n.jpg'
-                                                public_id_image:
-                                                    type: string
-                                                    example: 'library_school_image/images/123456/1630914582551724032/1677725284354-tuyền'
-                                                description:
-                                                    type: string
-                                                    example: 'Gio co va may'
-                                                language:
-                                                    type: string
-                                                    example: 'vietnamese'
-                                                quantity:
-                                                    type: number
-                                                    example: 2
-                                                bookshelf:
-                                                    type: number
-                                                    example: 0
                         required:
                             - name
-                            - author_id
-                            - avatar_uri
-                            - public_id_image
-                            - description
-                            - language
-                            - quantity
-                            - bookshelf
             responses:
                 200:
                     description: Create success
@@ -194,12 +166,12 @@ paths:
 
     #!@author Nguyễn Tiến Tài
     #!created_at 03/02/2023
-    #!description: update book
-    /v1/admin/private/book/update:
+    #!description: update categories
+    /v1/admin/private/categories/update:
         post:
-            summary: Update Book
-            tags: [Update Book]
-            operationId: updateBook
+            summary: Update Categories
+            tags: [Update Categories]
+            operationId: updateCategories
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -218,46 +190,18 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        update_input:
+                                        categories_input:
                                             type: object
                                             properties:
-                                                book_id:
+                                                category_id:
                                                     type: string
                                                     example: 1475825111725506562
                                                 name:
                                                     type: string
                                                     example: Tai
-                                                author_id:
-                                                    type: string
-                                                    example: 1475794147142008834
-                                                avatar_uri:
-                                                    type: string
-                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1677663849/library_school_image/images/123456/1629883834625425408/1677663846991-tuy%E1%BB%81n.jpg'
-                                                public_id_image:
-                                                    type: string
-                                                    example: 'library_school_image/images/123456/1630914582551724032/1677725284354-tuyền'
-                                                description:
-                                                    type: string
-                                                    example: 'Gio co va may'
-                                                language:
-                                                    type: string
-                                                    example: 'vietnamese'
-                                                quantity:
-                                                    type: number
-                                                    example: 2
-                                                bookshelf:
-                                                    type: number
-                                                    example: 0
                         required:
-                            - book_id
+                            - categories_id
                             - name
-                            - author_id
-                            - avatar_uri
-                            - public_id_image
-                            - description
-                            - language
-                            - quantity
-                            - bookshelf
             responses:
                 200:
                     description: update success
@@ -287,14 +231,15 @@ paths:
                                         example: Bad Request
                 503:
                     $ref: '#/components/responses/ServerFail'
+
     #!@author Nguyễn Tiến Tài
     #!created_at 03/02/2023
-    #!description: delete book
-    /v1/admin/private/book/delete:
+    #!description: delete categories
+    /v1/admin/private/categories/delete:
         post:
-            summary: Delete book
-            tags: [Delete book]
-            operationId: deketeBook
+            summary: Delete Categories
+            tags: [Delete Categories]
+            operationId: deleteCategories
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -313,14 +258,14 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        book_input:
+                                        categories_input:
                                             type: object
                                             properties:
-                                                book_id:
+                                                category_id:
                                                     type: string
                                                     example: 1474830717476143106
                         required:
-                            - book_id
+                            - category_id
             responses:
                 200:
                     description: Delete success
@@ -352,12 +297,12 @@ paths:
                     $ref: '#/components/responses/ServerFail'
     #!@author Nguyễn Tiến Tài
     #!created_at 03/02/2023
-    #!description: Detail Book
-    /v1/admin/private/book/detail/:book_id:
+    #!description: Detail categories
+    /v1/admin/private/categories/detail/:category_id:
         get:
-            summary: Detail Book
-            tags: [Detail Book]
-            operationId: detailBook
+            summary: Detail categories
+            tags: [Detail categories]
+            operationId: detailCategories
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -384,12 +329,12 @@ paths:
                     $ref: '#/components/responses/ServerFail'
     #!@author Nguyễn Tiến Tài
     #!created_at 03/02/2023
-    #!description: Get all Book
-    /v1/admin/private/book/all:
+    #!description: Get all categories
+    /v1/admin/private/categories/all:
         get:
-            summary: Get all Book
-            tags: [Get all Book]
-            operationId: getAllBook
+            summary: Get all categories
+            tags: [Get all categories]
+            operationId: getAllCategories
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
