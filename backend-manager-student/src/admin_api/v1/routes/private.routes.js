@@ -1,0 +1,31 @@
+//! LIBRARY
+const router_private = require('express').Router();
+
+//! ROUTES
+const adminPrivateRouter = require('./admin.routes/admin.private.route');
+const bookPrivateRouter = require('./book.routes/book.private.route');
+const authorPrivateRouter = require('./author.routes/author.private.route');
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 17/12/2022
+ * @update_at 11/01/2023 && 28/02/2023
+ * @description Route Admins
+ */
+router_private.use('/', adminPrivateRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 03/02/2023
+ * @description Route book
+ */
+router_private.use('/book', bookPrivateRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 03/02/2023
+ * @description Route book
+ */
+router_private.use('/author', authorPrivateRouter);
+
+module.exports = router_private;
