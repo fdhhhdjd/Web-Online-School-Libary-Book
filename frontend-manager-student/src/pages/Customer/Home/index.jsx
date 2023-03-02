@@ -7,14 +7,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from '../../../components/Slider/Slider';
 import SlickSlider from 'react-slick';
+import NewsCard from 'components/NewsCard';
 
 const mockDataBook = [
   {
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -27,8 +26,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -41,8 +38,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -55,8 +50,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -69,8 +62,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -83,8 +74,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -97,8 +86,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -111,8 +98,6 @@ const mockDataBook = [
     title: 'Harry Porter',
     image01:
       'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png',
-    image02:
-      'https://res.cloudinary.com/dfupi3m0b/image/upload/v1673969931/ca-nhan/pngfind.com-harry-potter-books-png-6851011_weka3b.png',
     author: 'JK. Rowling',
     categorySlug: 'ao-thun',
     colors: ['white', 'red', 'orange'],
@@ -120,6 +105,46 @@ const mockDataBook = [
     size: ['s', 'm', 'l', 'xl'],
     description:
       'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động <br><br><br> Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!<br><br><br>Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng. Càng đơn giản, bạn lại càng dễ mix & match với những món đồ khác nhau.Áo thun nữ PPM4502 có thiết kế cổ tròn đơn giản, nhẹ nhàng tôn da. Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu. Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào. Cùng với đó, áo thun nữ cotton cổ tròn Yody có khả năng thâm shuts mồ hôi rất tốt nên người mặc không bị cảm giác bí bách, dính dính trên da khi đổ mồ hôi vào mùa hè. Bên cạnh đó, sản phẩm cũng chưa 5% spandex - loại sợi giúp co giãn, đàn hồi hiệu quả thích hợp mặc tới nhiều môi trường, ngay cả khi vận động',
+  },
+];
+
+const mockDataCategory = [
+  {
+    name: 'Nghệ thuật & nhiếp ảnh',
+    icon: 'bx bx-images',
+  },
+  {
+    name: 'Ẩm thực',
+    icon: 'bx bx-restaurant',
+  },
+  {
+    name: 'Tình cảm & lãng mạn',
+    icon: 'bx bx-book-heart',
+  },
+  {
+    name: 'Sức khỏe',
+    icon: 'bx bx-plus-medical',
+  },
+];
+
+const mockDataEvents = [
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4114/thuvienitc-web.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
+  },
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4114/thuvienitc-web.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
+  },
+  {
+    date: '27-01-2023',
+    name: 'Nghệ thuật & nhiếp ảnh',
+    thumbnail: 'https://itc.edu.vn/Data/Sites/1/News/4101/20209252146107tb-20220721055929-e.png',
+    desc: 'Sáng nay ngày 17/02/2023, tại Thư viện ITC (Lầu 5 dãy B) đã diễn ra buổi Khai mạc cuộc thi "Viết phần mềm quản lý thư viện ITC" do Khoa Công nghệ thông tin - Điện tử tổ chức.',
   },
 ];
 
@@ -171,8 +196,45 @@ const Home = () => {
         autoPlay
         timeOut={3000}
       />
+
       <Section>
-        <SectionTitle subTitle={'All Categories'} left>
+        <SectionTitle subTitle={'Xem thêm'} left>
+          Sự kiện & bảng tin
+        </SectionTitle>
+        <Grid col={2} gap={20}>
+          <SectionBody>
+            <Grid col={1} mdCol={2} smCol={1} gap={20}>
+              <Link to="/category">
+                <NewsCard
+                  date={mockDataEvents[0].date}
+                  name={mockDataEvents[0].name}
+                  thumbnail={mockDataEvents[0].thumbnail}
+                  desc={mockDataEvents[0].desc}
+                />
+              </Link>
+            </Grid>
+          </SectionBody>
+          <SectionBody>
+            <Grid col={1} mdCol={2} smCol={1} gap={20}>
+              {mockDataEvents.map((item, index) => (
+                <Link to="/category" key={index}>
+                  <NewsCard
+                    date={item.date}
+                    horizontal
+                    name={item.name}
+                    thumbnail={item.thumbnail}
+                    thumbnailSize={'sm'}
+                    desc={'Xem thêm'}
+                  />
+                </Link>
+              ))}
+            </Grid>
+          </SectionBody>
+        </Grid>
+      </Section>
+
+      <Section>
+        <SectionTitle subTitle={'Tất cả danh mục'} left>
           Danh mục nổi bật
         </SectionTitle>
         <SectionBody>
@@ -204,19 +266,11 @@ const Home = () => {
       </Section>
 
       <Section>
-        <SectionTitle subTitle={'View more'}>Tài liệu nổi bật</SectionTitle>
+        <SectionTitle subTitle={'Xem thêm'}>Tài liệu nổi bật</SectionTitle>
         <SectionBody>
-          {/* <Grid col={5} mdCol={2} smCol={1} gap={20}></Grid> */}
           <SlickSlider {...settings}>
             {mockDataBook.map((item, index) => (
-              <BookCard
-                key={index}
-                img01={item.image01}
-                img02={item.image02}
-                name={item.title}
-                slug={item.slug}
-                author={item.author}
-              />
+              <BookCard key={index} img01={item.image01} name={item.title} slug={item.slug} author={item.author} />
             ))}
           </SlickSlider>
         </SectionBody>

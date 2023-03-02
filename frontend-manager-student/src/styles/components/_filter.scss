@@ -1,0 +1,149 @@
+.shop__sidebar {
+  margin-top: $header-height;
+  padding-right: 20px;
+}
+
+.shop__sidebar__search {
+  margin-bottom: 45px;
+
+  form {
+    position: relative;
+
+    input {
+      width: 100%;
+      font-size: 15px;
+      color: #b7b7b7;
+      padding-left: 20px;
+      border: 1px solid #e5e5e5;
+      height: 42px;
+
+      &::placeholder {
+        color: #b7b7b7;
+      }
+    }
+
+    button {
+      color: #b7b7b7;
+      font-size: 15px;
+      border: none;
+      background: transparent;
+      position: absolute;
+      right: 0;
+      padding: 0 15px;
+      top: 0;
+      height: 100%;
+    }
+  }
+}
+
+.shop__sidebar__accordion {
+  .card {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0;
+
+      .card-body {
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 0;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .card-heading {
+    cursor: pointer;
+
+    a {
+      @include hologram_text;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: block;
+    }
+  }
+}
+
+.shop__sidebar__categories {
+  ul {
+    height: 225px;
+
+    li {
+      list-style: none;
+
+      a {
+        color: #b7b7b7;
+        font-size: 15px;
+        line-height: 32px;
+        @include transition(all, 0.3s);
+
+        &:hover {
+          @include hologram_text;
+        }
+      }
+    }
+  }
+}
+
+.shop__sidebar__brand {
+  @extend .shop__sidebar__categories;
+
+  ul {
+    height: auto;
+  }
+}
+
+.shop__sidebar__tags {
+  padding-top: 15px;
+
+  a {
+    color: #404040;
+    font-size: 13px;
+    font-weight: 700;
+    background: #f1f5f8;
+    padding: 5px 18px;
+    display: inline-block;
+    text-transform: uppercase;
+    margin-right: 6px;
+    margin-bottom: 10px;
+    @include transition(all, 0.3s);
+
+    &:hover {
+      background: red;
+      color: #fff;
+    }
+  }
+}
+
+.shop__sidebar__accordion .card-heading a:after,
+.shop__sidebar__accordion .card-heading > a.active[aria-expanded='false']:after {
+  content: '\f107';
+  font-family: 'FontAwesome';
+  font-size: 24px;
+  font-weight: 700;
+  @include hologram_text;
+  position: absolute;
+  right: 0;
+  top: 2px;
+  line-height: 20px;
+}
+
+.shop__sidebar__accordion .card-heading.active a:after {
+  content: '\f107';
+  font-family: 'FontAwesome';
+  font-size: 24px;
+  font-weight: 700;
+  @include hologram_text;
+  position: absolute;
+  right: 0;
+  top: 2px;
+  line-height: 20px;
+}

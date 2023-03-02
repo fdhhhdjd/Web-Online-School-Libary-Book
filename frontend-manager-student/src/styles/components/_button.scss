@@ -3,44 +3,31 @@
   outline: 0;
   border-radius: 6px;
   color: $btn-main-color;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
   position: relative;
+  background: $txt-hologram;
+
+  &:hover {
+    transition: all 0.4 ease-in-out;
+    opacity: 0.9;
+    color: #fff;
+  }
 
   @include mobile {
     font-size: 1rem;
   }
 
-  &__text,
-  &__icon {
+  &__text {
     display: block;
     transition: all 0.5s ease;
   }
 
   &__text {
     padding: 1rem 2rem;
-  }
-
-  &__icon {
-    @include flex(center, center);
-    font-size: 2rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform: translateX(-100%);
-  }
-
-  &-animate:hover &__text {
-    transform: translateX(100%);
-  }
-
-  &-animate:hover &__icon {
-    transform: translateX(0);
   }
 
   &-sm {

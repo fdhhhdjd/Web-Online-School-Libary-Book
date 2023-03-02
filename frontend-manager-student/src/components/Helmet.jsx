@@ -8,7 +8,7 @@ const Helmet = (props) => {
     window.scrollTo(0, 0);
   }, []);
 
-  return <div>{props.children}</div>;
+  return <div style={{ width: '100vw' }}>{props.children}</div>;
 };
 
 Helmet.propTypes = {
