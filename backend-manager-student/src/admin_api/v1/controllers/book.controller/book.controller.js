@@ -106,7 +106,7 @@ const bookController = {
             quantity,
             status,
             public_id_image,
-        } = req.body.input.author_input;
+        } = req.body.input.book_input;
 
         // Check input
         if (
@@ -201,7 +201,7 @@ const bookController = {
             );
 
             // Check Book already delete
-            if (result_book_detail) {
+            if (result_book_detail.length > 0) {
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),

@@ -5,6 +5,7 @@ const router_private = require('express').Router();
 const adminPrivateRouter = require('./admin.routes/admin.private.route');
 const bookPrivateRouter = require('./book.routes/book.private.route');
 const authorPrivateRouter = require('./author.routes/author.private.route');
+const categoriesPrivateRouter = require('./categories.routes/categories.private.route');
 
 /**
  * @author Nguyễn Tiến Tài
@@ -16,16 +17,23 @@ router_private.use('/', adminPrivateRouter);
 
 /**
  * @author Nguyễn Tiến Tài
- * @created_at 03/02/2023
+ * @created_at 02/03/2023
  * @description Route book
  */
 router_private.use('/book', bookPrivateRouter);
 
 /**
  * @author Nguyễn Tiến Tài
- * @created_at 03/02/2023
- * @description Route book
+ * @created_at 02/03/2023
+ * @description Route author
  */
 router_private.use('/author', authorPrivateRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 02/03/2023
+ * @description Route categories
+ */
+router_private.use('/categories', categoriesPrivateRouter);
 
 module.exports = router_private;
