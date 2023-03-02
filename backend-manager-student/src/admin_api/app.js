@@ -15,9 +15,6 @@ const CONFIGS = require('../share/configs/config');
 const CONSTANTS = require('../share/configs/constants');
 const OPTIONS = require('../share/configs/option');
 
-//! IMPORT MIDDLEWARE
-const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
-
 //! CACHE MEMORY
 const { REDIS_MASTER } = require('../share/db/init_multiple_redis');
 let RedisStore = require('connect-redis')(session);
@@ -79,9 +76,6 @@ app.use(
         },
     }),
 );
-
-//! CHECK DEVICE
-app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
 app.use(ADMIN_API);

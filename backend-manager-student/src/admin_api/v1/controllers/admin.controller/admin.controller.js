@@ -1,25 +1,25 @@
 //! SHARE
-const HELPER = require('../../../share/utils/helper');
-const PASSWORD = require('../../../share/utils/password');
-const RANDOMS = require('../../../share/utils/random');
-const CONSTANTS = require('../../../share/configs/constants');
-const TOKENS = require('../../../share/utils/token');
-const CONFIGS = require('../../../share/configs/config');
+const HELPER = require('../../../../share/utils/helper');
+const PASSWORD = require('../../../../share/utils/password');
+const RANDOMS = require('../../../../share/utils/random');
+const CONSTANTS = require('../../../../share/configs/constants');
+const TOKENS = require('../../../../share/utils/token');
+const CONFIGS = require('../../../../share/configs/config');
 
 //! MIDDLEWARE
 // const { globalCache } = require('../../../share/patterns/LRU_Strategy.patterns');
-const { returnReasons } = require('../../../share/middleware/handle_error');
-const { takeDataStudent } = require('../../../share/services/admin.service');
+const { returnReasons } = require('../../../../share/middleware/handle_error');
+const { takeDataStudent } = require('../../../../share/services/admin.service');
 
 //! MODEL
-const user_model = require('../../../share/models/user.model');
-const user_device_model = require('../../../share/models/user_device.model');
+const user_model = require('../../../../share/models/user.model');
+const user_device_model = require('../../../../share/models/user_device.model');
 
 //! DATABASE
-const knex = require('../../../share/db/postgresql');
+const knex = require('../../../../share/db/postgresql');
 
 //! Service
-const geo_service = require('../../../share/services/geo.service');
+const geo_service = require('../../../../share/services/geo.service');
 
 const adminController = {
     /**

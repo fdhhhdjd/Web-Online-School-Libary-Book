@@ -322,4 +322,24 @@ module.exports = {
         ROLE_MANAGER: 1,
         ROLE_ADMIN: 2,
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 02/03/2023
+     * @description Status book
+     * @param { String }
+     */
+    STATUS_BOOK: {
+        STILL: 10,
+        OUT_OF: 20,
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/02/2023
+     * @description KEY REDIS BOOK
+     * @param { String }
+     */
+    KEY_REDIS: {
+        ALL_BOOK: 'book_all',
+        DETAIL_BOOK: 'detail_book_${book_id}',
+    },
 };
