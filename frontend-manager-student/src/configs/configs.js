@@ -1,8 +1,17 @@
 const CONFIGS = {
-  //* URL_API
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description URL_API
+   */
   REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+  REACT_APP_NODE_ENV: process.env.NODE_ENV,
 
-  // * Configs FireBase
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description Configs FireBase
+   */
   REACT_APP_API_KEY: process.env.REACT_APP_API_KEY,
   REACT_APP_AUTH_DOMAIN: process.env.REACT_APP_AUTH_DOMAIN,
   REACT_APP_DATA_BASE_URL: process.env.REACT_APP_DATA_BASE_URL,
@@ -11,18 +20,34 @@ const CONFIGS = {
   REACT_APP_MESSAGING_SENDER_ID: process.env.REACT_APP_MESSAGING_SENDER_ID,
   REACT_APP_APP_ID: process.env.REACT_APP_APP_ID,
 
-  // * Key Facebook Login
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description Key Facebook Login
+   */
   REACT_APP_KEY_FACEBOOK: process.env.REACT_APP_KEY_FACEBOOK,
   REACT_APP_KEY_FACEBOOK_TEST: process.env.REACT_APP_KEY_FACEBOOK_TEST,
 
-  // * Key Google Login
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description Key Google Login
+   */
   REACT_APP_KEY_GOOGLE: process.env.REACT_APP_KEY_GOOGLE,
 
-  // * RecapCha Google
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description RecapCha Google
+   */
   REACT_APP_KEY_RECAPTCHA: process.env.REACT_APP_KEY_RECAPTCHA,
   REACT_APP_KEY_RECAPTCHA_V3: process.env.REACT_APP_KEY_RECAPTCHA_V3,
 
-  //* Key Google Map
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @description Key Google Map
+   */
   REACT_APP_KEY_GOOGLE_MAP: process.env.REACT_APP_KEY_GOOGLE_MAP,
   REACT_APP_KEY_GOOGLE_MAP_MAIN: process.env.REACT_APP_KEY_GOOGLE_MAP_MAIN,
 };

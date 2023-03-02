@@ -1,4 +1,7 @@
+//!LIBRARY
 import React from 'react';
+
+//! COMPONENT
 import TabLogin from './components/TabLogin';
 
 const Login = () => {

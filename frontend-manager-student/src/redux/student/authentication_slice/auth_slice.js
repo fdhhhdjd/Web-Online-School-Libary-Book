@@ -1,28 +1,33 @@
+//! LIBARY
 import { createSlice } from '@reduxjs/toolkit';
-import { Login_Email_Phone_Initial } from './auth_thunk';
+
+//! CALL API REDUX THUNK
+import { Login_Mssv_Initial } from './auth_thunk';
+
 const initialState = {
   loading: false,
   error: null,
-  auth: [],
+  student_auth: [],
 };
+
 const Authentication = createSlice({
-  name: 'Auth_User',
+  name: 'STUDENT AUTH',
   initialState,
   reducers: {
     reset_auth: (state) => {
-      state.auth = [];
+      state.student_auth = [];
     },
   },
   extraReducers: {
     //* Login Email_Phone have Password
-    [Login_Email_Phone_Initial.pending]: (state, action) => {
+    [Login_Mssv_Initial.pending]: (state, action) => {
       state.loading = true;
     },
-    [Login_Email_Phone_Initial.fulfilled]: (state, action) => {
+    [Login_Mssv_Initial.fulfilled]: (state, action) => {
       state.loading = false;
-      state.auth = action.payload;
+      state.student_auth = action.payload;
     },
-    [Login_Email_Phone_Initial.rejected]: (state, action) => {
+    [Login_Mssv_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
