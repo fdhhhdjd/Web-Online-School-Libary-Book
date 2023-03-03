@@ -1,0 +1,45 @@
+.category-card {
+  flex-direction: column;
+  padding: 40px;
+  padding-left: 0;
+  box-shadow: $box-shadow;
+  transition: all 0.5s ease;
+
+  &:hover {
+    transform: translateY(-20px);
+  }
+
+  &:hover &__info__name,
+  &:hover &__icon i {
+    @include hologram_text;
+  }
+  &__icon {
+    padding: 0 40px;
+    color: $txt-main-color;
+
+    i {
+      font-size: 5rem;
+    }
+  }
+
+  &__info {
+    padding: 0 40px;
+    margin-top: 1rem;
+
+    &__name {
+      text-transform: capitalize;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    &__description {
+      font-size: 1.5rem;
+      color: $txt-second-color;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
