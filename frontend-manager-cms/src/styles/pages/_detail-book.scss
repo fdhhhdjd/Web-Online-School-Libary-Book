@@ -1,0 +1,135 @@
+.book__view {
+  margin-top: $header-height;
+  font-size: 1.6rem;
+  padding: 0 10vw;
+
+  &__name {
+    @include hologram_text;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+
+    // span {
+    //   @include hologram_text;
+    // }
+  }
+
+  &__btns {
+    margin-top: 2rem !important;
+
+    button {
+      padding: 10px 20px;
+      margin-right: 1.2rem;
+      border-radius: 0.5rem;
+      outline: none;
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      transition: all 0.4s ease-in-out;
+
+      &:hover {
+        opacity: 0.875;
+
+        a {
+          color: #fff;
+        }
+      }
+    }
+
+    .borrow-btn {
+      background: #0d296b;
+    }
+
+    .like-btn {
+      background: #ec1d25;
+    }
+  }
+
+  &__image {
+    width: 100%;
+  }
+
+  &__location {
+    color: $txt-second-color;
+    font-weight: 700;
+
+    &__title {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 10px;
+      font-size: 1.8rem;
+      background: #0d296b;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .quantity,
+    .bookshelf {
+      span {
+        font-size: 2rem;
+        color: $txt-main-color;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  &__data {
+    color: $txt-second-color;
+    font-weight: 700;
+
+    & > div {
+      margin-top: 1.2rem;
+    }
+
+    &__rate,
+    &__author,
+    &__id,
+    &__publisher,
+    &__page,
+    &__language {
+      span {
+        font-size: 2rem;
+        color: $txt-main-color;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  &__content {
+    margin-top: 5rem;
+    &__title {
+      @include hologram_text;
+      font-weight: 700;
+      font-size: 2.8rem;
+      border-bottom: 2px solid;
+      border-image-slice: 1;
+      border-image-source: $txt-hologram;
+
+      span {
+        @include hologram_text;
+      }
+    }
+
+    &__data {
+      margin-top: 1rem;
+      font-size: 1.8rem;
+      color: $txt-second-color;
+    }
+  }
+
+  &__comment {
+    margin-top: 5rem;
+    &__title {
+      @include hologram_text;
+      font-weight: 700;
+      font-size: 2.8rem;
+      border-bottom: 2px solid;
+      border-image-slice: 1;
+      border-image-source: $txt-hologram;
+
+      span {
+        @include hologram_text;
+      }
+    }
+  }
+}
