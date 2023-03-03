@@ -1,0 +1,19 @@
+# git
+.git
+
+# Forder run code
+node_modules
+
+# Docker
+Dockerfile
+.dockerignore
+
+# File unit test
+./src/tests
+
+# Fotmatcode
+.editorconfig
+.eslintignore
+.eslintrc
+.prettierignore
+.prettierrc
