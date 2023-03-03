@@ -41,5 +41,5 @@ export function getToken() {
  * @return {String}
  */
 export function setToken(token) {
-  return localStorage.setItem(CONSTANTS.AUTH_TOKEN, token);
+  return localStorage.setItem(CONSTANTS.AUTH_TOKEN, JSON.stringify(token));
 }

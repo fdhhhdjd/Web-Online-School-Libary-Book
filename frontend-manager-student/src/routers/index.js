@@ -1,7 +1,9 @@
 import Layout from 'components/Layout';
-import AllBook from 'pages/Customer/Book/AllBooks';
-import DetailBook from 'pages/Customer/Book/DetailBook';
-import Home from 'pages/Customer/Home';
+import ChangePassword from 'pages/Auth/ChangePassword';
+import AllBook from 'pages/Book/AllBooks';
+import DetailBook from 'pages/Book/DetailBook';
+import Home from 'pages/Home';
+import UserProfile from 'pages/UserProfile';
 
 const RouteDataMain = [
   {
@@ -25,6 +27,22 @@ const RouteDataMain = [
     main: (
       <>
         <Layout content={<DetailBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/changePassword',
+    main: (
+      <>
+        <Layout content={<ChangePassword />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/profile',
+    main: (
+      <>
+        <Layout content={<UserProfile />} />
       </>
     ),
   },

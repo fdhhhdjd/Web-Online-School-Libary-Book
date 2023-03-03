@@ -9,7 +9,7 @@ const DetailBook = () => {
     <Helmet title="Harry Porter">
       <Section>
         <SectionBody>
-          <div className="book__view">
+          <div className="book__view main">
             <Row>
               <Col md={8}>
                 <Row>

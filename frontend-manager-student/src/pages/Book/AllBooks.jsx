@@ -14,7 +14,7 @@ const AllBook = () => {
               <Filter />
             </Col>
             <Col sm={9}>
-              <div className="book__container">
+              <div className="book__container main">
                 <div className="book__container__header">
                   <div className="header__data">Trang 1 trong 6151 kết quả (0.1093984 giây)</div>
                   <div className="header__sort">
@@ -61,7 +61,7 @@ const AllBook = () => {
                             </span>
 
                             <span>
-                              <i class="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
+                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
                               <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
                             </span>
                           </div>
@@ -103,7 +103,7 @@ const AllBook = () => {
                             </span>
 
                             <span>
-                              <i class="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
+                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
                               <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
                             </span>
                           </div>
@@ -145,7 +145,7 @@ const AllBook = () => {
                             </span>
 
                             <span>
-                              <i class="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
+                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
                               <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
                             </span>
                           </div>

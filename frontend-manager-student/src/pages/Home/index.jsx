@@ -5,9 +5,9 @@ import Helmet from 'components/Helmet';
 import Section, { SectionBody, SectionTitle } from 'components/Section';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Slider from '../../../components/Slider/Slider';
 import SlickSlider from 'react-slick';
 import NewsCard from 'components/NewsCard';
+import Slider from 'components/Slider/Slider';
 
 const mockDataBook = [
   {

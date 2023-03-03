@@ -52,7 +52,7 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
       setToken(success_general.access_token);
 
       // Notification Success
-      NOTIFICATION.notifySuccess('Login Student Success' || successData.message);
+      NOTIFICATION.notifySuccess('Đăng nhập thành công' || successData.message);
 
       // return result data
       return successData;

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SCHOOL_LOGO } from '../imports/home_import/index';
 import Button from './Button';
@@ -50,11 +50,38 @@ const navInfo = [
   },
 ];
 
+const userSubNav = [
+  {
+    path: '/user/profile',
+    displayText: 'Thông tin tài khoản',
+  },
+
+  {
+    path: '/book/borrow',
+    displayText: 'Thông tin mượn sách',
+  },
+
+  {
+    path: '/user/changePassword',
+    displayText: 'Thay đổi mật khẩu',
+  },
+];
+
 const Header = (props) => {
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
   const activeNavIdx = navInfo.findIndex((e) => e.path === pathname);
+  const [token, setToken] = useState(null);
+  const tokenLocal = JSON.parse(localStorage.getItem('auth-token'));
+
+  useEffect(() => {
+    if (tokenLocal) {
+      setToken(tokenLocal);
+      props.setShowLogin(false);
+      console.log('hello');
+    }
+  }, [tokenLocal]);
 
   const menuToggle = () => {
     menuLeftRef.current.classList.toggle('active');
@@ -126,18 +153,36 @@ const Header = (props) => {
                 </Link>
               </div>
               <div className="header__menu__item header__menu__right__item">
-                {/* <Link to={`/user/account/profile/test`}>
-                  <img
-                    src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1669712298/ca-nhan/avatar_cvkuph.jpg"
-                    alt=""
-                  />
-                </Link> */}
-
-                <div className="loginBtn" onClick={(e) => props.setShowLogin(true)}>
-                  <Button size="sm" color="rgb(9 30 75/1)">
-                    Đăng nhập
-                  </Button>
-                </div>
+                {token ? (
+                  <>
+                    {props.setShowLogin(false)}
+                    <img
+                      src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1669712298/ca-nhan/avatar_cvkuph.jpg"
+                      alt=""
+                    />
+                    <div className="header__submenu header__submenu__user">
+                      {userSubNav &&
+                        userSubNav.map((item, idx) => (
+                          <div className="header__submenu__item" key={idx}>
+                            <Link to={item.path}>
+                              <span className="header__submenu__text">{item.displayText}</span>
+                            </Link>
+                          </div>
+                        ))}
+                      <div className="header__submenu__item">
+                        <span className="header__submenu__text" style={{ cursor: 'pointer' }}>
+                          Đăng xuất
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="loginBtn" onClick={(e) => props.setShowLogin(true)}>
+                    <Button size="sm" color="rgb(9 30 75/1)">
+                      Đăng nhập
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
