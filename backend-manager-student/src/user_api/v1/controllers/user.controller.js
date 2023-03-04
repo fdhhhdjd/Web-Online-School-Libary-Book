@@ -168,7 +168,9 @@ const userController = {
                 httpOnly: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
-                domain: req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0] || '',
+                domain: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                    ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
 
@@ -388,7 +390,9 @@ const userController = {
                                 httpOnly: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
-                                domain: req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0] || '',
+                                domain: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                                    ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
 

@@ -13,5 +13,11 @@
   "[sql]": {
     "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
   },
-  "cSpell.words": ["argothim", "MIDDLAWARE", "Middlawre", "mutilp"]
+  "cSpell.words": [
+    "argothim",
+    "Localstorage",
+    "MIDDLAWARE",
+    "Middlawre",
+    "mutilp"
+  ]
 }
