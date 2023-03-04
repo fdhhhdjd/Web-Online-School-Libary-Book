@@ -13,6 +13,8 @@ import './styles/style.scss';
 
 //! REDUX
 import store from 'redux/store';
+//! CONTEXT
+import { DataProviderStudent } from 'contexts/global_context';
 
 //! MAIN
 import App from './App';
@@ -20,9 +22,11 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
+    <DataProviderStudent>
+      <Router>
+        <App />
+      </Router>
+    </DataProviderStudent>
   </Provider>,
 
   document.getElementById('root'),

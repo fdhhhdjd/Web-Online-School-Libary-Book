@@ -16,9 +16,9 @@ router.post('/login', userController.loginStudent);
  * @author Nguyễn Tiến Tài
  * @created_at 04/02/2023
  * @description Route renew-token token
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
-router.post('/renew-token', userController.reNewToken);
+router.get('/renew-token', userController.reNewToken);
 
 /**
  * @author Nguyễn Tiến Tài

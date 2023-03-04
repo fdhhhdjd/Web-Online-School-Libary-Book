@@ -12,8 +12,8 @@ router.post('/login', adminController.LoginAdmin);
  * @author Nguyễn Tiến Tài
  * @created_at 28/02/2023
  * @description Route renew-token token
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
-router.post('/renew-token', adminController.reNewToken);
+router.get('/renew-token', adminController.reNewToken);
 
 module.exports = router;
