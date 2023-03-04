@@ -12,10 +12,9 @@ const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
 };
 
-let store;
-store = configureStore({
+const store = configureStore({
   reducer: {
-    auth_user: AuthenticationSlice,
+    auth_student: AuthenticationSlice,
     reducer: rootReducer,
   },
   middleware:

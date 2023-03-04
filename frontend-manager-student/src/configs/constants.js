@@ -15,6 +15,7 @@ const CONSTANTS = {
    */
   _1_MINUTES: 60 * 1000,
   _5_MINUTES: 5 * 60 * 1000,
+  _4_MINUTES: 4 * 60 * 1000,
   _15_MINUTES: 15 * 60 * 1000,
   _45_MINUTES: 45 * 60 * 1000,
   _1_DAY: 24 * 60 * 60 * 1000,
@@ -69,5 +70,14 @@ const CONSTANTS = {
    * @return {Number}
    */
   AUTH_TOKEN: 'auth-token',
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 04/03/2023
+   * @descriptionKey Header
+   * @return {Number}
+   */
+  OS_TYPE_HEADER: 'web',
+  OS_VERSION_HEADER: '1.0',
+  APP_VERSION_HEADER: '1.0',
 };
 export default CONSTANTS;
