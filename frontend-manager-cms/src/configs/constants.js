@@ -69,5 +69,14 @@ const CONSTANTS = {
    * @return {Number}
    */
   AUTH_TOKEN: 'auth-token',
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 04/03/2023
+   * @descriptionKey Header
+   * @return {Number}
+   */
+  OS_TYPE_HEADER: 'web',
+  OS_VERSION_HEADER: '1.0',
+  APP_VERSION_HEADER: '1.0',
 };
 export default CONSTANTS;

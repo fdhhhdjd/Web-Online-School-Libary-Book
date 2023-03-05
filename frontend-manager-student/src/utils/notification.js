@@ -27,7 +27,6 @@ const NOTIFICATION = {
    * @descriptionKey error
    */
   notifyError(message) {
-    console.log(message);
     return toast.error(message, {
       pposition: toast.POSITION.TOP_RIGHT,
       autoClose: CONSTANTS.AUTO_CLOSE,

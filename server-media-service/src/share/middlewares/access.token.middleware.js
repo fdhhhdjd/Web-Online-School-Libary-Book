@@ -39,7 +39,7 @@ const accessTokenMiddleware = async (req, res, next) => {
 
         // Take token
         const { device_id } = req.device;
-        console.log(device_id, 'device_id')
+
         // Take data device student
         const data_device = await user_device_model.getDeviceId(
             { device_uuid: device_id },
