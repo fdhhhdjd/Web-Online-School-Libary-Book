@@ -48,7 +48,7 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
       const result_data = HELPERS.takeDataResponse(successData);
 
       // Save LocalStorage
-      setToken(CONSTANTS.AUTH_TOKEN, result_data.access_token);
+      setToken(CONSTANTS.AUTH_TOKEN, result_data?.access_token);
 
       // Notification Success
       NOTIFICATION.notifySuccess(TEXT_NOTIFICATION.NOTIFICATION_LOGIN_SUCCESS || result_data.message);

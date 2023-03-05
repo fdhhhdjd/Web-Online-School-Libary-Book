@@ -1,5 +1,5 @@
 //! LIBRARY
-import React, { Fragment, useRef, useEffect, useState } from 'react';
+import React, { Fragment, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -39,16 +39,11 @@ const Header = (props) => {
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
   const activeNavIdx = navInfo.findIndex((e) => e.path === pathname);
-  const [token, setToken] = useState(null);
-  const tokenLocal = JSON.parse(localStorage.getItem('auth-token'));
 
   useEffect(() => {
-    if (tokenLocal) {
-      setToken(tokenLocal);
-      props.setShowLogin(false);
-      console.log('hello');
-    }
-  }, [tokenLocal]);
+    props.setShowLogin(false);
+    console.log('hello');
+  }, [profile_student]);
 
   const menuToggle = () => {
     menuLeftRef.current.classList.toggle('active');
@@ -120,7 +115,7 @@ const Header = (props) => {
                 </Link>
               </div>
               <div className="header__menu__item header__menu__right__item">
-                {token ? (
+                {profile_student ? (
                   <>
                     {props.setShowLogin(false)}
                     <img
