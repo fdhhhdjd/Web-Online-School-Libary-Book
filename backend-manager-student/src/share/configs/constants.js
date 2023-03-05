@@ -248,6 +248,7 @@ module.exports = {
     HEADER_HEADER_FORWARDED_HOST: 'x-forwarded-host',
     HEADER_FORWARDED_FOR: 'x-forwarded-for',
     HEADER_DEVICE: 'user-agent',
+    HEADER_DOMAIN: 'localhost',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 05/02/2023

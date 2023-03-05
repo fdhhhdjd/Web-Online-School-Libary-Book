@@ -1,94 +1,43 @@
-import { useEffect, useRef, useState } from 'react';
+//! LIBRARY
+import React, { Fragment, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+
+//! SHARE
+import { navInfo } from 'utils/dummy';
+
+//! IMPORT
 import { SCHOOL_LOGO } from '../imports/home_import/index';
+
+//! COMPONENTS
 import Button from './Button';
 
-const navInfo = [
-  {
-    displayText: 'Giới thiệu',
-    path: '/',
-    submenu: [
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-    ],
-  },
-  {
-    displayText: 'Tra cứu',
-    path: '/book',
-    submenu: [
-      {
-        displayText: 'Thể loại',
-        path: '/category',
-      },
-      {
-        displayText: 'Tất cả tài liệu',
-        path: '/book',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-    ],
-  },
-  {
-    displayText: 'Phụ kiện',
-    path: '/accessories',
-  },
-  {
-    displayText: 'Liên hệ',
-    path: '/contact',
-  },
-];
-
-const userSubNav = [
-  {
-    path: '/user/profile',
-    displayText: 'Thông tin tài khoản',
-  },
-
-  {
-    path: '/book/borrow',
-    displayText: 'Thông tin mượn sách',
-  },
-
-  {
-    path: '/user/changePassword',
-    displayText: 'Thay đổi mật khẩu',
-  },
-];
-
 const Header = (props) => {
+  // Take profile account store
+  const { profile_student } = useSelector((state) => ({
+    ...state.auth_student,
+  }));
+
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
   const activeNavIdx = navInfo.findIndex((e) => e.path === pathname);
-  const [token, setToken] = useState(null);
-  const tokenLocal = JSON.parse(localStorage.getItem('auth-token'));
+  // const tokenLocal = JSON.parse(localStorage.getItem('auth-token'));
 
-  useEffect(() => {
-    if (tokenLocal) {
-      setToken(tokenLocal);
-      props.setShowLogin(false);
-      console.log('hello');
-    }
-  }, [tokenLocal]);
+  // useEffect(() => {
+  //   if (tokenLocal) {
+  //     setToken(tokenLocal);
+  //     props.setShowLogin(false);
+  //     console.log('hello');
+  //   }
+  // }, [tokenLocal]);
 
   const menuToggle = () => {
     menuLeftRef.current.classList.toggle('active');
   };
 
   return (
-    <>
+    <Fragment>
       <div className="header" ref={headerRef}>
         <div className="container">
           <div className="header__logo">
@@ -153,7 +102,7 @@ const Header = (props) => {
                 </Link>
               </div>
               <div className="header__menu__item header__menu__right__item">
-                {token ? (
+                {/* {token ? (
                   <>
                     {props.setShowLogin(false)}
                     <img
@@ -175,7 +124,15 @@ const Header = (props) => {
                         </span>
                       </div>
                     </div>
-                  </>
+                  </> */}
+                {profile_student ? (
+                  <Link to={`/user/account/profile/test`}>
+                    <img
+                      src={profile_student?.data?.avatar_uri}
+                      alt={profile_student?.data?.avatar_uri}
+                      title={`${profile_student?.data?.name}`}
+                    />
+                  </Link>
                 ) : (
                   <div className="loginBtn" onClick={(e) => props.setShowLogin(true)}>
                     <Button size="sm" color="rgb(9 30 75/1)">
@@ -188,7 +145,7 @@ const Header = (props) => {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 

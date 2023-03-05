@@ -81,7 +81,6 @@ const accessAdminMiddleware = async (req, res, next) => {
 
         // Continue
         return next();
-
     } catch (error) {
         return res.status(503).json({
             status: 503,

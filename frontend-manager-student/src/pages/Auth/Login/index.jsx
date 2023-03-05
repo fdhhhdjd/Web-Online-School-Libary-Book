@@ -12,7 +12,7 @@ import HELPERS from 'utils/helper';
 
 const Login = ({ showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth_user.student_auth?.element?.result);
+  const currentUser = useSelector((state) => state.auth_user?.student_auth?.element?.result);
 
   const handleSubmit = (e) => {
     e.preventDefault();
