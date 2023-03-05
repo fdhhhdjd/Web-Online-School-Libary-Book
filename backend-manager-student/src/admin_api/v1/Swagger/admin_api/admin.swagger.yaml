@@ -283,7 +283,7 @@ paths:
     #!created_at 28/02/2023
     #!description: New Token
     /api/v1/admin/renew-token:
-        post:
+        get:
             summary: New Token
             tags: [New Token]
             operationId: reNewToken

@@ -215,7 +215,7 @@ paths:
     #!updated_at 08/02/2023
     #!description: New Token
     /api/v1/user/renew-token:
-        post:
+        get:
             summary: New Token
             tags: [New Token]
             operationId: reNewToken
