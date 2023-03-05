@@ -24,11 +24,10 @@ router.use('/api/v1/user/private', rate_limit_middleware, accessStudentMiddlewar
  */
 router.use('/api/v1/user', rate_limit_middleware, userRouter);
 
-router.get('/check-status', (req, res) =>
-    res.status(200).json({
-        status: 'success',
-        message: 'OK',
-    }),
+router.get('/check-status', (req, res) => res.status(200).json({
+    status: 'success',
+    message: 'OK',
+}),
 );
 
 module.exports = router;
