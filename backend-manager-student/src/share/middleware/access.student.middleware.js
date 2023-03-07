@@ -64,6 +64,18 @@ const accessStudentMiddleware = async (req, res, next) => {
         // Convert pem
         const publicKey = PASSWORD.decodePemPubKey(data_device[0].public_key);
 
+        // Check time Expired token
+        let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
+        if (!check_access_token) {
+            return res.status(401).json({
+                status: 401,
+                message: returnReasons('401'),
+                element: {
+                    result: 'Expired Token',
+                },
+            });
+        }
+
         // Take info from token
         let auth_user_decode = TOKENS.verifyAccessToken(accessToken, publicKey);
 
@@ -74,18 +86,6 @@ const accessStudentMiddleware = async (req, res, next) => {
                 message: returnReasons('401'),
                 element: {
                     result: 'You not is student!',
-                },
-            });
-        }
-
-        // Check time Expired token
-        let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
-        if (!check_access_token) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
-                element: {
-                    result: 'Expired Token',
                 },
             });
         }
