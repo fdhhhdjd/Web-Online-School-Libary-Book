@@ -9,6 +9,9 @@ const { returnReasons } = require('../../../../share/middleware/handle_error');
 //! MODEL
 const book_model = require('../../../../share/models/book.model');
 
+//! SERVICE
+const book_service = require('../../../../share/services/user_service/book_service');
+
 const bookController = {
     /**
      * @author Nguyễn Tiến Tài
@@ -116,5 +119,53 @@ const bookController = {
             });
         }
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 07/03/2022
+     * @description Borrowed Book
+     * @function borrowBook
+     * @return {Object:{Number,String}
+     */
+    borrowBook: async (req, res) => {
+        // Book input
+        const { book_id } = req.body.input.borrow_book_input;
+
+        // Take user Id
+        const { id } = req.auth_user;
+
+        if (!book_id || !id) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        // Check data bool exits
+        const data_book = await book_model.getBookById({ book_id, isdeleted: CONSTANTS.DELETED_DISABLE }, { quantity: 'quantity' });
+
+        if (!data_book.length) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        // Check quantity book
+        const check_quantity_book = await book_service.handleCheckQuantityBook(data_book[0]);
+        if (check_quantity_book) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+                element: {
+                    result: 'Book Out Of Stock',
+                },
+            });
+        }
+        return res.status(200).json({
+            status: 200,
+            message: returnReasons('200'),
+        });
+    },
+
 };
 module.exports = bookController;
