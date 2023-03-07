@@ -2,7 +2,7 @@
 const router = require('express').Router();
 
 //! CONTROLLER USER
-const userController = require('../../controllers/user.controller');
+const userController = require('../../controllers/user.controllers/user.controller');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 05/02/2023
@@ -47,7 +47,7 @@ router.get('/check-email', userController.checkEmailStudent);
  * @author Nguyễn Tiến Tài
  * @created_at 27/02/2023
  * @description Route send email verification Student
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/verification-email', userController.sendEmailVerification);
 

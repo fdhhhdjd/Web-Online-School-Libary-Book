@@ -43,10 +43,11 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/01/2023
+     * @updated_at 07/02/2023
      * @description Get all book
      */
     getAllBook: async (student_query, return_data) => {
-        const result = await knex('books').select(return_data);
+        const result = await knex('books').select(return_data).where(student_query).orderBy('updated_at', 'desc');
         return result;
     },
 };

@@ -1,26 +1,26 @@
 //! Share
-const HELPER = require('../../../share/utils/helper');
-const CONSTANTS = require('../../../share/configs/constants');
-const PASSWORD = require('../../../share/utils/password');
-const CONFIGS = require('../../../share/configs/config');
-const TOKENS = require('../../../share/utils/token');
-const MEMORY_CACHE = require('../../../share/utils/limited_redis');
-const REDIS_PUB_SUB = require('../../../share/utils/redis_pub_sub_helper');
-const RANDOMS = require('../../../share/utils/random');
+const HELPER = require('../../../../share/utils/helper');
+const CONSTANTS = require('../../../../share/configs/constants');
+const PASSWORD = require('../../../../share/utils/password');
+const CONFIGS = require('../../../../share/configs/config');
+const TOKENS = require('../../../../share/utils/token');
+const MEMORY_CACHE = require('../../../../share/utils/limited_redis');
+const REDIS_PUB_SUB = require('../../../../share/utils/redis_pub_sub_helper');
+const RANDOMS = require('../../../../share/utils/random');
 
 //! Model
-const user_model = require('../../../share/models/user.model');
-const user_device_model = require('../../../share/models/user_device.model');
-const user_reset_password_model = require('../../../share/models/user_reset_password.model');
-const user_verification_model = require('../../../share/models/user_verification.model');
+const user_model = require('../../../../share/models/user.model');
+const user_device_model = require('../../../../share/models/user_device.model');
+const user_reset_password_model = require('../../../../share/models/user_reset_password.model');
+const user_verification_model = require('../../../../share/models/user_verification.model');
 
 //! Service
-const geo_service = require('../../../share/services/geo.service');
-const user_service = require('../../../share/services/user_service/user_service');
-const verification_service = require('../../../share/services/user_service/verification.service');
+const geo_service = require('../../../../share/services/geo.service');
+const user_service = require('../../../../share/services/user_service/user_service');
+const verification_service = require('../../../../share/services/user_service/verification.service');
 
 //! Middleware
-const { returnReasons } = require('../../../share/middleware/handle_error');
+const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 const userController = {
     /**
@@ -139,7 +139,12 @@ const userController = {
 
             // Refresh_token new
             let refresh_token = TOKENS.createRefreshToken(
-                { id: user.user_id, name: user.name, email: user.email },
+                {
+                    id: user.user_id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                },
                 pub_pri_key.privateKey,
             );
 
@@ -148,7 +153,12 @@ const userController = {
 
             // Create accept_token
             const access_token = TOKENS.createAcceptToken(
-                { id: user.user_id, name: user.name, email: user.email },
+                {
+                    id: user.user_id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                },
                 pub_pri_key.privateKey,
             );
 
@@ -360,6 +370,7 @@ const userController = {
                                     id: result[0].user_id,
                                     name: result[0].name,
                                     email: result[0].email,
+                                    role: result[0].role,
                                 },
                                 pub_pri_key.privateKey,
                             );
@@ -370,6 +381,7 @@ const userController = {
                                     id: result[0].user_id,
                                     name: result[0].name,
                                     email: result[0].email,
+                                    role: result[0].role,
                                 },
                                 pub_pri_key.privateKey,
                             );
