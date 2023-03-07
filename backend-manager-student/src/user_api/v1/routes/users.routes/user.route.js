@@ -2,7 +2,7 @@
 const router = require('express').Router();
 
 //! CONTROLLER USER
-const userController = require('../../controllers/user.controller');
+const userController = require('../../controllers/user.controllers/user.controller');
 
 /**
  * @author Nguyễn Tiến Tài
@@ -40,7 +40,7 @@ router.post('/reset/:token_reset', userController.resetPasswordStudent);
  * @author Nguyễn Tiến Tài
  * @created_at 27/02/2023
  * @description Route update verification email
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/email/:user_id/:uniqueString', userController.updateVerificationEmailStudent);
 

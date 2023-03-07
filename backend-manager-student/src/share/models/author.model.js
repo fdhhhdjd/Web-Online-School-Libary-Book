@@ -42,11 +42,12 @@ module.exports = {
         }),
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/01/2023
+     * @created_at 01/03/2023
+     * @udated_at 05/03/2023
      * @description Get all Author
      */
     getAllAuthor: async (student_query, return_data) => {
-        const result = await knex('authors').select(return_data).where(student_query);
+        const result = await knex('authors').select(return_data).where(student_query).orderBy('updated_at', 'desc');
         return result;
     },
 };

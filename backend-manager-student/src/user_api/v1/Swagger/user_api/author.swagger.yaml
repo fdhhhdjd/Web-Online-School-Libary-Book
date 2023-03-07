@@ -1,0 +1,166 @@
+#!@author Nguyễn Tiến Tài
+#!created_at 08/02/2023
+#!description: General
+# Info Swagger User APi
+info:
+    title: Document Student
+    description: CURD AUTHOR
+    version: 1.0.0
+servers:
+    - url: http://localhost:5001
+      description: Local development server user api
+# General
+components:
+    # Parameter
+    parameters:
+        X-DEVICE-ID:
+            in: header
+            name: X-DEVICE-ID
+            required: true
+            schema:
+                type: string
+        X-OS-TYPE:
+            in: header
+            name: X-OS-TYPE
+            required: true
+            schema:
+                type: string
+        X-OS-VERSION:
+            in: header
+            name: X-OS-VERSION
+            required: true
+            schema:
+                type: string
+        X-APP-VERSION:
+            in: header
+            name: X-APP-VERSION
+            required: true
+            schema:
+                type: string
+        X-DEVICE-NAME:
+            in: header
+            name: X-DEVICE-NAME
+            required: true
+            schema:
+                type: string
+        TOKEN:
+            in: header
+            name: Authorization
+            type: string
+            description: Bearer Token
+            required: true
+            schema:
+                type: bearerToken
+    # Unauthorized
+    responses:
+        UnauthorizedError:
+            description: Access token is missing or invalid, or the user does not have access to perform the action,or or Device Invalid
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 400
+                            message:
+                                type: string
+                                example: 'Unauthorized'
+        # Fail CURD Fail
+        ServerCURDFail:
+            description: CURD Fail !!!
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 500
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Internal Server Error
+        ServerFail:
+            description: Service die
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: integer
+                                example: 503
+                            message:
+                                type: string
+                                example: Service Unavailable
+                            element:
+                                type: object
+                                example: Out Of Service
+paths:
+    #!@author Nguyễn Tiến Tài
+    #!created_at 07/03/2023
+    #!description: Detail author
+    /v1/user/private/author/detail/:author_id:
+        get:
+            summary: Detail Author
+            tags: [Detail Author]
+            operationId: detailAuthor
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            responses:
+                200:
+                    description: Detail success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                503:
+                    $ref: '#/components/responses/ServerFail'
+    #!@author Nguyễn Tiến Tài
+    #!created_at 07/03/2023
+    #!description: Get all Author
+    /v1/user/private/author/all:
+        get:
+            summary: Get all Author
+            tags: [Get all Author]
+            operationId: getAllAuthor
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                503:
+                    $ref: '#/components/responses/ServerFail'

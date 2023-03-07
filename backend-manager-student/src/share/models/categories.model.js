@@ -47,10 +47,11 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
+     * @updated_at 07/02/2023
      * @description Get all Categories
      */
     getAllCategories: async (student_query, return_data) => {
-        const result = await knex('categories').select(return_data).where(student_query);
+        const result = await knex('categories').select(return_data).where(student_query).orderBy('updated_at', 'desc');
         return result;
     },
 };
