@@ -49,3 +49,34 @@ export const navInfo = [
     path: '/contact',
   },
 ];
+
+export const userSubNav = [
+  {
+    path: '/user/profile',
+    displayText: 'Thông tin tài khoản',
+  },
+
+  {
+    path: '/book/borrow',
+    displayText: 'Thông tin mượn sách',
+  },
+
+  {
+    path: '/user/changePassword',
+    displayText: 'Thay đổi mật khẩu',
+  },
+];
+
+export const profileSidebar = [
+  {
+    path: '/user/profile',
+    displayText: 'Tài khoản của tôi',
+    icon: 'bx bx-user',
+  },
+
+  {
+    path: '/book/borrow',
+    displayText: 'Thông tin sách mượn',
+    icon: 'bx bx-book-open',
+  },
+];

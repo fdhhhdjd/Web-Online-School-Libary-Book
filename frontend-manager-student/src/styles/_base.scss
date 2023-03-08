@@ -84,6 +84,16 @@ img {
   }
 }
 
+img {
+  object-fit: contain;
+  object-position: center;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
 .main {
   margin-top: $header-height;
   margin-bottom: 2rem;

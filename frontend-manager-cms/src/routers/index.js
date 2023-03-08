@@ -1,30 +1,29 @@
-import Layout from 'components/Layout';
-import AllBook from 'pages/Customer/Book/AllBooks';
-import DetailBook from 'pages/Customer/Book/DetailBook';
-import Home from 'pages/Customer/Home';
+import Sidebar from 'components/Sidebar';
+import AllUser from 'pages/Account/AllUser';
+import Book from 'pages/Book/AllBook';
 
 const RouteDataMain = [
   {
     path: '/',
     main: (
       <>
-        <Layout content={<Home />} />
+        <Sidebar />
       </>
     ),
   },
   {
-    path: '/book',
+    path: '/all-book',
     main: (
       <>
-        <Layout content={<AllBook />} />
+        <Sidebar content={<Book />} />
       </>
     ),
   },
   {
-    path: '/detail-book',
+    path: '/all-user',
     main: (
       <>
-        <Layout content={<DetailBook />} />
+        <Sidebar content={<AllUser />} />
       </>
     ),
   },

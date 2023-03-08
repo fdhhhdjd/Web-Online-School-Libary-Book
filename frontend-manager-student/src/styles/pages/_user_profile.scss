@@ -1,3 +1,184 @@
 .profile {
   padding: 0 8rem;
+
+  &__sidebar {
+    &__user {
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid #ccc;
+      &__image {
+        width: 45px;
+        border-radius: 50%;
+
+        img {
+          object-fit: contain;
+          object-position: center;
+          border-radius: 50%;
+        }
+      }
+
+      &__info {
+        margin-left: 0.5rem;
+        font-size: 1.6rem;
+        font-weight: bold;
+
+        div:nth-child(1) {
+          @include hologram-text;
+          margin-bottom: 0.5rem;
+        }
+
+        a {
+          color: #888;
+        }
+      }
+    }
+
+    &__list {
+      @include flex(flex-start, center);
+      flex-direction: column;
+      padding: 2.5rem 0;
+
+      &__item {
+        a {
+          font-size: 1.8rem;
+
+          &:hover {
+            @include hologram-text;
+          }
+
+          i {
+            margin-right: 0.8rem;
+          }
+
+          span {
+            font-size: 1.6rem;
+            color: $txt-main-color;
+
+            &.active {
+              @include hologram-text;
+            }
+          }
+        }
+      }
+
+      &__item ~ &__item {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  &__info {
+    padding-bottom: 2.1rem;
+    border-bottom: 1px solid #ccc;
+
+    &__title {
+      font-size: 2.2rem;
+      text-transform: capitalize;
+      color: $txt-main-color;
+    }
+
+    &__description {
+      font-size: 1.5rem;
+      color: #555;
+    }
+
+    &__content {
+      font-size: 1.8rem;
+      padding-top: 2.5rem;
+
+      .info_border {
+        border-right: 1px solid #ccc;
+      }
+
+      &__label,
+      &__input {
+        &-item ~ &-item {
+          margin-top: 2.5rem;
+        }
+      }
+
+      &__label {
+        text-align: right;
+        color: #888;
+
+        button {
+          margin-top: 1rem;
+          outline: none;
+          padding: 8px 25px;
+          background: $txt-hologram;
+          color: #fff;
+          border: none;
+          border-radius: 2px;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            opacity: 0.9;
+          }
+        }
+      }
+
+      &__input {
+        color: $txt-main-color;
+
+        input {
+          margin-right: 0.5rem;
+        }
+
+        label {
+          margin-right: 2rem;
+        }
+      }
+
+      .date-picker {
+        .dropdown-date {
+          margin-top: 1.5rem;
+          font-size: 20px;
+          border: 1px solid black;
+        }
+
+        .option {
+          margin-left: 10px;
+        }
+
+        select {
+          padding: 0.5rem 1rem;
+          border-radius: 3px;
+        }
+
+        select ~ select {
+          margin-left: 1rem;
+        }
+
+        .error {
+          border: 1px solid red;
+        }
+      }
+    }
+
+    &__image {
+      @include flex(center, center);
+      flex-direction: column;
+
+      &__preview {
+        max-width: 100px;
+        height: 110px;
+
+        img {
+          width: 100%;
+        }
+
+        &__require {
+          margin-top: 1.5rem;
+          color: #888;
+        }
+      }
+
+      label {
+        @include hologram-border(2);
+        margin-top: 2rem;
+        padding: 10px 20px;
+      }
+    }
+  }
 }
+
+// day picker css

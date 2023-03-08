@@ -21,7 +21,7 @@ const Login = ({ showLogin, setShowLogin }) => {
 
     //Check input
     if (!values.mssv || !values.password) {
-      return NOTIFICATION.notifyError('Mssv or Password required !!!');
+      return NOTIFICATION.notifyError('Mã số sinh viên hoặc mật khẩu không chính xác !!!');
     }
 
     // Action Login

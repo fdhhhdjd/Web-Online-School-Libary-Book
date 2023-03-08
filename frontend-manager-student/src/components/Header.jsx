@@ -1,10 +1,11 @@
 //! LIBRARY
 import React, { Fragment, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { Logout_Student_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 //! SHARE
-import { navInfo } from 'utils/dummy';
+import { navInfo, userSubNav } from 'utils/dummy';
 
 //! IMPORT
 import { SCHOOL_LOGO } from '../imports/home_import/index';
@@ -12,42 +13,29 @@ import { SCHOOL_LOGO } from '../imports/home_import/index';
 //! COMPONENTS
 import Button from './Button';
 
-const userSubNav = [
-  {
-    path: '/user/profile',
-    displayText: 'Thông tin tài khoản',
-  },
-
-  {
-    path: '/book/borrow',
-    displayText: 'Thông tin mượn sách',
-  },
-
-  {
-    path: '/user/changePassword',
-    displayText: 'Thay đổi mật khẩu',
-  },
-];
-
 const Header = (props) => {
   // Take profile account store
   const { profile_student } = useSelector((state) => ({
     ...state.auth_student,
   }));
-
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
   const activeNavIdx = navInfo.findIndex((e) => e.path === pathname);
 
-  useEffect(() => {
-    props.setShowLogin(false);
-    console.log('hello');
-  }, [profile_student]);
-
   const menuToggle = () => {
     menuLeftRef.current.classList.toggle('active');
   };
+
+  const handleLogOut = () => {
+    dispatch(Logout_Student_Initial());
+  };
+
+  useEffect(() => {
+    props.setShowLogin(false);
+    // console.log('hello');
+  }, [profile_student]);
 
   return (
     <Fragment>
@@ -118,10 +106,7 @@ const Header = (props) => {
                 {profile_student ? (
                   <>
                     {props.setShowLogin(false)}
-                    <img
-                      src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1669712298/ca-nhan/avatar_cvkuph.jpg"
-                      alt=""
-                    />
+                    <img src={profile_student?.data?.avatar_uri} alt="" />
                     <div className="header__submenu header__submenu__user">
                       {userSubNav &&
                         userSubNav.map((item, idx) => (
@@ -131,7 +116,7 @@ const Header = (props) => {
                             </Link>
                           </div>
                         ))}
-                      <div className="header__submenu__item">
+                      <div className="header__submenu__item" onClick={handleLogOut}>
                         <span className="header__submenu__text" style={{ cursor: 'pointer' }}>
                           Đăng xuất
                         </span>

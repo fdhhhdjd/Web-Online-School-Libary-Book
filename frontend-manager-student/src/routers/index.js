@@ -3,7 +3,9 @@ import ChangePassword from 'pages/Auth/ChangePassword';
 import AllBook from 'pages/Book/AllBooks';
 import DetailBook from 'pages/Book/DetailBook';
 import Home from 'pages/Home';
-import UserProfile from 'pages/UserProfile';
+import BookBorrowInfo from 'pages/UserProfile/BookBorrowInfo';
+import UserProfile from 'pages/UserProfile/ProfileLayout';
+import UserInfo from 'pages/UserProfile/UserInfo';
 
 const RouteDataMain = [
   {
@@ -42,7 +44,15 @@ const RouteDataMain = [
     path: '/user/profile',
     main: (
       <>
-        <Layout content={<UserProfile />} />
+        <Layout content={<UserProfile content={<UserInfo />} />} />
+      </>
+    ),
+  },
+  {
+    path: '/book/borrow',
+    main: (
+      <>
+        <Layout content={<UserProfile content={<BookBorrowInfo />} />} />
       </>
     ),
   },
