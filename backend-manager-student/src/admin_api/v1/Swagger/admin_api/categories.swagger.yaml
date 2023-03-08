@@ -4,7 +4,7 @@
 # Info Swagger Admin APi
 info:
     title: Document Admin
-    description: Login,Add Multiple Student
+    description: CURD Categories
     version: 1.0.0
 servers:
     - url: http://localhost:5000

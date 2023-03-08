@@ -326,12 +326,18 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 02/03/2023
-     * @description Status book
+     * @description Status book,role Vorrow
      * @param { String }
      */
     STATUS_BOOK: {
-        STILL: 10,
-        OUT_OF: 20,
+        STILL: 10, // Còn sách
+        OUT_OF: 20, // Hết sách
+    },
+    STATUS_BORROW: {
+        PENDING: 10, // Chờ xác nhận
+        BORROWING: 20, // Đang mượn
+        DONE: 30, // Đa trả
+        EXPIRED: 40,
     },
     /**
      * @author Nguyễn Tiến Tài

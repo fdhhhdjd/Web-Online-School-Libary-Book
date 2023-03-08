@@ -39,18 +39,17 @@ const getRangeCache = (key, start, end) => REDIS_MASTER.lrange(key, start, end);
  * @description Set multi
  *  @returns {Array}
  */
-const setBlackListCache = (key, user_id, accept_token, refresh_token, ttl) =>
-    REDIS_MASTER.multi()
-        .lpush(key, accept_token, refresh_token)
-        .del(user_id)
-        .expire(key, ttl)
-        .exec((err, replies) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.info(replies);
-            }
-        });
+const setBlackListCache = (key, user_id, accept_token, refresh_token, ttl) => REDIS_MASTER.multi()
+    .lpush(key, accept_token, refresh_token)
+    .del(user_id)
+    .expire(key, ttl)
+    .exec((err, replies) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.info(replies);
+        }
+    });
 /**
  * @author Nguyễn Tiến Tài
  * @param {key}
