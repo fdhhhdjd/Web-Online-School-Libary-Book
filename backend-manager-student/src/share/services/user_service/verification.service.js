@@ -33,8 +33,7 @@ module.exports = {
             const data_insert = {
                 verify_id: ran_dom_unique_string,
                 user_id: id,
-                link_email_expire: Date.now() + CONSTANTS._10_SECONDS,
-                // link_email_expire: Date.now() + CONSTANTS._10_MINUTES,
+                link_email_expire: Date.now() + CONSTANTS._10_MINUTES,
             };
 
             // Insert database
