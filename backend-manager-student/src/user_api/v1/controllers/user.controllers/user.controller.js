@@ -13,7 +13,7 @@ const user_model = require('../../../../share/models/user.model');
 const user_device_model = require('../../../../share/models/user_device.model');
 const user_reset_password_model = require('../../../../share/models/user_reset_password.model');
 const user_verification_model = require('../../../../share/models/user_verification.model');
-
+const phone_model = require('../../../../share/models/phone.model');
 //! Service
 const geo_service = require('../../../../share/services/geo.service');
 const user_service = require('../../../../share/services/user_service/user_service');
@@ -179,8 +179,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -404,8 +404,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -1143,6 +1143,41 @@ const userController = {
             );
 
             if (check_email_verification_student_success.length > 0) {
+
+                // Save Phone DB or check phone DB
+                const check_phone_student = await phone_model.getPhoneById(
+                    { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                    { phone_id: 'phone_id' },
+                );
+                if (check_phone_student.length === 0) {
+
+                    // Take  data user phone
+                    const phone_student = await user_model.getStudentById(
+                        { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                        { phone_number: 'phone_number' },
+                    );
+                    // Check exits phone
+                    if (phone_student.length > 0) {
+
+                        //Data return network api
+                        const take_data_phone = await HELPER.getDataPhone(phone_student[0].phone_number);
+
+                        // Check phone true save phone DB
+                        if (take_data_phone) {
+                            // Data insert Phone
+                            const data_insert_phone = {
+                                phone_id: RANDOMS.createID(),
+                                user_id: id,
+                                mobile_country_code: take_data_phone?.carrier.mobile_country_code,
+                                mobile_network_code: take_data_phone?.carrier.mobile_network_code,
+                                mobile_network_name: take_data_phone?.carrier.name,
+                            };
+
+                            // Insert phone
+                            phone_model.createPhone(data_insert_phone);
+                        }
+                    }
+                }
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
