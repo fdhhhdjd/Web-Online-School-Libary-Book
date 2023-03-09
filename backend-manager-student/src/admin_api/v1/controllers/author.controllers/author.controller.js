@@ -75,12 +75,37 @@ const authorController = {
         const { author_id, name, avatar_uri, dob, gender } = req.body.input.author_input;
 
         // Check input
-        if (!name || !avatar_uri || !dob || !gender || !author_id) {
+        if (!author_id) {
             return res.status(400).json({
                 status: 400,
                 message: returnReasons('400'),
             });
         }
+
+        //Check Input is empty
+        if (
+            (name !== undefined && name.trim() === '')
+            || (avatar_uri !== undefined && avatar_uri.trim() === '')
+            || (dob !== undefined && dob.trim() === '')
+        ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Please provide non-empty values for all fields',
+            });
+        }
+
+        //Check date
+        const birthday = new Date(dob); // dob from author input 
+        const today = new Date(); // date now 
+
+        // Compare date  dob and date now
+        if (birthday >= today) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid date of birth",
+            });
+        }
+
         try {
             // update author database
             let err;

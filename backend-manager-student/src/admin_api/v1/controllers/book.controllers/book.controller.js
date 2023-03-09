@@ -109,22 +109,30 @@ const bookController = {
         } = req.body.input.book_input;
 
         // Check input
-        if (
-            !book_id
-            || !name
-            || !author_id
-            || !image_uri
-            || !description
-            || !bookshelf
-            || !language
-            || !quantity
-            || !public_id_image
-        ) {
+        if (!book_id) {
             return res.status(400).json({
                 status: 400,
                 message: returnReasons('400'),
             });
         }
+
+        //Check Input is empty
+        if (
+            (name !== undefined && name.trim() === '')
+            || (author_id !== undefined && author_id.trim() === '')
+            || (image_uri !== undefined && image_uri.trim() === '')
+            || (description !== undefined && description.trim() === '')
+            || (bookshelf !== undefined && bookshelf.trim() === '')
+            || (language !== undefined && language.trim() === '')
+            || (quantity !== undefined && quantity.trim() === '')
+            || (public_id_image !== undefined && public_id_image.trim() === '')
+        ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Please provide non-empty values for all fields',
+            });
+        }
+
         const data_update = {
             name,
             author_id,
