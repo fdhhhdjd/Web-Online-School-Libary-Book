@@ -40,6 +40,15 @@ class LRUCache {
             throw new Error(`Error deleting key ${key} from cache: ${error}`);
         }
     }
+
+    delMultiCache(key_1, key_2) {
+        try {
+            this._cache.delete(key_1) && this._cache.delete(key_2);
+            return true;
+        } catch (error) {
+            throw new Error(`Error deleting key ${key_1} and ${key_2} from cache: ${error}`);
+        }
+    }
 }
 const globalCache = new LRUCache(CONFIGS.MAX_LRU);
 module.exports = {

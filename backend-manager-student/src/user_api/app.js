@@ -42,10 +42,10 @@ app.use(
     session({
         store: new RedisStore({ client: REDIS_MASTER }),
         secret: CONFIGS.KEY_SESSION,
-        resave: process.env.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+        resave: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
         saveUninitialized: true,
         cookie: {
-            secure: process.env.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
+            secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
             rolling: true,
             httpOnly: true,
             maxAge: CONSTANTS._1_HOURS_S,

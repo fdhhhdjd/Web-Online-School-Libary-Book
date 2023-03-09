@@ -8,11 +8,11 @@ module.exports = {
     handleCheckQuantityBook: async (book) => {
         try {
             if (book.quantity > 0) {
-                return false
+                return false;
             }
-            return true
+            return true;
         } catch (error) {
-            return true
+            return true;
         }
     },
 };

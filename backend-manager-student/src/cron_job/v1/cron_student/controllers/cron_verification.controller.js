@@ -26,7 +26,7 @@ module.exports = {
                     const isExpired = HELPER.isExpired(verification.linkEmailExpire);
 
                     // If expired delete
-                    if (isExpired !== CONSTANTS.DELETED_DISABLE) {
+                    if (isExpired) {
                         await user_verification_model.updateVerification(
                             { isdeleted: CONSTANTS.DELETED_ENABLE },
                             { verify_id: verification.verify_id },
