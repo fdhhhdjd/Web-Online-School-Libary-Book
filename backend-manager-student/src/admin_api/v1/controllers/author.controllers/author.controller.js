@@ -17,9 +17,7 @@ const authorController = {
      * @return {Object:{Number,String}
      */
     createAuthor: async (req, res) => {
-        const {
-            name, avatar_uri, dob, gender,
-        } = req.body.input.author_input;
+        const { name, avatar_uri, dob, gender } = req.body.input.author_input;
 
         // Check input
         if (!name || !avatar_uri || !dob || !gender) {
@@ -74,9 +72,7 @@ const authorController = {
      * @return {Object:{Number,String}
      */
     updateAuthor: async (req, res) => {
-        const {
-            author_id, name, avatar_uri, dob, gender,
-        } = req.body.input.author_input;
+        const { author_id, name, avatar_uri, dob, gender } = req.body.input.author_input;
 
         // Check input
         if (!name || !avatar_uri || !dob || !gender || !author_id) {

@@ -179,8 +179,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -404,8 +404,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -1143,14 +1143,12 @@ const userController = {
             );
 
             if (check_email_verification_student_success.length > 0) {
-
                 // Save Phone DB or check phone DB
                 const check_phone_student = await phone_model.getPhoneById(
                     { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { phone_id: 'phone_id' },
                 );
                 if (check_phone_student.length === 0) {
-
                     // Take  data user phone
                     const phone_student = await user_model.getStudentById(
                         { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
@@ -1158,8 +1156,7 @@ const userController = {
                     );
                     // Check exits phone
                     if (phone_student.length > 0) {
-
-                        //Data return network api
+                        // Data return network api
                         const take_data_phone = await HELPER.getDataPhone(phone_student[0].phone_number);
 
                         // Check phone true save phone DB
