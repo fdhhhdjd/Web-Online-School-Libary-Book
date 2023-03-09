@@ -18,6 +18,8 @@ module.exports = {
      * @description REGEX PHONE
      */
     REGEX_PHONE: /^(0[3|5|7|8|9])+([0-9]{8})$/,
+    REGEX_PHONE_NEW:
+        '^((+84|84|0)(3([2-9])([0-9]{7})|5([689])([0-9]{7})|7([0-9]{8})|8([1-9])([0-9]{7})|9([0-9])([0-9]{7})))$',
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 22/01/2022

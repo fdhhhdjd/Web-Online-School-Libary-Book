@@ -25,7 +25,7 @@ module.exports = {
                     const isExpired = HELPER.isExpired(resetPassword.reset_password_expire);
 
                     // If expired delete
-                    if (isExpired !== CONSTANTS.DELETED_DISABLE) {
+                    if (isExpired) {
                         await user_reset_password_model.updateResetPassword(
                             { isdeleted: CONSTANTS.DELETED_ENABLE },
                             { id: resetPassword.id },
