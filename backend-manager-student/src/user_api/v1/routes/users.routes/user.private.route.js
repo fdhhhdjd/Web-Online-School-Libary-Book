@@ -21,6 +21,14 @@ router.get('/profile', userController.getProfileStudent);
 
 /**
  * @author Nguyễn Tiến Tài
+ * @created_at 09/03/2023
+ * @description Route Update profile Student
+ * @param {('POST')} [method='POST'] The request's method
+ */
+router.post('/update/profile', userController.updateProfileStudent);
+
+/**
+ * @author Nguyễn Tiến Tài
  * @created_at 13/02/2023
  * @description Route change password Student
  * @param {('POST')} [method='POST'] The request's method

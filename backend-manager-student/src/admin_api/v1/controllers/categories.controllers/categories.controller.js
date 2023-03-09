@@ -73,12 +73,21 @@ const categoriesController = {
         const { category_id, name } = req.body.input.categories_input;
 
         // Check input
-        if (!name || !category_id) {
+        if (!category_id) {
             return res.status(400).json({
                 status: 400,
                 message: returnReasons('400'),
             });
         }
+
+        // Check Input is empty
+        if (name !== undefined && name.trim() === '') {
+            return res.status(400).json({
+                status: 400,
+                message: 'Please provide non-empty values for all fields',
+            });
+        }
+
         try {
             // update category database
             let err;

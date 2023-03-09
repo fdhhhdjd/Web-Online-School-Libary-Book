@@ -697,3 +697,79 @@ paths:
                     $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 09/03/2023
+    #!description: Update Profile Student
+    /api/v1/user/update/profile:
+        post:
+            summary: Update Profile Student
+            tags: [Update Profile Student]
+            operationId: updateProfileStudent
+            parameters:
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        user_update_profile_input:
+                                            type: object
+                                            properties:
+                                                name:
+                                                    type: string
+                                                    example: 'Nguyễn Tiến Tài'
+                                                public_id_avatar:
+                                                    type: string
+                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg'
+                                                avatar_uri:
+                                                    type: string
+                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg'
+                                                address:
+                                                    type: string
+                                                    example: 'Nha Trang Khánh Hòa'
+                                                dob:
+                                                    type: string
+                                                    example: '2000-05-31'
+                                                gender:
+                                                    type: string
+                                                    example: '1'
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Bad Request !
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                503:
+                    $ref: '#/components/responses/ServerFail'
