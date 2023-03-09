@@ -2,7 +2,7 @@
 const router = require('express').Router();
 
 //! CONTROLLER USER
-const categoriesController = require('../../controllers/categories.controller/categories.controller');
+const categoriesController = require('../../controllers/categories.controllers/categories.controller');
 
 /**
  * @author Nguyễn Tiến Tài

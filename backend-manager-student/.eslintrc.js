@@ -57,6 +57,9 @@ module.exports = {
         'no-template-curly-in-string': 'off',
         'prefer-destructuring': 'off',
         'radix': 'off',
-        "no-else-return": "off"
+        'no-else-return': 'off',
+        'no-async-promise-executor': 'off',
+        'no-promise-executor-return': 'off',
+        'no-unused-expressions': 'off'
     },
 };

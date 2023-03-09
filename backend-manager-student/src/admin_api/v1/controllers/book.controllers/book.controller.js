@@ -152,7 +152,7 @@ const bookController = {
                 });
 
                 // Delete data cache lru argothim
-                globalCache.delCache(key_cache_book_detail);
+                globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
 
                 return res.status(200).json({
                     status: 200,
@@ -231,7 +231,7 @@ const bookController = {
                 });
 
                 // Delete data cache lru argothim
-                globalCache.delCache(key_cache_book_detail);
+                globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
 
                 return res.status(200).json({
                     status: 200,
@@ -342,13 +342,13 @@ const bookController = {
             const result_book_detail = await book_model.getAllBook({ isdeleted: CONSTANTS.DELETED_DISABLE }, '*');
             if (result_book_detail) {
                 // Add data cache lru argothim
-                globalCache.putCache(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book_detail);
+                globalCache.putCache(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book_detail[0]);
 
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
                     element: {
-                        result: result_book_detail,
+                        result: result_book_detail[0],
                     },
                 });
             }

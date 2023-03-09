@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const adminController = require('../../controllers/admin.controller/admin.controller');
+const adminController = require('../../controllers/admin.controllers/admin.controller');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 17/12/2022
