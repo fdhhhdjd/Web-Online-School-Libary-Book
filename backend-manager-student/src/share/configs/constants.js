@@ -336,8 +336,8 @@ module.exports = {
     STATUS_BORROW: {
         PENDING: 10, // Chờ xác nhận
         BORROWING: 20, // Đang mượn
-        DONE: 30, // Đa trả
-        EXPIRED: 40,
+        DONE: 30, // Đã trả
+        EXPIRED: 40, // Hết hạn
     },
     /**
      * @author Nguyễn Tiến Tài

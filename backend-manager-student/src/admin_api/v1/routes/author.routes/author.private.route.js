@@ -2,7 +2,7 @@
 const router = require('express').Router();
 
 //! CONTROLLER USER
-const authorController = require('../../controllers/author.controller/author.controller');
+const authorController = require('../../controllers/author.controllers/author.controller');
 
 /**
  * @author Nguyễn Tiến Tài

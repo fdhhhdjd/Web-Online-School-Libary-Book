@@ -10,7 +10,7 @@ const bookController = require('../../controllers/book.controllers/book.controll
  * @description Route get detail book
  * @param {('GET')} [method='GET'] The request's method
  */
-router.get('/detail/:author_id', bookController.getDetailBook);
+router.get('/detail/:book_id', bookController.getDetailBook);
 
 /**
  * @author Nguyễn Tiến Tài
@@ -19,13 +19,5 @@ router.get('/detail/:author_id', bookController.getDetailBook);
  * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/all', bookController.getAllBook);
-
-/**
- * @author Nguyễn Tiến Tài
- * @created_at 07/03/2023
- * @description Route borrow book
- * @param {('POST')} [method='POST'] The request's method
- */
-router.post('/borrow', bookController.borrowBook);
 
 module.exports = router;
