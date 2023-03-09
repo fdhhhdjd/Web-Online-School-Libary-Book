@@ -19,22 +19,10 @@ const BorrowBookController = {
      * @return {Object:{Number,String}
      */
     updateBorrowBook: async (req, res) => {
-        const {
-            book_id,
-            user_id,
-            start_date,
-            due_date,
-            status,
-        } = req.body.input.borrow_book_input;
+        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
 
         // Check input
-        if (
-            !book_id
-            || !user_id
-            || !start_date
-            || !due_date
-            || !status
-        ) {
+        if (!book_id || !user_id || !start_date || !due_date || !status) {
             return res.status(400).json({
                 status: 400,
                 message: returnReasons('400'),
@@ -76,7 +64,11 @@ const BorrowBookController = {
             if (status === CONSTANTS.STATUS_BORROW.BORROWING) {
                 // update book database
                 [err, result] = await HELPER.handleRequest(
-                    borrow_book_model.updateBorrowBook(data_update, { book_id, user_id }, { borrowed_book_id: 'borrowed_book_id' }),
+                    borrow_book_model.updateBorrowBook(
+                        data_update,
+                        { book_id, user_id },
+                        { borrowed_book_id: 'borrowed_book_id' },
+                    ),
                 );
                 if (result) {
                     return res.status(200).json({
@@ -150,12 +142,12 @@ const BorrowBookController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 09/03/2022
-    * @description Get All Borrowed Book
-    * @function borrowBook
-    * @return {Object:{Number,String}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 09/03/2022
+     * @description Get All Borrowed Book
+     * @function borrowBook
+     * @return {Object:{Number,String}
+     */
     getAllBorrowBook: async (req, res) => {
         try {
             // Take data db
@@ -181,12 +173,12 @@ const BorrowBookController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 09/03/2022
-    * @description Get All Borrowed Book
-    * @function borrowBook
-    * @return {Object:{Number,String}
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 09/03/2022
+     * @description Get All Borrowed Book
+     * @function borrowBook
+     * @return {Object:{Number,String}
+     */
     getDetailBorrowBook: async (req, res) => {
         const borrowed_book_id = req.params.borrowed_book_id;
 
