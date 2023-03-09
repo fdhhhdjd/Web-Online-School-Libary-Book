@@ -1060,7 +1060,6 @@ const userController = {
             // Encode Password student
             const new_password_student = await PASSWORD.encodePassword(password);
 
-            // Data update database
             // Save Database
             let err;
             let result;
@@ -1161,9 +1160,10 @@ const userController = {
 
                         // Check phone true save phone DB
                         if (take_data_phone) {
+                            const random_general = RANDOMS.createID();
                             // Data insert Phone
                             const data_insert_phone = {
-                                phone_id: RANDOMS.createID(),
+                                phone_id: random_general,
                                 user_id: id,
                                 mobile_country_code: take_data_phone?.carrier.mobile_country_code,
                                 mobile_network_code: take_data_phone?.carrier.mobile_network_code,
@@ -1172,6 +1172,13 @@ const userController = {
 
                             // Insert phone
                             phone_model.createPhone(data_insert_phone);
+
+                            // Update phone_id student
+                            user_model.updateStudent(
+                                { phone_id: random_general },
+                                { user_id: id },
+                                { user_id: 'user_id' },
+                            );
                         }
                     }
                 }
@@ -1244,7 +1251,7 @@ const userController = {
                 // Verification expire exit not send Email
                 return res.status(400).json({
                     status: 400,
-                    message: returnReasons('200'),
+                    message: returnReasons('400'),
                     element: {
                         result: 'Link reset Exit Please check Email !',
                     },
@@ -1442,6 +1449,99 @@ const userController = {
             status: 200,
             message: returnReasons('200'),
         });
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 09/03/2023
+     * @description Update Profile Student
+     * @function updateProfileStudent
+     * @return { Object }
+     */
+    updateProfileStudent: async (req, res) => {
+        // Take user Id
+        const { id } = req.auth_user;
+
+        // Input body
+        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.user_update_profile_input;
+
+        // Check user_id
+        if (!id) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        // Check Input is empty
+        if (
+            (name !== undefined && name.trim() === '')
+            || (avatar_uri !== undefined && avatar_uri.trim() === '')
+            || (public_id_avatar !== undefined && public_id_avatar.trim() === '')
+            || (address !== undefined && address.trim() === '')
+            || (dob !== undefined && dob.trim() === '')
+        ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Please provide non-empty values for all fields',
+            });
+        }
+
+        const birthday = new Date(dob); // dob from student input
+        const today = new Date(); // date now
+
+        // Compare date  dob and date now
+        if (birthday >= today) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Invalid date of birth',
+            });
+        }
+
+        try {
+            // Data update
+            const data_update = {
+                name,
+                avatar_uri,
+                public_id_avatar,
+                address,
+                dob,
+                gender,
+            };
+
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(
+                user_model.updateStudent(data_update, { user_id: id }, { user_id: 'user_id' }),
+            );
+
+            // Update student success
+            if (result) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+
+            // Update fail
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('500'),
+                    element: {
+                        result: 'Update profile Fail !',
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
     },
 };
 module.exports = userController;
