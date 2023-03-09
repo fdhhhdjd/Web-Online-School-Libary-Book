@@ -82,7 +82,7 @@ const authorController = {
             });
         }
 
-        //Check Input is empty
+        // Check Input is empty
         if (
             (name !== undefined && name.trim() === '')
             || (avatar_uri !== undefined && avatar_uri.trim() === '')
@@ -94,15 +94,15 @@ const authorController = {
             });
         }
 
-        //Check date
-        const birthday = new Date(dob); // dob from author input 
-        const today = new Date(); // date now 
+        // Check date
+        const birthday = new Date(dob); // dob from author input
+        const today = new Date(); // date now
 
         // Compare date  dob and date now
         if (birthday >= today) {
             return res.status(400).json({
                 status: 400,
-                message: "Invalid date of birth",
+                message: 'Invalid date of birth',
             });
         }
 

@@ -116,7 +116,7 @@ const bookController = {
             });
         }
 
-        //Check Input is empty
+        // Check Input is empty
         if (
             (name !== undefined && name.trim() === '')
             || (author_id !== undefined && author_id.trim() === '')

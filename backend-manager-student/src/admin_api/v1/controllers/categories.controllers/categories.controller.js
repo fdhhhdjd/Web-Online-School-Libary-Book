@@ -80,10 +80,8 @@ const categoriesController = {
             });
         }
 
-        //Check Input is empty
-        if (
-            (name !== undefined && name.trim() === '')
-        ) {
+        // Check Input is empty
+        if (name !== undefined && name.trim() === '') {
             return res.status(400).json({
                 status: 400,
                 message: 'Please provide non-empty values for all fields',

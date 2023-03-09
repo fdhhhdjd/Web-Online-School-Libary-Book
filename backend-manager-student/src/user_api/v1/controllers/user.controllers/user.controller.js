@@ -1472,7 +1472,7 @@ const userController = {
             });
         }
 
-        //Check Input is empty
+        // Check Input is empty
         if (
             (name !== undefined && name.trim() === '')
             || (avatar_uri !== undefined && avatar_uri.trim() === '')
@@ -1486,38 +1486,36 @@ const userController = {
             });
         }
 
-        const birthday = new Date(dob); // dob from student input 
-        const today = new Date(); // date now 
+        const birthday = new Date(dob); // dob from student input
+        const today = new Date(); // date now
 
         // Compare date  dob and date now
         if (birthday >= today) {
             return res.status(400).json({
                 status: 400,
-                message: "Invalid date of birth",
+                message: 'Invalid date of birth',
             });
         }
 
         try {
-            //Data update 
+            // Data update
             const data_update = {
                 name,
                 avatar_uri,
                 public_id_avatar,
                 address,
                 dob,
-                gender
-            }
+                gender,
+            };
 
             // Save Database
             let err;
             let result;
-            [err, result] = await HELPER.handleRequest(user_model.updateStudent(
-                data_update,
-                { user_id: id },
-                { user_id: 'user_id' },
-            ));
+            [err, result] = await HELPER.handleRequest(
+                user_model.updateStudent(data_update, { user_id: id }, { user_id: 'user_id' }),
+            );
 
-            //Update student success
+            // Update student success
             if (result) {
                 return res.status(200).json({
                     status: 200,
@@ -1525,7 +1523,7 @@ const userController = {
                 });
             }
 
-            //Update fail
+            // Update fail
             if (err) {
                 return res.status(500).json({
                     status: 500,
