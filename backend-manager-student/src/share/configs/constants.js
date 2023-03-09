@@ -310,7 +310,7 @@ module.exports = {
      * @param { String }
      */
     PROTOCOl_DEV: 'http',
-    HOST_DEV: 'localhost:8080',
+    HOST_DEV: 'localhost:3000',
     HOST_PRODUCT: 'host',
     /**
      * @author Nguyễn Tiến Tài
