@@ -97,13 +97,13 @@ const bookController = {
             const result_book = await book_model.getAllBook({ isdeleted: CONSTANTS.DELETED_DISABLE }, '*');
             if (result_book) {
                 // Add data cache lru argothim
-                globalCache.putCache(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book[0]);
+                globalCache.putCache(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book);
 
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
                     element: {
-                        result: result_book[0],
+                        result: result_book,
                     },
                 });
             }
