@@ -14,6 +14,7 @@ const user_device_model = require('../../../../share/models/user_device.model');
 const user_reset_password_model = require('../../../../share/models/user_reset_password.model');
 const user_verification_model = require('../../../../share/models/user_verification.model');
 const phone_model = require('../../../../share/models/phone.model');
+
 //! Service
 const geo_service = require('../../../../share/services/geo.service');
 const user_service = require('../../../../share/services/user_service/user_service');
@@ -179,8 +180,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -267,8 +268,10 @@ const userController = {
 
                 // Check black_list redis
                 const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
+                const token_black_set_old = new Set([...token_black_list]);
 
-                const check_exits = token_black_list.indexOf(refresh_token_cookie) > -1;
+                const check_exits = token_black_set_old.has(refresh_token_cookie);
+
                 // Check Token old
                 const refetch_token_old = await user_device_model.getDeviceId(
                     { device_uuid: device.device_id },
@@ -284,6 +287,17 @@ const userController = {
                     },
                 );
 
+                // Check device null
+                if (Array.isArray(refetch_token_old) && !refetch_token_old.length) {
+                    return res.status(400).json({
+                        status: 400,
+                        message: returnReasons('400'),
+                        element: {
+                            result: 'Device Not Found !',
+                        },
+                    });
+                }
+
                 if (check_exits) {
                     // Check Token exit BlackList
                     const token_black_list_new = await MEMORY_CACHE.getRangeCache(
@@ -291,8 +305,10 @@ const userController = {
                         0,
                         999999999,
                     );
+                    const token_black_set_db = new Set([...token_black_list_new]);
 
-                    const check_exit_new = token_black_list_new.indexOf(refetch_token_old[0].refresh_token) > -1;
+                    // Check Token db
+                    const check_exit_new = token_black_set_db.has(refetch_token_old[0].refresh_token);
                     if (!check_exit_new) {
                         // Save token old backlist
                         MEMORY_CACHE.setBlackListLoginExitTokenCache(
@@ -387,7 +403,7 @@ const userController = {
                             );
 
                             // Save Redis and Save RT old Blacklist
-                            await MEMORY_CACHE.setAndDelKeyBlackListCache(
+                            MEMORY_CACHE.setAndDelKeyBlackListCache(
                                 result[0].user_id,
                                 CONSTANTS.KEY_BACK_LIST,
                                 refresh_token,
@@ -404,8 +420,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -419,9 +435,8 @@ const userController = {
                             };
 
                             // Update Device
-                            await HELPER.handleRequest(
-                                user_device_model.updateDevice(data_device_update, result[0].user_id),
-                            );
+                            user_device_model.updateDevice(data_device_update, result[0].user_id);
+
                             return res.status(200).json({
                                 status: 200,
                                 message: returnReasons('200'),
@@ -1462,7 +1477,9 @@ const userController = {
         const { id } = req.auth_user;
 
         // Input body
-        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.user_update_profile_input;
+        const {
+            name, avatar_uri, public_id_avatar, address, dob, gender,
+        } = req.body.input.user_update_profile_input;
 
         // Check user_id
         if (!id) {
