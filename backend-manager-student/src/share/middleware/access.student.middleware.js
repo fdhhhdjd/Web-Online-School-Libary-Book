@@ -58,6 +58,9 @@ const accessStudentMiddleware = async (req, res, next) => {
             return res.status(400).json({
                 status: 400,
                 message: returnReasons('400'),
+                element: {
+                    result: 'Device Not Found !',
+                },
             });
         }
 
@@ -94,9 +97,11 @@ const accessStudentMiddleware = async (req, res, next) => {
         try {
             const token_black_list = await MEMORY_CACHE.getRangeCache(CONSTANTS.KEY_BACK_LIST, 0, 999999999);
 
+            const token_black_set = new Set([...token_black_list]);
+
             // Check 2 token
-            const check_exits_refresh_token = token_black_list.indexOf(refresh_token_cookie) > -1;
-            const check_exits_access_token = token_black_list.indexOf(accessToken) > -1;
+            const check_exits_refresh_token = token_black_set.has(refresh_token_cookie);
+            const check_exits_access_token = token_black_set.has(accessToken);
 
             if (check_exits_refresh_token || check_exits_access_token) {
                 return res.status(400).json({
