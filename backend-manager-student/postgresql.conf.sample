@@ -5,9 +5,6 @@
 # CONNECTION
 listen_addresses = '*'
 
-# MODULES
-shared_preload_libraries = 'decoderbufs,wal2json'
-
 # REPLICATION
 wal_level = logical             # minimal, archive, hot_standby, or logical (change requires restart)
 max_wal_senders = 4             # max number of walsender processes (change requires restart)
