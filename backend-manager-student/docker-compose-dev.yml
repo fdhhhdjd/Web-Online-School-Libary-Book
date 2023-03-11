@@ -6,6 +6,7 @@ services:
         container_name: server_admin_api
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         build:
@@ -28,6 +29,7 @@ services:
         container_name: server_user_api
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         build:
@@ -53,6 +55,7 @@ services:
             context: .
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         environment:
@@ -99,8 +102,11 @@ services:
     ###! Redis Slave from Master ###
     redis-slave:
         container_name: redis-slave
+        depends_on:
+            - redis-master
         environment:
             REDIS_PASSWORD: ${REDIS_PASSWORD_SLAVE}
+        restart: always
         image: redis
         volumes:
             - redis-slave:/data
@@ -135,9 +141,9 @@ services:
     ###! postgresql ###
     postgresql:
         container_name: postgresql
-        build:
-            context: .
-            dockerfile: Dockerfile.postgres.dev
+        # build:
+        #     context: .
+        #     dockerfile: Dockerfile.postgres.dev
         image: postgres:12
         restart: unless-stopped
         environment:
@@ -167,6 +173,7 @@ services:
         depends_on:
             - postgresql
             - redis-master
+            - redis-slave
             - admin_api
             - user_api
             - cron_job
