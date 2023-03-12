@@ -25,7 +25,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/detail-book',
+    path: '/detail-book/:id',
     main: (
       <>
         <Layout content={<DetailBook />} />

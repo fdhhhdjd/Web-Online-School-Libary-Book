@@ -17,8 +17,9 @@ const Sidebar = (props) => {
   const [open, setOpen] = useState(true);
   const Menus = [
     { title: 'Dashboard', src: CharFillIcon, route: '/dashboard' },
-    { title: 'Accounts', src: UserIcon, route: '/all-user', gap: true },
-    { title: 'Book ', src: CalenderIcon, route: '/all-book' },
+    { title: 'Accounts', src: UserIcon, route: '/user/all', gap: true },
+    { title: 'Book ', src: CalenderIcon, route: '/book/all' },
+    { title: 'Authors', src: UserIcon, route: '/author/all' },
     { title: 'Search', src: SearchIcon, route: '/search' },
     { title: 'Analytics', src: ChartIcon, route: '/report' },
     { title: 'Files ', src: FolderIcon, gap: true, route: '/files' },
@@ -53,8 +54,9 @@ const Sidebar = (props) => {
           ))}
         </ul>
       </div>
-      <div className="h-screen flex-1 p-7">
-        <h1 className="text-2xl font-semibold ">{props.content}</h1>
+      <div className="h-screen flex-1 px-16 py-7">
+        <h1 className="text-3xl font-semibold ">{props.title}</h1>
+        {props.content}
       </div>
     </div>
   );

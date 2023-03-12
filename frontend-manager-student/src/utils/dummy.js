@@ -80,3 +80,22 @@ export const profileSidebar = [
     icon: 'bx bx-book-open',
   },
 ];
+
+export const tabBorrowBook = [
+  {
+    path: '/book/borrow',
+    displayText: 'Tất cả',
+  },
+  {
+    path: '/book/borrow',
+    displayText: 'Chờ xác nhận',
+  },
+  {
+    path: '/book/borrow',
+    displayText: 'Đang mượn',
+  },
+  {
+    path: '/book/borrow',
+    displayText: 'Đã trả',
+  },
+];

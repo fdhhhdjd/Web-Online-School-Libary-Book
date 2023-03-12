@@ -1,0 +1,24 @@
+.profile__info__image {
+  @include flex(center, center);
+  flex-direction: column;
+
+  &__preview {
+    max-width: 200px;
+    height: 230px;
+
+    img {
+      width: 100%;
+    }
+
+    &__require {
+      margin-top: 1.5rem;
+      color: #888;
+    }
+  }
+
+  label {
+    @include hologram-border(2);
+    margin-top: 2rem;
+    padding: 10px 20px;
+  }
+}

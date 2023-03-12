@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
+import { Link } from 'react-router-dom';
+import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 
-const Book = () => {
+const AllAuthor = () => {
   const dispatch = useDispatch();
-  const bookList = useSelector((state) => state.book.all_books_list);
+  const authorList = useSelector((state) => state.author.all_authors_list);
 
   useEffect(() => {
-    dispatch(Get_All_Book_Cms_Initial());
+    dispatch(Get_All_Author_Cms_Initial());
   }, []);
 
   useEffect(() => {
-    console.log(bookList);
-  }, [bookList]);
+    console.log(authorList?.element?.result);
+  }, [authorList]);
 
   return (
     <div className="container mt-20">
@@ -54,16 +55,16 @@ const Book = () => {
                       ID
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Name
+                      Tên
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Location
+                      Giới tính
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Quantity
+                      Số lượng sách
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Language
+                      Quốc gia
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
                       Edit
@@ -73,7 +74,32 @@ const Book = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">{ }</tbody>
+                <tbody className="divide-y divide-gray-200">
+                  {authorList &&
+                    authorList?.element?.result.map((author, idx) => (
+                      <tr key={idx}>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                          {author?.author_id}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{author?.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                          {author?.gender === 0 ? 'Nữ' : 'Nam'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">03</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">Việt Nam</td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <Link to={`/author/${author?.author_id}`} className="text-green-500 hover:text-green-700">
+                            Edit
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <a className="text-red-500 hover:text-red-700" href="/delete">
+                            Delete
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
               </table>
             </div>
           </div>
@@ -83,4 +109,4 @@ const Book = () => {
   );
 };
 
-export default Book;
+export default AllAuthor;

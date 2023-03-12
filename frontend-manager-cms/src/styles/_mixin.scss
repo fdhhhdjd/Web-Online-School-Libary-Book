@@ -29,3 +29,9 @@
   -o-transition: $args;
   transition: $args;
 }
+
+@mixin hologram-border($border-size) {
+  border: $border-size + px solid;
+  border-image-slice: 1;
+  border-image-source: $txt-hologram;
+}

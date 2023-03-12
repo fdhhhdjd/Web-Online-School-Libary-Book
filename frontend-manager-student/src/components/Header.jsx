@@ -105,7 +105,6 @@ const Header = (props) => {
               <div className="header__menu__item header__menu__right__item">
                 {profile_student ? (
                   <>
-                    {props.setShowLogin(false)}
                     <img src={profile_student?.data?.avatar_uri} alt="" />
                     <div className="header__submenu header__submenu__user">
                       {userSubNav &&

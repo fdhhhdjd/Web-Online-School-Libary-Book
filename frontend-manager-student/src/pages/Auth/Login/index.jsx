@@ -1,5 +1,5 @@
 //!LIBRARY
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 //! REDUX THUNK
@@ -7,12 +7,10 @@ import { Login_Mssv_Initial } from 'redux/student/authentication_slice/auth_thun
 import NOTIFICATION from 'utils/notification';
 
 //! SHARE
-import { useEffect } from 'react';
 import HELPERS from 'utils/helper';
 
 const Login = ({ showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth_user?.student_auth?.element?.result);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,12 +25,6 @@ const Login = ({ showLogin, setShowLogin }) => {
     // Action Login
     dispatch(Login_Mssv_Initial(values));
   };
-
-  useEffect(() => {
-    if (currentUser?.access_token) {
-      setShowLogin(false);
-    }
-  }, [currentUser, setShowLogin]);
 
   return (
     <div id="Auth" className={showLogin ? 'show' : ''}>

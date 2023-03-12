@@ -1,10 +1,24 @@
 import Filter from 'components/Filter';
 import Helmet from 'components/Helmet';
 import Section, { SectionBody } from 'components/Section';
+import { useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Get_All_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
 
 const AllBook = () => {
+  const dispatch = useDispatch();
+  const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+
+  useEffect(() => {
+    dispatch(Get_All_Book_Student_Initial());
+  }, []);
+
+  useEffect(() => {
+    console.log(bookList);
+  }, [bookList]);
+
   return (
     <Helmet title="Tài liệu">
       <Section>
@@ -28,131 +42,50 @@ const AllBook = () => {
                 </div>
 
                 <div className="book__list">
-                  <div className="book__list__item">
-                    <div className="book__list__item__name">
-                      <Link to="/detail-book">Gia Bao</Link>
-                    </div>
-                    <Row>
-                      <Col sm={1}>
-                        <div className="book__list__item__img">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
-                            alt=""
-                          />
+                  {bookList &&
+                    bookList.map((book, idx) => (
+                      <div className="book__list__item" key={idx}>
+                        <div className="book__list__item__name">
+                          <Link to={`/detail-book/${book.book_id}`}>{book.name}</Link>
                         </div>
-                      </Col>
-                      <Col sm={11}>
-                        <div className="book__data">
-                          <div className="book__data__author">
-                            Tác giả: <Link to="/author">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__publisher">
-                            Nhà xuất bản: <Link to="/publisher">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__album">
-                            Bộ sưu tập: <Link to="/album">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__id">
-                            Mã sách: <Link to="/album">501210646</Link>
-                          </div>
-                          <div className="book__data__category">
-                            <span>
-                              Thể loại: <Link to="/category">Trinh thám</Link>
-                            </span>
+                        <Row>
+                          <Col sm={1}>
+                            <div className="book__list__item__img">
+                              <img
+                                src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
+                                alt=""
+                              />
+                            </div>
+                          </Col>
+                          <Col sm={11}>
+                            <div className="book__data">
+                              <div className="book__data__author">
+                                Tác giả: <Link to="/author">Gia Bảo</Link>
+                              </div>
+                              <div className="book__data__publisher">
+                                Nhà xuất bản: <Link to="/publisher">Gia Bảo</Link>
+                              </div>
+                              <div className="book__data__album">
+                                Bộ sưu tập: <Link to="/album">Gia Bảo</Link>
+                              </div>
+                              <div className="book__data__id">
+                                Mã sách: <Link to="/album">{book.book_id}</Link>
+                              </div>
+                              <div className="book__data__category">
+                                <span>
+                                  Thể loại: <Link to="/category">Trinh thám</Link>
+                                </span>
 
-                            <span>
-                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
-                              <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
-                            </span>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-
-                  <div className="book__list__item">
-                    <div className="book__list__item__name">
-                      <Link to="/">Gia Bao</Link>
-                    </div>
-                    <Row>
-                      <Col sm={1}>
-                        <div className="book__list__item__img">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
-                            alt=""
-                          />
-                        </div>
-                      </Col>
-                      <Col sm={11}>
-                        <div className="book__data">
-                          <div className="book__data__author">
-                            Tác giả: <Link to="/author">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__publisher">
-                            Nhà xuất bản: <Link to="/publisher">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__album">
-                            Bộ sưu tập: <Link to="/album">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__id">
-                            Mã sách: <Link to="/album">501210646</Link>
-                          </div>
-                          <div className="book__data__category">
-                            <span>
-                              Thể loại: <Link to="/category">Trinh thám</Link>
-                            </span>
-
-                            <span>
-                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
-                              <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
-                            </span>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-
-                  <div className="book__list__item">
-                    <div className="book__list__item__name">
-                      <Link to="/">Gia Bao</Link>
-                    </div>
-                    <Row>
-                      <Col sm={1}>
-                        <div className="book__list__item__img">
-                          <img
-                            src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
-                            alt=""
-                          />
-                        </div>
-                      </Col>
-                      <Col sm={11}>
-                        <div className="book__data">
-                          <div className="book__data__author">
-                            Tác giả: <Link to="/author">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__publisher">
-                            Nhà xuất bản: <Link to="/publisher">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__album">
-                            Bộ sưu tập: <Link to="/album">Gia Bảo</Link>
-                          </div>
-                          <div className="book__data__id">
-                            Mã sách: <Link to="/album">501210646</Link>
-                          </div>
-                          <div className="book__data__category">
-                            <span>
-                              Thể loại: <Link to="/category">Trinh thám</Link>
-                            </span>
-
-                            <span>
-                              <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
-                              <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
-                            </span>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
+                                <span>
+                                  <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
+                                  <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
+                                </span>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
                 </div>
               </div>
             </Col>

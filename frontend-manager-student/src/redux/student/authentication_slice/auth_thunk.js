@@ -41,6 +41,7 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
 
     //Take response Success
     const successData = response.data;
+    console.log(successData, 'login');
 
     //Check data
     if (successData) {
@@ -92,6 +93,7 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
 
     //Take response Success
     const successData = response.data;
+    console.log(successData, 'ạhdasjdhsd');
 
     //Check data
     if (successData) {
@@ -124,7 +126,7 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
  * @author Châu Gia Bảo
  * @created_at 06/03/2023
  * @descriptionKey Call api Profile Student
- * @function Profile_Student_Initial
+ * @function Logout_Student_Initial
  * @return {Object}
  */
 export const Logout_Student_Initial = createAsyncThunk('student/logout', async (_, { rejectWithValue }) => {

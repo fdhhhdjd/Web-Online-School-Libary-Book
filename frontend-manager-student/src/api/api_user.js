@@ -12,9 +12,9 @@ const API_STUDENT = {
    */
   PROFILE_STUDENT: '/student/v1/user/private/profile',
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 06/03/2023
-   * @descriptionKey API new token student
+   * @descriptionKey API LOGOUT
    */
   LOGOUT_STUDENT: '/student/v1/user/private/logout',
   /**
@@ -23,5 +23,18 @@ const API_STUDENT = {
    * @descriptionKey API new token student
    */
   RE_NEW_TOKEN_STUDENT: '/student/v1/user/renew-token',
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 10/03/2023
+   * @descriptionKey API GET ALL BOOK
+   */
+  GET_ALL_BOOK_STUDENT: '/student/v1/user/private/book/all',
+
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 10/03/2023
+   * @descriptionKey API GET ALL BOOK
+   */
+  GET_DETAIL_BOOK_STUDENT: '/student/v1/user/private/book/detail',
 };
 export default API_STUDENT;

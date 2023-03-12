@@ -26,7 +26,7 @@ const AuthStudent = () => {
 
   useEffect(() => {
     if (decodedToken) {
-      dispatch(Profile_Student_Initial(token_localStorage));
+      dispatch(Profile_Student_Initial());
     }
   }, [decodedToken, token_student, dispatch, token_localStorage]);
 
