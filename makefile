@@ -27,6 +27,9 @@ CONTAINER_REDIS_MASTER=redis-master
 CONTAINER_REDIS_SLAVE=redis-slave
 CONTAINER_NGINX=nginx_libary_school
 
+# ALL CONTAINER
+CONTAINERS = ${CONTAINER_STUDENT} ${CONTAINER_ADMIN} ${CONTAINER_EMAIL} ${CONTAINER_MEDIA} ${CONTAINER_CRON} ${CONTAINER_NGINX} ${CONTAINER_POSGREQL} ${CONTAINER_REDIS_MASTER} ${CONTAINER_REDIS_SLAVE}
+
 # EVIRONMENT_SHELL
 EVIRONMENT_SHELL_SH=sh
 EVIRONMENT_SHELL_BASH=bash
@@ -103,95 +106,34 @@ docker-root-redis-slave:
 	docker exec -it ${CONTAINER_REDIS_SLAVE} ${EVIRONMENT_SHELL_BASH}
 
 # Go to logs container
-docker-log-student:
-	docker logs -f ${CONTAINER_STUDENT} --tail ${NUMBER_LOGS}
-
-docker-log-admin:
-	docker logs -f ${CONTAINER_ADMIN} --tail ${NUMBER_LOGS}
-
-docker-log-email:
-	docker logs -f ${CONTAINER_EMAIL}--tail ${NUMBER_LOGS}
-
-docker-log-media:
-	docker logs -ft ${CONTAINER_MEDIA} --tail ${NUMBER_LOGS}
-
-docker-log-cron:
-	docker logs -f ${CONTAINER_CRON}--tail ${NUMBER_LOGS}
-
-docker-log-nginx:
-	docker logs -f ${CONTAINER_NGINX} --tail ${NUMBER_LOGS}
+docker-stats-target-%:
+	@docker stats $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS))
 	
-docker-log-posgresql:
-	docker logs -f ${CONTAINER_POSGREQL} --tail ${NUMBER_LOGS}
-
-docker-log-redis-master:
-	docker logs -f ${CONTAINER_REDIS_MASTER} --tail ${NUMBER_LOGS}
-
-docker-log-redis-slave:
-	docker logs -f ${CONTAINER_REDIS_SLAVE} --tail ${NUMBER_LOGS}
+docker-logs-target-%:
+	@if [ "$(filter $*, $(CONTAINERS))" != "$*" ]; then \
+		echo "Invalid target '$*'. Please specify a valid container name." >&2; \
+	else \
+		docker logs -f  $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS)) --tail ${NUMBER_LOGS}; \
+	fi
 
 # Check effect container
-docker-stats-student:
-	docker stats  ${CONTAINER_STUDENT}
-
-docker-stats-admin:
-	docker stats  ${CONTAINER_ADMIN} 
-
-docker-stats-email:
-	docker stats ${CONTAINER_EMAIL}
-
-docker-stats-media:
-	docker stats ${CONTAINER_MEDIA} 
-
-docker-stats-cron:
-	docker stats ${CONTAINER_CRON}
-
-docker-stats-nginx:
-	docker stats ${CONTAINER_NGINX} 
+docker-stats-target-%:
+	@docker stats $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS))
 	
-docker-stats-posgresql:
-	docker stats ${CONTAINER_POSGREQL} 
-
-docker-stats-redis-master:
-	docker stats ${CONTAINER_REDIS_MASTER}
-
-docker-stats-redis-slave:
-	docker stats ${CONTAINER_REDIS_SLAVE} 
-
 # Check inspect container
-docker-inspect-student:
-	docker inspect ${CONTAINER_STUDENT}
-
-docker-inspect-admin:
-	docker inspect  ${CONTAINER_ADMIN} 
-
-docker-inspect-email:
-	docker inspect ${CONTAINER_EMAIL}
-
-docker-inspect-media:
-	docker inspect ${CONTAINER_MEDIA} 
-
-docker-inspect-cron:
-	docker inspect ${CONTAINER_CRON}
-
-docker-inspect-nginx:
-	docker inspect ${CONTAINER_NGINX} 
-	
-docker-inspect-posgresql:
-	docker inspect ${CONTAINER_POSGREQL} 
-
-docker-inspect-redis-master:
-	docker inspect ${CONTAINER_REDIS_MASTER}
-
-docker-inspect-redis-slave:
-	docker inspect ${CONTAINER_REDIS_SLAVE} 
+docker-inspect-target-%:
+	@echo $(CONTAINERS)
+	@if [ "$(filter $*, $(CONTAINERS))" != "$*" ]; then \
+		echo "Invalid target '$*'. Please specify a valid container name." >&2; \
+	else \
+		docker inspect $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS)); \
+	fi
 
 # Export DB
 docker-export-db-posgresql:
 	$(POSTGRES_VARS) \
-		if [ -z "$$PASSWORD" -o -z "$$USER_NAME" -o -z "$$POSTGRES_DB" ]; then \
-			echo "One or more variables are not set: PASSWORD=$$PASSWORD :: USER_NAME=$$USER_NAME :: POSTGRES_DB=$$POSTGRES_DB"; \
-			exit 1; \
+		@if [ "$(filter $*, $(CONTAINERS))" = "" ]; then \
+			echo "Invalid target '$*'. Please specify a valid container name." >&2; \
 		fi; \
 		docker exec -it ${CONTAINER_POSGREQL} bash -c "\
 			cd docker-entrypoint-initdb.d && \
