@@ -1,13 +1,16 @@
 #!@ Author: Nguyễn Tiến Tài.
 #! Description: Make run auto service all.
 #!@ Created_At : 20-12-2022.
-#!@ Update_At: 28-12-2022,22-01-2023,10-03-2023
+#!@ Update_At: 28-12-2022,22-01-2023,10-03-2023,12-03-2023
 
 ###################! Define variables ###################!
-SEND_EMAIL_FOLDER="server-send-email-student"
-MEDIA_FOLDER="server-media-service"
-BACKEND_FOLDER="backend-manager-student"
 
+# FOLDER
+SEND_EMAIL_FOLDER=server-send-email-student
+MEDIA_FOLDER=server-media-service
+BACKEND_FOLDER=backend-manager-student
+
+# CONTAINER
 CONTAINER_STUDENT=server_user_api
 CONTAINER_ADMIN=server_admin_api
 CONTAINER_CRON=cron_job
@@ -18,12 +21,37 @@ CONTAINER_REDIS_MASTER=redis-master
 CONTAINER_REDIS_SLAVE=redis-slave
 CONTAINER_NGINX=nginx_libary_school
 
+# EVIRONMENT_SHELL
+EVIRONMENT_SHELL_SH=sh
+EVIRONMENT_SHELL_BASH=bash
 
+# LIMT LOGS
+NUMBER_LOGS=100
+
+# TAKE VARIABLE FROM .env
 POSTGRES_VARS = PASSWORD=$$(grep -oP 'POSTGRES_PASSWORD=\K(.*)' ./${BACKEND_FOLDER}/.env); \
 				USER_NAME=$$(grep -oP 'POSTGRES_USER=\K(.*)' ./${BACKEND_FOLDER}/.env); \
 				POSTGRES_HOST=$$(grep -oP 'POSTGRES_HOST=\K(.*)' ./${BACKEND_FOLDER}/.env); \
 				POSTGRES_DB=$$(grep -oP 'POSTGRES_DB=\K(.*)' ./${BACKEND_FOLDER}/.env); \
+				
+# DATE TODAY
+TODAY := $(shell date +%Y%m%d)
 
+# Tạo tên file mới
+EXPORT_NEW_FILE := $(TODAY)_libary_school_main.sql
+
+###################! CHECK DATA ###################
+
+check-variable:
+	$(POSTGRES_VARS) \
+		if [ -z "$$PASSWORD" -o -z "$$USER_NAME" -o -z "$$POSTGRES_HOST" -o -z  "$$POSTGRES_DB" ]; then \
+				echo "One or more variables are not set: PASSWORD=$$PASSWORD USER_NAME=$$USER_NAME POSTGRES_HOST=$$POSTGRES_HOST POSTGRES_DB=$$POSTGRES_DB"; \
+			exit 1; \
+		fi; \
+		echo "VARIABLES PASSWORD :::: $$PASSWORD"; \
+		echo "VARIABLES USER_NAME :::: $$USER_NAME"; \
+		echo "VARIABLES POSTGRES_HOST :::: $$POSTGRES_HOST"; \
+		echo "VARIABLES POSTGRES_DB :::: $$POSTGRES_DB"
 
 ###################! SETTING HUSKY ###################
 
@@ -41,75 +69,148 @@ install-dev:
 
 # Go to volume root container
 docker-root-student:
-	docker exec -it ${CONTAINER_STUDENT} sh
+	docker exec -it ${CONTAINER_STUDENT} ${EVIRONMENT_SHELL_SH}
 
 docker-root-admin:
-	docker exec -it ${CONTAINER_ADMIN} sh
+	docker exec -it ${CONTAINER_ADMIN} ${EVIRONMENT_SHELL_SH}
 
 docker-root-email:
-	docker exec -it ${CONTAINER_EMAIL} sh
+	docker exec -it ${CONTAINER_EMAIL} ${EVIRONMENT_SHELL_SH}
 
 docker-root-media:
-	docker exec -it ${CONTAINER_MEDIA} sh
+	docker exec -it ${CONTAINER_MEDIA} ${EVIRONMENT_SHELL_SH}
 
 docker-root-cron:
-	docker exec -it ${CONTAINER_CRON} sh
+	docker exec -it ${CONTAINER_CRON} ${EVIRONMENT_SHELL_SH}
 
 docker-root-nginx:
-	docker exec -it ${CONTAINER_NGINX} bash
+	docker exec -it ${CONTAINER_NGINX} ${EVIRONMENT_SHELL_BASH}
 	
 docker-root-posgresql:
-	docker exec -it ${CONTAINER_POSGREQL} bash
+	docker exec -it ${CONTAINER_POSGREQL} ${EVIRONMENT_SHELL_BASH}
 
 docker-root-redis-master:
-	docker exec -it ${CONTAINER_REDIS_MASTER} bash
+	docker exec -it ${CONTAINER_REDIS_MASTER} ${EVIRONMENT_SHELL_BASH}
 
 docker-root-redis-slave:
-	docker exec -it ${CONTAINER_REDIS_SLAVE} bash
+	docker exec -it ${CONTAINER_REDIS_SLAVE} ${EVIRONMENT_SHELL_BASH}
 
 # Go to logs container
 docker-log-student:
-	docker logs -f ${CONTAINER_STUDENT} --tail 100
+	docker logs -f ${CONTAINER_STUDENT} --tail ${NUMBER_LOGS}
 
 docker-log-admin:
-	docker logs -f ${CONTAINER_ADMIN} --tail 100
+	docker logs -f ${CONTAINER_ADMIN} --tail ${NUMBER_LOGS}
 
 docker-log-email:
-	docker logs -f ${CONTAINER_EMAIL}--tail 100
+	docker logs -f ${CONTAINER_EMAIL}--tail ${NUMBER_LOGS}
 
 docker-log-media:
-	docker logs -ft ${CONTAINER_MEDIA} --tail 100
+	docker logs -ft ${CONTAINER_MEDIA} --tail ${NUMBER_LOGS}
 
 docker-log-cron:
-	docker logs -f ${CONTAINER_CRON}--tail 100
+	docker logs -f ${CONTAINER_CRON}--tail ${NUMBER_LOGS}
 
 docker-log-nginx:
-	docker logs -f ${CONTAINER_NGINX} --tail 100
+	docker logs -f ${CONTAINER_NGINX} --tail ${NUMBER_LOGS}
 	
 docker-log-posgresql:
-	docker logs -f ${CONTAINER_POSGREQL} --tail 100
+	docker logs -f ${CONTAINER_POSGREQL} --tail ${NUMBER_LOGS}
 
 docker-log-redis-master:
-	docker logs -f ${CONTAINER_REDIS_MASTER} --tail 100
+	docker logs -f ${CONTAINER_REDIS_MASTER} --tail ${NUMBER_LOGS}
 
 docker-log-redis-slave:
-	docker logs -f ${CONTAINER_REDIS_SLAVE} --tail 100
+	docker logs -f ${CONTAINER_REDIS_SLAVE} --tail ${NUMBER_LOGS}
+
+# Check effect container
+docker-stats-student:
+	docker stats  ${CONTAINER_STUDENT}
+
+docker-stats-admin:
+	docker stats  ${CONTAINER_ADMIN} 
+
+docker-stats-email:
+	docker stats ${CONTAINER_EMAIL}
+
+docker-stats-media:
+	docker stats ${CONTAINER_MEDIA} 
+
+docker-stats-cron:
+	docker stats ${CONTAINER_CRON}
+
+docker-stats-nginx:
+	docker stats ${CONTAINER_NGINX} 
+	
+docker-stats-posgresql:
+	docker stats ${CONTAINER_POSGREQL} 
+
+docker-stats-redis-master:
+	docker stats ${CONTAINER_REDIS_MASTER}
+
+docker-stats-redis-slave:
+	docker stats ${CONTAINER_REDIS_SLAVE} 
+
+# Check inspect container
+docker-inspect-student:
+	docker inspect ${CONTAINER_STUDENT}
+
+docker-inspect-admin:
+	docker inspect  ${CONTAINER_ADMIN} 
+
+docker-inspect-email:
+	docker inspect ${CONTAINER_EMAIL}
+
+docker-inspect-media:
+	docker inspect ${CONTAINER_MEDIA} 
+
+docker-inspect-cron:
+	docker inspect ${CONTAINER_CRON}
+
+docker-inspect-nginx:
+	docker inspect ${CONTAINER_NGINX} 
+	
+docker-inspect-posgresql:
+	docker inspect ${CONTAINER_POSGREQL} 
+
+docker-inspect-redis-master:
+	docker inspect ${CONTAINER_REDIS_MASTER}
+
+docker-inspect-redis-slave:
+	docker inspect ${CONTAINER_REDIS_SLAVE} 
 
 # Export DB
 docker-export-db-posgresql:
 	$(POSTGRES_VARS) \
+		if [ -z "$$PASSWORD" -o -z "$$USER_NAME" -o -z "$$POSTGRES_DB" ]; then \
+			echo "One or more variables are not set: PASSWORD=$$PASSWORD :: USER_NAME=$$USER_NAME :: POSTGRES_DB=$$POSTGRES_DB"; \
+			exit 1; \
+		fi; \
 		docker exec -it ${CONTAINER_POSGREQL} bash -c "\
 			cd docker-entrypoint-initdb.d && \
-				rm -rf libary_school_main.sql && \
-				 	PGPASSWORD=$${PASSWORD} pg_dump -U $${USER_NAME} --format=p --file=libary_school_main.sql --dbname=$${POSTGRES_DB} --no-owner --no-privileges -w"
+    			if [ -e $$EXPORT_NEW_FILE ] && [ -f $$EXPORT_NEW_FILE ]; then \
+    				rm -rf $(EXPORT_NEW_FILE); \
+       				echo \"File exists and is a regular file\"; \
+    			else \
+    			    echo \"File does not exist\"; \
+    			fi; \
+				 	PGPASSWORD=$${PASSWORD} pg_dump -U $${USER_NAME} --format=p --file=$(EXPORT_NEW_FILE) --dbname=$${POSTGRES_DB} --no-owner --no-privileges -w"
 
 # import DB
 docker-import-db-posgresql:
 	$(POSTGRES_VARS) \
-	docker exec -it ${CONTAINER_POSGREQL} bash -c "\
-		cd docker-entrypoint-initdb.d && \
-			PGPASSWORD=$${PASSWORD} psql -h $${POSTGRES_HOST} -U $${USER_NAME} -d $${POSTGRES_DB} -a -f libary_school_main.sql;"
-
+		if [ -z "$$PASSWORD" -o -z "$$USER_NAME" -o -z "$$POSTGRES_HOST" -o -z  "$$POSTGRES_DB" ]; then \
+			echo "One or more variables are not set: PASSWORD=$$PASSWORD USER_NAME=$$USER_NAME POSTGRES_HOST=$$POSTGRES_HOST POSTGRES_DB=$$POSTGRES_DB"; \
+			exit 1; \
+		fi; \
+		docker exec -it ${CONTAINER_POSGREQL} bash -c "\
+			cd docker-entrypoint-initdb.d && \
+				if [ -e $$EXPORT_NEW_FILE ] && [ -f $$EXPORT_NEW_FILE  ]; then \
+					PGPASSWORD=$${PASSWORD} psql -h $${POSTGRES_HOST} -U $${USER_NAME} -d $${POSTGRES_DB} -a -f $(EXPORT_NEW_FILE); \
+       				echo \"Import file success!!\"; \
+    			else \
+    			    echo \"Import file fail!!!\"; \
+				fi;"
 
 ###################!DEVELOPER ###################
 
