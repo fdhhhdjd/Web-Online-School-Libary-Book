@@ -10,6 +10,12 @@ SEND_EMAIL_FOLDER=server-send-email-student
 MEDIA_FOLDER=server-media-service
 BACKEND_FOLDER=backend-manager-student
 
+
+# INCLUDE FORDER
+include ./${SEND_EMAIL_FOLDER}/.env
+include ./${MEDIA_FOLDER}/.env
+include ./${BACKEND_FOLDER}/.env
+
 # CONTAINER
 CONTAINER_STUDENT=server_user_api
 CONTAINER_ADMIN=server_admin_api
@@ -27,6 +33,7 @@ EVIRONMENT_SHELL_BASH=bash
 
 # LIMT LOGS
 NUMBER_LOGS=100
+
 
 # TAKE VARIABLE FROM .env
 POSTGRES_VARS = PASSWORD=$$(grep -oP 'POSTGRES_PASSWORD=\K(.*)' ./${BACKEND_FOLDER}/.env); \
