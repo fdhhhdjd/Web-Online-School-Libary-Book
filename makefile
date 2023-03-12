@@ -8,6 +8,16 @@ SEND_EMAIL_FOLDER="server-send-email-student"
 MEDIA_FOLDER="server-media-service"
 BACKEND_FOLDER="backend-manager-student"
 
+CONTAINER_STUDENT=server_user_api
+CONTAINER_ADMIN=server_admin_api
+CONTAINER_CRON=cron_job
+CONTAINER_EMAIL=send_email_student
+CONTAINER_MEDIA=upload-api
+CONTAINER_POSGREQL=postgresql
+CONTAINER_REDIS_MASTER=redis-master
+CONTAINER_REDIS_SLAVE=redis-slave
+CONTAINER_NGINX=nginx_libary_school
+
 
 POSTGRES_VARS = PASSWORD=$$(grep -oP 'POSTGRES_PASSWORD=\K(.*)' ./${BACKEND_FOLDER}/.env); \
 				USER_NAME=$$(grep -oP 'POSTGRES_USER=\K(.*)' ./${BACKEND_FOLDER}/.env); \
@@ -31,36 +41,64 @@ install-dev:
 
 # Go to volume root container
 docker-root-student:
-	docker exec -it server_user_api sh
+	docker exec -it ${CONTAINER_STUDENT} sh
 
 docker-root-admin:
-	docker exec -it server_admin_api sh
+	docker exec -it ${CONTAINER_ADMIN} sh
 
 docker-root-email:
-	docker exec -it send_email_student sh
+	docker exec -it ${CONTAINER_EMAIL} sh
 
 docker-root-media:
-	docker exec -it upload-api sh
+	docker exec -it ${CONTAINER_MEDIA} sh
 
 docker-root-cron:
-	docker exec -it cron_job sh
+	docker exec -it ${CONTAINER_CRON} sh
 
 docker-root-nginx:
-	docker exec -it nginx_libary_school bash
+	docker exec -it ${CONTAINER_NGINX} bash
 	
 docker-root-posgresql:
-	docker exec -it postgresql bash
+	docker exec -it ${CONTAINER_POSGREQL} bash
 
 docker-root-redis-master:
-	docker exec -it redis-master bash
+	docker exec -it ${CONTAINER_REDIS_MASTER} bash
 
 docker-root-redis-slave:
-	docker exec -it redis-slave bash
+	docker exec -it ${CONTAINER_REDIS_SLAVE} bash
+
+# Go to logs container
+docker-log-student:
+	docker logs -f ${CONTAINER_STUDENT} --tail 100
+
+docker-log-admin:
+	docker logs -f ${CONTAINER_ADMIN} --tail 100
+
+docker-log-email:
+	docker logs -f ${CONTAINER_EMAIL}--tail 100
+
+docker-log-media:
+	docker logs -ft ${CONTAINER_MEDIA} --tail 100
+
+docker-log-cron:
+	docker logs -f ${CONTAINER_CRON}--tail 100
+
+docker-log-nginx:
+	docker logs -f ${CONTAINER_NGINX} --tail 100
+	
+docker-log-posgresql:
+	docker logs -f ${CONTAINER_POSGREQL} --tail 100
+
+docker-log-redis-master:
+	docker logs -f ${CONTAINER_REDIS_MASTER} --tail 100
+
+docker-log-redis-slave:
+	docker logs -f ${CONTAINER_REDIS_SLAVE} --tail 100
 
 # Export DB
 docker-export-db-posgresql:
 	$(POSTGRES_VARS) \
-		docker exec -it postgresql bash -c "\
+		docker exec -it ${CONTAINER_POSGREQL} bash -c "\
 			cd docker-entrypoint-initdb.d && \
 				rm -rf libary_school_main.sql && \
 				 	PGPASSWORD=$${PASSWORD} pg_dump -U $${USER_NAME} --format=p --file=libary_school_main.sql --dbname=$${POSTGRES_DB} --no-owner --no-privileges -w"
@@ -68,7 +106,7 @@ docker-export-db-posgresql:
 # import DB
 docker-import-db-posgresql:
 	$(POSTGRES_VARS) \
-	docker exec -it postgresql bash -c "\
+	docker exec -it ${CONTAINER_POSGREQL} bash -c "\
 		cd docker-entrypoint-initdb.d && \
 			PGPASSWORD=$${PASSWORD} psql -h $${POSTGRES_HOST} -U $${USER_NAME} -d $${POSTGRES_DB} -a -f libary_school_main.sql;"
 
