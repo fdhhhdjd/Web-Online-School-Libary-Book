@@ -1,7 +1,7 @@
 #!@ Author: Nguyễn Tiến Tài.
 #! Description: Make run auto service all.
 #!@ Created_At : 20-12-2022.
-#!@ Update_At: 28-12-2022,22-01-2023,10-03-2023,12-03-2023
+#!@ Update_At: 28-12-2022,22-01-2023,10-03-2023,12-03-2023,13-03-2023
 
 ###################! Define variables ###################!
 
@@ -108,13 +108,14 @@ docker-inspect-target-%:
 		echo "Invalid target '$*'. Please specify a valid container name." >&2; \
 	else \
 		docker inspect $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS)); \
-	fi
+	fi;
 
 # Export DB
 docker-export-db-posgresql:
 	$(POSTGRES_VARS) \
-		@if [ "$(filter $*, $(CONTAINERS))" = "" ]; then \
-			echo "Invalid target '$*'. Please specify a valid container name." >&2; \
+		if [ -z "$$PASSWORD" -o -z "$$USER_NAME" -o -z "$$POSTGRES_HOST" -o -z  "$$POSTGRES_DB" ]; then \
+			echo "One or more variables are not set: PASSWORD=$$PASSWORD USER_NAME=$$USER_NAME POSTGRES_HOST=$$POSTGRES_HOST POSTGRES_DB=$$POSTGRES_DB"; \
+			exit 1; \
 		fi; \
 		docker exec -it ${CONTAINER_POSGREQL} bash -c "\
 			cd docker-entrypoint-initdb.d && \
@@ -160,7 +161,6 @@ run-backend-build:
 	cd ${BACKEND_FOLDER} && \
 		make run-backend
 	
-
 # Run All Server And Build
 run-all-build:
 	make run-send-email-build && \
@@ -168,43 +168,48 @@ run-all-build:
 			make run-backend-build
 
 ###################! RUN AUTO BACKGROUND (DEAMON) DOCKER  ###################
+# Define variables
+APP_TARGET_DEAMON := stg-dev
+define run_container_dev
+	cd $1 && \
+	make $(APP_TARGET_DEAMON)
+endef
+
 # Run Server Email 
 run-send-email:
-	cd ${SEND_EMAIL_FOLDER} && \
-		make stg-dev
+	$(call run_container_dev, ${SEND_EMAIL_FOLDER})
 
 # Run Server media 
 run-media:
-	cd ${MEDIA_FOLDER} && \
-		make stg-dev
+	$(call run_container_dev, ${MEDIA_FOLDER})
 
 # Run Server Main 
 run-backend:
-	cd ${BACKEND_FOLDER} && \
-		make stg-dev
+	$(call run_container_dev, ${BACKEND_FOLDER})
 
-# Run All Server
-run-all-dev:
+run-all-dev: 
 	@make run-send-email 
 	@make run-media 
 	@make run-backend
 
 ###################! RUN AUTO DOWN CONTAINER DOCKER  ##########################
-
+# Define variables
+APP_TARGET_DOWN := run-devdown
+define down_container_dev
+	cd $1 && \
+	make $(APP_TARGET)
+endef
 # Run Down Container Server Email 
 run-send-email-dev-down:
-	cd ${SEND_EMAIL_FOLDER} && \
-		make run-devdown
+	$(call down_container_dev, ${SEND_EMAIL_FOLDER})
 
 # Run Down Container Server media 
 run-media-dev-down:
-	cd ${MEDIA_FOLDER} && \
-		make run-devdown
+	$(call down_container_dev, ${MEDIA_FOLDER})
 
 # Run Down Container Server Main 
 run-backend-dev-down:
-	cd ${BACKEND_FOLDER} && \
-		make run-devdown
+	$(call down_container_dev, ${BACKEND_FOLDER})
 
 # Run Down Container All Server
 run-all-dev-down:
@@ -239,20 +244,23 @@ run-all-build-live-service:
 			make run-build-live-backend && \
 
 ###################! RUN AUTO BACKGROUND (DEAMON) DOCKER  ###################
+# Define variables
+APP_TARGET_DEAMON_LIVE := run-devdown
+define run_container_live
+	cd $1 && \
+	make $(APP_TARGET_DEAMON_LIVE)
+endef
 # Run service email
 run-live-email:
-	cd ${SEND_EMAIL_FOLDER} && \
-		make stg-prod
+	$(call run_container_live, ${SEND_EMAIL_FOLDER})
 
 # run service media 
 run-live-media:
-	cd ${MEDIA_FOLDER}&& \
-		make stg-prod
+	$(call run_container_live, ${MEDIA_FOLDER})
 
 # run service backend
 run-live-backend:
-	cd ${BACKEND_FOLDER} && \
-		make stg-prod
+	$(call run_container_live, ${BACKEND_FOLDER})
 
 # Run All Service
 run-all-live-service:
