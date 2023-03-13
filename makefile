@@ -31,8 +31,7 @@ CONTAINER_NGINX=nginx_libary_school
 CONTAINERS = ${CONTAINER_STUDENT} ${CONTAINER_ADMIN} ${CONTAINER_EMAIL} ${CONTAINER_MEDIA} ${CONTAINER_CRON} ${CONTAINER_NGINX} ${CONTAINER_POSGREQL} ${CONTAINER_REDIS_MASTER} ${CONTAINER_REDIS_SLAVE}
 
 # EVIRONMENT_SHELL
-EVIRONMENT_SHELL_SH=sh
-EVIRONMENT_SHELL_BASH=bash
+EVIRONMENT_SHELL=sh bash
 
 # LIMT LOGS
 NUMBER_LOGS=100
@@ -78,38 +77,18 @@ install-dev:
 ###################!DOCKER ###################
 
 # Go to volume root container
-docker-root-student:
-	docker exec -it ${CONTAINER_STUDENT} ${EVIRONMENT_SHELL_SH}
-
-docker-root-admin:
-	docker exec -it ${CONTAINER_ADMIN} ${EVIRONMENT_SHELL_SH}
-
-docker-root-email:
-	docker exec -it ${CONTAINER_EMAIL} ${EVIRONMENT_SHELL_SH}
-
-docker-root-media:
-	docker exec -it ${CONTAINER_MEDIA} ${EVIRONMENT_SHELL_SH}
-
-docker-root-cron:
-	docker exec -it ${CONTAINER_CRON} ${EVIRONMENT_SHELL_SH}
-
-docker-root-nginx:
-	docker exec -it ${CONTAINER_NGINX} ${EVIRONMENT_SHELL_BASH}
-	
-docker-root-posgresql:
-	docker exec -it ${CONTAINER_POSGREQL} ${EVIRONMENT_SHELL_BASH}
-
-docker-root-redis-master:
-	docker exec -it ${CONTAINER_REDIS_MASTER} ${EVIRONMENT_SHELL_BASH}
-
-docker-root-redis-slave:
-	docker exec -it ${CONTAINER_REDIS_SLAVE} ${EVIRONMENT_SHELL_BASH}
+# Example: make docker-root-target-server_user_api sh
+docker-root-target-%:
+	@if [ "$(filter $*, $(CONTAINERS))" != "$*" ]; then \
+		echo "Invalid target '$*'. Please specify a valid container name." >&2; \
+	else \
+		docker exec -it $* $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(EVIRONMENT_SHELL)); \
+	fi
 
 # Go to logs container
-docker-stats-target-%:
-	@docker stats $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS))
-	
+# Example: make docker-logs-target-server_user_api
 docker-logs-target-%:
+	@echo $(CONTAINERS)
 	@if [ "$(filter $*, $(CONTAINERS))" != "$*" ]; then \
 		echo "Invalid target '$*'. Please specify a valid container name." >&2; \
 	else \
@@ -117,10 +96,12 @@ docker-logs-target-%:
 	fi
 
 # Check effect container
+# Example: make docker-stats-target-*
 docker-stats-target-%:
 	@docker stats $(filter-out $@,$(MAKECMDGOALS)) $(filter $*, $(CONTAINERS))
 	
 # Check inspect container
+# Example: make docker-inspect-target-server_user_api
 docker-inspect-target-%:
 	@echo $(CONTAINERS)
 	@if [ "$(filter $*, $(CONTAINERS))" != "$*" ]; then \
