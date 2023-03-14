@@ -197,7 +197,7 @@ run-all-dev:
 APP_TARGET_DOWN := run-devdown
 define down_container_dev
 	cd $1 && \
-	make $(APP_TARGET)
+	make $(APP_TARGET_DOWN)
 endef
 # Run Down Container Server Email 
 run-send-email-dev-down:
