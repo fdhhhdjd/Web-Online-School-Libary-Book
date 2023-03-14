@@ -23,10 +23,8 @@ const bookController = {
      * @return {Object:{Number,String}
      */
     createBook: async (req, res) => {
-        const {
-            name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image,
-        }
-            = req.body.input.author_input;
+        const { name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image } =
+            req.body.input.author_input;
 
         // Check input
         if (
@@ -355,7 +353,11 @@ const bookController = {
             if (result_book_detail) {
                 const redisTTLWithRandom = RANDOMS.getRedisTTLWithRandom(CONSTANTS._1_MONTH);
                 // Add data redis
-                book_admin_service.handleSetCacheRedis(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book_detail, redisTTLWithRandom);
+                book_admin_service.handleSetCacheRedis(
+                    CONSTANTS.KEY_REDIS.ALL_BOOK,
+                    result_book_detail,
+                    redisTTLWithRandom,
+                );
 
                 return res.status(200).json({
                     status: 200,
