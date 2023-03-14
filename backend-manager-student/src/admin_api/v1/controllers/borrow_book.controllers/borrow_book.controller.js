@@ -21,7 +21,9 @@ const BorrowBookController = {
      * @return {Object:{Number,String}
      */
     updateBorrowBook: async (req, res) => {
-        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
+        const {
+            book_id, user_id, start_date, due_date, status,
+        } = req.body.input.borrow_book_input;
 
         // Check input
         if (!book_id || !user_id || !start_date || !due_date || !status) {

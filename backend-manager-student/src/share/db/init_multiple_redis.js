@@ -1,9 +1,13 @@
+//! LIBRARY
 const IOREDIS = require('ioredis');
+
+//! SHARE
 const CONFIGS = require('../configs/config');
 
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 22/01/2023
+ * @updated_at 15/03/2023
  * @description Connect Cache Redis Master and Slave
  */
 const ConnectionRedis = (REDIS) => {
