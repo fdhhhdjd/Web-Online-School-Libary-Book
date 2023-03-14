@@ -4,7 +4,6 @@ const CONSTANTS = require('../../../../share/configs/constants');
 const RANDOMS = require('../../../../share/utils/random');
 
 //! MIDDLEWARE
-const { globalCache } = require('../../../../share/patterns/LRU_Strategy.patterns');
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
@@ -13,6 +12,7 @@ const borrowed_book_model = require('../../../../share/models/book_borrowed.mode
 
 //! SERVICE
 const book_service = require('../../../../share/services/user_service/book_service');
+const book_admin_service = require('../../../../share/services/admin_service/book_service');
 
 const BorrowBookController = {
     /**
@@ -128,8 +128,8 @@ const BorrowBookController = {
                     book_id,
                 });
 
-                // Delete data cache lru argothim
-                globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
+                // Delete Cache
+                book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
                 return res.status(200).json({
                     status: 200,
