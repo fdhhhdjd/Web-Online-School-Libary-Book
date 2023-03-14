@@ -46,7 +46,7 @@ const AllBook = () => {
                     bookList.map((book, idx) => (
                       <div className="book__list__item" key={idx}>
                         <div className="book__list__item__name">
-                          <Link to={`/detail-book/${book.book_id}`}>{book.name}</Link>
+                          <Link to={`/book/${book.book_id}`}>{book.name}</Link>
                         </div>
                         <Row>
                           <Col sm={1}>

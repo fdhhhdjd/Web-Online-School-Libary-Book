@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Get_All_Author_Cms_Initial, Get_Detail_Author_Cms_Initial } from './author_thunk';
+import { Delete_Author_Cms_Initial, Get_All_Author_Cms_Initial, Get_Detail_Author_Cms_Initial } from './author_thunk';
 
 const initialState = {
   loading: false,
@@ -38,6 +38,18 @@ const Author = createSlice({
       state.detail_author = action.payload;
     },
     [Get_Detail_Author_Cms_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Delete author
+    [Delete_Author_Cms_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Delete_Author_Cms_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [Delete_Author_Cms_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

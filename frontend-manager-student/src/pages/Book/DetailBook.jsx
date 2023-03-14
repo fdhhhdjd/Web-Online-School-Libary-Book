@@ -3,19 +3,48 @@ import Section, { SectionBody } from 'components/Section';
 import { useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import { Get_Detail_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import { useParams } from 'react-router-dom';
+import { Borrow_Book_Student_Initial, Get_Detail_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import Swal from 'sweetalert2';
 
 const DetailBook = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
 
+  const handleBorrowBook = () => {
+    Swal.fire({
+      title: 'Xác nhận đăng kí mượn sách',
+      text: 'Ấn "Xác nhận" để đăng kí mượn sách này',
+      icon: 'warning',
+      customClass: 'swal-wide',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Xác nhận',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (detailBook?.quantity > 0) {
+          dispatch(Borrow_Book_Student_Initial({ book_id: detailBook.book_id }));
+
+          Swal.fire({
+            title: 'Đăng kí mượn sách thành công',
+            text: 'Bạn có 24 giờ kể từ thời gian đăng kí mượn để lên thư viện ITC nhận sách. \n Nếu sau 24 giờ vẫn chưa lấy sách thì xem như đã hủy mượn sách',
+            icon: 'error',
+            customClass: 'swal-wide',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Xác nhận',
+          });
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     dispatch(Get_Detail_Book_Student_Initial({ id }));
-  }, []);
+  }, [dispatch, id]);
 
-  console.log(detailBook);
   return (
     <Helmet title="Harry Porter">
       <Section>
@@ -67,15 +96,13 @@ const DetailBook = () => {
                           Ngôn ngữ: <span>{detailBook.language}</span>
                         </div>
                         <div className="book__view__btns">
-                          <Link to="/borrow">
-                            <button className="borrow-btn">Đăng kí mượn sách</button>
-                          </Link>
+                          <button className="borrow-btn" onClick={handleBorrowBook}>
+                            Đăng kí mượn sách
+                          </button>
 
-                          <Link to="/borrow">
-                            <button className="like-btn">
-                              <i className="bx bxs-heart"></i> Yêu thích
-                            </button>
-                          </Link>
+                          <button className="like-btn">
+                            <i className="bx bxs-heart"></i> Yêu thích
+                          </button>
                         </div>
                       </div>
                     </Col>

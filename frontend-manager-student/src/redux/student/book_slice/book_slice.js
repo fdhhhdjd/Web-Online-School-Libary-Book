@@ -2,7 +2,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Get_All_Book_Student_Initial, Get_Detail_Book_Student_Initial } from './book_thunk';
+import {
+  Borrow_Book_Student_Initial,
+  Get_All_Book_Student_Initial,
+  Get_Detail_Book_Student_Initial,
+} from './book_thunk';
 
 const initialState = {
   loading: false,
@@ -38,6 +42,18 @@ const Book = createSlice({
       state.detail_book = action.payload;
     },
     [Get_Detail_Book_Student_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Get detail book
+    [Borrow_Book_Student_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Borrow_Book_Student_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [Borrow_Book_Student_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -1,15 +1,19 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
+import { Delete_Author_Cms_Initial, Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 
 const AllAuthor = () => {
   const dispatch = useDispatch();
   const authorList = useSelector((state) => state.author.all_authors_list);
 
+  const handleDelete = (author_id) => {
+    dispatch(Delete_Author_Cms_Initial({ author_id }));
+  };
+
   useEffect(() => {
     dispatch(Get_All_Author_Cms_Initial());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     console.log(authorList?.element?.result);
@@ -19,7 +23,7 @@ const AllAuthor = () => {
     <div className="container mt-20">
       <div className="flex flex-col">
         <div className="overflow-x-auto">
-          <div className="py-3 pl-2">
+          <div className="py-3 pl-2 flex justify-between">
             <div className="relative max-w-xs">
               <label htmlFor="hs-table-search" className="sr-only">
                 Search
@@ -44,6 +48,11 @@ const AllAuthor = () => {
                 </svg>
               </div>
             </div>
+            <Link to="/author/add">
+              <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Thêm tác giả
+              </button>
+            </Link>
           </div>
 
           <div className="p-1.5 w-full inline-block align-middle">
@@ -93,9 +102,12 @@ const AllAuthor = () => {
                           </Link>
                         </td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <a className="text-red-500 hover:text-red-700" href="/delete">
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDelete(author?.author_id)}
+                          >
                             Delete
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     ))}

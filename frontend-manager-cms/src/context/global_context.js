@@ -8,10 +8,10 @@ import { getToken } from 'utils/auth';
 //! CONTEXT CHILD
 import { useDispatch } from 'react-redux';
 import HELPERS from 'utils/helper';
-import AuthStudent from './auth_student/auth_student';
+// import AuthStudent from './auth_cms/auth_cms';
 
 //! REDUX THUNK CALL API
-import { Renew_Token_Student_Initial } from 'redux/student/authentication_slice/auth_thunk';
+import { Renew_Token_Cms_Initial } from 'redux/managers/authentication_slice/auth_thunk';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -25,7 +25,7 @@ export const store_library_school_contextUser = createContext();
 //! Give Store Context
 export const useContextStudent = () => useContext(store_library_school_contextUser);
 
-export const DataProviderStudent = ({ children }) => {
+export const DataProviderCMS = ({ children }) => {
   //InitialState action
   const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ export const DataProviderStudent = ({ children }) => {
         //Token expired
         if (decodedToken === CONSTANTS.DELETED_DISABLE) {
           // Token expired, try to renew it
-          dispatch(Renew_Token_Student_Initial());
+          dispatch(Renew_Token_Cms_Initial());
         }
         // Schedule next token renewal
         setTimeout(() => {
@@ -58,13 +58,13 @@ export const DataProviderStudent = ({ children }) => {
   }, [token_access_localStorage, dispatch]);
 
   //! Data
-  const data = {
-    profile_student_context: AuthStudent(),
-  };
+  // const data = {
+  //   profile_student_context: AuthStudent(),
+  // };
 
   //! Name conText
   store_library_school_contextUser.displayName = 'Library School';
 
   //! Use Context Global
-  return <store_library_school_contextUser.Provider value={data}>{children}</store_library_school_contextUser.Provider>;
+  return <store_library_school_contextUser.Provider>{children}</store_library_school_contextUser.Provider>;
 };

@@ -1,15 +1,12 @@
-import moment from 'moment/moment';
-import React, { useEffect, useState } from 'react';
-import { YearPicker, MonthPicker, DayPicker } from 'react-dropdown-date';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Get_Detail_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { DayPicker, MonthPicker, YearPicker } from 'react-dropdown-date';
+import { useDispatch } from 'react-redux';
 
-const EditAuthor = () => {
+const AddAuthor = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const [date, setDate] = useState({ year: '', month: '', day: '' });
-  const detailAuthor = useSelector((state) => state.author.detail_author?.element?.result);
+  const today = moment();
+  const [date, setDate] = useState({ year: today.year(), month: today.month() + 1, day: today.date() });
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
@@ -24,16 +21,8 @@ const EditAuthor = () => {
   };
 
   useEffect(() => {
-    dispatch(Get_Detail_Author_Cms_Initial({ id }));
-  }, []);
-
-  useEffect(() => {
-    setPreview(detailAuthor?.avatar_uri);
-  }, [detailAuthor]);
-
-  useEffect(() => {
     if (!selectedFile) {
-      setPreview(detailAuthor?.avatar_uri);
+      setPreview('');
       return;
     }
 
@@ -42,9 +31,7 @@ const EditAuthor = () => {
 
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile, detailAuthor?.avatar_uri]);
-
-  console.log(moment(detailAuthor?.dob).date());
+  }, [selectedFile]);
 
   return (
     <form className="w-full mt-10" autoComplete="nope">
@@ -59,7 +46,6 @@ const EditAuthor = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-id"
                 type="text"
-                defaultValue={detailAuthor?.author_id}
                 disabled
                 readOnly
               />
@@ -74,7 +60,6 @@ const EditAuthor = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailAuthor?.name}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -89,15 +74,9 @@ const EditAuthor = () => {
                   className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="gender"
                 >
-                  <option value={1} selected={detailAuthor?.gender === 1}>
-                    Nam
-                  </option>
-                  <option value={0} selected={detailAuthor?.gender === 0}>
-                    Nữ
-                  </option>
-                  <option value={3} selected={detailAuthor?.gender === 3}>
-                    Khác
-                  </option>
+                  <option value={1}>Nam</option>
+                  <option value={0}>Nữ</option>
+                  <option value={3}>Khác</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -114,7 +93,6 @@ const EditAuthor = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="nation"
                 type="text"
-                defaultValue="Việt Nam"
                 placeholder="Việt Nam..."
               />
             </div>
@@ -126,7 +104,7 @@ const EditAuthor = () => {
               </label>
               <div className="date-picker">
                 <DayPicker
-                  defaultValue={moment(detailAuthor?.dob).date()}
+                  defaultValue={date.day}
                   year={date.year} // mandatory
                   month={date.month} // mandatory
                   endYearGiven // mandatory if end={} is given in YearPicker
@@ -140,7 +118,7 @@ const EditAuthor = () => {
                 />
 
                 <MonthPicker
-                  defaultValue={moment(detailAuthor?.dob).month() + 1}
+                  defaultValue={date.month}
                   numeric // to get months as numbers
                   endYearGiven // mandatory if end={} is given in YearPicker
                   year={date.year} // mandatory
@@ -154,7 +132,7 @@ const EditAuthor = () => {
                 />
 
                 <YearPicker
-                  defaultValue={moment(detailAuthor?.dob).year()}
+                  defaultValue={date.year}
                   start={1980} // default is 1900
                   end={2023} // default is current year
                   reverse // default is ASCENDING
@@ -203,4 +181,4 @@ const EditAuthor = () => {
   );
 };
 
-export default EditAuthor;
+export default AddAuthor;

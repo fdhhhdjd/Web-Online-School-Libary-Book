@@ -93,7 +93,6 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
 
     //Take response Success
     const successData = response.data;
-    console.log(successData, 'ạhdasjdhsd');
 
     //Check data
     if (successData) {

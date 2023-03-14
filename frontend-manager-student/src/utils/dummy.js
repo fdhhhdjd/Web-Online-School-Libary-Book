@@ -24,7 +24,7 @@ export const navInfo = [
   },
   {
     displayText: 'Tra cứu',
-    path: '/book',
+    path: '/book/all',
     submenu: [
       {
         displayText: 'Thể loại',
@@ -32,7 +32,7 @@ export const navInfo = [
       },
       {
         displayText: 'Tất cả tài liệu',
-        path: '/book',
+        path: '/book/all',
       },
       {
         displayText: 'Submenu 1',
@@ -57,11 +57,6 @@ export const userSubNav = [
   },
 
   {
-    path: '/book/borrow',
-    displayText: 'Thông tin mượn sách',
-  },
-
-  {
     path: '/user/changePassword',
     displayText: 'Thay đổi mật khẩu',
   },
@@ -75,7 +70,7 @@ export const profileSidebar = [
   },
 
   {
-    path: '/book/borrow',
+    path: '/user/borrow',
     displayText: 'Thông tin sách mượn',
     icon: 'bx bx-book-open',
   },

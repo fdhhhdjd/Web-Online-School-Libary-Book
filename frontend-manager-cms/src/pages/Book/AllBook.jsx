@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
 
 const Book = () => {
   const dispatch = useDispatch();
-  const bookList = useSelector((state) => state.book.all_books_list);
+  const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+
+  const handleDelete = (e) => { };
 
   useEffect(() => {
     dispatch(Get_All_Book_Cms_Initial());
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {
-    console.log(bookList);
-  }, [bookList]);
+  // useEffect(() => {
+  //   dispatch(Get_All_Book_Cms_Initial());
+  // }, [bookList, dispatch]);
 
   return (
     <div className="container mt-20">
       <div className="flex flex-col">
         <div className="overflow-x-auto">
-          <div className="py-3 pl-2">
+          <div className="py-3 pl-2 flex justify-between">
             <div className="relative max-w-xs">
               <label htmlFor="hs-table-search" className="sr-only">
                 Search
@@ -43,6 +46,11 @@ const Book = () => {
                 </svg>
               </div>
             </div>
+            <Link to="/book/add">
+              <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Thêm sách
+              </button>
+            </Link>
           </div>
 
           <div className="p-1.5 w-full inline-block align-middle">
@@ -54,16 +62,16 @@ const Book = () => {
                       ID
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Name
+                      Tên
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Location
+                      Tác giả
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Quantity
+                      Số lượng
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Language
+                      Vị trí
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
                       Edit
@@ -73,7 +81,30 @@ const Book = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">{ }</tbody>
+                <tbody className="divide-y divide-gray-200">
+                  {bookList &&
+                    bookList?.map((book, idx) => (
+                      <tr key={idx}>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                          {book?.book_id}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{book?.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{book?.author_id}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{book?.quantity}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{book?.bookshelf}</td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <Link to={`/book/${book?.book_id}`} className="text-green-500 hover:text-green-700">
+                            Edit
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <button className="text-red-500 hover:text-red-700" onClick={handleDelete}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
               </table>
             </div>
           </div>

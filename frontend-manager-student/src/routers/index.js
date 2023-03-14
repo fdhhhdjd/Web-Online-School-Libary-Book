@@ -17,7 +17,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book',
+    path: '/book/all',
     main: (
       <>
         <Layout content={<AllBook />} />
@@ -25,7 +25,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/detail-book/:id',
+    path: '/book/:id',
     main: (
       <>
         <Layout content={<DetailBook />} />
@@ -49,7 +49,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book/borrow',
+    path: '/user/borrow',
     main: (
       <>
         <Layout content={<UserProfile content={<BookBorrowInfo />} />} />

@@ -114,6 +114,7 @@
       font-weight: 400;
       letter-spacing: 0.5px;
       text-transform: capitalize;
+      cursor: pointer;
 
       &:hover {
         @include hologram_text;
