@@ -61,4 +61,20 @@ module.exports = {
     generatorOtp() {
         return OtpGenerator.generate(CONFIGS.RANDOM_NUMBER_OTP, OPTION_OTP);
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @param {null}
+     * @created_at 14/03/2023
+     * @description Random time ttl redis
+     * @returns {Number}
+     */
+    getRedisTTLWithRandom(initialTTL) {
+        // Số random được thêm vào (tính bằng mili giây)
+        const randomTime = Math.floor(Math.random() * CONSTANTS._1_HOURS_S_REDIS); // Tối đa 1 giờ
+
+        // Tổng thời gian TTL
+        const ttl = initialTTL + randomTime;
+
+        return ttl;
+    },
 };

@@ -349,4 +349,12 @@ module.exports = {
         ALL_BOOK: 'book_all',
         DETAIL_BOOK: 'detail_book_${book_id}',
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/03/2023
+     * @description True and False
+     * @param { String }
+     */
+    YES: 1,
+    NO: 0,
 };

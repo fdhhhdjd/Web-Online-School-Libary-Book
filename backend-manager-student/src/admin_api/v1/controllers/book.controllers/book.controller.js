@@ -2,6 +2,7 @@
 const HELPER = require('../../../../share/utils/helper');
 const RANDOMS = require('../../../../share/utils/random');
 const CONSTANTS = require('../../../../share/configs/constants');
+const MEMORY_CACHE = require('../../../../share/utils/limited_redis');
 
 //! MIDDLEWARE
 const { globalCache } = require('../../../../share/patterns/LRU_Strategy.patterns');
@@ -9,6 +10,9 @@ const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
 const book_model = require('../../../../share/models/book.model');
+
+//! SERVICE
+const book_admin_service = require('../../../../share/services/admin_service/book_service');
 
 const bookController = {
     /**
@@ -60,8 +64,8 @@ const bookController = {
             let result;
             [err, result] = await HELPER.handleRequest(book_model.createBook(data_insert));
             if (result) {
-                // Delete data cache lru argothim
-                globalCache.delCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
+                // Del key Redis
+                MEMORY_CACHE.delKeyCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
 
                 return res.status(200).json({
                     status: 200,
@@ -157,8 +161,8 @@ const bookController = {
                     book_id,
                 });
 
-                // Delete data cache lru argothim
-                globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
+                // Delete Cache
+                book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
                 return res.status(200).json({
                     status: 200,
@@ -236,8 +240,8 @@ const bookController = {
                     book_id,
                 });
 
-                // Delete data cache lru argothim
-                globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
+                // Delete Cache
+                book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
                 return res.status(200).json({
                     status: 200,
@@ -288,7 +292,7 @@ const bookController = {
 
             // detail book database
             const cache_lru_book = globalCache.getCache(key_cache_book_detail);
-            if (cache_lru_book !== -1) {
+            if (cache_lru_book !== CONSTANTS.NO) {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
@@ -304,7 +308,7 @@ const bookController = {
             );
             if (result_book_detail) {
                 // Add data cache lru argothim
-                globalCache.putCache(key_cache_book_detail, result_book_detail[0]);
+                book_admin_service.handleSetCacheLRU(key_cache_book_detail, result_book_detail[0]);
 
                 return res.status(200).json({
                     status: 200,
@@ -333,22 +337,27 @@ const bookController = {
      */
     getAllBook: async (req, res) => {
         try {
-            // detail book database
-            const cache_lru_book = globalCache.getCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
-            if (cache_lru_book !== -1) {
+            // Detail book database
+            const cache_redis_book = await MEMORY_CACHE.getCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
+            if (cache_redis_book) {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
                     element: {
-                        result: cache_lru_book,
+                        result: JSON.parse(cache_redis_book),
                     },
                 });
             }
             // Take data db
             const result_book_detail = await book_model.getAllBook({ isdeleted: CONSTANTS.DELETED_DISABLE }, '*');
             if (result_book_detail) {
-                // Add data cache lru argothim
-                globalCache.putCache(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book_detail);
+                const redisTTLWithRandom = RANDOMS.getRedisTTLWithRandom(CONSTANTS._1_MONTH);
+                // Add data redis
+                book_admin_service.handleSetCacheRedis(
+                    CONSTANTS.KEY_REDIS.ALL_BOOK,
+                    result_book_detail,
+                    redisTTLWithRandom,
+                );
 
                 return res.status(200).json({
                     status: 200,

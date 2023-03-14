@@ -1,8 +1,13 @@
+//! LIBRARY
 const LRU = require('lru-cache');
+
+//! SHARE
 const CONFIGS = require('../configs/config');
+const CONSTANTS = require('../configs/constants');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 22/12/2022
+ * @updaed_at 14/03/2023
  * @description File Algorithm Cache LRU
  */
 class LRUCache {
@@ -26,7 +31,7 @@ class LRUCache {
                 const val = this._cache.get(key);
                 return val;
             }
-            return -1;
+            return CONSTANTS.NO;
         } catch (error) {
             throw new Error(`Error getting key ${key} from cache: ${error}`);
         }
@@ -38,6 +43,18 @@ class LRUCache {
             return true;
         } catch (error) {
             throw new Error(`Error deleting key ${key} from cache: ${error}`);
+        }
+    }
+
+    exitKeyCache(key) {
+        try {
+            const hasKey = this._cache.has(key);
+            if (hasKey) {
+                return CONSTANTS.YES;
+            }
+            return CONSTANTS.NO;
+        } catch (error) {
+            throw new Error(`Error check key ${key} from cache: ${error}`);
         }
     }
 

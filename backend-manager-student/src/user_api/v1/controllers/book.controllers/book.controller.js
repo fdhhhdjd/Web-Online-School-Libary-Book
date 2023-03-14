@@ -35,7 +35,7 @@ const bookController = {
 
             // detail book database
             const cache_lru_book = globalCache.getCache(key_cache_book_detail);
-            if (cache_lru_book !== -1) {
+            if (cache_lru_book !== CONSTANTS.NO) {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
@@ -83,7 +83,7 @@ const bookController = {
         try {
             // detail book database
             const cache_lru_book = globalCache.getCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
-            if (cache_lru_book !== -1) {
+            if (cache_lru_book !== CONSTANTS.NO) {
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),
