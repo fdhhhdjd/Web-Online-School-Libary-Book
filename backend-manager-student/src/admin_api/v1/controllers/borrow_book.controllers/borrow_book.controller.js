@@ -3,12 +3,14 @@ const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
 
 //! MIDDLEWARE
-const { globalCache } = require('../../../../share/patterns/LRU_Strategy.patterns');
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
 const borrow_book_model = require('../../../../share/models/book_borrowed.model');
 const book_model = require('../../../../share/models/book.model');
+
+//! SERVICE
+const book_admin_service = require('../../../../share/services/admin_service/book_service');
 
 const BorrowBookController = {
     /**
@@ -19,7 +21,9 @@ const BorrowBookController = {
      * @return {Object:{Number,String}
      */
     updateBorrowBook: async (req, res) => {
-        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
+        const {
+            book_id, user_id, start_date, due_date, status,
+        } = req.body.input.borrow_book_input;
 
         // Check input
         if (!book_id || !user_id || !start_date || !due_date || !status) {
@@ -109,8 +113,9 @@ const BorrowBookController = {
                     const key_cache_book_detail = HELPER.getURIFromTemplate(CONSTANTS.KEY_REDIS.DETAIL_BOOK, {
                         book_id,
                     });
-                    // Delete data cache lru argothim
-                    globalCache.delMultiCache(CONSTANTS.KEY_REDIS.ALL_BOOK, key_cache_book_detail);
+
+                    // Delete Cache
+                    book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
                     return res.status(200).json({
                         status: 200,
