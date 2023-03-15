@@ -7,6 +7,18 @@ const API_STUDENT = {
   LOGIN_STUDENT: '/student/v1/user/login',
   /**
    * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @descriptionKey API change password student
+   */
+  CHANGE_PASSWORD_STUDENT: '/student/v1/user/private/change-password',
+  /**
+ * @author Nguyễn Tiến Tài
+ * @created_at 16/03/2023
+ * @descriptionKey API forget password student
+ */
+  FORGET_PASSWORD_STUDENT: '/student/v1/user/forget-password',
+  /**
+   * @author Nguyễn Tiến Tài
    * @created_at 03/03/2023
    * @descriptionKey API profile student
    */
@@ -33,14 +45,14 @@ const API_STUDENT = {
   /**
    * @author Châu Gia Bảo
    * @created_at 10/03/2023
-   * @descriptionKey API GET ALL BOOK
+   * @descriptionKey API GET DETAIL BOOK
    */
   GET_DETAIL_BOOK_STUDENT: '/student/v1/user/private/book/detail',
 
   /**
    * @author Châu Gia Bảo
    * @created_at 10/03/2023
-   * @descriptionKey API GET ALL BOOK
+   * @descriptionKey API GET BORROW BOOK
    */
   BORROW_BOOK_STUDENT: '/student/v1/user/private/borrow_book/borrow',
 };

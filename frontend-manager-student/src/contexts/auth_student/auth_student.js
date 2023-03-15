@@ -28,7 +28,7 @@ const AuthStudent = () => {
     if (decodedToken) {
       dispatch(Profile_Student_Initial());
     }
-  }, [decodedToken, token_student, dispatch, token_localStorage]);
+  }, [decodedToken, token_student]);
 
   return {};
 };

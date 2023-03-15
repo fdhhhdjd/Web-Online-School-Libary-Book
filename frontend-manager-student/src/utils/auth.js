@@ -44,7 +44,7 @@ export function setToken(key, value) {
   return localStorage.setItem(key, value);
 }
 
-export function clearToken() {
-  localStorage.removeItem('access_token');
-  return;
+export function clearToken(key) {
+  return localStorage.removeItem(key);
+
 }
