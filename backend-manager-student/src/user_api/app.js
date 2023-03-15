@@ -88,6 +88,6 @@ app.use(DEVICE_MIDDLEWARE);
 app.use(USER_API);
 
 //! REDIS PUBSUB
-require('./v1/queue/queue_redis');
+require('../share/db/redis_queue');
 
 module.exports = app;
