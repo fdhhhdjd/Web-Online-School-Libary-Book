@@ -1,10 +1,11 @@
 //! LIBRARY
-import React, { Fragment, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { Fragment, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { Logout_Student_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 //! SHARE
-import { navInfo } from 'utils/dummy';
+import { navInfo, userSubNav } from 'utils/dummy';
 
 //! IMPORT
 import { SCHOOL_LOGO } from '../imports/home_import/index';
@@ -17,7 +18,7 @@ const Header = (props) => {
   const { profile_student } = useSelector((state) => ({
     ...state.auth_student,
   }));
-
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const menuLeftRef = useRef(null);
@@ -26,6 +27,15 @@ const Header = (props) => {
   const menuToggle = () => {
     menuLeftRef.current.classList.toggle('active');
   };
+
+  const handleLogOut = () => {
+    dispatch(Logout_Student_Initial());
+  };
+
+  useEffect(() => {
+    props.setShowLogin(false);
+    // console.log('hello');
+  }, [profile_student]);
 
   return (
     <Fragment>
@@ -94,13 +104,24 @@ const Header = (props) => {
               </div>
               <div className="header__menu__item header__menu__right__item">
                 {profile_student ? (
-                  <Link to={`/user/account/profile/test`}>
-                    <img
-                      src={profile_student?.data?.avatar_uri}
-                      alt={profile_student?.data?.avatar_uri}
-                      title={`${profile_student?.data?.name}`}
-                    />
-                  </Link>
+                  <>
+                    <img src={profile_student?.data?.avatar_uri} alt="" />
+                    <div className="header__submenu header__submenu__user">
+                      {userSubNav &&
+                        userSubNav.map((item, idx) => (
+                          <div className="header__submenu__item" key={idx}>
+                            <Link to={item.path}>
+                              <span className="header__submenu__text">{item.displayText}</span>
+                            </Link>
+                          </div>
+                        ))}
+                      <div className="header__submenu__item" onClick={handleLogOut}>
+                        <span className="header__submenu__text" style={{ cursor: 'pointer' }}>
+                          Đăng xuất
+                        </span>
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <div className="loginBtn" onClick={(e) => props.setShowLogin(true)}>
                     <Button size="sm" color="rgb(9 30 75/1)">

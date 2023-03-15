@@ -17,12 +17,15 @@ import store from 'redux/store';
 //! MAIN
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { DataProviderCMS } from 'context/global_context';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
+    <DataProviderCMS>
+      <Router>
+        <App />
+      </Router>
+    </DataProviderCMS>
   </Provider>,
 
   document.getElementById('root'),

@@ -27,7 +27,15 @@
     font-size: 1.8rem;
     color: $txt-main-color;
     font-weight: 700;
-    margin-left: 2rem;
+    margin-left: 5rem;
+
+    @include tablet {
+      margin-left: 4rem;
+    }
+
+    @include mobile {
+      margin-left: 3rem;
+    }
 
     a {
       color: $txt-second-color;
@@ -40,6 +48,26 @@
 
     &__category {
       @include flex(center, space-between);
+
+      @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      span {
+        button {
+          &.pending {
+            font-size: 1.4rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            color: $txt-second-color;
+            padding: 5px 10px;
+            margin-left: 0.8rem;
+            background: #fce205;
+          }
+        }
+      }
     }
   }
 

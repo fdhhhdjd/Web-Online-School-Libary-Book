@@ -58,6 +58,10 @@
 
     &.center {
       text-align: center;
+
+      span {
+        margin: 0 auto;
+      }
     }
   }
 }

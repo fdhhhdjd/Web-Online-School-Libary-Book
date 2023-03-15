@@ -1,13 +1,26 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dropdown-date {
+  font-size: 20px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.option {
+  margin-left: 10px;
+}
+
+select {
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  background-color: rgb(229 231 235 / 1);
+  color: rgb(55 65 81 / 1);
+}
+
+select ~ select {
+  margin-left: 20px;
+}
+
+.error {
+  border: 1px solid red;
 }

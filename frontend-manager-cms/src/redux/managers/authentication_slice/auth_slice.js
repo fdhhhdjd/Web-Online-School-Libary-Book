@@ -2,12 +2,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Login_Cms_Initial } from './auth_thunk';
+import { Login_Cms_Initial, Renew_Token_Cms_Initial } from './auth_thunk';
 
 const initialState = {
   loading: false,
   error: null,
-  student_auth: [],
+  token_student: null,
+  admin_auth: null,
 };
 
 const Authentication = createSlice({
@@ -15,7 +16,7 @@ const Authentication = createSlice({
   initialState,
   reducers: {
     reset_auth: (state) => {
-      state.student_auth = [];
+      state.admin_auth = [];
     },
   },
   extraReducers: {
@@ -25,9 +26,22 @@ const Authentication = createSlice({
     },
     [Login_Cms_Initial.fulfilled]: (state, action) => {
       state.loading = false;
-      state.student_auth = action.payload;
+      state.admin_auth = action.payload;
     },
     [Login_Cms_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* GET RE_NEW_TOKEN
+    [Renew_Token_Cms_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Renew_Token_Cms_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.token_student = action.payload;
+    },
+    [Renew_Token_Cms_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

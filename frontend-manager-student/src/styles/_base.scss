@@ -84,10 +84,19 @@ img {
   }
 }
 
+img {
+  object-fit: contain;
+  object-position: center;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
 .main {
   margin-top: $header-height;
   margin-bottom: 2rem;
-  min-height: 100vh;
 
   @include tablet {
     margin-top: calc(#{$header-tablet-height} + 20px);
@@ -100,4 +109,10 @@ img {
 
 .grid {
   display: grid;
+}
+
+.swal-wide {
+  width: 500px !important;
+  height: 270px !important;
+  font-size: 1.2rem !important;
 }

@@ -247,6 +247,17 @@
     font-weight: 600;
     font-size: 1.8rem;
 
+    &__user {
+      border: 2px solid;
+      top: 100px;
+      // border: none;
+      // background-color: #0d296b;
+
+      .header__submenu__text {
+        padding-right: 5rem;
+      }
+    }
+
     @include tablet {
     }
     &__item {

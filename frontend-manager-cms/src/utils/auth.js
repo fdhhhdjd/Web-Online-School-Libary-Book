@@ -14,6 +14,7 @@ import CONSTANTS from '../configs/constants';
 export function getDeviceId() {
   let result = localStorage.getItem(CONSTANTS.DEVICE_ID);
   if (result) {
+    console.log(result, 'Device id');
     return result;
   } else {
     result = nanoid(CONSTANTS.RANDOM_NANO_ID);
@@ -40,6 +41,6 @@ export function getToken() {
  * @function getToken
  * @return {String}
  */
-export function setToken(token) {
-  return localStorage.setItem(CONSTANTS.AUTH_TOKEN, token);
+export function setToken(key, value) {
+  return localStorage.setItem(key, value);
 }
