@@ -15,13 +15,18 @@ const removeCloudController = {
      */
     removeCloud: async (req, res) => {
         try {
+            //Take Input
             const { public_id } = req.body.input.remove_public_id;
+
+            //Check input invalid
             if (!public_id) {
                 return res.status(400).json({
                     status: 400,
                     message: returnReasons('400'),
                 });
             }
+
+            //Remove link image cloud
             await removeStorage(public_id)
                 .then((result) =>
                     res.status(200).json({
