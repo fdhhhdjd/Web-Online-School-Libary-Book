@@ -42,6 +42,18 @@ const sendEmailWithLock = async (key, value) => {
         throw new Error('Cannot acquire lock.');
     }
 };
+const queueMessageUserApi = async (key, value) => {
+    const key_convert = key;
+    const value_convert = JSON.stringify(value);
+    try {
+        // send email here
+        const publishResult = await REDIS_MASTER.publish(key_convert, value_convert);
+        console.info(`Published to ${publishResult} subscribers.`);
+    } finally {
+        console.info('Del success');
+    }
+};
 module.exports = {
     sendEmailWithLock,
+    queueMessageUserApi,
 };

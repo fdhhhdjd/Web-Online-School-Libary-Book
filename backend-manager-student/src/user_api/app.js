@@ -87,4 +87,7 @@ app.use(DEVICE_MIDDLEWARE);
 //! ROUTE
 app.use(USER_API);
 
+//! REDIS PUBSUB
+require('./v1/queue/queue_redis');
+
 module.exports = app;

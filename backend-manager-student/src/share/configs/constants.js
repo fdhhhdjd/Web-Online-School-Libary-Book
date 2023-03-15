@@ -357,4 +357,13 @@ module.exports = {
      */
     YES: 1,
     NO: 0,
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 15/03/2023
+    * @description Key Redis General
+    * @param { String }
+    */
+    // Student
+    KEY_USER_EXIT_U: 'user_api*',
+    DELETE_KEY_CACHE_LRU: 'user_api_delete_key_lru',
 };

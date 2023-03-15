@@ -1,6 +1,7 @@
 //! SHARE
 const MEMORY_CACHE = require('../../utils/limited_redis');
 const CONSTANTS = require('../../configs/constants');
+const REDIS_PUB_SUB = require('../../utils/redis_pub_sub_helper');
 
 //! MIDDLEWARE
 const { globalCache } = require('../../patterns/LRU_Strategy.patterns');
@@ -20,6 +21,10 @@ module.exports = {
                 // Delete data cache lru argothim
                 globalCache.delCache(key_cache_lru);
             }
+            // Publish data queue Redis
+            REDIS_PUB_SUB.queueMessageUserApi(CONSTANTS.DELETE_KEY_CACHE_LRU, {
+                result: key_cache_lru,
+            });
 
             // Check key Redis
             const check_key_redis_book_all = await MEMORY_CACHE.existsKeyCache(key_cache_redis);

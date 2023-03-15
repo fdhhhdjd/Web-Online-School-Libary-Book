@@ -60,8 +60,9 @@ class LRUCache {
 
     delMultiCache(key_1, key_2) {
         try {
-            this._cache.delete(key_1) && this._cache.delete(key_2);
-            return true;
+            const deleted_1 = this._cache.delete(key_1);
+            const deleted_2 = this._cache.delete(key_2);
+            return deleted_1 && deleted_2;
         } catch (error) {
             throw new Error(`Error deleting key ${key_1} and ${key_2} from cache: ${error}`);
         }
