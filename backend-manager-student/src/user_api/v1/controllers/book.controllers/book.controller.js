@@ -99,11 +99,7 @@ const bookController = {
             if (result_book) {
                 const redisTTLWithRandom = RANDOMS.getRedisTTLWithRandom(CONSTANTS._1_MONTH);
                 // Add data redis
-                book_admin_service.handleSetCacheRedis(
-                    CONSTANTS.KEY_REDIS.ALL_BOOK,
-                    result_book,
-                    redisTTLWithRandom,
-                );
+                book_admin_service.handleSetCacheRedis(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book, redisTTLWithRandom);
 
                 return res.status(200).json({
                     status: 200,

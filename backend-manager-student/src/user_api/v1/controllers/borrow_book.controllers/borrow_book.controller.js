@@ -58,15 +58,15 @@ const BorrowBookController = {
             if (data_borrow_book.length > 0 && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE) {
                 let result_borrow;
                 switch (data_borrow_book[0].status) {
-                case CONSTANTS.STATUS_BORROW.PENDING:
-                    result_borrow = 'Book already borrow !!';
-                    break;
-                case CONSTANTS.STATUS_BORROW.BORROWING:
-                    result_borrow = 'Please return the book !!';
-                    break;
-                default:
-                    result_borrow = 'Fail';
-                    break;
+                    case CONSTANTS.STATUS_BORROW.PENDING:
+                        result_borrow = 'Book already borrow !!';
+                        break;
+                    case CONSTANTS.STATUS_BORROW.BORROWING:
+                        result_borrow = 'Please return the book !!';
+                        break;
+                    default:
+                        result_borrow = 'Fail';
+                        break;
                 }
                 return res.status(400).json({
                     status: 400,
