@@ -2,7 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Login_Mssv_Initial, Profile_Student_Initial, Renew_Token_Student_Initial } from './auth_thunk';
+import {
+  Login_Mssv_Initial,
+  Logout_Student_Initial,
+  Profile_Student_Initial,
+  Renew_Token_Student_Initial,
+} from './auth_thunk';
 
 const initialState = {
   loading: false,
@@ -40,14 +45,32 @@ const Authentication = createSlice({
     [Profile_Student_Initial.pending]: (state, action) => {
       state.loading = true;
     },
+
     [Profile_Student_Initial.fulfilled]: (state, action) => {
       state.loading = false;
       state.profile_student = action.payload;
     },
+
     [Profile_Student_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
+
+    //* LOGOUT STUDENT
+    [Logout_Student_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+
+    [Logout_Student_Initial.fulfilled]: (state, action) => {
+      state.loading = true;
+      state.token_student = null;
+      state.profile_student = null;
+    },
+
+    [Logout_Student_Initial.rejected]: (state, action) => {
+      state.loading = true;
+    },
+
     //* GET RE_NEW_TOKEN
     [Renew_Token_Student_Initial.pending]: (state, action) => {
       state.loading = true;

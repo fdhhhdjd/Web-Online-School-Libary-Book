@@ -1,7 +1,11 @@
 import Layout from 'components/Layout';
-import AllBook from 'pages/Customer/Book/AllBooks';
-import DetailBook from 'pages/Customer/Book/DetailBook';
-import Home from 'pages/Customer/Home';
+import ChangePassword from 'pages/Auth/ChangePassword';
+import AllBook from 'pages/Book/AllBooks';
+import DetailBook from 'pages/Book/DetailBook';
+import Home from 'pages/Home';
+import BookBorrowInfo from 'pages/UserProfile/BookBorrowInfo';
+import UserProfile from 'pages/UserProfile/ProfileLayout';
+import UserInfo from 'pages/UserProfile/UserInfo';
 
 const RouteDataMain = [
   {
@@ -13,7 +17,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book',
+    path: '/book/all',
     main: (
       <>
         <Layout content={<AllBook />} />
@@ -21,10 +25,34 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/detail-book',
+    path: '/book/:id',
     main: (
       <>
         <Layout content={<DetailBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/changePassword',
+    main: (
+      <>
+        <Layout content={<ChangePassword />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/profile',
+    main: (
+      <>
+        <Layout content={<UserProfile content={<UserInfo />} />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/borrow',
+    main: (
+      <>
+        <Layout content={<UserProfile content={<BookBorrowInfo />} />} />
       </>
     ),
   },

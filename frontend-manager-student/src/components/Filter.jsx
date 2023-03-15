@@ -2,27 +2,27 @@ import React from 'react';
 
 const Filter = () => {
   return (
-    <div class="shop__sidebar">
-      <div class="shop__sidebar__search">
+    <div className="shop__sidebar">
+      <div className="shop__sidebar__search">
         <form action="index.php?action=navigate&to=shop&act=search" method="post">
           <input type="text" name="searchKey" placeholder="Search..." />
           <button type="submit">
-            <span class="icon_search"></span>
+            <span className="icon_search"></span>
           </button>
         </form>
       </div>
-      <div class="shop__sidebar__accordion">
-        <div class="accordion" id="accordionExample">
-          <div class="card">
-            <div class="card-heading">
+      <div className="shop__sidebar__accordion">
+        <div className="accordion" id="accordionExample">
+          <div className="card">
+            <div className="card-heading">
               <a data-toggle="collapse" data-target="#collapseOne">
                 Categories
               </a>
             </div>
-            <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-              <div class="card-body">
-                <div class="shop__sidebar__categories">
-                  <ul class="nice-scroll">
+            <div id="collapseOne" className="collapse show" data-parent="#accordionExample">
+              <div className="card-body">
+                <div className="shop__sidebar__categories">
+                  <ul className="nice-scroll">
                     <li>
                       <a href="#">Men (20)</a>
                     </li>
@@ -55,15 +55,15 @@ const Filter = () => {
               </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-heading">
+          <div className="card">
+            <div className="card-heading">
               <a data-toggle="collapse" data-target="#collapseTwo">
                 Branding
               </a>
             </div>
-            <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-              <div class="card-body">
-                <div class="shop__sidebar__brand">
+            <div id="collapseTwo" className="collapse show" data-parent="#accordionExample">
+              <div className="card-body">
+                <div className="shop__sidebar__brand">
                   <ul>
                     <li>
                       <a href="#">Louis Vuitton</a>
@@ -82,15 +82,15 @@ const Filter = () => {
               </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-heading">
+          <div className="card">
+            <div className="card-heading">
               <a data-toggle="collapse" data-target="#collapseSix">
                 Tags
               </a>
             </div>
-            <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-              <div class="card-body">
-                <div class="shop__sidebar__tags">
+            <div id="collapseSix" className="collapse show" data-parent="#accordionExample">
+              <div className="card-body">
+                <div className="shop__sidebar__tags">
                   <a href="#">Product</a>
                   <a href="#">Bags</a>
                   <a href="#">Shoes</a>

@@ -58,7 +58,7 @@ const accessTokenMiddleware = async (req, res, next) => {
         const publicKey = PASSWORD.decodePemPubKey(data_device[0].public_key);
 
         // Take info from token
-        let auth_user_decode = TOKENS.verifyAccessToken(accessToken, publicKey);
+        let auth_general_decode = TOKENS.verifyAccessToken(accessToken, publicKey);
 
         // Check time Expired token
         let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
@@ -73,7 +73,7 @@ const accessTokenMiddleware = async (req, res, next) => {
         }
 
 
-        req.auth_user = auth_user_decode;
+        req.auth_general = auth_general_decode;
 
         // Continue
         return next();

@@ -1,6 +1,6 @@
 //! LIBRARY
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //! SHARE
 import HELPERS from 'utils/helper';
@@ -11,6 +11,10 @@ import { getToken } from '../../utils/auth';
 import { Profile_Student_Initial } from '../../redux/student/authentication_slice/auth_thunk';
 
 const AuthStudent = () => {
+  // Take profile account store
+  const { token_student } = useSelector((state) => ({
+    ...state.auth_student,
+  }));
   // InitialState Action
   const dispatch = useDispatch();
 
@@ -21,10 +25,10 @@ const AuthStudent = () => {
   const decodedToken = HELPERS.isTokenExpired(token_localStorage);
 
   useEffect(() => {
-    if (token_localStorage && decodedToken) {
-      dispatch(Profile_Student_Initial(token_localStorage));
+    if (decodedToken) {
+      dispatch(Profile_Student_Initial());
     }
-  }, []);
+  }, [decodedToken, token_student, dispatch, token_localStorage]);
 
   return {};
 };

@@ -14,6 +14,7 @@ const CONSTANTS = {
    * @return {Number}
    */
   _1_MINUTES: 60 * 1000,
+  _4_MINUTES: 4 * 60 * 1000,
   _5_MINUTES: 5 * 60 * 1000,
   _15_MINUTES: 15 * 60 * 1000,
   _45_MINUTES: 45 * 60 * 1000,
@@ -44,8 +45,8 @@ const CONSTANTS = {
    * @description Delete Flag
    * @return {Boolean}
    */
-  DELETED_ENABLE: true,
-  DELETED_DISABLE: false,
+  DELETED_ENABLE: false,
+  DELETED_DISABLE: true,
 
   /**
    * @author Nguyễn Tiến Tài

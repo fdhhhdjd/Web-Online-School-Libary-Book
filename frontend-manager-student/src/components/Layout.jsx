@@ -1,5 +1,5 @@
 import Header from 'components/Header';
-import Login from 'pages/Customer/Auth/Login';
+import Login from 'pages/Auth/Login';
 import React, { useState } from 'react';
 import Footer from './Footer';
 

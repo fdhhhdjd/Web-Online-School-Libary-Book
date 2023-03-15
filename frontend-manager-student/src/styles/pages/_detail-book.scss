@@ -81,6 +81,10 @@
       margin-top: 1.2rem;
     }
 
+    span {
+      text-transform: capitalize;
+    }
+
     &__rate,
     &__author,
     &__id,

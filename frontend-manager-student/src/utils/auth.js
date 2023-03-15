@@ -43,3 +43,8 @@ export function getToken(key) {
 export function setToken(key, value) {
   return localStorage.setItem(key, value);
 }
+
+export function clearToken() {
+  localStorage.removeItem('access_token');
+  return;
+}
