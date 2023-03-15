@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode';
 //! SHARE
 import { getDeviceId, getToken } from './auth';
 import CONSTANTS from 'configs/constants';
+import REGEX from './regex';
 
 const HELPERS = {
   /**
@@ -26,6 +27,30 @@ const HELPERS = {
     const token = getToken(CONSTANTS.AUTH_TOKEN);
     if (token) {
       headers.authorization = token ? `Bearer ${token}` : null;
+    }
+
+    return headers;
+  },
+  /**
+ * @author Nguyễn Tiến Tài
+ * @created_at 15/03/2023
+ * @descriptionKey return header media
+ * @function getToken
+ * @return {String}
+ */
+  headerBrowserMedia: () => {
+    // add the authorization to the headers
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      'X-DEVICE-ID': getDeviceId(),
+      'X-OS-TYPE': CONSTANTS.OS_TYPE_HEADER,
+      'X-OS-VERSION': CONSTANTS.OS_VERSION_HEADER,
+      'X-APP-VERSION': CONSTANTS.APP_VERSION_HEADER,
+      'X-DEVICE-NAME': window.navigator.userAgent,
+    };
+    const token = getToken(CONSTANTS.AUTH_TOKEN);
+    if (token) {
+      headers.Authorization = token ? `Bearer ${token}` : null;
     }
 
     return headers;
@@ -84,6 +109,16 @@ const HELPERS = {
     } catch (err) {
       return false;
     }
+  },
+  /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 16/03/2023
+    * @description from String template to URI
+    * @param {template,data}
+    * @returns {string}
+    */
+  getURIFromTemplate(template, data) {
+    return template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
   },
 };
 

@@ -1,11 +1,24 @@
+//!LIBRARY
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { YearPicker, MonthPicker, DayPicker } from 'react-dropdown-date';
+import { DayPicker, MonthPicker, YearPicker } from 'react-dropdown-date';
 import { useSelector } from 'react-redux';
 
+//! CUSTOMER HOOK
+import useUploadCloud from 'custom_hook/uploadMediaCloud';
+
+//!IMPORT
+import { Loading } from 'imports/loading_import';
+
 const UserInfo = () => {
+  //Store Profile
   const { profile_student } = useSelector((state) => ({
     ...state.auth_student,
+  }));
+
+  //Store Media
+  const { result_upload, loading_media } = useSelector((state) => ({
+    ...state.media,
   }));
 
   // date picking setting
@@ -13,6 +26,9 @@ const UserInfo = () => {
   const [gender, setGender] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+
+  //File custom hook media
+  const { handleUpload } = useUploadCloud();
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -43,7 +59,7 @@ const UserInfo = () => {
   }, [selectedFile, profile_student?.data?.avatar_uri]);
 
   return (
-    <>
+    <React.Fragment>
       <div className="profile__info">
         <div className="profile__info__title">Thông tin tài khoản</div>
         <div className="profile__info__description">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
@@ -141,9 +157,9 @@ const UserInfo = () => {
           <Col md={4}>
             <div className="profile__info__image">
               <div className="profile__info__image__preview">
-                <img src={preview} alt="" />
+                {loading_media ? <Loading /> : <img src={result_upload ? result_upload.url : preview} alt="" />}
               </div>
-              <input type="file" id="avatar" onChange={onSelectFile} className="hidden" />
+              <input type="file" name="file" id="avatar" className="hidden" onChange={handleUpload} />
               <label htmlFor="avatar">Chọn ảnh</label>
               <div className="profile__info__image__preview__require">
                 Dung lượng file tối đa 1 MB
@@ -154,7 +170,7 @@ const UserInfo = () => {
           </Col>
         </Row>
       </div>
-    </>
+    </React.Fragment>
   );
 };
 

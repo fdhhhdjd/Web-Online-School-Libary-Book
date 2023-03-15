@@ -1,8 +1,13 @@
-import Helmet from 'components/Helmet';
-import Section, { SectionBody, SectionTitle } from 'components/Section';
+//! LIBRARY
 import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+
+//! COMPONENT
+import Helmet from 'components/Helmet';
+import Section, { SectionBody, SectionTitle } from 'components/Section';
+
+//! SHARE
 import { profileSidebar } from 'utils/dummy';
 
 const UserProfile = (props) => {

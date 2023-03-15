@@ -9,6 +9,7 @@ import CONSTANTS from 'configs/constants';
 import AuthenticationSlice from './student/authentication_slice/auth_slice';
 import CONFIGS from 'configs/configs';
 import BookSlice from './student/book_slice/book_slice';
+import MediaSlice from './media/upload_remove_media/media_slice';
 const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
 };
@@ -17,6 +18,7 @@ const store = configureStore({
   reducer: {
     auth_student: AuthenticationSlice,
     book: BookSlice,
+    media: MediaSlice,
     reducer: rootReducer,
   },
   middleware:
