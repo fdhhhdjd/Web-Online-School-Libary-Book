@@ -2,11 +2,11 @@
 const IOREDIS = require('ioredis');
 
 //! SHARE
-const CONSTANTS = require('../configs/constants')
+const CONSTANTS = require('../configs/constants');
 const CONFIGS = require('../configs/config');
 
 //! Queue
-const { userChannelHandlers } = require('../../user_api/v1/queue/queue_redis')
+const { userChannelHandlers } = require('../../user_api/v1/queue/queue_redis');
 
 //! DB
 const REDIS_MASTER = new IOREDIS({

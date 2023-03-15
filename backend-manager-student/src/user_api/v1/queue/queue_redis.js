@@ -14,4 +14,4 @@ const CONSTANTS = require('../../../share/configs/constants');
 const userChannelHandlers = new Map();
 userChannelHandlers.set(CONSTANTS.DELETE_KEY_CACHE_LRU, book_user.deleteKeyLRU);
 
-module.exports = { userChannelHandlers }
+module.exports = { userChannelHandlers };

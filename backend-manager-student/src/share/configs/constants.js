@@ -364,6 +364,6 @@ module.exports = {
      * @param { String }
      */
     // Student
-    KEY_USER_EXIT_U: 'user_api*',
-    DELETE_KEY_CACHE_LRU: 'user_api_delete_key_lru',
+    KEY_USER_EXIT_U: 'student_api*',
+    DELETE_KEY_CACHE_LRU: 'student_api_delete_key_lru',
 };
