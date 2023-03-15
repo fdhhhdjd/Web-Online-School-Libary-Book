@@ -347,7 +347,7 @@ paths:
     #!created_at 28/02/2023
     #!description: Logout admin
     /api/v1/admin/private/logout:
-        post:
+        get:
             summary: Logout Admin
             tags: [Logout Admin]
             operationId: logoutAdmin
