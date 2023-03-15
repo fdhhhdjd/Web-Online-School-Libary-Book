@@ -43,5 +43,12 @@ const API_STUDENT = {
    * @descriptionKey API GET ALL BOOK
    */
   BORROW_BOOK_STUDENT: '/student/v1/user/private/borrow_book/borrow',
+
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 10/03/2023
+   * @descriptionKey API GET ALL BOOK
+   */
+  EMAIL_FORGET_PASSWORD: '/student/v1/user/forget-password',
 };
 export default API_STUDENT;

@@ -14,7 +14,7 @@ const Login = ({ showLogin, setShowLogin }) => {
   const [forgetPage, setForgetPage] = useState(false);
   // console.log('re-render');
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
     const values = HELPERS.formDataGeneral(e.target);
@@ -22,6 +22,20 @@ const Login = ({ showLogin, setShowLogin }) => {
     //Check input
     if (!values.mssv || !values.password) {
       return NOTIFICATION.notifyError('Mã số sinh viên hoặc mật khẩu không chính xác !!!');
+    }
+
+    // Action Login
+    dispatch(Login_Mssv_Initial(values));
+  };
+
+  const handleSendMail = (e) => {
+    e.preventDefault();
+
+    const values = HELPERS.formDataGeneral(e.target);
+
+    //Check input
+    if (!values.email) {
+      return NOTIFICATION.notifyError('Vui lòng nhập Email');
     }
 
     // Action Login
@@ -38,7 +52,7 @@ const Login = ({ showLogin, setShowLogin }) => {
           <div className="content">
             <div className="login">
               <strong>Đăng nhập</strong>
-              <form action="" onSubmit={handleSubmit}>
+              <form action="" onSubmit={handleLogin}>
                 <label htmlFor="">
                   Mã số sinh viên <span>*</span>
                 </label>
@@ -72,7 +86,7 @@ const Login = ({ showLogin, setShowLogin }) => {
           <div className="content">
             <div className="login">
               <strong>Quên mật khẩu</strong>
-              <form action="" onSubmit={handleSubmit}>
+              <form action="" onSubmit={handleSendMail}>
                 <label htmlFor="">
                   Email <span>*</span>
                 </label>

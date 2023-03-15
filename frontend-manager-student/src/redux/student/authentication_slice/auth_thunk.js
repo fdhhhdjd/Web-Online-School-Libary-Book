@@ -123,6 +123,54 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
 
 /**
  * @author Châu Gia Bảo
+ * @created_at 15/03/2023
+ * @descriptionKey Call api Profile Student
+ * @function Send_Mail_ForgetPass_Student_Initial
+ * @return {Object}
+ */
+export const Send_Mail_Student_Initial = createAsyncThunk(
+  'student/mail/forget',
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.post(
+        `${API_STUDENT.EMAIL_FORGET_PASSWORD}`,
+        {
+          input: {
+            user_forget_password_input: {
+              email,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        const result_data = HELPERS.takeDataResponse(successData);
+        return result_data;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);
+
+/**
+ * @author Châu Gia Bảo
  * @created_at 06/03/2023
  * @descriptionKey Call api Profile Student
  * @function Logout_Student_Initial
