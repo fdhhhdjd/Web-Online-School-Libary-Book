@@ -281,7 +281,7 @@ paths:
     #!updated_at 08/02/2023
     #!description: Logout student
     /api/v1/user/private/logout:
-        post:
+        get:
             summary: Logout Student
             tags: [Logout student]
             operationId: logoutStudent

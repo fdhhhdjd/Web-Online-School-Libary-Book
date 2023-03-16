@@ -11,7 +11,7 @@ import API_STUDENT from 'api/api_user';
 //! SHARE
 import CONSTANTS from 'configs/constants';
 import TEXT_NOTIFICATION from 'configs/text_notification';
-import { setToken } from 'utils/auth';
+import { setToken, clearToken } from 'utils/auth';
 import HELPERS from 'utils/helper';
 
 /**
@@ -41,7 +41,6 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
 
     //Take response Success
     const successData = response.data;
-    console.log(successData, 'login');
 
     //Check data
     if (successData) {
@@ -172,14 +171,14 @@ export const Send_Mail_Student_Initial = createAsyncThunk(
 /**
  * @author Châu Gia Bảo
  * @created_at 06/03/2023
- * @descriptionKey Call api Profile Student
+ * @descriptionKey Call api Logout Student
  * @function Logout_Student_Initial
  * @return {Object}
  */
 export const Logout_Student_Initial = createAsyncThunk('student/logout', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.post(`${API_STUDENT.LOGOUT_STUDENT}`, {
+    const response = await axios.get(`${API_STUDENT.LOGOUT_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -191,6 +190,9 @@ export const Logout_Student_Initial = createAsyncThunk('student/logout', async (
     if (successData) {
       // return result data
       const result_data = HELPERS.takeDataResponse(successData);
+
+      // Clear LocalStorage
+      clearToken(CONSTANTS.AUTH_TOKEN);
 
       // notify success
       NOTIFICATION.notifySuccess(TEXT_NOTIFICATION.NOTIFICATION_LOGOUT_SUCCESS);
@@ -263,6 +265,146 @@ export const Renew_Token_Student_Initial = createAsyncThunk('student/new/token',
 
       // return error
       return rejectWithValue(errorData);
+    }
+  }
+});
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 15/03/2023
+ * @descriptionKey Call api Change Password Student
+ * @function Change_Password_Initial
+ * @return {Object}
+ */
+export const Change_Password_Initial = createAsyncThunk('student/changePassword', async (
+  { oldPassword, password, confirmPassword },
+  { rejectWithValue }
+) => {
+  try {
+    //Call Api axios
+    const response = await axios.post(
+      `${API_STUDENT.CHANGE_PASSWORD_STUDENT}`,
+      {
+        input: {
+          user_change_password_input: {
+            oldPassword,
+            password,
+            confirmPassword
+          },
+        },
+      },
+      {
+        headers: HELPERS.headerBrowser(),
+      },
+    );
+
+    //Take response Success
+    const successData = response.data;
+
+    //Check data
+    if (successData) {
+      // return result data
+      const result_data = HELPERS.takeDataResponse(successData);
+
+      // Clear LocalStorage
+      clearToken(CONSTANTS.AUTH_TOKEN);
+
+      // Notification Success
+      NOTIFICATION.notifySuccess(TEXT_NOTIFICATION.NOTIFICATION_CHANGE_PASSWORD_SUCCESS || result_data.message);
+
+      // Notification login session expire
+      setTimeout(() => {
+        NOTIFICATION.swalLoginSessionExpired(TEXT_NOTIFICATION.NOTIFICATION_LOGIN_SESSION_EXPIRE || result_data.message);
+      }, CONSTANTS._2_SECOND)
+
+      // return result data
+      return result_data;
+    }
+  } catch (error) {
+    if (error) {
+      //Take response Error
+      const errorData = error.response.data;
+
+      // return result data
+      const result_data = HELPERS.takeDataResponse(errorData);
+
+      if (errorData) {
+        // Notification Error
+        NOTIFICATION.notifyError(result_data.data || result_data.message);
+      }
+
+      // return error
+      return rejectWithValue(result_data);
+    }
+  }
+});
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 16/03/2023
+ * @descriptionKey Call api Forget Password Student
+ * @function Change_Password_Initial
+ * @return {Object}
+ */
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 15/03/2023
+ * @descriptionKey Call api Change Password Student
+ * @function Change_Password_Initial
+ * @return {Object}
+ */
+export const Forget_Password_Initial = createAsyncThunk('student/forgetPassword', async (
+  { email },
+  { rejectWithValue }
+) => {
+  try {
+    //Call Api axios
+    const response = await axios.post(
+      `${API_STUDENT.FORGET_PASSWORD_STUDENT}`,
+      {
+        input: {
+          user_forget_password_input: {
+            email
+          },
+        },
+      },
+      {
+        headers: HELPERS.headerBrowser(),
+      },
+    );
+
+    //Take response Success
+    const successData = response.data;
+
+    //Check data
+    if (successData) {
+      // return result data
+      const result_data = HELPERS.takeDataResponse(successData);
+
+      const message = HELPERS.getURIFromTemplate(TEXT_NOTIFICATION.NOTIFICATION_FORGET_PASSWORD_SUCCESS, {
+        email
+      })
+      // Notification Success
+      NOTIFICATION.notifySuccess(message || result_data.message);
+
+      // return result data
+      return result_data;
+    }
+  } catch (error) {
+    if (error) {
+      //Take response Error
+      const errorData = error.response.data;
+
+      // return result data
+      const result_data = HELPERS.takeDataResponse(errorData);
+
+      if (errorData) {
+        // Notification Error
+        NOTIFICATION.notifyError(result_data.data || result_data.message);
+      }
+
+      // return error
+      return rejectWithValue(result_data);
     }
   }
 });

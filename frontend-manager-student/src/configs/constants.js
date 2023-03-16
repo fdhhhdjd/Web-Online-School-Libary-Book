@@ -13,6 +13,7 @@ const CONSTANTS = {
    * @description millisecond/ second
    * @return {Number}
    */
+  _2_SECOND: 2 * 1000,
   _1_MINUTES: 60 * 1000,
   _5_MINUTES: 5 * 60 * 1000,
   _4_MINUTES: 4 * 60 * 1000,
@@ -67,17 +68,28 @@ const CONSTANTS = {
    * @author Nguyễn Tiến Tài
    * @created_at 02/03/2023
    * @descriptionKey Key Auth token localStorage
-   * @return {Number}
+   * @return {string}
    */
   AUTH_TOKEN: 'auth-token',
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 04/03/2023
    * @descriptionKey Header
-   * @return {Number}
+   * @return {string}
    */
   OS_TYPE_HEADER: 'web',
   OS_VERSION_HEADER: '1.0',
   APP_VERSION_HEADER: '1.0',
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @descriptionKey TYPE MEDIA
+   * @return {string}
+   */
+  MEDIA_TYPE: {
+    JPEG: 'image/jpeg',
+    PNG: 'image/png',
+    FILE: 'file'
+  }
 };
 export default CONSTANTS;

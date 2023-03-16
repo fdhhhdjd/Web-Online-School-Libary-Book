@@ -1,6 +1,6 @@
 //! LIBRARY
 import { toast } from 'react-toastify';
-
+import Swal from 'sweetalert2';
 //! SHARE
 import CONSTANTS from 'configs/constants';
 
@@ -36,5 +36,23 @@ const NOTIFICATION = {
       draggable: CONSTANTS.DELETED_ENABLE,
     });
   },
+  /**
+  * @author Nguyễn Tiến Tài
+  * @created_at 15/03/2023
+  * @descriptionKey login session expired
+  */
+  swalLoginSessionExpired(message) {
+    Swal.fire({
+      title: message,
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Đăng nhập lại',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '/'
+      }
+    });
+  }
 };
 export default NOTIFICATION;

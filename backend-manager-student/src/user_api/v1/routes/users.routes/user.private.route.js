@@ -9,7 +9,7 @@ const userController = require('../../controllers/user.controllers/user.controll
  * @description Route logout Student
  * @param {('POST')} [method='POST'] The request's method
  */
-router.post('/logout', userController.logoutStudent);
+router.get('/logout', userController.logoutStudent);
 
 /**
  * @author Nguyễn Tiến Tài

@@ -7,9 +7,14 @@ import {
   Logout_Student_Initial,
   Profile_Student_Initial,
   Renew_Token_Student_Initial,
+  Change_Password_Initial,
+  Forget_Password_Initial
 } from './auth_thunk';
 
 const initialState = {
+  loading_login: false,
+  loading_change_password: false,
+  loading_forget_password: false,
   loading: false,
   error: null,
   token_student: null,
@@ -30,14 +35,14 @@ const Authentication = createSlice({
   extraReducers: {
     //* POST LOGIN MSSV STUDENT
     [Login_Mssv_Initial.pending]: (state, action) => {
-      state.loading = true;
+      state.loading_login = true;
     },
     [Login_Mssv_Initial.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.loading_login = false;
       state.token_student = action.payload;
     },
     [Login_Mssv_Initial.rejected]: (state, action) => {
-      state.loading = false;
+      state.loading_login = false;
       state.error = action.payload;
     },
 
@@ -62,13 +67,27 @@ const Authentication = createSlice({
     },
 
     [Logout_Student_Initial.fulfilled]: (state, action) => {
-      state.loading = true;
+      state.loading = false;
       state.token_student = null;
       state.profile_student = null;
     },
 
     [Logout_Student_Initial.rejected]: (state, action) => {
       state.loading = true;
+    },
+    //* CHANGE PASSWORD STUDENT
+    [Change_Password_Initial.pending]: (state, action) => {
+      state.loading_change_password = true;
+    },
+
+    [Change_Password_Initial.fulfilled]: (state, action) => {
+      state.loading_change_password = true;
+      state.token_student = null;
+      state.profile_student = null;
+    },
+
+    [Change_Password_Initial.rejected]: (state, action) => {
+      state.loading_change_password = false;
     },
 
     //* GET RE_NEW_TOKEN
@@ -81,6 +100,17 @@ const Authentication = createSlice({
     },
     [Renew_Token_Student_Initial.rejected]: (state, action) => {
       state.loading = false;
+      state.error = action.payload;
+    },
+    //* FORGET PASSWORD
+    [Forget_Password_Initial.pending]: (state, action) => {
+      state.loading_forget_password = true;
+    },
+    [Forget_Password_Initial.fulfilled]: (state, action) => {
+      state.loading_forget_password = false;
+    },
+    [Forget_Password_Initial.rejected]: (state, action) => {
+      state.loading_forget_password = false;
       state.error = action.payload;
     },
   },

@@ -55,7 +55,7 @@ export const DataProviderStudent = ({ children }) => {
       //Start
       newToken();
     }
-  }, [token_access_localStorage, dispatch]);
+  }, [dispatch]);
 
   //! Data
   const data = {
