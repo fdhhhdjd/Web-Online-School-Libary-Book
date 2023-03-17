@@ -7,20 +7,6 @@ export const navInfo = [
   {
     displayText: 'Giới thiệu',
     path: '/',
-    submenu: [
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
-      },
-    ],
   },
   {
     displayText: 'Tra cứu',
@@ -33,10 +19,6 @@ export const navInfo = [
       {
         displayText: 'Tất cả tài liệu',
         path: '/book/all',
-      },
-      {
-        displayText: 'Submenu 1',
-        path: '/sub',
       },
     ],
   },

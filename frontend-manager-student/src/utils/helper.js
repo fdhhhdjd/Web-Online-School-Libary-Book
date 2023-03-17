@@ -32,12 +32,12 @@ const HELPERS = {
     return headers;
   },
   /**
- * @author Nguyễn Tiến Tài
- * @created_at 15/03/2023
- * @descriptionKey return header media
- * @function getToken
- * @return {String}
- */
+   * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @descriptionKey return header media
+   * @function getToken
+   * @return {String}
+   */
   headerBrowserMedia: () => {
     // add the authorization to the headers
     const headers = {
@@ -111,12 +111,12 @@ const HELPERS = {
     }
   },
   /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 16/03/2023
-    * @description from String template to URI
-    * @param {template,data}
-    * @returns {string}
-    */
+   * @author Nguyễn Tiến Tài
+   * @created_at 16/03/2023
+   * @description from String template to URI
+   * @param {template,data}
+   * @returns {string}
+   */
   getURIFromTemplate(template, data) {
     return template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
   },

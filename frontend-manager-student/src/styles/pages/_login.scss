@@ -78,6 +78,7 @@
       margin: 5px 0;
 
       span {
+        display: block;
         color: #d82710;
         font-size: 22px;
         font-weight: 800;
@@ -128,7 +129,6 @@
     display: flex;
     height: 40px;
     justify-content: center;
-    margin-bottom: 20px;
     width: 100%;
 
     i {
@@ -151,4 +151,11 @@
       padding-left: 1rem;
     }
   }
+}
+
+.error-msg {
+  color: #ec1d25;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }

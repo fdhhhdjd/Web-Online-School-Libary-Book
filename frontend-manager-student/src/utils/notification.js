@@ -12,12 +12,28 @@ const NOTIFICATION = {
    */
   notifySuccess(message) {
     return toast.success(message, {
-      pposition: toast.POSITION.TOP_RIGHT,
+      position: toast.POSITION.TOP_RIGHT,
       autoClose: CONSTANTS.AUTO_CLOSE,
       hideProgressBar: CONSTANTS.DELETED_DISABLE,
       closeOnClick: CONSTANTS.DELETED_ENABLE,
       pauseOnHover: CONSTANTS.DELETED_ENABLE,
       draggable: CONSTANTS.DELETED_ENABLE,
+    });
+  },
+
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 16/03/2023
+   * @descriptionKey success
+   */
+  swalSuccess(title, text) {
+    Swal.fire({
+      title,
+      text,
+      icon: 'success',
+      customClass: 'swal-wide',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Xác nhận',
     });
   },
 
@@ -28,7 +44,7 @@ const NOTIFICATION = {
    */
   notifyError(message) {
     return toast.error(message, {
-      pposition: toast.POSITION.TOP_RIGHT,
+      position: toast.POSITION.TOP_RIGHT,
       autoClose: CONSTANTS.AUTO_CLOSE,
       hideProgressBar: CONSTANTS.DELETED_DISABLE,
       closeOnClick: CONSTANTS.DELETED_ENABLE,
@@ -37,10 +53,10 @@ const NOTIFICATION = {
     });
   },
   /**
-  * @author Nguyễn Tiến Tài
-  * @created_at 15/03/2023
-  * @descriptionKey login session expired
-  */
+   * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @descriptionKey login session expired
+   */
   swalLoginSessionExpired(message) {
     Swal.fire({
       title: message,
@@ -50,9 +66,9 @@ const NOTIFICATION = {
       confirmButtonText: 'Đăng nhập lại',
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = '/'
+        window.location.href = '/';
       }
     });
-  }
+  },
 };
 export default NOTIFICATION;

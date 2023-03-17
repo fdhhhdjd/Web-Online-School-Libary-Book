@@ -89,7 +89,7 @@ const CONSTANTS = {
   MEDIA_TYPE: {
     JPEG: 'image/jpeg',
     PNG: 'image/png',
-    FILE: 'file'
-  }
+    FILE: 'file',
+  },
 };
 export default CONSTANTS;
