@@ -8,7 +8,10 @@ const TEXT_NOTIFICATION = {
   NOTIFICATION_LOGIN_SUCCESS: 'Đăng nhập thành công',
   NOTIFICATION_LOGOUT_SUCCESS: 'Đăng xuất thành công',
   NOTIFICATION_CHANGE_PASSWORD_SUCCESS: 'Đổi mật khẩu thành công',
-  NOTIFICATION_FORGET_PASSWORD_SUCCESS: 'Đã gửi link reset password đến ${email}',
+  NOTIFICATION_SEND_MAIL_SUCCESS: 'Gửi mail thành công',
+  NOTIFICATION_RESET_PASSWORD_SUCCESS: 'Reset password thành công',
+  NOTIFICATION_FORGET_PASSWORD_SUCCESS:
+    'Đã gửi link reset password đến ${email}. Vui lòng vào email của bạn để tiếp tục',
   NOTIFICATION_LOGIN_SESSION_EXPIRE: 'Phiên đăng nhập của bạn đã hết hạn',
 };
 export default TEXT_NOTIFICATION;

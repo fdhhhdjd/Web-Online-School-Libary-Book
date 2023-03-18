@@ -1,5 +1,6 @@
 import Layout from 'components/Layout';
 import ChangePassword from 'pages/Auth/ChangePassword';
+import ResetPassword from 'pages/Auth/ResetPassword';
 import AllBook from 'pages/Book/AllBooks';
 import DetailBook from 'pages/Book/DetailBook';
 import Home from 'pages/Home';
@@ -37,6 +38,14 @@ const RouteDataMain = [
     main: (
       <>
         <Layout content={<ChangePassword />} />
+      </>
+    ),
+  },
+  {
+    path: '/password/reset/:id',
+    main: (
+      <>
+        <Layout content={<ResetPassword />} />
       </>
     ),
   },
