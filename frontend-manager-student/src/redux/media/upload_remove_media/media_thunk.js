@@ -9,9 +9,6 @@ import NOTIFICATION from 'utils/notification';
 import API_MEDIA from 'api/api_media';
 
 //! SHARE
-import CONSTANTS from 'configs/constants';
-import TEXT_NOTIFICATION from 'configs/text_notification';
-import { setToken } from 'utils/auth';
 import HELPERS from 'utils/helper';
 
 /**
@@ -24,20 +21,15 @@ import HELPERS from 'utils/helper';
 export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ formData }, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.post(
-      `${API_MEDIA.UPLOAD_MEDIA}`,
-      formData,
-      {
-        headers: HELPERS.headerBrowserMedia(),
-      },
-    );
+    const response = await axios.post(`${API_MEDIA.UPLOAD_MEDIA}`, formData, {
+      headers: HELPERS.headerBrowserMedia(),
+    });
 
     //Take response Success
     const successData = response?.data;
 
     // return result data
     return successData;
-
   } catch (error) {
     if (error) {
       //Take response Error

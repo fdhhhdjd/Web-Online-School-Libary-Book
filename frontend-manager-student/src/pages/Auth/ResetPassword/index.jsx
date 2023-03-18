@@ -9,12 +9,15 @@ import Section, { SectionBody, SectionTitle } from 'components/Section';
 //! SHARE
 
 //! REDUX THUNK
-import { Change_Password_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 //!IMPORT
 import { Loading } from 'imports/loading_import';
+import Helmet from 'components/Helmet';
+import { useParams } from 'react-router-dom';
+import { Reset_Password_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
-const TabChangePassword = () => {
+const ResetPassword = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const {
     register,
@@ -31,39 +34,17 @@ const TabChangePassword = () => {
     console.log(data);
 
     // Action Change Password
-    dispatch(Change_Password_Initial(data));
+    dispatch(Reset_Password_Initial({ id, ...data }));
   };
 
   return (
-    <React.Fragment>
-      <div className="change-password main">
+    <Helmet title="Reset Password">
+      <div className="reset-password main">
         <Section>
-          <SectionTitle>Thay đổi mật khẩu</SectionTitle>
+          <SectionTitle>Reset mật khẩu</SectionTitle>
           <SectionBody>
             <form onSubmit={handleSubmit(handleChangePasswordStudent)}>
-              <div className="change-password__form">
-                <label htmlFor="old_pass">Nhập mật khẩu cũ: </label>
-                <div className="input-group-effect">
-                  <div>
-                    <input
-                      id="old_pass"
-                      className="effect-9"
-                      name="oldPassword"
-                      type="password"
-                      placeholder="Mật khẩu cũ ..."
-                      {...register('oldPassword', {
-                        required: true,
-                      })}
-                    />
-                    <span className="focus-border">
-                      <i></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="error-msg">
-                  {errors?.oldPassword?.type === 'required' ? 'Mời bạn nhập mật khẩu cũ' : ''}
-                </div>
-
+              <div className="reset-password__form">
                 <label htmlFor="new_pass">Nhập mật khẩu mới: </label>
                 <div className="input-group-effect">
                   <div>
@@ -111,7 +92,7 @@ const TabChangePassword = () => {
                   <Loading />
                 ) : (
                   <button type="submit" className="submit-btn">
-                    Đổi mật khẩu
+                    Xác nhận mật khẩu
                   </button>
                 )}
               </div>
@@ -119,8 +100,8 @@ const TabChangePassword = () => {
           </SectionBody>
         </Section>
       </div>
-    </React.Fragment>
+    </Helmet>
   );
 };
 
-export default TabChangePassword;
+export default ResetPassword;

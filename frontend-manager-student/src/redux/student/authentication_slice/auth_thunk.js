@@ -122,6 +122,54 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
 
 /**
  * @author Châu Gia Bảo
+ * @created_at 15/03/2023
+ * @descriptionKey Call api Profile Student
+ * @function Send_Mail_ForgetPass_Student_Initial
+ * @return {Object}
+ */
+export const Send_Mail_Student_Initial = createAsyncThunk(
+  'student/mail/forget',
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.post(
+        `${API_STUDENT.EMAIL_FORGET_PASSWORD}`,
+        {
+          input: {
+            user_forget_password_input: {
+              email,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        const result_data = HELPERS.takeDataResponse(successData);
+        return result_data;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);
+
+/**
+ * @author Châu Gia Bảo
  * @created_at 06/03/2023
  * @descriptionKey Call api Logout Student
  * @function Logout_Student_Initial
@@ -228,135 +276,192 @@ export const Renew_Token_Student_Initial = createAsyncThunk('student/new/token',
  * @function Change_Password_Initial
  * @return {Object}
  */
-export const Change_Password_Initial = createAsyncThunk('student/changePassword', async (
-  { oldPassword, password, confirmPassword },
-  { rejectWithValue }
-) => {
-  try {
-    //Call Api axios
-    const response = await axios.post(
-      `${API_STUDENT.CHANGE_PASSWORD_STUDENT}`,
-      {
-        input: {
-          user_change_password_input: {
-            oldPassword,
-            password,
-            confirmPassword
+export const Change_Password_Initial = createAsyncThunk(
+  'student/changePassword',
+  async ({ oldPassword, password, confirmPassword }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.post(
+        `${API_STUDENT.CHANGE_PASSWORD_STUDENT}`,
+        {
+          input: {
+            user_change_password_input: {
+              oldPassword,
+              password,
+              confirmPassword,
+            },
           },
         },
-      },
-      {
-        headers: HELPERS.headerBrowser(),
-      },
-    );
+        {
+          headers: HELPERS.headerBrowser(),
+        },
+      );
 
-    //Take response Success
-    const successData = response.data;
+      //Take response Success
+      const successData = response.data;
 
-    //Check data
-    if (successData) {
-      // return result data
-      const result_data = HELPERS.takeDataResponse(successData);
+      //Check data
+      if (successData) {
+        // return result data
+        const result_data = HELPERS.takeDataResponse(successData);
 
-      // Clear LocalStorage
-      clearToken(CONSTANTS.AUTH_TOKEN);
+        // Clear LocalStorage
+        clearToken(CONSTANTS.AUTH_TOKEN);
 
-      // Notification Success
-      NOTIFICATION.notifySuccess(TEXT_NOTIFICATION.NOTIFICATION_CHANGE_PASSWORD_SUCCESS || result_data.message);
+        // Notification Success
+        NOTIFICATION.notifySuccess(TEXT_NOTIFICATION.NOTIFICATION_CHANGE_PASSWORD_SUCCESS || result_data.message);
 
-      // Notification login session expire
-      setTimeout(() => {
-        NOTIFICATION.swalLoginSessionExpired(TEXT_NOTIFICATION.NOTIFICATION_LOGIN_SESSION_EXPIRE || result_data.message);
-      }, CONSTANTS._2_SECOND)
+        // Notification login session expire
+        setTimeout(() => {
+          NOTIFICATION.swalLoginSessionExpired(
+            TEXT_NOTIFICATION.NOTIFICATION_LOGIN_SESSION_EXPIRE || result_data.message,
+          );
+        }, CONSTANTS._2_SECOND);
 
-      // return result data
-      return result_data;
-    }
-  } catch (error) {
-    if (error) {
-      //Take response Error
-      const errorData = error.response.data;
-
-      // return result data
-      const result_data = HELPERS.takeDataResponse(errorData);
-
-      if (errorData) {
-        // Notification Error
-        NOTIFICATION.notifyError(result_data.data || result_data.message);
+        // return result data
+        return result_data;
       }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
 
-      // return error
-      return rejectWithValue(result_data);
+        // return result data
+        const result_data = HELPERS.takeDataResponse(errorData);
+
+        if (errorData) {
+          // Notification Error
+          NOTIFICATION.notifyError(result_data.data || result_data.message);
+        }
+
+        // return error
+        return rejectWithValue(result_data);
+      }
     }
-  }
-});
+  },
+);
 
-/**
- * @author Nguyễn Tiến Tài
- * @created_at 16/03/2023
- * @descriptionKey Call api Forget Password Student
- * @function Change_Password_Initial
- * @return {Object}
- */
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 15/03/2023
- * @descriptionKey Call api Change Password Student
- * @function Change_Password_Initial
+ * @descriptionKey Call api Forget Password Student
+ * @function Forget_Password_Initial
  * @return {Object}
  */
-export const Forget_Password_Initial = createAsyncThunk('student/forgetPassword', async (
-  { email },
-  { rejectWithValue }
-) => {
-  try {
-    //Call Api axios
-    const response = await axios.post(
-      `${API_STUDENT.FORGET_PASSWORD_STUDENT}`,
-      {
-        input: {
-          user_forget_password_input: {
-            email
+export const Forget_Password_Initial = createAsyncThunk(
+  'student/forgetPassword',
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.post(
+        `${API_STUDENT.FORGET_PASSWORD_STUDENT}`,
+        {
+          input: {
+            user_forget_password_input: {
+              email,
+            },
           },
         },
-      },
-      {
-        headers: HELPERS.headerBrowser(),
-      },
-    );
+        {
+          headers: HELPERS.headerBrowser(),
+        },
+      );
 
-    //Take response Success
-    const successData = response.data;
+      //Take response Success
+      const successData = response.data;
 
-    //Check data
-    if (successData) {
-      // return result data
-      const result_data = HELPERS.takeDataResponse(successData);
+      //Check data
+      if (successData) {
+        // return result data
+        const result_data = HELPERS.takeDataResponse(successData);
 
-      const message = HELPERS.getURIFromTemplate(TEXT_NOTIFICATION.NOTIFICATION_FORGET_PASSWORD_SUCCESS, {
-        email
-      })
-      // Notification Success
-      NOTIFICATION.notifySuccess(message || result_data.message);
+        const message = HELPERS.getURIFromTemplate(TEXT_NOTIFICATION.NOTIFICATION_FORGET_PASSWORD_SUCCESS, {
+          email,
+        });
+        // Notification Success
+        NOTIFICATION.swalSuccess(TEXT_NOTIFICATION.NOTIFICATION_SEND_MAIL_SUCCESS, message || result_data.message);
 
-      // return result data
-      return result_data;
-    }
-  } catch (error) {
-    if (error) {
-      //Take response Error
-      const errorData = error.response.data;
-
-      // return result data
-      const result_data = HELPERS.takeDataResponse(errorData);
-
-      if (errorData) {
-        // Notification Error
-        NOTIFICATION.notifyError(result_data.data || result_data.message);
+        // return result data
+        return result_data;
       }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
 
-      // return error
-      return rejectWithValue(result_data);
+        // return result data
+        const result_data = HELPERS.takeDataResponse(errorData);
+
+        if (errorData) {
+          // Notification Error
+          NOTIFICATION.notifyError(result_data.data || result_data.message);
+        }
+
+        // return error
+        return rejectWithValue(result_data);
+      }
     }
-  }
-});
+  },
+);
+
+/**
+ * @author Gia Bao
+ * @created_at 16/03/2023
+ * @descriptionKey Call api Reset Password Student
+ * @function Reset_Password_Initial
+ * @return {Object}
+ */
+export const Reset_Password_Initial = createAsyncThunk(
+  'student/resetPassword',
+  async ({ id, password, confirmPassword }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.post(
+        `${API_STUDENT.RESET_FORGET_PASSWORD}/${id}`,
+        {
+          input: {
+            user_reset_password_input: {
+              password,
+              confirmPassword,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        const result_data = HELPERS.takeDataResponse(successData);
+        NOTIFICATION.swalSuccess(
+          TEXT_NOTIFICATION.NOTIFICATION_RESET_PASSWORD_SUCCESS,
+          'Hãy quay về trang chủ để đăng nhập',
+        );
+
+        // return result data
+        return result_data;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return result data
+        const result_data = HELPERS.takeDataResponse(errorData);
+
+        if (errorData) {
+          // Notification Error
+          NOTIFICATION.notifyError(result_data.data || result_data.message);
+        }
+
+        // return error
+        return rejectWithValue(result_data);
+      }
+    }
+  },
+);

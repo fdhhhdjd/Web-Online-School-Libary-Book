@@ -31,7 +31,7 @@ const DetailBook = () => {
           Swal.fire({
             title: 'Đăng kí mượn sách thành công',
             text: 'Bạn có 24 giờ kể từ thời gian đăng kí mượn để lên thư viện ITC nhận sách. \n Nếu sau 24 giờ vẫn chưa lấy sách thì xem như đã hủy mượn sách',
-            icon: 'error',
+            icon: 'success',
             customClass: 'swal-wide',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Xác nhận',

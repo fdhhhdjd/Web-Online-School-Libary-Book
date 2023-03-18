@@ -9,6 +9,7 @@ import useUploadCloud from 'custom_hook/uploadMediaCloud';
 
 //!IMPORT
 import { Loading } from 'imports/loading_import';
+import moment from 'moment/moment';
 
 const UserInfo = () => {
   //Store Profile
@@ -28,7 +29,7 @@ const UserInfo = () => {
   const [preview, setPreview] = useState();
 
   //File custom hook media
-  const { handleUpload } = useUploadCloud();
+  // const { handleUpload } = useUploadCloud();
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -39,6 +40,8 @@ const UserInfo = () => {
     // get first image
     setSelectedFile(e.target.files[0]);
   };
+
+  console.log(profile_student);
 
   useEffect(() => {
     setGender(profile_student?.data?.gender);
@@ -107,7 +110,7 @@ const UserInfo = () => {
 
                 <div className="date-picker">
                   <DayPicker
-                    defaultValue={'DD'}
+                    defaultValue={moment(profile_student?.data?.dob).date()}
                     year={date.year} // mandatory
                     month={date.month} // mandatory
                     endYearGiven // mandatory if end={} is given in YearPicker
@@ -122,7 +125,7 @@ const UserInfo = () => {
                   />
 
                   <MonthPicker
-                    defaultValue={'MM'}
+                    defaultValue={moment(profile_student?.data?.dob).month() + 1}
                     numeric // to get months as numbers
                     endYearGiven // mandatory if end={} is given in YearPicker
                     year={date.year} // mandatory
@@ -137,7 +140,7 @@ const UserInfo = () => {
                   />
 
                   <YearPicker
-                    defaultValue={'YYYY'}
+                    defaultValue={moment(profile_student?.data?.dob).year()}
                     start={1980} // default is 1900
                     end={2023} // default is current year
                     reverse // default is ASCENDING
@@ -159,7 +162,7 @@ const UserInfo = () => {
               <div className="profile__info__image__preview">
                 {loading_media ? <Loading /> : <img src={result_upload ? result_upload.url : preview} alt="" />}
               </div>
-              <input type="file" name="file" id="avatar" className="hidden" onChange={handleUpload} />
+              <input type="file" name="file" id="avatar" className="hidden" onChange={onSelectFile} />
               <label htmlFor="avatar">Chọn ảnh</label>
               <div className="profile__info__image__preview__require">
                 Dung lượng file tối đa 1 MB

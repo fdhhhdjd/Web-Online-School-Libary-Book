@@ -10,7 +10,7 @@ import NOTIFICATION from 'utils/notification';
 import { Forget_Password_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 //!IMPORT
-import {Loading} from 'imports/loading_import'
+import { Loading } from 'imports/loading_import';
 
 const TabForgetPassword = ({ setShowLogin, setForgetPage }) => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const TabForgetPassword = ({ setShowLogin, setForgetPage }) => {
             </div>
 
             <div className="btns">
-              {loading_forget_password ? <Loading/> : <button type="submit">Xác nhận</button>}
+              {loading_forget_password ? <Loading /> : <button type="submit">Xác nhận</button>}
             </div>
             <span className="forget" onClick={() => setForgetPage(false)}>
               Quay lại trang đăng nhập

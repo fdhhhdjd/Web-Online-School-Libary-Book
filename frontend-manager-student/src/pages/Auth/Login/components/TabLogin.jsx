@@ -1,18 +1,23 @@
 //!LIBRARY
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 //! REDUX THUNK
 import { Login_Mssv_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 //! SHARE
-import NOTIFICATION from 'utils/notification';
-import HELPERS from 'utils/helper';
 
 //! IMPORT
 import { TabForgetPassword } from 'imports/auth_import';
+
 const TabLogin = ({ showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   //Store Student
   const { loading_login } = useSelector((state) => ({
@@ -21,19 +26,16 @@ const TabLogin = ({ showLogin, setShowLogin }) => {
 
   const [forgetPage, setForgetPage] = useState(false);
 
-  const handleLoginStudent = (e) => {
-    e.preventDefault();
-
-    const values = HELPERS.formDataGeneral(e.target);
-
+  const handleLoginStudent = (data) => {
+    console.log(data);
     //Check input
-    if (!values.mssv || !values.password) {
-      return NOTIFICATION.notifyError('Mã số sinh viên hoặc mật khẩu không chính xác !!!');
+    if (!data.mssv || !data.password) {
+      return;
     }
-
     // Action Login
-    dispatch(Login_Mssv_Initial(values));
+    dispatch(Login_Mssv_Initial(data));
   };
+
   return (
     <React.Fragment>
       <div id="Auth" className={showLogin ? 'show' : ''}>
@@ -45,13 +47,23 @@ const TabLogin = ({ showLogin, setShowLogin }) => {
             <div className="content">
               <div className="login">
                 <strong>Đăng nhập</strong>
-                <form action="" onSubmit={handleLoginStudent}>
+                <form action="" onSubmit={handleSubmit(handleLoginStudent)}>
                   <label htmlFor="">
                     Mã số sinh viên <span>*</span>
                   </label>
                   <div className="iq-input-group">
                     <i className="far fa-id-card"></i>
-                    <input type="text" name="mssv" id="mssv" />
+                    <input
+                      type="text"
+                      name="mssv"
+                      id="mssv"
+                      {...register('mssv', {
+                        required: true,
+                      })}
+                    />
+                  </div>
+                  <div className="error-msg">
+                    {errors?.mssv?.type === 'required' ? 'Mời bạn nhập mã số sinh viên' : ''}
                   </div>
 
                   <label htmlFor="">
@@ -59,8 +71,19 @@ const TabLogin = ({ showLogin, setShowLogin }) => {
                   </label>
                   <div className="iq-input-group">
                     <i className="fas fa-lock"></i>
-                    <input type="password" name="password" id="password" />
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      {...register('password', {
+                        required: true,
+                      })}
+                    />
                   </div>
+                  <div className="error-msg">
+                    {errors?.password?.type === 'required' ? 'Mời bạn nhập mật khẩu' : ''}
+                  </div>
+
                   <div className="btns">
                     {loading_login ? <p>Loading...</p> : <button type="submit">Đăng nhập</button>}
                   </div>
