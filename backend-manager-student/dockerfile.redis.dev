@@ -1,15 +1,31 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Dockerfile Dev Redis
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 11-01-2023, 18-03-2023.
+
+# Image from Docker Hub
 FROM redis AS redis-master
+
 # Create foder
+RUN \
+    if [ ! -d /usr/local/bin/scrip ]; then \
+        mkdir -p /usr/local/bin/scrip;\
+    fi
 
-RUN mkdir -p /usr/local/bin/scrip
+# Check file Grant permission file
+RUN \
+    if [ ! -f /usr/local/bin/scrip/log_script_redis_date.txt ]; then \
+        touch /usr/local/bin/scrip/log_script_redis_date.txt && \
+            chmod 600 /usr/local/bin/scrip/log_script_redis_date.txt;\
+    fi
 
-RUN if [ ! -f /usr/local/bin/scrip/log_script_redis_date.txt ]; then \
-    touch /usr/local/bin/scrip/log_script_redis_date.txt && \
-    chmod 600 /usr/local/bin/scrip/log_script_redis_date.txt; fi
-
+# Copy code script
 COPY scrip /usr/local/bin/scrip/
 
-RUN apt-get update && apt-get install logrotate -y \ 
-    && chmod +x /usr/local/bin/scrip/scrip_redis.sh \
-            && chmod 755 /usr/local/bin/scrip
-
+# Check logrotate exit and Install logrotate
+RUN \ 
+    if [ ! -x "$(which logrotate)" ]; then \ 
+        apt-get update && apt-get install logrotate -y && \
+            chmod +x /usr/local/bin/scrip/scrip_redis.sh &&\
+                chmod 755 /usr/local/bin/scrip \
+    ; fi

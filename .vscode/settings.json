@@ -5,7 +5,8 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.guides.bracketPairs": "active",
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },

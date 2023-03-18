@@ -1,18 +1,35 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Dockerfile Dev
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 16-01-2023, 17-01-2023, 12-03-2023, 18-03-2023.
+
+# Image from Docker Hub
 FROM node:14-alpine3.12
 
-RUN mkdir -p /usr/src/app
+# Create folder 
+RUN \
+    if [ ! -d /usr/src/app ]; then \
+       mkdir -p /usr/src/app;\
+    fi
 
+# Poin come folder 
 WORKDIR /usr/src/app
-
 
 # Install app dependencies
 COPY package*.json ./
 
-RUN npm install -g nodemon 
+# Check exit nodemon and Install Nodemon 
+RUN \  
+    if [ ! -x "$(which nodemon)" ]; then \ 
+        npm install -g nodemon; \
+    fi
 
+# Install node_modulde
 RUN npm install  
 
-COPY . . 
-# SendEmail
+# Copy Soucre code 
+COPY . .
+
+# Check heal container
 HEALTHCHECK --interval=60s --timeout=2s --retries=3 CMD wget localhost:5002/ -q -O - > /dev/null 2>&1
 

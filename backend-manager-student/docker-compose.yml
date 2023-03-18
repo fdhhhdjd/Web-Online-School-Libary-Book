@@ -1,3 +1,8 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Docker Compose Production
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 21-12-2022, 22-12-2022, 16-01-2023, 12-03-2023, 18-03-2023.
+
 version: '3.7'
 
 services:
