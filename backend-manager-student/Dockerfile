@@ -1,15 +1,29 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Dockerfile Production
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 16-01-2023, 12-03-2023, 18-03-2023.
+
+# Image from Docker Hub
 FROM node:14-alpine3.12
 
-RUN mkdir -p /usr/src/app
+# Create folder 
+RUN \
+    if [ ! -d /usr/src/app ]; then \
+       mkdir -p /usr/src/app;\
+    fi
 
+# Poin come folder 
 WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
 
+# Install node_modulde
 RUN npm install  
 
+# Copy Soucre code 
 COPY . . 
 
+# Check heal container
 HEALTHCHECK --interval=60s --timeout=2s --retries=3 CMD sh -c "wget localhost:5000/ -q -O - > /dev/null 2>&1 && wget localhost:5001/ -q -O - > /dev/null 2>&1"
  

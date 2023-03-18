@@ -1,12 +1,26 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Dockerfile Production
+#!@ Created_At : 22-12-2022.
+#!@ Update_At: 23-12-2022, 16-01-2023, 12-03-2023, 18-03-2023.
+
+# Image from Docker Hub
 FROM nginx as nginx_load_balancer
 
-RUN  apt-get update  && apt install sudo && apt install nano -y
+# Check logrotate exit and Install logrotate
+RUN \ 
+    if [ ! -x "$(which nano)" ]; then \ 
+        apt-get update  && apt install sudo && apt install nano -y; \
+    fi
 
+# Copy in folder
 COPY ./default.conf /etc/nginx/conf.d/default.conf
+COPY ./error /usr/share/nginx/html
 
+# Check heal container
 HEALTHCHECK  --interval=5m --timeout=3s \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
+# Stop nginx 
 STOPSIGNAL SIGTERM
 
 # /etc/init.d/nginx restart

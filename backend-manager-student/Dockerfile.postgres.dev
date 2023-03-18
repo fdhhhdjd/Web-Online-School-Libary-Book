@@ -1,5 +1,12 @@
+#!@ Author: Nguyễn Tiến Tài.
+#! Description: Dockerfile Posgreql Dev
+#!@ Created_At : 20-12-2022.
+#!@ Update_At: 18-03-2023.
+
+# Image from Docker Hub
 FROM postgres:12 
 
+# Copy File in Folder
 COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
 
 COPY migrations/init/ /docker-entrypoint-initdb.d/
