@@ -5,7 +5,7 @@ import { DayPicker, MonthPicker, YearPicker } from 'react-dropdown-date';
 import { useSelector } from 'react-redux';
 
 //! CUSTOMER HOOK
-import useUploadCloud from 'custom_hook/uploadMediaCloud';
+import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
 
 //!IMPORT
 import { Loading } from 'imports/loading_import';

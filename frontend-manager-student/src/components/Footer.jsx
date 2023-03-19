@@ -1,6 +1,11 @@
+//! LIBRARY
 import React from 'react';
-import { FB_LOGO, SCHOOL_LOGO, YTB_LOGO, ZL_LOGO } from '../imports/home_import/index';
 import { Link } from 'react-router-dom';
+
+//! IMPORT
+import { FB_LOGO, SCHOOL_LOGO, YTB_LOGO, ZL_LOGO } from '../imports/home_import/index';
+
+//! COMPONENTS
 import Grid from './Grid';
 
 const Footer = () => {

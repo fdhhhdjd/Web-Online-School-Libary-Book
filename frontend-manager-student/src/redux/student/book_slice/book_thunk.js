@@ -1,6 +1,5 @@
 //! LIBRARY
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 //! NOTIFICATION
 
@@ -9,6 +8,7 @@ import API_USER from 'api/api_user';
 
 //! SHARE
 import HELPERS from 'utils/helper';
+import REQUEST from 'utils/request';
 
 /**
  * @author Châu Gia Bảo
@@ -20,13 +20,14 @@ import HELPERS from 'utils/helper';
 export const Get_All_Book_Student_Initial = createAsyncThunk('customer/book/all', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.get(`${API_USER.GET_ALL_BOOK_STUDENT}`, {
+    const response = await REQUEST.get(`${API_USER.GET_ALL_BOOK_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
 
     //Take response Success
     const successData = response.data;
+    console.log(response, '--');
 
     //Check data
     if (successData) {
@@ -56,7 +57,7 @@ export const Get_Detail_Book_Student_Initial = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.get(`${API_USER.GET_DETAIL_BOOK_STUDENT}/${id}`, {
+      const response = await REQUEST.get(`${API_USER.GET_DETAIL_BOOK_STUDENT}/${id}`, {
         headers: HELPERS.headerBrowser(),
         withCredentials: true,
       });
@@ -93,7 +94,7 @@ export const Borrow_Book_Student_Initial = createAsyncThunk(
   async ({ book_id }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.post(
+      const response = await REQUEST.post(
         `${API_USER.BORROW_BOOK_STUDENT}`,
         {
           input: {

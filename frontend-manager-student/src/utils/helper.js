@@ -120,6 +120,17 @@ const HELPERS = {
   getURIFromTemplate(template, data) {
     return template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
   },
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/03/2023
+   * @description Del input
+   * @param {e}
+   */
+  delInputSuccess(e) {
+    // Del input
+    return e.target.reset();
+  },
 };
 
 export default HELPERS;

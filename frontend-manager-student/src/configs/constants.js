@@ -91,5 +91,17 @@ const CONSTANTS = {
     PNG: 'image/png',
     FILE: 'file',
   },
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @descriptionKey STATUS CODE
+   * @return {string}
+   */
+  STATUS: {
+    _OK: 200,
+    _BAD_REQUEST: 400,
+    _UNAUTHORIZED: 401,
+    _NOT_FOUND: 404,
+  },
 };
 export default CONSTANTS;
