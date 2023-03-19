@@ -266,7 +266,7 @@ const Home = () => {
       </Section>
 
       <Section>
-        <SectionTitle subTitle={'Xem thêm'}>Tài liệu nổi bật</SectionTitle>
+        <SectionTitle subTitle={<Link to="/book/all">Xem thêm</Link>}>Tài liệu nổi bật</SectionTitle>
         <SectionBody>
           <SlickSlider {...settings}>
             {mockDataBook.map((item, index) => (

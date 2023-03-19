@@ -51,10 +51,7 @@ const AllBook = () => {
                         <Row>
                           <Col sm={1}>
                             <div className="book__list__item__img">
-                              <img
-                                src="https://res.cloudinary.com/dfupi3m0b/image/upload/v1673970039/ca-nhan/pngfind.com-harry-potter-books-png-6850968_rhzpav.png"
-                                alt=""
-                              />
+                              <img src={book?.image_uri} alt="" />
                             </div>
                           </Col>
                           <Col sm={11}>
