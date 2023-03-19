@@ -1,7 +1,12 @@
-import Header from 'components/Header';
-import Login from 'pages/Auth/Login';
+//! LIBRARY
 import React, { useState } from 'react';
+
+//! PAGE
+import Login from 'pages/Auth/Login';
 import Footer from './Footer';
+
+//! COMPONENTS
+import Header from 'components/Header';
 
 const Layout = (props) => {
   const [showLogin, setShowLogin] = useState(false);

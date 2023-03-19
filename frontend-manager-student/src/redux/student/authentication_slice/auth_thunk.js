@@ -1,6 +1,5 @@
 //! LIBRARY
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 //! NOTIFICATION
 import NOTIFICATION from 'utils/notification';
@@ -13,6 +12,7 @@ import CONSTANTS from 'configs/constants';
 import TEXT_NOTIFICATION from 'configs/text_notification';
 import { setToken, clearToken } from 'utils/auth';
 import HELPERS from 'utils/helper';
+import REQUEST from 'utils/request';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -24,7 +24,8 @@ import HELPERS from 'utils/helper';
 export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv, password }, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.post(
+
+    const response = await REQUEST.post(
       `${API_STUDENT.LOGIN_STUDENT}`,
       {
         input: {
@@ -85,7 +86,7 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
 export const Profile_Student_Initial = createAsyncThunk('student/profile', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.get(`${API_STUDENT.PROFILE_STUDENT}`, {
+    const response = await REQUEST.get(`${API_STUDENT.PROFILE_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -132,7 +133,7 @@ export const Send_Mail_Student_Initial = createAsyncThunk(
   async ({ email }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.post(
+      const response = await REQUEST.post(
         `${API_STUDENT.EMAIL_FORGET_PASSWORD}`,
         {
           input: {
@@ -178,7 +179,7 @@ export const Send_Mail_Student_Initial = createAsyncThunk(
 export const Logout_Student_Initial = createAsyncThunk('student/logout', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.get(`${API_STUDENT.LOGOUT_STUDENT}`, {
+    const response = await REQUEST.get(`${API_STUDENT.LOGOUT_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -230,7 +231,7 @@ export const Logout_Student_Initial = createAsyncThunk('student/logout', async (
 export const Renew_Token_Student_Initial = createAsyncThunk('student/new/token', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.get(`${API_STUDENT.RE_NEW_TOKEN_STUDENT}`, {
+    const response = await REQUEST.get(`${API_STUDENT.RE_NEW_TOKEN_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -281,7 +282,7 @@ export const Change_Password_Initial = createAsyncThunk(
   async ({ oldPassword, password, confirmPassword }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.post(
+      const response = await REQUEST.post(
         `${API_STUDENT.CHANGE_PASSWORD_STUDENT}`,
         {
           input: {
@@ -353,7 +354,7 @@ export const Forget_Password_Initial = createAsyncThunk(
   async ({ email }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.post(
+      const response = await REQUEST.post(
         `${API_STUDENT.FORGET_PASSWORD_STUDENT}`,
         {
           input: {
@@ -413,10 +414,10 @@ export const Forget_Password_Initial = createAsyncThunk(
  */
 export const Reset_Password_Initial = createAsyncThunk(
   'student/resetPassword',
-  async ({ id, password, confirmPassword }, { rejectWithValue }) => {
+  async ({ id, password, confirmPassword, e }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.post(
+      const response = await REQUEST.post(
         `${API_STUDENT.RESET_FORGET_PASSWORD}/${id}`,
         {
           input: {
@@ -438,10 +439,15 @@ export const Reset_Password_Initial = createAsyncThunk(
       if (successData) {
         // return result data
         const result_data = HELPERS.takeDataResponse(successData);
+
+        // Info reset success
         NOTIFICATION.swalSuccess(
-          TEXT_NOTIFICATION.NOTIFICATION_RESET_PASSWORD_SUCCESS,
-          'Hãy quay về trang chủ để đăng nhập',
+          TEXT_NOTIFICATION.NOTIFICATION_RESET.PASSWORD_SUCCESS_TITLE,
+          TEXT_NOTIFICATION.NOTIFICATION_RESET.PASSWORD_SUCCESS_TEXT,
         );
+
+        //Del input
+        HELPERS.delInputSuccess(e);
 
         // return result data
         return result_data;

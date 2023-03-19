@@ -40,14 +40,14 @@ const API_STUDENT = {
    * @created_at 10/03/2023
    * @descriptionKey API GET ALL BOOK
    */
-  GET_ALL_BOOK_STUDENT: '/student/v1/user/private/book/all',
+  GET_ALL_BOOK_STUDENT: '/student/v1/user/book/all',
 
   /**
    * @author Châu Gia Bảo
    * @created_at 10/03/2023
    * @descriptionKey API GET DETAIL BOOK
    */
-  GET_DETAIL_BOOK_STUDENT: '/student/v1/user/private/book/detail',
+  GET_DETAIL_BOOK_STUDENT: '/student/v1/user/book/detail',
 
   /**
    * @author Châu Gia Bảo

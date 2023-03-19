@@ -22,7 +22,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 //! COMPONENT
-import RouterNprogress from 'components/Nprogress/RouterNprogress';
+import RouterNprogress from 'plugins/Nprogress/RouterNprogress';
 
 ReactDOM.render(
   <Provider store={store}>

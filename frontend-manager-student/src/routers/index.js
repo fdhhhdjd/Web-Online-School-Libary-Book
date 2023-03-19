@@ -1,4 +1,4 @@
-import Layout from 'components/Layout';
+//! PAGES
 import ChangePassword from 'pages/Auth/ChangePassword';
 import ResetPassword from 'pages/Auth/ResetPassword';
 import AllBook from 'pages/Book/AllBooks';
@@ -7,6 +7,9 @@ import Home from 'pages/Home';
 import BookBorrowInfo from 'pages/UserProfile/BookBorrowInfo';
 import UserProfile from 'pages/UserProfile/ProfileLayout';
 import UserInfo from 'pages/UserProfile/UserInfo';
+
+//! COMPONENT
+import Layout from 'components/Layout';
 
 const RouteDataMain = [
   {

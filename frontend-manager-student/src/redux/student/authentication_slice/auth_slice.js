@@ -8,13 +8,15 @@ import {
   Profile_Student_Initial,
   Renew_Token_Student_Initial,
   Change_Password_Initial,
-  Forget_Password_Initial
+  Forget_Password_Initial,
+  Reset_Password_Initial,
 } from './auth_thunk';
 
 const initialState = {
   loading_login: false,
   loading_change_password: false,
   loading_forget_password: false,
+  loading_reset_password: false,
   loading: false,
   error: null,
   token_student: null,
@@ -111,6 +113,17 @@ const Authentication = createSlice({
     },
     [Forget_Password_Initial.rejected]: (state, action) => {
       state.loading_forget_password = false;
+      state.error = action.payload;
+    },
+    //* FORGET PASSWORD
+    [Reset_Password_Initial.pending]: (state, action) => {
+      state.loading_reset_password = true;
+    },
+    [Reset_Password_Initial.fulfilled]: (state, action) => {
+      state.loading_reset_password = false;
+    },
+    [Reset_Password_Initial.rejected]: (state, action) => {
+      state.loading_reset_password = false;
       state.error = action.payload;
     },
   },

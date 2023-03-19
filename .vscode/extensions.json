@@ -1,0 +1,17 @@
+//!@ Author: Nguyễn Tiến Tài.
+//! Description: Setting Vs Code
+//!@ Created_At : 19-03-2023.
+
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "xabikos.javascriptsnippets",
+    "stylelint.vscode-stylelint",
+    "fabiospampinato.vscode-highlight",
+    "dsznajder.es7-react-js-snippets",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "adpyke.vscode-sql-formatter"
+  ]
+}

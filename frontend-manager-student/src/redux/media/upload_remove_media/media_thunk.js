@@ -1,6 +1,5 @@
 //! LIBRARY
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 //! NOTIFICATION
 import NOTIFICATION from 'utils/notification';
@@ -10,6 +9,7 @@ import API_MEDIA from 'api/api_media';
 
 //! SHARE
 import HELPERS from 'utils/helper';
+import REQUEST from 'utils/request';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -21,7 +21,7 @@ import HELPERS from 'utils/helper';
 export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ formData }, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.post(`${API_MEDIA.UPLOAD_MEDIA}`, formData, {
+    const response = await REQUEST.post(`${API_MEDIA.UPLOAD_MEDIA}`, formData, {
       headers: HELPERS.headerBrowserMedia(),
     });
 

@@ -1,19 +1,43 @@
-//"editor.formatOnSave": true sẽ kích hoạt chức năng tự động định dạng (format) mã nguồn khi lưu file.
-//"editor.defaultFormatter": "esbenp.prettier-vscode" chỉ định sử dụng thư viện esbenp.prettier-vscode để định dạng mã nguồn.
-//"editor.codeActionsOnSave": { "source.fixAll": true } sẽ kích hoạt chức năng tự động sửa lỗi khi lưu file.
-//"files.eol": "\n" sẽ chỉ định ký tự kết thúc dòng là dấu xuống dòng (new line)
+//!@ Author: Nguyễn Tiến Tài.
+//! Description: Setting Vs Code
+//!@ Created_At : 20-12-2022.
+//!@ Update_At: 13-02-2023 19-03-2023
+
 {
+  // Auto Format code
   "editor.formatOnSave": true,
+
+  // Used Prettier format code
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Update module import path when moving files.
   "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // Highlight brackets when the cursor is inside them
   "editor.guides.bracketPairs": "active",
+
+  // Check syntax errors and errors in code with ESLint for JS and TS files.
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Automatically correct errors reported in the code when saving the file.
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
+
+  // Set the newline character for files to be a newline (LF).
   "files.eol": "\n",
+
+  // Use Extendtion SQL as default code format for SQL files.
   "[sql]": {
     "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
   },
+
+  // cSpell spell check list of words to skip.
   "cSpell.words": [
     "argothim",
     "Localstorage",

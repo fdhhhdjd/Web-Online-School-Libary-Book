@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //! SHARE
 import HELPERS from 'utils/helper';
 import NOTIFICATION from 'utils/notification';
+import TEXT_NOTIFICATION from 'configs/text_notification';
 
 //!REDUX THUNK
 import { Forget_Password_Initial } from 'redux/student/authentication_slice/auth_thunk';
@@ -21,17 +22,22 @@ const TabForgetPassword = ({ setShowLogin, setForgetPage }) => {
   }));
 
   const handleForgetStudent = (e) => {
+    // PreventDefault Enter reload form
     e.preventDefault();
 
+    // Take data form
     const values = HELPERS.formDataGeneral(e.target);
 
-    //Check input
+    // Check input
     if (!values.email) {
-      return NOTIFICATION.notifyError('Email Không được bỏ trống !!!');
+      return NOTIFICATION.notifyError(TEXT_NOTIFICATION.NOTIFICATION_INPUT_INVALID._EMAIL);
     }
 
     // Action Login
     dispatch(Forget_Password_Initial(values));
+
+    // Clear form
+    HELPERS.delInputSuccess(e);
   };
   return (
     <React.Fragment>
