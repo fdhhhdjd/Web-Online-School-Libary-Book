@@ -11,7 +11,7 @@ export const SectionTitle = (props) => {
     <div className={`section__title ${props.left ? 'left' : 'center'}`}>
       <span>{props.children}</span>
       {props.subTitle && (
-        <Link to="/">
+        <Link to={props.route}>
           {props.subTitle} <i className="bx bx-chevron-right"></i>
         </Link>
       )}

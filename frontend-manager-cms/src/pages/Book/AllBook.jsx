@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
+import { Delete_Book_Cms_Initial, Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
 
 const Book = () => {
   const dispatch = useDispatch();
   const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
 
-  const handleDelete = (e) => { };
+  const handleDelete = (book_id) => {
+    dispatch(Delete_Book_Cms_Initial({ book_id }));
+  };
 
   useEffect(() => {
     dispatch(Get_All_Book_Cms_Initial());
@@ -98,7 +100,10 @@ const Book = () => {
                           </Link>
                         </td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <button className="text-red-500 hover:text-red-700" onClick={handleDelete}>
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDelete(book?.book_id)}
+                          >
                             Delete
                           </button>
                         </td>
