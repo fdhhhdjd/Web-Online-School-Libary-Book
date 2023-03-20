@@ -1,12 +1,12 @@
 //! PAGES
 import ChangePassword from 'pages/Auth/ChangePassword';
 import ResetPassword from 'pages/Auth/ResetPassword';
-import AllBook from 'pages/Book/AllBooks';
-import DetailBook from 'pages/Book/DetailBook';
+import AllBook from 'pages/Book/AllBook';
+import DetailBook from 'pages/Book/DetailBook/DetailBook';
 import Home from 'pages/Home';
-import BookBorrowInfo from 'pages/UserProfile/BookBorrowInfo';
-import UserProfile from 'pages/UserProfile/ProfileLayout';
-import UserInfo from 'pages/UserProfile/UserInfo';
+import BookBorrowInfo from 'pages/UserProfile/components/BookBorrowInfo';
+import UserProfile from 'pages/UserProfile';
+import UserInfo from 'pages/UserProfile/components/UserInfo';
 
 //! COMPONENT
 import Layout from 'components/Layout';
