@@ -1,7 +1,11 @@
 #!@ Author: Nguyễn Tiến Tài.
 #! Description: Make run frontend Manager.
 #!@ Created_At : 12-03-2023.
-#!@ Update_At: 13-03-2023, 18-03-2023
+#!@ Update_At: 13-03-2023, 18-03-2023, 20-03-2023
+
+# Folder node_modules
+NODE_MODULES=node_modules
+
 
 run-default:
 	echo "ITC Libary manager"
@@ -16,7 +20,20 @@ run-install:
       echo "Node modules already installed"; \
       exit 1; \
 	else \
+      echo "Preparing to install..."; \
       npm install; \
+      echo "Done install."; \
+	fi
+
+# Del node_modules
+run-clean:
+	if test -d $(NODE_MODULES); then \
+      echo "Start remove node_modules..."; \
+      rm -rf $(NODE_MODULES); \
+      echo "Remove Done install."; \
+      exit 1; \
+	else \
+      echo "Folder node_modules already not exist."; \
 	fi
 
 # example: make run-library-dev husky prettier lint-staged
@@ -35,7 +52,7 @@ check-libary:
 	@echo "All libraries installed"
 	@exit 0
 
-# Run install library 
+# Run install library
 # example: make run-library axios react-router-dom
 run-library:
 	make check-libary $(filter-out $@,$(MAKECMDGOALS))
