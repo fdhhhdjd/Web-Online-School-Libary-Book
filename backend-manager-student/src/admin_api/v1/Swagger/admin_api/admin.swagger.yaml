@@ -382,3 +382,200 @@ paths:
 
                 503:
                     $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 21/03/2023
+    #!description: Get Profile Admin
+    /api/v1/admin/private/profile:
+        get:
+            summary: Profile Admin
+            tags: [Profile Admin]
+            operationId: getProfileAdmin
+            security:
+                - bearerAuth: []
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Get Profile Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    element:
+                                        type: object
+                                        example:
+                                            {
+                                                result:
+                                                    {
+                                                        user_id: string,
+                                                        role: number,
+                                                        mssv": number,
+                                                        name": string,
+                                                        avatar_uri": string,
+                                                        email": string,
+                                                        address": string,
+                                                        dob": string,
+                                                        gender": number,
+                                                        class": string,
+                                                        phone_hidden": string,
+                                                    },
+                                            }
+                400:
+                    description: admin_id or user in database not exits
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/UnauthorizedError'
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 21/03/2023
+    #!description: Update Profile Admin
+    /api/v1/admin/update/profile:
+        post:
+            summary: Update Profile Admin
+            tags: [Update Profile Admin]
+            operationId: updateProfileAdmin
+            parameters:
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        user_update_profile_input:
+                                            type: object
+                                            properties:
+                                                name:
+                                                    type: string
+                                                    example: 'Nguyễn Tiến Tài'
+                                                public_id_avatar:
+                                                    type: string
+                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg'
+                                                avatar_uri:
+                                                    type: string
+                                                    example: 'https://res.cloudinary.com/taithinhnam/image/upload/v1675328168/user/male_n_xqzvmn.jpg'
+                                                address:
+                                                    type: string
+                                                    example: 'Nha Trang Khánh Hòa'
+                                                dob:
+                                                    type: string
+                                                    example: '2000-05-31'
+                                                gender:
+                                                    type: string
+                                                    example: '1'
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Bad Request !
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 21/03/2023
+    #!description: Change Password Admin
+    /api/v1/admin/private/change-password:
+        post:
+            summary: Change Password Admin
+            tags: [Change Password Admin]
+            operationId: changePasswordAdmin
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            responses:
+                200:
+                    description: Change Password Success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: user_id or password or oldPassword or confirmPassword Invalid and Password and confirm password does not match! and  Password not security
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Bad Request
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'

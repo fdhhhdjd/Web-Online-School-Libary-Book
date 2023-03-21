@@ -7,7 +7,6 @@ const TOKENS = require('../../../../share/utils/token');
 const CONFIGS = require('../../../../share/configs/config');
 
 //! MIDDLEWARE
-// const { globalCache } = require('../../../share/patterns/LRU_Strategy.patterns');
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 const { takeDataStudent } = require('../../../../share/services/admin.service');
 
@@ -17,6 +16,9 @@ const user_device_model = require('../../../../share/models/user_device.model');
 
 //! DATABASE
 const knex = require('../../../../share/db/postgresql');
+
+// ! CACHING REDIS
+const MEMORY_CACHE = require('../../../../share/utils/limited_redis');
 
 //! Service
 const geo_service = require('../../../../share/services/geo.service');
@@ -35,7 +37,6 @@ const adminController = {
 
         // Take device id header
         let { device_id } = req.device;
-
         // Check input mssv password
         if (!mssv || !password || !HELPER.isNumeric(mssv)) {
             return res.status(400).json({
@@ -43,6 +44,7 @@ const adminController = {
                 message: returnReasons('400'),
             });
         }
+
         // Take ip computer student
         const ip = req.headers[CONSTANTS.HEADER_FORWARDED_FOR] || req.socket.remoteAddress || null;
 
@@ -485,6 +487,315 @@ const adminController = {
             return res.status(503).json({
                 status: 503,
                 message: returnReasons('503'),
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 21/03/2023
+     * @description Profile Admin
+     * @function getProfileAdmin
+     * @param { token }
+     * @return { Object }
+     */
+    getProfileAdmin: async (req, res) => {
+        // Take admin Id
+        const admin_id = req.auth_user.id;
+
+        // Check admin_id
+        if (!admin_id) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        try {
+            // Check admin exit database
+            let data_return = {
+                user_id: 'user_id',
+                role: 'role',
+                mssv: 'mssv',
+                name: 'name',
+                avatar_uri: 'avatar_uri',
+                email: 'email',
+                address: 'address',
+                dob: 'dob',
+                gender: 'gender',
+                class: 'class',
+                phone_hidden: 'phone_hidden',
+            };
+            let data_query = {
+                user_id: admin_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            };
+            // Create key redis  profile
+            const key_profile_admin = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_ADMIN, {
+                admin_id,
+            });
+
+            // Take data cache
+            let admin_cache = await MEMORY_CACHE.getCache(key_profile_admin);
+
+            // If cache exit take cache else take database
+            if (admin_cache) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                    element: {
+                        result: JSON.parse(admin_cache),
+                    },
+                });
+            }
+
+            // Take data database
+            let admins = await user_model.getStudentById(data_query, data_return);
+
+            // Check account exits
+            const admin = admins[0];
+            if (!admin || admin.length === 0) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                });
+            }
+
+            // Random time expire key difference
+            const time_cache = HELPER.addTimeRandomNumber(CONSTANTS._7_DAY_S_REDIS, 1000);
+
+            // Save Cache
+            MEMORY_CACHE.setCacheEx(key_profile_admin, JSON.stringify(admin), time_cache);
+
+            return res.status(200).json({
+                status: 200,
+                message: returnReasons('200'),
+                element: {
+                    result: admin,
+                },
+            });
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 21/03/2023
+     * @description Update Profile Admin
+     * @function updateProfileAdmin
+     * @return { Object }
+     */
+    updateProfileAdmin: async (req, res) => {
+        // Take admin Id
+        const { id } = req.auth_user;
+
+        // Input body
+        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.admin_update_profile_input;
+
+        // Check id admin
+        if (!id) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+
+        // Check Input is empty
+        if (
+            (name !== undefined && name.trim() === '')
+            || (avatar_uri !== undefined && avatar_uri.trim() === '')
+            || (public_id_avatar !== undefined && public_id_avatar.trim() === '')
+            || (address !== undefined && address.trim() === '')
+            || (dob !== undefined && dob.trim() === '')
+        ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Please provide non-empty values for all fields',
+            });
+        }
+
+        const birthday = new Date(dob); // dob from student input
+        const today = new Date(); // date now
+
+        // Compare date  dob and date now
+        if (birthday >= today) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Invalid date of birth',
+            });
+        }
+
+        try {
+            // Data update
+            const data_update = {
+                name,
+                avatar_uri,
+                public_id_avatar,
+                address,
+                dob,
+                gender,
+            };
+
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(
+                user_model.updateStudent(data_update, { user_id: id }, { user_id: 'user_id' }),
+            );
+
+            // Update student success
+            if (result) {
+                // Create key redis  profile
+                const key_profile_admin = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_ADMIN, {
+                    admin_id: id,
+                });
+
+                // Del key Redis cache
+                MEMORY_CACHE.delKeyCache(key_profile_admin);
+
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                });
+            }
+
+            // Update fail
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('500'),
+                    element: {
+                        result: 'Update profile Fail !',
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
+            });
+        }
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 21/03/2023
+     * @description Change password admin
+     * @function changePasswordAdmin
+     * @param { password, oldPassword, confirmPassword }
+     * @return { Object }
+     */
+    changePasswordAdmin: async (req, res) => {
+        const { password, oldPassword, confirmPassword } = req.body.input.admin_change_password_input;
+
+        // Take admin Id
+        const admin_id = req.auth_user.id;
+
+        // Check admin_id
+        if (!admin_id || !password || !oldPassword || !confirmPassword) {
+            return res.status(400).json({
+                status: 400,
+                message: returnReasons('400'),
+            });
+        }
+        try {
+            // Take data database
+            const new_admin = await user_model.getStudentById(
+                {
+                    user_id: admin_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                { password: 'password' },
+            );
+
+            const admin = new_admin[0];
+
+            // Check Password true or false
+            const isMatch = await PASSWORD.comparePassword(oldPassword, admin.password);
+            if (!isMatch) {
+                return res.status(401).json({
+                    status: 401,
+                    message: returnReasons('401'),
+                    element: {
+                        result: 'Wrong Password!',
+                    },
+                });
+            }
+
+            // Password difference confirmPassword
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Password and confirm password does not match!',
+                    },
+                });
+            }
+            // Check Password Security
+            const password_security = PASSWORD.isPassword(password);
+            if (!password_security) {
+                return res.status(400).json({
+                    status: 400,
+                    message: returnReasons('400'),
+                    element: {
+                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                    },
+                });
+            }
+
+            // Encode Password admin
+            const new_password_admin = await PASSWORD.encodePassword(password);
+
+            // Data update database
+            const data = {
+                password: new_password_admin,
+            };
+            const data_query = {
+                user_id: admin_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            };
+            const data_return = {
+                user_id: 'user_id',
+            };
+
+            // Save Database
+            let err;
+            let result;
+            [err, result] = await HELPER.handleRequest(user_model.updateStudent(data, data_query, data_return));
+            if (result) {
+                return res.status(200).json({
+                    status: 200,
+                    message: returnReasons('200'),
+                    element: {
+                        result: 'Change Password Success',
+                    },
+                });
+            }
+            if (err) {
+                return res.status(500).json({
+                    status: 500,
+                    message: returnReasons('503'),
+                });
+            }
+        } catch (err) {
+            console.error(err, '===== Server Fail =====');
+            return res.status(503).json({
+                status: 503,
+                message: returnReasons('503'),
+                element: {
+                    result: 'Out Of Service',
+                },
             });
         }
     },

@@ -1,6 +1,9 @@
+//! LIBRARY
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+
+//! DUMMY DATA
 import { tabBorrowBook } from 'utils/dummy';
 
 const BookBorrowInfo = () => {

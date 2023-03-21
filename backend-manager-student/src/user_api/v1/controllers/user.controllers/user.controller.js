@@ -1532,6 +1532,14 @@ const userController = {
 
             // Update student success
             if (result) {
+                // Create key redis profile
+                const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+                    user_id: id,
+                });
+
+                // Del key redis cache
+                MEMORY_CACHE.delKeyCache(key_profile_student);
+
                 return res.status(200).json({
                     status: 200,
                     message: returnReasons('200'),

@@ -257,6 +257,7 @@ module.exports = {
      */
     KEY_BACK_LIST: 'black_list_token',
     KEY_PROFILE_STUDENT: 'profile-${user_id}',
+    KEY_PROFILE_ADMIN: 'profile-${admin_id}',
     KEY_BLOCK_LOGIN_TIMES_STUDENT: 'block-login-${user_id}',
     KEY_BLOCK_CHECK_PASSWORD_TIMES_STUDENT: 'block-check-password-${user_id}',
     KEY_LOCK_SEND_EMAIL: 'lock:${key_convert}',

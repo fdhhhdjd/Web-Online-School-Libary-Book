@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 //! SHARE
 import CONSTANTS from 'configs/constants';
+import Swal from 'sweetalert2';
 
 const NOTIFICATION = {
   /**
@@ -18,6 +19,22 @@ const NOTIFICATION = {
       closeOnClick: CONSTANTS.DELETED_ENABLE,
       pauseOnHover: CONSTANTS.DELETED_ENABLE,
       draggable: CONSTANTS.DELETED_ENABLE,
+    });
+  },
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 02/03/2023
+   * @descriptionKey success
+   */
+  swalSuccess(title, text) {
+    Swal.fire({
+      title,
+      text,
+      icon: 'success',
+      customClass: 'swal-wide',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Xác nhận',
     });
   },
 
