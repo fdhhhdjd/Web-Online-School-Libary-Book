@@ -118,8 +118,8 @@ const adminController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -263,8 +263,8 @@ const adminController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -434,12 +434,12 @@ const adminController = {
                         class: student.class,
                         email: student.email,
                         gender:
-                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING ?
-                                CONSTANTS.GENDER_MALE
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
+                                ? CONSTANTS.GENDER_MALE
                                 : CONSTANTS.GENDER_FEMALE,
                         avatar_uri:
-                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING ?
-                                CONSTANTS.GENDER_IMAGE_MALE
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
+                                ? CONSTANTS.GENDER_IMAGE_MALE
                                 : CONSTANTS.GENDER_IMAGE_FEMALE,
                     });
                 }
@@ -597,9 +597,7 @@ const adminController = {
         const { id } = req.auth_user;
 
         // Input body
-        const {
-            name, avatar_uri, public_id_avatar, address, dob, gender,
-        } = req.body.input.admin_update_profile_input;
+        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.admin_update_profile_input;
 
         // Check id admin
         if (!id) {
