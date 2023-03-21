@@ -9,6 +9,7 @@ import API_ADMIN from 'api/api_user';
 
 //! SHARE
 import HELPERS from 'utils/helper';
+import NOTIFICATION from 'utils/notification';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -43,6 +44,55 @@ export const Get_All_Book_Cms_Initial = createAsyncThunk('admin/cms/book/all', a
     }
   }
 });
+
+/**
+ * @author Châu Gia Bảo
+ * @created_at 19/03/2023
+ * @descriptionKey Call api Get All Book admin cms
+ * @function Get_Detail_Book_Cms_Initial
+ * @return {Object}
+ */
+export const Delete_Book_Cms_Initial = createAsyncThunk(
+  'admin/cms/book/delete',
+  async ({ book_id }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await axios.get(
+        `${API_ADMIN.DELETE_BOOK_CMS}`,
+        {
+          input: {
+            book_input: {
+              book_id,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        NOTIFICATION.swalSuccess('Đã xóa thành công', '');
+
+        return successData;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);
 
 /**
  * @author Châu Gia Bảo

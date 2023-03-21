@@ -29,7 +29,7 @@ const UserInfo = () => {
   const [preview, setPreview] = useState();
 
   //File custom hook media
-  // const { handleUpload } = useUploadCloud();
+  const { handleUpload } = useUploadCloud();
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -39,6 +39,7 @@ const UserInfo = () => {
 
     // get first image
     setSelectedFile(e.target.files[0]);
+    handleUpload(e);
   };
 
   console.log(profile_student);
@@ -83,7 +84,10 @@ const UserInfo = () => {
                 </div>
               </Col>
               <Col md={9} className="profile__info__content__input">
-                <div className="profile__info__content__input-item">{profile_student?.data?.name}</div>
+                {/* <div className="profile__info__content__input-item">{profile_student?.data?.name}</div> */}
+                <div className="profile__info__content__input-item">
+                  <input type="text" defaultValue={profile_student?.data?.name} className="input-user" />
+                </div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.mssv}</div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.email}</div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.phone_hidden}</div>
