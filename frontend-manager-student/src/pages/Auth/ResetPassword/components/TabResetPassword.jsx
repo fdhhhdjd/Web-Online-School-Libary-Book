@@ -14,6 +14,8 @@ import CONSTANTS from 'configs/constants';
 
 //! REDUX
 import { Reset_Password_Initial } from 'redux/student/authentication_slice/auth_thunk';
+
+//! CUSTOM
 import Navigate from 'custom_hook/useNavigate/Navigate';
 
 const TabResetPassword = () => {

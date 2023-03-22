@@ -14,6 +14,7 @@ import './styles/style.scss';
 
 //! REDUX
 import store from 'redux/store';
+
 //! CONTEXT
 import { DataProviderStudent } from 'contexts/global_context';
 
@@ -21,7 +22,7 @@ import { DataProviderStudent } from 'contexts/global_context';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-//! COMPONENT
+//! PLUGINS
 import RouterNprogress from 'plugins/Nprogress/RouterNprogress';
 
 ReactDOM.render(

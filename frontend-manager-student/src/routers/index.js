@@ -8,12 +8,15 @@ import BookBorrowInfo from 'pages/UserProfile/components/BookBorrowInfo';
 import UserProfile from 'pages/UserProfile';
 import UserInfo from 'pages/UserProfile/components/UserInfo';
 
+//! LINK ROUTER
+import LINK_ROUTER from '../configs/link_router';
+
 //! COMPONENT
 import Layout from 'components/Layout';
 
 const RouteDataMain = [
   {
-    path: '/',
+    path: LINK_ROUTER.LINK._HOME,
     main: (
       <>
         <Layout content={<Home />} />
@@ -21,7 +24,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book/all',
+    path: LINK_ROUTER.LINK._BOOK_ALL,
     main: (
       <>
         <Layout content={<AllBook />} />
@@ -29,7 +32,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book/:id',
+    path: LINK_ROUTER.LINK._BOOK_DETAIL,
     main: (
       <>
         <Layout content={<DetailBook />} />
@@ -37,7 +40,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/user/changePassword',
+    path: LINK_ROUTER.LINK._CHANGE_PASSWORD,
     main: (
       <>
         <Layout content={<ChangePassword />} />
@@ -45,7 +48,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/password/reset/:id',
+    path: LINK_ROUTER.LINK._RESET_PASSWORD,
     main: (
       <>
         <Layout content={<ResetPassword />} />
@@ -53,7 +56,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/user/profile',
+    path: LINK_ROUTER.LINK._PROFILE,
     main: (
       <>
         <Layout content={<UserProfile content={<UserInfo />} />} />
@@ -61,7 +64,7 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/user/borrow',
+    path: LINK_ROUTER.LINK._BORROW_BOOK,
     main: (
       <>
         <Layout content={<UserProfile content={<BookBorrowInfo />} />} />

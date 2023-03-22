@@ -10,9 +10,9 @@ import API_STUDENT from 'api/api_user';
 //! SHARE
 import CONSTANTS from 'configs/constants';
 import TEXT_NOTIFICATION from 'configs/text_notification';
-import { setToken, clearToken } from 'utils/auth';
 import HELPERS from 'utils/helper';
 import REQUEST from 'utils/request';
+import { setToken, clearToken } from 'utils/auth';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -88,7 +88,7 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
     //Call Api axios
     const response = await REQUEST.get(`${API_STUDENT.PROFILE_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
-      withCredentials: true,
+      withCredentials: CONSTANTS.DELETED_ENABLE,
     });
 
     //Take response Success
@@ -144,7 +144,7 @@ export const Send_Mail_Student_Initial = createAsyncThunk(
         },
         {
           headers: HELPERS.headerBrowser(),
-          withCredentials: true,
+          withCredentials: CONSTANTS.DELETED_ENABLE,
         },
       );
 
@@ -181,7 +181,7 @@ export const Logout_Student_Initial = createAsyncThunk('student/logout', async (
     //Call Api axios
     const response = await REQUEST.get(`${API_STUDENT.LOGOUT_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
-      withCredentials: true,
+      withCredentials: CONSTANTS.DELETED_ENABLE,
     });
 
     //Take response Success
@@ -233,7 +233,7 @@ export const Renew_Token_Student_Initial = createAsyncThunk('student/new/token',
     //Call Api axios
     const response = await REQUEST.get(`${API_STUDENT.RE_NEW_TOKEN_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
-      withCredentials: true,
+      withCredentials: CONSTANTS.DELETED_ENABLE,
     });
 
     //Take response Success

@@ -1,14 +1,13 @@
 //! LIBRARY
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-//! NOTIFICATION
-
 //! API STUDENT
 import API_USER from 'api/api_user';
 
 //! SHARE
 import HELPERS from 'utils/helper';
 import REQUEST from 'utils/request';
+import CONSTANTS from 'configs/constants';
 
 /**
  * @author Châu Gia Bảo
@@ -22,12 +21,11 @@ export const Get_All_Book_Student_Initial = createAsyncThunk('customer/book/all'
     //Call Api axios
     const response = await REQUEST.get(`${API_USER.GET_ALL_BOOK_STUDENT}`, {
       headers: HELPERS.headerBrowser(),
-      withCredentials: true,
+      withCredentials: CONSTANTS.DELETED_ENABLE,
     });
 
     //Take response Success
     const successData = response.data;
-    console.log(response, '--');
 
     //Check data
     if (successData) {
@@ -59,7 +57,7 @@ export const Get_Detail_Book_Student_Initial = createAsyncThunk(
       //Call Api axios
       const response = await REQUEST.get(`${API_USER.GET_DETAIL_BOOK_STUDENT}/${id}`, {
         headers: HELPERS.headerBrowser(),
-        withCredentials: true,
+        withCredentials: CONSTANTS.DELETED_ENABLE,
       });
 
       //Take response Success
@@ -105,7 +103,7 @@ export const Borrow_Book_Student_Initial = createAsyncThunk(
         },
         {
           headers: HELPERS.headerBrowser(),
-          withCredentials: true,
+          withCredentials: CONSTANTS.DELETED_ENABLE,
         },
       );
 

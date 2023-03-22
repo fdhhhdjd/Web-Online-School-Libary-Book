@@ -28,7 +28,8 @@
         "tabWidth": 2,
         "trailingComma": "all",
         "useTabs": false,
-        "vueIndentScriptAndStyle": false
+        "vueIndentScriptAndStyle": false,
+        "eslint-disable-next-line no-undef": "off"
       }
     ]
   }

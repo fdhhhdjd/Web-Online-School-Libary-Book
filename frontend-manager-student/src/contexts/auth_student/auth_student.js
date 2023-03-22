@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 //! SHARE
-import HELPERS from 'utils/helper';
 import CONSTANTS from '../../configs/constants';
 import { getToken } from '../../utils/auth';
 
@@ -21,14 +20,11 @@ const AuthStudent = () => {
   // Get Token localStore
   const token_localStorage = getToken(CONSTANTS.AUTH_TOKEN);
 
-  //Check Token
-  const decodedToken = HELPERS.isTokenExpired(token_localStorage);
-
   useEffect(() => {
-    if (decodedToken) {
+    if (token_localStorage) {
       dispatch(Profile_Student_Initial());
     }
-  }, [decodedToken, token_student]);
+  }, [token_student]);
 
   return {};
 };
