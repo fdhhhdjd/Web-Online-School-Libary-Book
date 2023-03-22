@@ -1,6 +1,9 @@
 //! LIBARY
 import { createSlice } from '@reduxjs/toolkit';
 
+//! SHARE
+import CONSTANTS from 'configs/constants';
+
 //! CALL API REDUX THUNK
 import {
   Borrow_Book_Student_Initial,
@@ -16,7 +19,7 @@ const initialState = {
 };
 
 const Book = createSlice({
-  name: 'CMS Book',
+  name: CONSTANTS.REDUX_NAME._BOOK,
   initialState,
   reducers: {},
   extraReducers: {

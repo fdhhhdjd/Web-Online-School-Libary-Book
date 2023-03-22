@@ -1,5 +1,12 @@
+//! LIBARY
 import { createSlice } from '@reduxjs/toolkit';
+
+//! SHARE
+import CONSTANTS from 'configs/constants';
+
+//! REDUX THUNK
 import { Upload_Media_Initial } from './media_thunk';
+
 const initialState = {
   loading_media: false,
   error: null,
@@ -7,7 +14,7 @@ const initialState = {
   result_destroy: null,
 };
 const Media_Cloud = createSlice({
-  name: 'Media_Cloud',
+  name: CONSTANTS.REDUX_NAME._MEDIA,
   initialState,
   reducers: {
     reset_upload: (state) => {

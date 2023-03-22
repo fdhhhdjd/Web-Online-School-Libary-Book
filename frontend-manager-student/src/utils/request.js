@@ -1,10 +1,11 @@
 //! LIBRARY
-import axios from 'axios';
+import { axiosIns } from 'plugins/axios/axios';
 
 const REQUEST = {
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 19/03/2023
+   * @updated_at 22/03/2023
    * @descriptionKey setup axios
    * @function get,post
    * @return {Object}
@@ -12,13 +13,13 @@ const REQUEST = {
 
   //!POST
   post: async (url, body, header) => {
-    const response = await axios.post(url, body, header);
+    const response = await axiosIns.post(url, body, header);
     return response;
   },
 
   //! GET
   get: async (url, header) => {
-    const response = await axios.get(url, header);
+    const response = await axiosIns.get(url, header);
     return response;
   },
 };

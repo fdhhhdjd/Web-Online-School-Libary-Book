@@ -1,6 +1,9 @@
 //! LIBARY
 import { createSlice } from '@reduxjs/toolkit';
 
+//! SHARE
+import CONSTANTS from 'configs/constants';
+
 //! CALL API REDUX THUNK
 import {
   Login_Mssv_Initial,
@@ -24,7 +27,7 @@ const initialState = {
 };
 
 const Authentication = createSlice({
-  name: 'AUTH STUDENT',
+  name: CONSTANTS.REDUX_NAME._AUTH,
   initialState,
   reducers: {
     reset_profile: (state) => {
@@ -67,16 +70,15 @@ const Authentication = createSlice({
     [Logout_Student_Initial.pending]: (state, action) => {
       state.loading = true;
     },
-
     [Logout_Student_Initial.fulfilled]: (state, action) => {
       state.loading = false;
       state.token_student = null;
       state.profile_student = null;
     },
-
     [Logout_Student_Initial.rejected]: (state, action) => {
       state.loading = true;
     },
+
     //* CHANGE PASSWORD STUDENT
     [Change_Password_Initial.pending]: (state, action) => {
       state.loading_change_password = true;
@@ -104,6 +106,7 @@ const Authentication = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
     //* FORGET PASSWORD
     [Forget_Password_Initial.pending]: (state, action) => {
       state.loading_forget_password = true;
@@ -115,6 +118,7 @@ const Authentication = createSlice({
       state.loading_forget_password = false;
       state.error = action.payload;
     },
+
     //* FORGET PASSWORD
     [Reset_Password_Initial.pending]: (state, action) => {
       state.loading_reset_password = true;
