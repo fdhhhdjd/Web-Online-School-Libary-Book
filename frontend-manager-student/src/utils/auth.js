@@ -46,5 +46,4 @@ export function setToken(key, value) {
 
 export function clearToken(key) {
   return localStorage.removeItem(key);
-
 }

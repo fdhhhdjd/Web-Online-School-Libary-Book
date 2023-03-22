@@ -76,7 +76,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <Suspense Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading />}>
         <ToastContainer />
         <Routes>
           {RouteDataMain.map((item, key) => {
