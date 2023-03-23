@@ -62,4 +62,10 @@ module.exports = {
     TYPE_PEM: process.env.TYPE_PEM,
     MODULUSLENGTH: process.env.MODULUSLENGTH,
     GENERAL_KEY_RANDOM: process.env.GENERAL_KEY_RANDOM,
+    /**
+    * @author Nguyễn Tiến Tài
+    * @created_at 23/03/2023
+    * @description MachineNo
+    */
+    MACHINE_NO: process.env.MACHINE_NO,
 };

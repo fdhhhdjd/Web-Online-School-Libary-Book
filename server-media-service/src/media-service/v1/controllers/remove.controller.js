@@ -4,6 +4,9 @@ const { removeStorage } = require('../../../share/services/remove_cloud_service'
 //! MIDDLAWARE
 const { returnReasons } = require('../../../share/middlewares/handle_error');
 
+//! SHARE
+const CONSTANTS = require('../../../share/configs/constants');
+
 const removeCloudController = {
     /**
      * @author Nguyễn Tiến Tài
@@ -15,38 +18,35 @@ const removeCloudController = {
      */
     removeCloud: async (req, res) => {
         try {
-            //Take Input
+            // Take Input
             const { public_id } = req.body.input.remove_public_id;
 
-            //Check input invalid
+            // Check input invalid
             if (!public_id) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 });
             }
-
-            //Remove link image cloud
+            // Remove link image cloud
             await removeStorage(public_id)
-                .then((result) =>
-                    res.status(200).json({
-                        status: 200,
-                        message: returnReasons('200'),
-                        element: result,
-                    }),
-                )
+                .then((result) => res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: result,
+                }))
                 .catch((error) => {
                     console.error(error);
-                    return res.status(500).json({
-                        status: 500,
-                        message: returnReasons('500'),
+                    return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                        status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     });
                 });
         } catch (error) {
             console.error(error);
-            return res.status(503).json({
-                status: 503,
-                element: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                element: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
             });
         }
     },

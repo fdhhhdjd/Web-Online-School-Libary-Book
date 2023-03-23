@@ -1,7 +1,10 @@
+//! SHARE
 const { returnReasons } = require('../../../share/middlewares/handle_error');
 const { handleUpload } = require('../../../share/services/upload.service');
 const { handleRemoveTmp } = require('../../../share/services/remove_tmp.service');
+const { handleResizeImage, handleValideResizeImage } = require('../../../share/services/resize_img_service');
 const CONSTANTS = require('../../../share/configs/constants');
+const MESSAGES = require('../../../share/configs/message');
 const STORAGE = require('../../../share/utils/storage');
 const HELPER = require('../../../share/utils/helper');
 
@@ -9,48 +12,65 @@ const uploadController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 29/12/2022
-     * @update_at 12/01/2023, 15/03/2023
+     * @update_at 12/01/2023, 15/03/2023, 23/03/2023
      * @description Upload image storage cloud
      * @function uploadCloudinary
      * @param { files }
      * @return {Object}
      */
     uploadCloudinary: async (req, res) => {
+        // Check if req.files is null or undefined before accessing its properties
+        if (!req.files || !req.files.file) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.MEDIA.NO_FILE_PROVIDED,
+                },
+            });
+        }
+        // Take auth middlaware
+        const auth_general = req.auth_general.id;
+        if (!auth_general) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.MEDIA.NO_FILE_AUTH_GENERATOR,
+                },
+            });
+        }
+
+        // Take file input
+        // Get the file from the request
+        const file = req.files;
+        // Get the uploaded file
+        const file_upload = file.file;
+        // Get the temporary file path
+        let path_image = file_upload.tempFilePath;
+        // Get the file mimetype
+        const mime_image = file_upload.mimetype;
+        // Get the file name
+        const name_image = file_upload.name;
+
         try {
-            // Take auth middlaware
-            const auth_general = req.auth_general.id;
-            if (!auth_general) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
+            // Resize the image to 1024x764 if it's an image
+            const type_image = mime_image.startsWith(CONSTANTS.MIME_IMAGE);
+            if (type_image) {
+                const path_image_new = await handleResizeImage(path_image);
+                path_image = path_image_new;
             }
 
-            // Take file input
-            const file = req.files;
-            const file_upload = file.file;
-            const path_image = file_upload.tempFilePath;
-            const size_image = file_upload.size;
-            const mime_image = file_upload.mimetype;
-            const name_image = file_upload.name;
-
-            //Check input invalid
-            if (!file || Object.keys(file).length === 0) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
-                });
-            }
-
-            //Check size image
-            if (size_image > CONSTANTS.SIZE_IMAGE) {
+            // Check the resized image size, if it's larger than 1024*1024, return an error
+            const resized_image_size = await handleValideResizeImage(path_image);
+            if (resized_image_size > CONSTANTS.SIZE_IMAGE) {
                 handleRemoveTmp(path_image);
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_PAYLOAD_TOO_LARGE).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_PAYLOAD_TOO_LARGE,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_PAYLOAD_TOO_LARGE),
                     element: {
-                        result: 'Image size is too big!'
-                    }
+                        result: MESSAGES.MEDIA.NO_SIZE_IMAGE_BIG,
+                    },
                 });
             }
 
@@ -60,28 +80,27 @@ const uploadController = {
             const media_id = HELPER.createID(check_type);
             const date = new Date().getTime();
 
-            //Check is type 
-            const is_type = (type) =>
-                type !== CONSTANTS.MIME_IMAGE ||
-                type !== CONSTANTS.MIME_VIDEO ||
-                type !== CONSTANTS.MIME_AUDIO ||
-                type !== CONSTANTS.MIME_DOCUMENT;
+            // Check is type
+            const is_type = (type) => type !== CONSTANTS.MIME_IMAGE
+                || type !== CONSTANTS.MIME_VIDEO
+                || type !== CONSTANTS.MIME_AUDIO
+                || type !== CONSTANTS.MIME_DOCUMENT;
 
             if (!is_type(check_type)) {
                 handleRemoveTmp(path_image);
-                return {
-                    status: 415,
-                    message: returnReasons('415'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Type media Invalid !'
-                    }
-                };
+                        result: MESSAGES.MEDIA.NO_TYPE_INVALID,
+                    },
+                });
             }
-
-            //Take tail file
+            // Take tail file
             let template_upload;
             let cloud_bucket;
             switch (check_type) {
+                // Check the media type and set the corresponding template_upload and cloud_bucket
                 case CONSTANTS.MIME_IMAGE:
                     template_upload = CONSTANTS.STORAGE_FOLDER_IMAGES_TEMPLATE;
                     cloud_bucket = CONSTANTS.MIME_IMAGE;
@@ -94,48 +113,50 @@ const uploadController = {
                     template_upload = CONSTANTS.STORAGE_FOLDER_DOCUMENT_TEMPLATE;
                     cloud_bucket = CONSTANTS.MIME_DOCUMENT;
                     break;
+                // In case of an invalid media type, return a 400 error
                 default:
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                         element: {
-                            result: 'Type media Invalid !'
-                        }
+                            result: MESSAGES.MEDIA.NO_TYPE_INVALID,
+                        },
                     });
             }
 
             // Link file
             const uri_key = STORAGE.getURIFromTemplate(template_upload, {
                 user_id: auth_general,
-                file_name: name_image_new,
-                time: date,
                 media_id,
+                time: date,
+                file_name: name_image_new,
             });
 
-            //Upload cloud
-            await handleUpload(path_image, uri_key, cloud_bucket)
-                .then((result) =>
-                    res.status(200).json({
-                        status: 200,
-                        message: returnReasons('200'),
-                        element: {
+            // Upload cloud
+            handleUpload(path_image, uri_key, cloud_bucket)
+                .then((result) => res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: {
+                        result: {
                             public_id: result.public_id,
                             url: result.secure_url,
                         },
-                    }),
+                    },
+                }),
                 )
                 .catch((error) => {
                     console.error(error);
-                    return res.status(500).json({
-                        status: 500,
-                        message: returnReasons('500'),
+                    return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                        status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     });
                 });
         } catch (error) {
             console.error(error);
-            return res.status(503).json({
-                status: 503,
-                element: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                element: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
             });
         }
     },

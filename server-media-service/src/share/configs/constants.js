@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 28/12/2022
@@ -97,6 +98,73 @@ module.exports = {
 
     /**
      * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description All status code
+     */
+    HTTP: {
+        // 1xx
+        STATUS_1XX_CONTINUE: 100,
+        STATUS_1XX_SWITCHING_PROTOCOLS: 101,
+        STATUS_1XX_PROCESSING: 102,
+        STATUS_1XX_EARLY_HINTS: 103,
+        // 2xx
+        STATUS_2XX_OK: 200,
+        STATUS_2XX_CREATED: 201,
+        STATUS_2XX_ACCEPTED: 202,
+        STATUS_2XX_NON_AUTHORITATIVE_INFORMATION: 203,
+        STATUS_2XX_NO_CONTENT: 204,
+        STATUS_2XX_RESET_CONTENT: 205,
+        STATUS_2XX_PARTIAL_CONTENT: 206,
+        STATUS_2XX_MULTI_STATUS: 207,
+        STATUS_2XX_ALREADY_REPORTED: 208,
+        STATUS_2XX_IM_USED: 226,
+        // 3xx
+        STATUS_3XX_MULTIPLE_CHOICES: 300,
+        STATUS_3XX_MOVED_PERMANENTLY: 301,
+        STATUS_3XX_FOUND: 302,
+        STATUS_3XX_SEE_OTHER: 303,
+        STATUS_3XX_NOT_MODIFIED: 304,
+        STATUS_3XX_USE_PROXY: 305,
+        STATUS_3XX_TEMPORARY_REDIRECT: 307,
+        STATUS_3XX_PERMANENT_REDIRECT: 308,
+        // 4xx
+        STATUS_4XX_BAD_REQUEST: 400,
+        STATUS_4XX_UNAUTHORIZED: 401,
+        STATUS_4XX_PAYMENT_REQUIRED: 402,
+        STATUS_4XX_FORBIDDEN: 403,
+        STATUS_4XX_NOT_FOUND: 404,
+        STATUS_4XX_METHOD_NOT_ALLOWED: 405,
+        STATUS_4XX_NOT_ACCEPTABLE: 406,
+        STATUS_4XX_PROXY_AUTHENTICATION_REQUIRED: 407,
+        STATUS_4XX_REQUEST_TIMEOUT: 408,
+        STATUS_4XX_CONFLICT: 409,
+        STATUS_4XX_GONE: 410,
+        STATUS_4XX_LENGTH_REQUIRED: 411,
+        STATUS_4XX_PRECONDITION_FAILED: 412,
+        STATUS_4XX_PAYLOAD_TOO_LARGE: 413,
+        STATUS_4XX_TOO_MANY_REQUESTS: 429,
+        STATUS_4XX_REQUEST_HEADER_FIELDS_TOO_LARGE: 431,
+        STATUS_4XX_UNAVAILABLE_FOR_LEGAL_REASONS: 451,
+        // 5xx
+        STATUS_5XX_INTERNAL_SERVER_ERROR: 500,
+        STATUS_5XX_NOT_IMPLEMENTED: 501,
+        STATUS_5XX_BAD_GATEWAY: 502,
+        STATUS_5XX_SERVICE_UNAVAILABLE: 503,
+        STATUS_5XX_GATEWAY_TIMEOUT: 504,
+        STATUS_5XX_HTTP_VERSION_NOT_SUPPORTED: 505,
+        STATUS_5XX_VARIANT_ALSO_NEGOTIATES: 506,
+        STATUS_5XX_INSUFFICIENT_STORAGE: 507,
+        STATUS_5XX_LOOP_DETECTED: 508,
+        STATUS_5XX_BANDWIDTH_LIMIT_EXCEEDED: 509,
+        STATUS_5XX_NOT_EXTENDED: 510,
+        STATUS_5XX_NETWORK_AUTHENTICATION_REQUIRED: 511,
+
+        // Not Status
+        NO_STATUS_DEFAULT: 'default',
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
      * @created_at 29/12/2022
      * @description size image
      * @param { "size"}
@@ -183,4 +251,62 @@ module.exports = {
      * @description Name DB
      */
     CLIENT_PG: 'pg',
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description Resize
+     */
+    PATH_RESIZE: '${path_image}_resized',
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description DELETE FLAG
+     */
+    DELETED_ENABLE: true,
+    DELETED_DISABLE: false,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description NAME HEADER
+     */
+    DEVICE_ID: 'X-DEVICE-ID',
+    OS_TYPE: 'X-OS-TYPE',
+    OS_VERSION: 'X-OS-VERSION',
+    APP_VERSION: 'X-APP-VERSION',
+    DEVICE_NAME: 'X-DEVICE-NAME',
+    HEADER_EMPTY: '',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description TYPE MEDIA
+     */
+    TYPE: {
+        IMAGE: {
+            JPEG: 'image/jpeg',
+            PNG: 'image/png',
+            GIF: 'image/gif',
+            WEBP: 'image/webp',
+        },
+        VIDEO: {
+            MP4: 'video/mp4',
+            _3PG: 'video/3gp',
+            OGG: 'video/ogg',
+            X_MS_VIDEO: 'video/x-msvideo',
+            QUICK_TIME: 'video/quicktime',
+        },
+        DOCUMENT: {
+            PDF: 'application/pdf',
+            MS_WORD: 'application/msword',
+            DOCUMENT: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            SHEET: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+        AUDIO: {
+            ACC: 'audio/aac',
+            MPEG: 'audio/mpeg',
+            OGG: 'audio/ogg',
+            WAV: 'audio/wav',
+        },
+    },
 };

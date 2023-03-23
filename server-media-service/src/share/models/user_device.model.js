@@ -1,6 +1,9 @@
 //! DATABASE
 const knex = require('../db/postgresql');
 
+//! SHARE
+const TABLES = require('../configs/tables');
+
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
@@ -9,7 +12,7 @@ module.exports = {
      */
     getDeviceId: (student_query, return_data) => {
         try {
-            const student = knex('user_device').select(return_data).where(student_query);
+            const student = knex(TABLES.USER_DEVICE).select(return_data).where(student_query);
             return student;
         } catch (error) {
             return error;
