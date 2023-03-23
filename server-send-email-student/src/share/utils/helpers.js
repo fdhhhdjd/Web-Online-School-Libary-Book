@@ -1,4 +1,6 @@
-const REGEX = require('../configs/regex')
+//! SHARE
+const REGEX = require('../configs/regex');
+
 module.exports = {
     /**
  * @author Nguyễn Tiến Tài
@@ -10,4 +12,4 @@ module.exports = {
     getURIFromTemplate(template, data) {
         return template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
     },
-}
+};

@@ -1,13 +1,17 @@
-//! Library
+//! LIBRARY
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 
-//! used library
+//! SHARE
+const CONFIGS = require('../share/configs/config');
+const CONSTANTS = require('../share/configs/constants');
+
+//! USED LIBRARY
 const app = express();
-if (process.env.NODE_ENV === 'PRODUCTION') {
+if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT) {
     app.enable('trust proxy');
 }
 app.use(helmet());
@@ -21,8 +25,8 @@ app.use(
 );
 app.use(
     compression({
-        level: 6,
-        threshold: 100 * 1000,
+        level: CONSTANTS.LEVEL,
+        threshold: CONSTANTS.THRESHOLD,
         filter: (req, res) => {
             if (req.headers['x-no-compression']) {
                 return false;
@@ -33,6 +37,6 @@ app.use(
 );
 
 //! Redis PubSub users
-require('./v1/redis_sub_queue')
+require('./v1/redis_sub_queue');
 
 module.exports = app;
