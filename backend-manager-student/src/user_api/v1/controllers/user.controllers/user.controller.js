@@ -1,4 +1,4 @@
-//! Share
+//! SHARE
 const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
 const PASSWORD = require('../../../../share/utils/password');
@@ -7,20 +7,21 @@ const TOKENS = require('../../../../share/utils/token');
 const MEMORY_CACHE = require('../../../../share/utils/limited_redis');
 const REDIS_PUB_SUB = require('../../../../share/utils/redis_pub_sub_helper');
 const RANDOMS = require('../../../../share/utils/random');
+const MESSAGES = require('../../../../share/configs/message');
 
-//! Model
+//! MODEL
 const user_model = require('../../../../share/models/user.model');
 const user_device_model = require('../../../../share/models/user_device.model');
 const user_reset_password_model = require('../../../../share/models/user_reset_password.model');
 const user_verification_model = require('../../../../share/models/user_verification.model');
 const phone_model = require('../../../../share/models/phone.model');
 
-//! Service
+//! SERVICE
 const geo_service = require('../../../../share/services/geo.service');
 const user_service = require('../../../../share/services/user_service/user_service');
 const verification_service = require('../../../../share/services/user_service/verification.service');
 
-//! Middleware
+//! MIDDLAWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 const userController = {
@@ -41,9 +42,12 @@ const userController = {
 
         // Check input mssv password
         if (!mssv || !password || !HELPER.isNumeric(mssv)) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -66,11 +70,11 @@ const userController = {
             };
             let users = await user_model.getStudentById(data_query, data_return);
             if (Array.isArray(users) && !users.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Student Not Exist!',
+                        result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
                     },
                 });
             }
@@ -90,11 +94,11 @@ const userController = {
                 const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_login_student);
 
                 if (time_ttl_cache) {
-                    return res.status(423).json({
-                        status: 423,
-                        message: returnReasons('423'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                         element: {
-                            result: 'Account of you block 24h!',
+                            result: MESSAGES.STUDENT.PAN_ACCOUNT_STUDENT,
                             time_full: time_ttl_cache,
                         },
                     });
@@ -116,12 +120,12 @@ const userController = {
                     MEMORY_CACHE.setAccountLoginWrongCache(key_block_login_student, CONSTANTS._1_DAY_S_REDIS);
                 }
 
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('401'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Password Is Incorrect ! ',
-                        number_login: `Warning number of logins ${user_service.calculationBlock(
+                        result: MESSAGES.GENERAL.PASSWORD_INCORRECT,
+                        number_login: `${MESSAGES.STUDENT.WARNING_LOGIN} ${user_service.calculationBlock(
                             student_count_login_api,
                             CONSTANTS.LIMIT_LOGIN_BLOCK,
                         )}`,
@@ -180,8 +184,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -211,10 +215,9 @@ const userController = {
             [err, result] = await HELPER.handleRequest(user_device_model.insertDevice(data_device_insert));
 
             if (err) {
-                console.error(err, '===== Database Fail=======');
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
 
@@ -223,9 +226,9 @@ const userController = {
                 if (student_count_login_api) {
                     MEMORY_CACHE.expiresKeyCache(key_block_login_student, CONSTANTS._30_MINUTES_REDIS);
                 }
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: {
                             access_token,
@@ -237,12 +240,11 @@ const userController = {
                 });
             }
         } catch (err) {
-            console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -289,11 +291,11 @@ const userController = {
 
                 // Check device null
                 if (Array.isArray(refetch_token_old) && !refetch_token_old.length) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                         element: {
-                            result: 'Device Not Found !',
+                            result: MESSAGES.GENERAL.NOTFOUND_DEVICE,
                         },
                     });
                 }
@@ -345,11 +347,11 @@ const userController = {
                         data_renew_token: refetch_token_old[0],
                     });
 
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                         element: {
-                            result: 'Invalid Token',
+                            result: MESSAGES.GENERAL.INVALID_TOKEN,
                         },
                     });
                 }
@@ -420,8 +422,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -437,9 +439,9 @@ const userController = {
                             // Update Device
                             user_device_model.updateDevice(data_device_update, result[0].user_id);
 
-                            return res.status(200).json({
-                                status: 200,
-                                message: returnReasons('200'),
+                            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                                 element: {
                                     result: {
                                         access_token,
@@ -457,11 +459,11 @@ const userController = {
                             // Remove Cookie
                             session.destroy();
 
-                            return res.status(401).json({
-                                status: 401,
-                                message: returnReasons('401'),
+                            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                                 element: {
-                                    result: 'Refresh_token Expired !!!!',
+                                    result: MESSAGES.GENERAL.REFETCH_TOKEN_EXPIRE,
                                 },
                             });
                         }
@@ -469,46 +471,47 @@ const userController = {
 
                     // Call Data Fail
                     if (err) {
-                        return res.status(500).json({
-                            status: 500,
-                            message: returnReasons('500'),
+                        return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                            status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                         });
                     }
 
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
-                        element: 'Token Fail !',
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                        element: {
+                            result: MESSAGES.GENERAL.TOKEN_EXPIRE,
+                        },
                     });
                 }
             } else {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Invalid Header',
+                        result: MESSAGES.GENERAL.INVALID_HEADER,
                     },
                 });
             }
         } catch (error) {
-            console.error(error);
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 04/02/2023
-     * @description Logout student
-     * @function logoutStudent
-     * @param { token }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 04/02/2023
+    * @description Logout student
+    * @function logoutStudent
+    * @param { token }
+    * @return { Object }
+    */
     logoutStudent: async (req, res) => {
         try {
             // Take accessToken header
@@ -533,48 +536,50 @@ const userController = {
                         // Remove Cookie
                         session.destroy();
 
-                        return res.status(200).json({
-                            status: 200,
-                            message: returnReasons('200'),
+                        return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                            status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                         });
                     }
                 })
                 .catch((err) => {
                     if (err) {
-                        return res.status(500).json({
-                            status: 500,
-                            message: returnReasons('500'),
+                        return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                            status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                         });
                     }
                 });
         } catch (err) {
-            console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 06/02/2023
-     * @description Profile student
-     * @function getProfileStudent
-     * @param { token }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 06/02/2023
+    * @description Profile student
+    * @function getProfileStudent
+    * @param { token }
+    * @return { Object }
+    */
     getProfileStudent: async (req, res) => {
         // Take user Id
         const user_id = req.auth_user.id;
 
         // Check user_id
         if (!user_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -607,9 +612,9 @@ const userController = {
 
             // If cache exit take cache else take database
             if (user_cache) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: JSON.parse(user_cache),
                     },
@@ -622,9 +627,12 @@ const userController = {
             // Check account exits
             const user = users[0];
             if (!user || user.length === 0) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
+                    },
                 });
             }
 
@@ -634,32 +642,31 @@ const userController = {
             // Save Cache
             MEMORY_CACHE.setCacheEx(key_profile_student, JSON.stringify(user), time_cache);
 
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 element: {
                     result: user,
                 },
             });
         } catch (err) {
-            console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 13/02/2023
-     * @description Change password student
-     * @function changePasswordStudent
-     * @param { password, oldPassword, confirmPassword }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 13/02/2023
+    * @description Change password student
+    * @function changePasswordStudent
+    * @param { password, oldPassword, confirmPassword }
+    * @return { Object }
+    */
     changePasswordStudent: async (req, res) => {
         const { password, oldPassword, confirmPassword } = req.body.input.user_change_password_input;
 
@@ -668,9 +675,12 @@ const userController = {
 
         // Check user_id
         if (!user_id || !password || !oldPassword || !confirmPassword) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -688,33 +698,33 @@ const userController = {
             // Check Password true or false
             const isMatch = await PASSWORD.comparePassword(oldPassword, user.password);
             if (!isMatch) {
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('401'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Wrong Password!',
+                        result: MESSAGES.GENERAL.PASSWORD_INCORRECT,
                     },
                 });
             }
 
             // Password difference confirmPassword
             if (password !== confirmPassword) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Password and confirm password does not match!',
+                        result: MESSAGES.GENERAL.PASSWORD_CONFIRM_INCORRECT,
                     },
                 });
             }
             // Check Password Security
             const password_security = PASSWORD.isPassword(password);
             if (!password_security) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                        result: MESSAGES.GENERAL.PASSWORD_NOT_BAD,
                     },
                 });
             }
@@ -759,39 +769,38 @@ const userController = {
                 // Remove Cookie
                 session.destroy();
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: 'Login session expired',
+                        result: MESSAGES.GENERAL.EXPIRED_SESSION_TOKEN,
                     },
                 });
             }
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('503'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (err) {
-            console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 13/02/2023
-     * @description Check password student
-     * @function checkPasswordStudent
-     * @param { password }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 13/02/2023
+    * @description Check password student
+    * @function checkPasswordStudent
+    * @param { password }
+    * @return { Object }
+    */
     checkPasswordStudent: async (req, res) => {
         const { password } = req.body.input.user_check_password_input;
 
@@ -800,9 +809,12 @@ const userController = {
 
         // Check user_id
         if (!user_id || !password) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -823,11 +835,11 @@ const userController = {
                 const time_ttl_cache = await MEMORY_CACHE.getExpirationTime(key_block_check_password_student);
 
                 if (time_ttl_cache) {
-                    return res.status(423).json({
-                        status: 423,
-                        message: returnReasons('423'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                         element: {
-                            result: 'Account of you block 24h!',
+                            result: MESSAGES.STUDENT.PAN_ACCOUNT_STUDENT,
                             time_full: time_ttl_cache,
                         },
                     });
@@ -862,12 +874,12 @@ const userController = {
                         CONSTANTS._30_MINUTES_REDIS,
                     );
                 }
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('401'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Wrong Password ! ',
-                        number_login: `Warning Times Enter Password ${user_service.calculationBlock(
+                        result: MESSAGES.GENERAL.PASSWORD_INCORRECT,
+                        number_login: `${MESSAGES.STUDENT.WARNING_PASSWORD} ${user_service.calculationBlock(
                             student_count_login_api,
                             CONSTANTS.LIMIT_CHECK_PASSWORD_BLOCK,
                         )}`,
@@ -877,38 +889,40 @@ const userController = {
             if (check_key_exit) {
                 MEMORY_CACHE.delKeyCache(key_block_check_password_student);
             }
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
             });
         } catch (err) {
-            console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
 
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 13/02/2023
-     * @description Forget password student
-     * @function forgetPasswordStudent
-     * @param { password }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 13/02/2023
+    * @description Forget password student
+    * @function forgetPasswordStudent
+    * @param { password }
+    * @return { Object }
+    */
     forgetPasswordStudent: async (req, res) => {
         const { email } = req.body.input.user_forget_password_input;
 
         // Check input
         if (!email) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -921,9 +935,12 @@ const userController = {
 
             // Check account exits
             if (Array.isArray(users) && !users.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
+                    },
                 });
             }
 
@@ -962,38 +979,35 @@ const userController = {
                         name: users[0].name,
                     },
                 });
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 });
             }
             if (err) {
-                return res.status(503).json({
-                    status: 503,
-                    message: returnReasons('503'),
-                    element: {
-                        result: 'Out Of Service',
-                    },
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 24/02/2023
-     * @description reset password student
-     * @function resetPasswordStudent
-     * @param { password }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 24/02/2023
+    * @description reset password student
+    * @function resetPasswordStudent
+    * @param { password }
+    * @return { Object }
+    */
     resetPasswordStudent: async (req, res) => {
         const { password, confirmPassword } = req.body.input.user_reset_password_input;
 
@@ -1002,9 +1016,12 @@ const userController = {
 
         // Check input
         if (!password || !confirmPassword || !token_reset) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -1016,22 +1033,22 @@ const userController = {
 
             // Check reset_password exits
             if (Array.isArray(data_reset) && !data_reset.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Link Reset NotFound !',
+                        result: MESSAGES.GENERAL.LINK_RESET_NOT_FOUND,
                     },
                 });
             }
 
             // Check Link Already change password
             if (data_reset[0].isdeleted === CONSTANTS.DELETED_ENABLE) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Password has been reset !',
+                        result: MESSAGES.GENERAL.PASSWORD_BEEN_RESET,
                     },
                 });
             }
@@ -1041,21 +1058,21 @@ const userController = {
 
             // Check token_reset
             if (check_token_reset) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Link Expired,Please change Link defense !',
+                        result: MESSAGES.GENERAL.LINK_RESET_EXPIRED,
                     },
                 });
             }
 
             if (password !== confirmPassword) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Password and confirm password does not match!',
+                        result: MESSAGES.GENERAL.PASSWORD_CONFIRM_INCORRECT,
                     },
                 });
             }
@@ -1063,11 +1080,11 @@ const userController = {
             // Check Password Security
             const password_security = PASSWORD.isPassword(password);
             if (!password_security) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                        result: MESSAGES.GENERAL.PASSWORD_NOT_BAD,
                     },
                 });
             }
@@ -1100,48 +1117,51 @@ const userController = {
                     { user_id: 'user_id' },
                 );
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 });
             }
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     element: {
-                        result: 'Reset Password Fail',
+                        result: MESSAGES.GENERAL.RESET_PASSWORD_FAIL,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 25/02/2023
-     * @updated_at 27/02/2023
-     * @description Check email
-     * @function checkEmailStudent
-     * @param { password }
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 25/02/2023
+    * @updated_at 27/02/2023
+    * @description Check email
+    * @function checkEmailStudent
+    * @param { password }
+    * @return { Object }
+    */
     checkEmailStudent: async (req, res) => {
         // Take user Id
         const { id, name, email } = req.auth_user;
 
         // Check user_id
         if (!id || !name || !email) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -1197,9 +1217,9 @@ const userController = {
                         }
                     }
                 }
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 });
             }
 
@@ -1223,11 +1243,11 @@ const userController = {
                     name,
                     email,
                 );
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Please check Email!',
+                        result: MESSAGES.GENERAL.PLEASE_CHECK_EMAIL,
                     },
                 });
             }
@@ -1255,50 +1275,53 @@ const userController = {
                     email,
                 );
 
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: 'Please check Email!',
+                        result: MESSAGES.GENERAL.PLEASE_CHECK_EMAIL,
                     },
                 });
             } else {
                 // Verification expire exit not send Email
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Link reset Exit Please check Email !',
+                        result: MESSAGES.GENERAL.ALREADY_EMAIL_CHECK_LINK,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
 
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 27/02/2023
-     * @description send Link Verification email
-     * @function sendEmailVerification
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 27/02/2023
+    * @description send Link Verification email
+    * @function sendEmailVerification
+    * @return { Object }
+    */
     sendEmailVerification: async (req, res) => {
         // Take user Id
         const { id, name, email } = req.auth_user;
 
         // Check user_id
         if (!id || !name || !email) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -1316,11 +1339,11 @@ const userController = {
 
             // Check Link already check verify
             if (check_email_verification_student_success.length > 0) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Link already check verify !!',
+                        result: MESSAGES.GENERAL.ALREADY_EMAIL_CHECK_LINK,
                     },
                 });
             }
@@ -1366,30 +1389,30 @@ const userController = {
                 );
             }
 
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 element: {
-                    result: 'Please check Email!',
+                    result: MESSAGES.GENERAL.PLEASE_CHECK_EMAIL,
                 },
             });
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 27/02/2023
-     * @description Update Link Verification email
-     * @function sendEmailVerification
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 27/02/2023
+    * @description Update Link Verification email
+    * @function sendEmailVerification
+    * @return { Object }
+    */
     updateVerificationEmailStudent: async (req, res) => {
         const user_id = req.params.user_id;
         const uniqueString = req.params.uniqueString;
@@ -1407,20 +1430,23 @@ const userController = {
 
         // Check Link already check verify
         if (check_email_verification_student_success.length > 0) {
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 element: {
-                    result: 'Link already check verify !!',
+                    result: MESSAGES.GENERAL.ALREADY_EMAIL_CHECK_LINK,
                 },
             });
         }
 
         // Check input
         if (!user_id || !uniqueString) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -1444,11 +1470,11 @@ const userController = {
                 { verify_id: 'verify_id' },
             );
 
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 element: {
-                    result: 'Link expired !!',
+                    result: MESSAGES.GENERAL.LINK_RESET_EXPIRED,
                 },
             });
         }
@@ -1460,30 +1486,35 @@ const userController = {
             { verify_id: 'verify_id' },
         );
 
-        return res.status(200).json({
-            status: 200,
-            message: returnReasons('200'),
+        return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+            status: CONSTANTS.HTTP.STATUS_2XX_OK,
+            message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
         });
     },
     /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 09/03/2023
-     * @description Update Profile Student
-     * @function updateProfileStudent
-     * @return { Object }
-     */
+    * @author Nguyễn Tiến Tài
+    * @created_at 09/03/2023
+    * @description Update Profile Student
+    * @function updateProfileStudent
+    * @return { Object }
+    */
     updateProfileStudent: async (req, res) => {
         // Take user Id
         const { id } = req.auth_user;
 
         // Input body
-        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.user_update_profile_input;
+        const {
+            name, avatar_uri, public_id_avatar, address, dob, gender,
+        } = req.body.input.user_update_profile_input;
 
         // Check user_id
         if (!id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -1495,9 +1526,12 @@ const userController = {
             || (address !== undefined && address.trim() === '')
             || (dob !== undefined && dob.trim() === '')
         ) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Please provide non-empty values for all fields',
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_MUTILP_FIELD,
+                },
             });
         }
 
@@ -1506,9 +1540,12 @@ const userController = {
 
         // Compare date  dob and date now
         if (birthday >= today) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Invalid date of birth',
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_DATE,
+                },
             });
         }
 
@@ -1540,28 +1577,25 @@ const userController = {
                 // Del key redis cache
                 MEMORY_CACHE.delKeyCache(key_profile_student);
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 });
             }
 
             // Update fail
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
-                    element: {
-                        result: 'Update profile Fail !',
-                    },
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }

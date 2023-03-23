@@ -2,10 +2,13 @@
 const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
 const RANDOMS = require('../../../../share/utils/random');
+const MESSAGES = require('../../../../share/configs/message');
 const MEMORY_CACHE = require('../../../../share/utils/limited_redis');
+
 //! MIDDLEWARE
 const { globalCache } = require('../../../../share/patterns/LRU_Strategy.patterns');
 const { returnReasons } = require('../../../../share/middleware/handle_error');
+
 //! MODEL
 const book_model = require('../../../../share/models/book.model');
 const book_admin_service = require('../../../../share/services/admin_service/book_service');
@@ -23,9 +26,12 @@ const bookController = {
 
         // Check input
         if (!book_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -37,9 +43,9 @@ const bookController = {
             // detail book database
             const cache_lru_book = globalCache.getCache(key_cache_book_detail);
             if (cache_lru_book !== CONSTANTS.NO) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: cache_lru_book,
                     },
@@ -55,20 +61,20 @@ const bookController = {
                 // Add data cache lru argothim
                 book_admin_service.handleSetCacheLRU(key_cache_book_detail, result_book_detail[0]);
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_book_detail[0],
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -85,9 +91,9 @@ const bookController = {
             // Detail book database
             const cache_redis_book = await MEMORY_CACHE.getCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
             if (cache_redis_book) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: JSON.parse(cache_redis_book),
                     },
@@ -101,20 +107,20 @@ const bookController = {
                 // Add data redis
                 book_admin_service.handleSetCacheRedis(CONSTANTS.KEY_REDIS.ALL_BOOK, result_book, redisTTLWithRandom);
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_book,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
