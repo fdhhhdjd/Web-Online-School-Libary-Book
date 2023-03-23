@@ -1,5 +1,7 @@
 //! SHARE
 const CONSTANTS = require('../../../../share/configs/constants');
+const MESSAGES = require('../../../../share/configs/message');
+
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 
@@ -12,15 +14,18 @@ const authorController = {
      * @created_at 07/03/2022
      * @description detail Author
      * @function getDetailAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getDetailAuthor: async (req, res) => {
         const author_id = req.params.author_id;
         // Check input
         if (!author_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -30,20 +35,20 @@ const authorController = {
                 '*',
             );
             if (result_author_detail) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_author_detail[0],
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -60,20 +65,20 @@ const authorController = {
             // detail author database
             const result_author_detail = await author_model.getAllAuthor({ isdeleted: CONSTANTS.DELETED_DISABLE }, '*');
             if (result_author_detail) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_author_detail,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }

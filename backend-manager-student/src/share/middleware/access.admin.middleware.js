@@ -1,12 +1,14 @@
-//! Share
+//! SHARE
 const HELPER = require('../utils/helper');
 const TOKENS = require('../utils/token');
 const PASSWORD = require('../utils/password');
+const CONSTANTS = require('../configs/constants');
+const MESSAGES = require('../configs/message');
 
-//! Model Database
+//! MODEL
 const user_device_model = require('../models/user_device.model');
 
-//! Handle Error
+//! HANDLE ERROR
 const { returnReasons } = require('./handle_error');
 
 /**
@@ -30,11 +32,11 @@ const accessAdminMiddleware = async (req, res, next) => {
 
     // Check Token
     if (!refresh_token_cookie || !accessToken) {
-        return res.status(401).json({
-            status: 401,
-            message: returnReasons('401'),
+        return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+            status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+            message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
             element: {
-                result: 'Unauthorized',
+                result: MESSAGES.GENERAL.INVALID_UNAUTHORIZED,
             },
         });
     }
@@ -51,9 +53,9 @@ const accessAdminMiddleware = async (req, res, next) => {
 
         // Check data null
         if (Array.isArray(data_device) && !data_device.length) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
             });
         }
 
@@ -67,11 +69,11 @@ const accessAdminMiddleware = async (req, res, next) => {
         let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
 
         if (!check_access_token) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'Expired Token',
+                    result: MESSAGES.GENERAL.TOKEN_EXPIRE,
                 },
             });
         }
@@ -82,9 +84,12 @@ const accessAdminMiddleware = async (req, res, next) => {
         // Continue
         return next();
     } catch (error) {
-        return res.status(503).json({
-            status: 503,
-            message: returnReasons('503'),
+        return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+            status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+            element: {
+                result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+            },
         });
     }
 };

@@ -2,6 +2,7 @@
 const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
 const RANDOMS = require('../../../../share/utils/random');
+const MESSAGES = require('../../../../share/configs/message');
 
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
@@ -30,9 +31,12 @@ const BorrowBookController = {
         const { id } = req.auth_user;
 
         if (!book_id || !id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -42,11 +46,11 @@ const BorrowBookController = {
                 { book_id: 'book_id', status: 'status' },
             );
             if (check_borrow_book.length >= 2) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'You can only borrow tow book! ',
+                        result: MESSAGES.GENERAL.EXITS_CAN_ONLY_TOW_BORROW,
                     },
                 });
             }
@@ -59,18 +63,18 @@ const BorrowBookController = {
                 let result_borrow;
                 switch (data_borrow_book[0].status) {
                     case CONSTANTS.STATUS_BORROW.PENDING:
-                        result_borrow = 'Book already borrow !!';
+                        result_borrow = MESSAGES.GENERAL.ALREADY_BOOK_BORROW;
                         break;
                     case CONSTANTS.STATUS_BORROW.BORROWING:
-                        result_borrow = 'Please return the book !!';
+                        result_borrow = MESSAGES.GENERAL.PLEASE_REFUND_BOOK;
                         break;
                     default:
-                        result_borrow = 'Fail';
+                        result_borrow = MESSAGES.GENERAL.BORROW_FAIL;
                         break;
                 }
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
                         result: result_borrow,
                     },
@@ -84,20 +88,20 @@ const BorrowBookController = {
             );
 
             if (!data_book.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 });
             }
 
             // Check quantity book
             const check_quantity_book = await book_service.handleCheckQuantityBook(data_book[0]);
             if (check_quantity_book) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Book Out Of Stock',
+                        result: MESSAGES.GENERAL.BOOK_OUT_OF_STOCK,
                     },
                 });
             }
@@ -131,30 +135,27 @@ const BorrowBookController = {
                 // Delete Cache
                 book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: 'Invite you go to Library confirm,Thank',
+                        result: MESSAGES.GENERAL.SUCCESS_BORROW_BOOK_SUCCESS,
                     },
                 });
             }
             // Insert or update error
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
-                    element: {
-                        result: 'Borrow book Fail!',
-                    },
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }

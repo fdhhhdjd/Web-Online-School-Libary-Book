@@ -1,16 +1,17 @@
-// Share
+//! SHARE
 const HELPER = require('../utils/helper');
 const TOKENS = require('../utils/token');
 const CONSTANTS = require('../configs/constants');
 const PASSWORD = require('../utils/password');
+const MESSAGES = require('../configs/message');
 
-// Cache
+//! CACHE
 const MEMORY_CACHE = require('../utils/limited_redis');
 
-// Model Database
+//! MODEL
 const user_device_model = require('../models/user_device.model');
 
-// Handle Error
+//! HANDLE ERROR
 const { returnReasons } = require('./handle_error');
 
 /**
@@ -35,11 +36,11 @@ const accessStudentMiddleware = async (req, res, next) => {
 
         // Check header authorization
         if (!refresh_token_cookie || !accessToken) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'Unauthorized',
+                    result: MESSAGES.GENERAL.INVALID_UNAUTHORIZED,
                 },
             });
         }
@@ -55,11 +56,11 @@ const accessStudentMiddleware = async (req, res, next) => {
 
         // Check data null
         if (Array.isArray(data_device) && !data_device.length) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 element: {
-                    result: 'Device Not Found !',
+                    result: MESSAGES.GENERAL.NOTFOUND_DEVICE,
                 },
             });
         }
@@ -70,11 +71,11 @@ const accessStudentMiddleware = async (req, res, next) => {
         // Check time Expired token
         let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
         if (!check_access_token) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'Expired Token',
+                    result: MESSAGES.GENERAL.TOKEN_EXPIRE,
                 },
             });
         }
@@ -84,11 +85,11 @@ const accessStudentMiddleware = async (req, res, next) => {
 
         // Check is Student
         if (auth_user_decode?.role !== 0) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'You not is student!',
+                    result: MESSAGES.STUDENT.ROLE_STUDENT,
                 },
             });
         }
@@ -104,11 +105,11 @@ const accessStudentMiddleware = async (req, res, next) => {
             const check_exits_access_token = token_black_set.has(accessToken);
 
             if (check_exits_refresh_token || check_exits_access_token) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Invalid Token',
+                        result: MESSAGES.GENERAL.INVALID_TOKEN,
                     },
                 });
             }
@@ -120,17 +121,17 @@ const accessStudentMiddleware = async (req, res, next) => {
             // Continue
             next();
         } catch (error) {
-            return res.status(500).json({
-                status: 500,
-                message: returnReasons('500'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
             });
         }
     } catch (error) {
-        return res.status(503).json({
-            status: 503,
-            message: returnReasons('503'),
+        return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+            status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
             element: {
-                result: 'Out Of Service',
+                result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
             },
         });
     }
