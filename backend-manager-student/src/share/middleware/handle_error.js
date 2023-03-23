@@ -1,3 +1,4 @@
+//! SHARE
 const CONSTANTS = require('../configs/constants');
 
 module.exports = {
@@ -9,6 +10,5 @@ module.exports = {
      * @param { code }
      * @return { String }
      */
-    returnReasons: (code) =>
-        CONSTANTS.reasonPhraseCodeProNewMap().get(code) || CONSTANTS.reasonPhraseCodeProNewMap().get('default'),
+    returnReasons: (code) => CONSTANTS.reasonPhraseCodeProNewMap().get(code.toString()) || CONSTANTS.reasonPhraseCodeProNewMap().get(CONSTANTS.HTTP.NO_STATUS_DEFAULT),
 };

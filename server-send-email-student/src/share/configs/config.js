@@ -24,4 +24,11 @@ module.exports = {
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_USER: process.env.REDIS_USER,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 23/03/2023
+     * @description ENVIRONMENT
+     */
+    NODE_ENV: process.env.NODE_ENV,
 };

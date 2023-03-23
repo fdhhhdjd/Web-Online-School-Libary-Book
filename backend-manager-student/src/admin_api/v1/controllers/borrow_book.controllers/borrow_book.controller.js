@@ -1,6 +1,7 @@
 //! SHARE
 const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
+const MESSAGES = require('../../../../share/configs/message');
 
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
@@ -21,13 +22,18 @@ const BorrowBookController = {
      * @return {Object:{Number,String}
      */
     updateBorrowBook: async (req, res) => {
-        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
+        const {
+            book_id, user_id, start_date, due_date, status,
+        } = req.body.input.borrow_book_input;
 
         // Check input
         if (!book_id || !user_id || !start_date || !due_date || !status) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         const data_update = {
@@ -46,18 +52,21 @@ const BorrowBookController = {
             );
 
             if (!data_book.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.EXITS_NOT_BOOK,
+                    },
                 });
             }
 
             if (data_book[0].status === status) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Already update borrow book !',
+                        result: MESSAGES.GENERAL.EXITS_UPDATE_BORROW,
                     },
                 });
             }
@@ -73,18 +82,18 @@ const BorrowBookController = {
                     ),
                 );
                 if (result) {
-                    return res.status(200).json({
-                        status: 200,
-                        message: returnReasons('200'),
+                    return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                        status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                         element: {
-                            result: 'Update Student borrow book success !',
+                            result: MESSAGES.GENERAL.SUCCESS_UPDATE_BORROW,
                         },
                     });
                 }
                 if (err) {
-                    return res.status(500).json({
-                        status: 500,
-                        message: returnReasons('500'),
+                    return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                        status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     });
                 }
             } else if (status === CONSTANTS.STATUS_BORROW.DONE) {
@@ -115,31 +124,34 @@ const BorrowBookController = {
                     // Delete Cache
                     book_admin_service.handleDeleteCache(key_cache_book_detail, CONSTANTS.KEY_REDIS.ALL_BOOK);
 
-                    return res.status(200).json({
-                        status: 200,
-                        message: returnReasons('200'),
+                    return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                        status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                         element: {
-                            result: 'Update Student return book success !',
+                            result: MESSAGES.GENERAL.SUCCESS_UPDATE_BORROW_STUDENT_REFUND,
                         },
                     });
                 }
                 if (err) {
-                    return res.status(500).json({
-                        status: 500,
-                        message: returnReasons('500'),
+                    return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                        status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     });
                 }
             }
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.NOTFOUND,
+                },
             });
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -149,7 +161,7 @@ const BorrowBookController = {
      * @created_at 09/03/2022
      * @description Get All Borrowed Book
      * @function borrowBook
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getAllBorrowBook: async (req, res) => {
         try {
@@ -157,20 +169,20 @@ const BorrowBookController = {
             const result_borrow_book = await borrow_book_model.getBorrowBook();
 
             if (result_borrow_book) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_borrow_book,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -187,9 +199,12 @@ const BorrowBookController = {
 
         // Check input
         if (!borrowed_book_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -197,20 +212,20 @@ const BorrowBookController = {
             const result_borrow_book_detail = await borrow_book_model.getBorrowBook(borrowed_book_id);
 
             if (result_borrow_book_detail) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_borrow_book_detail,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }

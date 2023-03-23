@@ -5,6 +5,7 @@ const RANDOMS = require('../../../../share/utils/random');
 const CONSTANTS = require('../../../../share/configs/constants');
 const TOKENS = require('../../../../share/utils/token');
 const CONFIGS = require('../../../../share/configs/config');
+const MESSAGES = require('../../../../share/configs/message');
 
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
@@ -39,9 +40,12 @@ const adminController = {
         let { device_id } = req.device;
         // Check input mssv password
         if (!mssv || !password || !HELPER.isNumeric(mssv)) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -67,11 +71,11 @@ const adminController = {
 
             // CHECK DATA ARRAY
             if (Array.isArray(admins) && !admins.length) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Admin Not Exist!',
+                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
                     },
                 });
             }
@@ -82,11 +86,11 @@ const adminController = {
             // Check password student
             const check_pass = await PASSWORD.comparePassword(password, admin.password);
             if (!check_pass) {
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('401'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Password Is Incorrect ! ',
+                        result: MESSAGES.GENERAL.PASSWORD_INCORRECT,
                     },
                 });
             }
@@ -118,8 +122,8 @@ const adminController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -150,16 +154,16 @@ const adminController = {
 
             if (err) {
                 console.error(err, '===== Database Fail=======');
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
 
             if (result) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: {
                             access_token,
@@ -172,9 +176,12 @@ const adminController = {
             }
         } catch (err) {
             console.error(err, '------Fail');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
             });
         }
     },
@@ -263,8 +270,8 @@ const adminController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -281,9 +288,9 @@ const adminController = {
                             await HELPER.handleRequest(
                                 user_device_model.updateDevice(data_device_update, result[0].user_id),
                             );
-                            return res.status(200).json({
-                                status: 200,
-                                message: returnReasons('200'),
+                            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                                 element: {
                                     result: {
                                         access_token,
@@ -301,11 +308,11 @@ const adminController = {
                             // Remove Cookie
                             session.destroy();
 
-                            return res.status(401).json({
-                                status: 401,
-                                message: returnReasons('401'),
+                            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                                 element: {
-                                    result: 'Refresh_token Expired !!!!',
+                                    result: MESSAGES.GENERAL.REFETCH_TOKEN_EXPIRE,
                                 },
                             });
                         }
@@ -313,34 +320,35 @@ const adminController = {
 
                     // Call Data Fail
                     if (err) {
-                        return res.status(500).json({
-                            status: 500,
-                            message: returnReasons('500'),
+                        return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                            status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                         });
                     }
 
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
-                        element: 'Token Fail !',
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
+                        element: {
+                            result: MESSAGES.GENERAL.TOKEN_EXPIRE,
+                        },
                     });
                 }
             } else {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Invalid Header',
+                        result: MESSAGES.GENERAL.INVALID_HEADER,
                     },
                 });
             }
         } catch (error) {
-            console.error(error);
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -359,17 +367,17 @@ const adminController = {
             // Remove cookie
             res.clearCookie(CONFIGS.KEY_COOKIE_ADMIN);
 
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
             });
         } catch (err) {
             console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -401,11 +409,11 @@ const adminController = {
                 const check_phone = HELPER.validatePhone(student.phone);
 
                 if (!check_email || !check_phone) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: returnReasons('400'),
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                         element: {
-                            result: 'Invalid email or phone number!',
+                            result: MESSAGES.GENERAL.INVALID_EMAIL_PHONE,
                         },
                     });
                 }
@@ -434,23 +442,23 @@ const adminController = {
                         class: student.class,
                         email: student.email,
                         gender:
-                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
-                                ? CONSTANTS.GENDER_MALE
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING ?
+                                CONSTANTS.GENDER_MALE
                                 : CONSTANTS.GENDER_FEMALE,
                         avatar_uri:
-                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
-                                ? CONSTANTS.GENDER_IMAGE_MALE
+                            student.gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING ?
+                                CONSTANTS.GENDER_IMAGE_MALE
                                 : CONSTANTS.GENDER_IMAGE_FEMALE,
                     });
                 }
             }
             const arr_length = upsert_student.length === 0;
             if (arr_length) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_CONFLICT).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_CONFLICT,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_CONFLICT),
                     element: {
-                        result: 'Nothing changes to update',
+                        result: MESSAGES.GENERAL.CONFLICT_ADD_STUDENT,
                     },
                 });
             }
@@ -466,27 +474,30 @@ const adminController = {
             // error rollback data
             if (err) {
                 trx.rollback();
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Email or Phone or Email or Mssv exits !',
+                        result: MESSAGES.GENERAL.EXITS_EMAIL_PHONE,
                     },
                 });
             }
             // commit transaction succcess
             trx.commit();
-            return res.status(201).json({
-                status: 201,
-                message: returnReasons('201'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 element: {
                     result: data,
                 },
             });
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
             });
         }
     },
@@ -504,9 +515,12 @@ const adminController = {
 
         // Check admin_id
         if (!admin_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -539,9 +553,9 @@ const adminController = {
 
             // If cache exit take cache else take database
             if (admin_cache) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: JSON.parse(admin_cache),
                     },
@@ -554,9 +568,12 @@ const adminController = {
             // Check account exits
             const admin = admins[0];
             if (!admin || admin.length === 0) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
+                    },
                 });
             }
 
@@ -566,20 +583,20 @@ const adminController = {
             // Save Cache
             MEMORY_CACHE.setCacheEx(key_profile_admin, JSON.stringify(admin), time_cache);
 
-            return res.status(200).json({
-                status: 200,
-                message: returnReasons('200'),
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 element: {
                     result: admin,
                 },
             });
         } catch (err) {
             console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -597,13 +614,18 @@ const adminController = {
         const { id } = req.auth_user;
 
         // Input body
-        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.admin_update_profile_input;
+        const {
+            name, avatar_uri, public_id_avatar, address, dob, gender,
+        } = req.body.input.admin_update_profile_input;
 
         // Check id admin
         if (!id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
@@ -615,9 +637,12 @@ const adminController = {
             || (address !== undefined && address.trim() === '')
             || (dob !== undefined && dob.trim() === '')
         ) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Please provide non-empty values for all fields',
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_MUTILP_FIELD,
+                },
             });
         }
 
@@ -626,9 +651,12 @@ const adminController = {
 
         // Compare date  dob and date now
         if (birthday >= today) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Invalid date of birth',
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_DATE,
+                },
             });
         }
 
@@ -660,28 +688,25 @@ const adminController = {
                 // Del key Redis cache
                 MEMORY_CACHE.delKeyCache(key_profile_admin);
 
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                 });
             }
 
             // Update fail
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
-                    element: {
-                        result: 'Update profile Fail !',
-                    },
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -703,9 +728,12 @@ const adminController = {
 
         // Check admin_id
         if (!admin_id || !password || !oldPassword || !confirmPassword) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -723,33 +751,33 @@ const adminController = {
             // Check Password true or false
             const isMatch = await PASSWORD.comparePassword(oldPassword, admin.password);
             if (!isMatch) {
-                return res.status(401).json({
-                    status: 401,
-                    message: returnReasons('401'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                     element: {
-                        result: 'Wrong Password!',
+                        result: MESSAGES.GENERAL.PASSWORD_INCORRECT,
                     },
                 });
             }
 
             // Password difference confirmPassword
             if (password !== confirmPassword) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Password and confirm password does not match!',
+                        result: MESSAGES.GENERAL.PASSWORD_CONFIRM_INCORRECT,
                     },
                 });
             }
             // Check Password Security
             const password_security = PASSWORD.isPassword(password);
             if (!password_security) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Includes 6 characters, uppercase, lowercase and some and special characters.',
+                        result: MESSAGES.GENERAL.PASSWORD_NOT_BAD,
                     },
                 });
             }
@@ -774,11 +802,11 @@ const adminController = {
             let result;
             [err, result] = await HELPER.handleRequest(user_model.updateStudent(data, data_query, data_return));
             if (result) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: 'Change Password Success',
+                        result: MESSAGES.GENERAL.SUCCESS_CHANGE_PASSWORD,
                     },
                 });
             }
@@ -790,11 +818,11 @@ const adminController = {
             }
         } catch (err) {
             console.error(err, '===== Server Fail =====');
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
