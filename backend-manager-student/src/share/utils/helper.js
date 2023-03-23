@@ -28,19 +28,17 @@ module.exports = {
     validateEmail(email) {
         const re = REGEX.REGEX_EMAIL;
 
-        const emailParts = email.split('@');
+        if (!re.test(String(email).toLowerCase())) return false;
 
+        const emailParts = email.split('@');
         if (emailParts.length !== 2) return false;
 
         const account = emailParts[0];
         const address = emailParts[1];
-        if (account.length > 64) return false;
-
-        if (address.length > 255) return false;
+        if (account.length > 64 || address.length > 255) return false;
 
         const domainParts = address.split('.');
         if (domainParts.some((part) => part.length > 63)) return false;
-        if (!re.test(String(email).toLowerCase())) return false;
 
         return true;
     },
@@ -97,17 +95,19 @@ module.exports = {
      * @author Nguyễn Tiến Tài
      * @param {Request.headers} headers
      * @created_at 17/12/2022
+     * @updated_at 22/03/2022
      * @description validate device
      * @returns {object}
      */
     getDeviceFromHeaders(headers) {
+        const getHeader = (key) => headers[key.toLowerCase()] || '';
+
         const device = {
-            device_id: headers['X-DEVICE-ID'] || headers['x-device-id'],
-            os_type: headers['X-OS-TYPE'] || headers['x-os-type'],
-            os_version: headers['X-OS-VERSION'] || headers['x-os-version'],
-            app_version: headers['X-APP-VERSION'] || headers['x-app-version'],
-            device_name: headers['X-DEVICE-NAME'] || headers['x-device-name'] || '',
-            // ip: headers['X-FORWARDED-FOR'] || headers['x-forwarded-for'] || '',
+            device_id: getHeader('X-DEVICE-ID'),
+            os_type: getHeader('X-OS-TYPE'),
+            os_version: getHeader('X-OS-VERSION'),
+            app_version: getHeader('X-APP-VERSION'),
+            device_name: getHeader('X-DEVICE-NAME'),
         };
 
         if (device.device_id && device.os_type && device.os_version && device.app_version) {

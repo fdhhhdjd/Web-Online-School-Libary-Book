@@ -3,13 +3,15 @@ const { Sonyflake } = require('sonyflake');
 
 //! SHARE
 const TOKENS = require('../../share/utils/token')
+const CONSTANTS = require('../configs/constants')
+const CONFIGS = require('../configs/config')
 /**
 * @author Nguyễn Tiến Tài
 * @created_at 12/01/2023
 * @description algorithm number
 * @return {Number}
 */
-const machineNo = process.env.MACHINE_NO || 0 // default 0: first process
+const machineNo = CONFIGS.MACHINE_NO || 0 // default 0: first process
 const epoch_date = Date.UTC(2020, 01, 01, 0, 0, 0)
 
 const SONYFLAKE_IMG = new Sonyflake({
@@ -36,11 +38,11 @@ module.exports = {
     * @return {Number}
     */
     createID: (type) => {
-        if (type == 'image') return SONYFLAKE_IMG.nextId();
-        else if (type == 'video') return SONYFLAKE_VID.nextId();
-        else if (type == 'audio') return SONYFLAKE_AUD.nextId();
+        if (type === CONSTANTS.MIME_IMAGE) return SONYFLAKE_IMG.nextId();
+        else if (type === CONSTANTS.MIME_VIDEO) return SONYFLAKE_VID.nextId();
+        else if (type === CONSTANTS.MIME_AUDIO) return SONYFLAKE_AUD.nextId();
 
-        return false
+        return CONSTANTS.DELETED_DISABLE
     },
     /**
     * @author Nguyễn Tiến Tài
@@ -50,13 +52,14 @@ module.exports = {
     * @returns {object}
     */
     getDeviceFromHeaders(headers) {
+        const getHeader = (key) => headers[key.toLowerCase()] || CONSTANTS.HEADER_EMPTY;
+
         const device = {
-            device_id: headers['X-DEVICE-ID'] || headers['x-device-id'],
-            os_type: headers['X-OS-TYPE'] || headers['x-os-type'],
-            os_version: headers['X-OS-VERSION'] || headers['x-os-version'],
-            app_version: headers['X-APP-VERSION'] || headers['x-app-version'],
-            device_name: headers['X-DEVICE-NAME'] || headers['x-device-name'] || '',
-            // ip: headers['X-FORWARDED-FOR'] || headers['x-forwarded-for'] || '',
+            device_id: getHeader(CONSTANTS.DEVICE_ID),
+            os_type: getHeader(CONSTANTS.OS_TYPE),
+            os_version: getHeader(CONSTANTS.OS_VERSION),
+            app_version: getHeader(CONSTANTS.APP_VERSION),
+            device_name: getHeader(CONSTANTS.DEVICE_NAME),
         };
 
         if (device.device_id && device.os_type && device.os_version && device.app_version) {
@@ -79,11 +82,11 @@ module.exports = {
             // Check if token has expired
             const currentTime = Math.floor(Date.now() / 1000);
             if (decoded.exp < currentTime) {
-                return false;
+                return CONSTANTS.DELETED_DISABLE;
             }
-            return true;
+            return CONSTANTS.DELETED_ENABLE;
         } catch (err) {
-            return false;
+            return CONSTANTS.DELETED_DISABLE;
         }
     }
 }

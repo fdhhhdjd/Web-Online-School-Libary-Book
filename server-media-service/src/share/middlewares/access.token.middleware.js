@@ -2,6 +2,8 @@
 const HELPER = require('../utils/helper');
 const TOKENS = require('../utils/token');
 const PASSWORD = require('../utils/password');
+const CONSTANTS = require('../configs/constants');
+const MESSAGES = require('../configs/message');
 
 //! DATABASE
 const user_device_model = require('../models/user_device.model');
@@ -12,12 +14,13 @@ const { returnReasons } = require('./handle_error');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 03/01/2023
+ * @updated_at 23/03/2023
  * @description Check Middlawre
  * @function accessTokenMiddleware
  */
 const accessTokenMiddleware = async (req, res, next) => {
     // Date Now
-    let now = new Date();
+    const now = new Date();
 
     // Log request
     console.info('[Request Time]:', now.toLocaleTimeString(), req.baseUrl, req.body, req.query);
@@ -25,14 +28,13 @@ const accessTokenMiddleware = async (req, res, next) => {
     // Take accessToken at headers
     const accessToken = req.headers.authorization.split(' ')[1];
     try {
-
         // Check header authorization
         if (!accessToken) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'Unauthorized',
+                    result: MESSAGES.MEDIA.NO_AUTHORIZATION,
                 },
             });
         }
@@ -48,9 +50,9 @@ const accessTokenMiddleware = async (req, res, next) => {
 
         // Check data null
         if (Array.isArray(data_device) && !data_device.length) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
             });
         }
 
@@ -58,33 +60,31 @@ const accessTokenMiddleware = async (req, res, next) => {
         const publicKey = PASSWORD.decodePemPubKey(data_device[0].public_key);
 
         // Take info from token
-        let auth_general_decode = TOKENS.verifyAccessToken(accessToken, publicKey);
+        const auth_general_decode = TOKENS.verifyAccessToken(accessToken, publicKey);
 
         // Check time Expired token
-        let check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
+        const check_access_token = HELPER.isAccessTokenValid(accessToken, publicKey);
         if (!check_access_token) {
-            return res.status(401).json({
-                status: 401,
-                message: returnReasons('401'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_UNAUTHORIZED),
                 element: {
-                    result: 'Expired Token',
+                    result: MESSAGES.MEDIA.NO_EXPIRED_TOKEN,
                 },
             });
         }
-
 
         req.auth_general = auth_general_decode;
 
         // Continue
         return next();
-
     } catch (error) {
-        console.log(error)
-        return res.status(503).json({
-            status: 503,
-            message: returnReasons('503'),
+        console.log(error);
+        return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+            status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+            message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
             element: {
-                result: 'Out Of Service',
+                result: MESSAGES.MEDIA.NO_SERVER_OUT_OF_SERVICE,
             },
         });
     }
