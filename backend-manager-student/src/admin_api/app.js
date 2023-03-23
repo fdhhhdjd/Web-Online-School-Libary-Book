@@ -39,10 +39,14 @@ app.use(
     session({
         store: new RedisStore({ client: REDIS_MASTER }),
         secret: CONFIGS.KEY_SESSION,
-        resave: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? CONSTANTS.DELETED_ENABLE : CONSTANTS.DELETED_DISABLE,
+        resave:
+            CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? CONSTANTS.DELETED_ENABLE : CONSTANTS.DELETED_DISABLE,
         saveUninitialized: CONSTANTS.DELETED_ENABLE,
         cookie: {
-            secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? CONSTANTS.DELETED_ENABLE : CONSTANTS.DELETED_DISABLE,
+            secure:
+                CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                    ? CONSTANTS.DELETED_ENABLE
+                    : CONSTANTS.DELETED_DISABLE,
             httpOnly: CONSTANTS.DELETED_ENABLE,
             maxAge: CONSTANTS._1_HOURS_S,
         },

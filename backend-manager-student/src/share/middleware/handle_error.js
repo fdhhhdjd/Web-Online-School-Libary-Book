@@ -10,5 +10,7 @@ module.exports = {
      * @param { code }
      * @return { String }
      */
-    returnReasons: (code) => CONSTANTS.reasonPhraseCodeProNewMap().get(code.toString()) || CONSTANTS.reasonPhraseCodeProNewMap().get(CONSTANTS.HTTP.NO_STATUS_DEFAULT),
+    returnReasons: (code) =>
+        CONSTANTS.reasonPhraseCodeProNewMap().get(code.toString())
+        || CONSTANTS.reasonPhraseCodeProNewMap().get(CONSTANTS.HTTP.NO_STATUS_DEFAULT),
 };
