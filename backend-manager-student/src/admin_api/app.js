@@ -39,11 +39,11 @@ app.use(
     session({
         store: new RedisStore({ client: REDIS_MASTER }),
         secret: CONFIGS.KEY_SESSION,
-        resave: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
-        saveUninitialized: true,
+        resave: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? CONSTANTS.DELETED_ENABLE : CONSTANTS.DELETED_DISABLE,
+        saveUninitialized: CONSTANTS.DELETED_ENABLE,
         cookie: {
-            secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
-            httpOnly: true,
+            secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? CONSTANTS.DELETED_ENABLE : CONSTANTS.DELETED_DISABLE,
+            httpOnly: CONSTANTS.DELETED_ENABLE,
             maxAge: CONSTANTS._1_HOURS_S,
         },
     }),
@@ -53,10 +53,10 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: CONSTANTS.DELETED_ENABLE }));
 app.use(
     fileUpload({
-        useTempFiles: true,
+        useTempFiles: CONSTANTS.DELETED_ENABLE,
     }),
 );
 app.use(
@@ -70,7 +70,7 @@ app.use(
         threshold: CONSTANTS.COMPRESSION_ZIP_SEND_THRESHOLD,
         filter: (req, res) => {
             if (req.headers[CONSTANTS.COMPRESSION_ZIP_SEND_SERVER]) {
-                return false;
+                return CONSTANTS.DELETED_DISABLE;
             }
             return compression.filter(req, res);
         },

@@ -2,6 +2,7 @@
 const HELPER = require('../../../../share/utils/helper');
 const RANDOMS = require('../../../../share/utils/random');
 const CONSTANTS = require('../../../../share/configs/constants');
+const MESSAGES = require('../../../../share/configs/message');
 
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
@@ -15,16 +16,19 @@ const categoriesController = {
      * @created_at 03/02/2022
      * @description create categories
      * @function InsertCategory
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     InsertCategory: async (req, res) => {
         const { name } = req.body.input.categories_input;
 
         // Check input
         if (!name) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -38,26 +42,26 @@ const categoriesController = {
                 }),
             );
             if (result) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result[0].category_id,
                     },
                 });
             }
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -74,17 +78,23 @@ const categoriesController = {
 
         // Check input
         if (!category_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
 
         // Check Input is empty
         if (name !== undefined && name.trim() === '') {
-            return res.status(400).json({
-                status: 400,
-                message: 'Please provide non-empty values for all fields',
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_MUTILP_FIELD,
+                },
             });
         }
 
@@ -102,26 +112,26 @@ const categoriesController = {
                 ),
             );
             if (result) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result[0].category_id,
                     },
                 });
             }
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -138,9 +148,12 @@ const categoriesController = {
 
         // Check input
         if (!category_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -150,11 +163,11 @@ const categoriesController = {
                 { category_id: 'category_id' },
             );
             if (result_categories_detail.length > 0) {
-                return res.status(400).json({
-                    status: 400,
-                    message: returnReasons('400'),
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: 'Categories already delete !',
+                        result: MESSAGES.GENERAL.EXITS_DELETE_CATEGORIES,
                     },
                 });
             }
@@ -171,26 +184,26 @@ const categoriesController = {
                 ),
             );
             if (result) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result[0].category_id,
                     },
                 });
             }
             if (err) {
-                return res.status(500).json({
-                    status: 500,
-                    message: returnReasons('500'),
+                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -206,9 +219,12 @@ const categoriesController = {
         const category_id = req.params.category_id;
         // Check input
         if (!category_id) {
-            return res.status(400).json({
-                status: 400,
-                message: returnReasons('400'),
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
             });
         }
         try {
@@ -218,20 +234,20 @@ const categoriesController = {
                 '*',
             );
             if (result_categories_detail) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_categories_detail[0],
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
@@ -251,20 +267,20 @@ const categoriesController = {
                 '*',
             );
             if (result_categories_detail) {
-                return res.status(200).json({
-                    status: 200,
-                    message: returnReasons('200'),
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
                         result: result_categories_detail,
                     },
                 });
             }
         } catch (error) {
-            return res.status(503).json({
-                status: 503,
-                message: returnReasons('503'),
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
-                    result: 'Out Of Service',
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
                 },
             });
         }
