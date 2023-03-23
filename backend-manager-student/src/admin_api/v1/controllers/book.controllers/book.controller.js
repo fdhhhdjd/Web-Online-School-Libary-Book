@@ -24,10 +24,8 @@ const bookController = {
      * @return {Object:{Number,String}
      */
     createBook: async (req, res) => {
-        const {
-            name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image,
-        }
-            = req.body.input.author_input;
+        const { name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image } =
+            req.body.input.author_input;
 
         // Check input
         if (
