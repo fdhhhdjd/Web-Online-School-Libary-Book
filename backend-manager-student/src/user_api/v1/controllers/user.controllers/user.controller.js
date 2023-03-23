@@ -184,8 +184,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -422,8 +422,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
-                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
+                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -505,13 +505,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 04/02/2023
-    * @description Logout student
-    * @function logoutStudent
-    * @param { token }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/02/2023
+     * @description Logout student
+     * @function logoutStudent
+     * @param { token }
+     * @return { Object }
+     */
     logoutStudent: async (req, res) => {
         try {
             // Take accessToken header
@@ -561,13 +561,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 06/02/2023
-    * @description Profile student
-    * @function getProfileStudent
-    * @param { token }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/02/2023
+     * @description Profile student
+     * @function getProfileStudent
+     * @param { token }
+     * @return { Object }
+     */
     getProfileStudent: async (req, res) => {
         // Take user Id
         const user_id = req.auth_user.id;
@@ -660,13 +660,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 13/02/2023
-    * @description Change password student
-    * @function changePasswordStudent
-    * @param { password, oldPassword, confirmPassword }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Change password student
+     * @function changePasswordStudent
+     * @param { password, oldPassword, confirmPassword }
+     * @return { Object }
+     */
     changePasswordStudent: async (req, res) => {
         const { password, oldPassword, confirmPassword } = req.body.input.user_change_password_input;
 
@@ -794,13 +794,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 13/02/2023
-    * @description Check password student
-    * @function checkPasswordStudent
-    * @param { password }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Check password student
+     * @function checkPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
     checkPasswordStudent: async (req, res) => {
         const { password } = req.body.input.user_check_password_input;
 
@@ -905,13 +905,13 @@ const userController = {
     },
 
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 13/02/2023
-    * @description Forget password student
-    * @function forgetPasswordStudent
-    * @param { password }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 13/02/2023
+     * @description Forget password student
+     * @function forgetPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
     forgetPasswordStudent: async (req, res) => {
         const { email } = req.body.input.user_forget_password_input;
 
@@ -1001,13 +1001,13 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 24/02/2023
-    * @description reset password student
-    * @function resetPasswordStudent
-    * @param { password }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/02/2023
+     * @description reset password student
+     * @function resetPasswordStudent
+     * @param { password }
+     * @return { Object }
+     */
     resetPasswordStudent: async (req, res) => {
         const { password, confirmPassword } = req.body.input.user_reset_password_input;
 
@@ -1142,14 +1142,14 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 25/02/2023
-    * @updated_at 27/02/2023
-    * @description Check email
-    * @function checkEmailStudent
-    * @param { password }
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 25/02/2023
+     * @updated_at 27/02/2023
+     * @description Check email
+     * @function checkEmailStudent
+     * @param { password }
+     * @return { Object }
+     */
     checkEmailStudent: async (req, res) => {
         // Take user Id
         const { id, name, email } = req.auth_user;
@@ -1304,12 +1304,12 @@ const userController = {
     },
 
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 27/02/2023
-    * @description send Link Verification email
-    * @function sendEmailVerification
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 27/02/2023
+     * @description send Link Verification email
+     * @function sendEmailVerification
+     * @return { Object }
+     */
     sendEmailVerification: async (req, res) => {
         // Take user Id
         const { id, name, email } = req.auth_user;
@@ -1407,12 +1407,12 @@ const userController = {
         }
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 27/02/2023
-    * @description Update Link Verification email
-    * @function sendEmailVerification
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 27/02/2023
+     * @description Update Link Verification email
+     * @function sendEmailVerification
+     * @return { Object }
+     */
     updateVerificationEmailStudent: async (req, res) => {
         const user_id = req.params.user_id;
         const uniqueString = req.params.uniqueString;
@@ -1492,20 +1492,18 @@ const userController = {
         });
     },
     /**
-    * @author Nguyễn Tiến Tài
-    * @created_at 09/03/2023
-    * @description Update Profile Student
-    * @function updateProfileStudent
-    * @return { Object }
-    */
+     * @author Nguyễn Tiến Tài
+     * @created_at 09/03/2023
+     * @description Update Profile Student
+     * @function updateProfileStudent
+     * @return { Object }
+     */
     updateProfileStudent: async (req, res) => {
         // Take user Id
         const { id } = req.auth_user;
 
         // Input body
-        const {
-            name, avatar_uri, public_id_avatar, address, dob, gender,
-        } = req.body.input.user_update_profile_input;
+        const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.user_update_profile_input;
 
         // Check user_id
         if (!id) {

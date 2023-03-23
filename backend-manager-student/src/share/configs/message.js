@@ -20,7 +20,6 @@ module.exports = {
 
         // ? ROLE STUDENT
         ROLE_STUDENT: 'You not is student!',
-
     },
     ADMIN: {
         // ? SERVER ADMIN
@@ -30,7 +29,6 @@ module.exports = {
         NOT_EXIT_ACCOUNT: 'Account admin not exit!',
     },
     GENERAL: {
-
         // ? INVALID INPUT HEADER,..
         INVALID_INPUT: 'Invalid input!',
         INVALID_HEADER: 'Invalid Header!',
