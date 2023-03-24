@@ -17,7 +17,7 @@ const rootReducer = (state, action) => {
 let store;
 store = configureStore({
   reducer: {
-    auth_user: AuthenticationSlice,
+    admin_user: AuthenticationSlice,
     book: BookSlice,
     author: AuthorSlice,
     reducer: rootReducer,

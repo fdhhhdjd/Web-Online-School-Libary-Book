@@ -1,6 +1,7 @@
 //! LIBRARY
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pagination } from '@mui/material';
 
 //! COMPONENT
 import TabAllBooks from './components/TabAllBooks';
@@ -8,20 +9,59 @@ import Helmet from 'components/Helmet';
 
 //! REDUX THUNK
 import { Get_All_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import HELPERS from 'utils/helper';
 
 const AllBook = () => {
+  const start = useRef(0);
+  const end = useRef(0);
+  const totalPage = useRef(0);
+  const bookPerPage = 5;
+  const currentPage = useRef(1);
   const dispatch = useDispatch();
   const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+  const [bookRender, setBookRender] = useState(null);
+
+  const handleChange = (e, p) => {
+    start.current = performance.now();
+    window.scrollTo(0, 0);
+    currentPage.current = p;
+    setBookRender([...bookList].splice(bookPerPage * (currentPage.current - 1), bookPerPage));
+  };
 
   useEffect(() => {
+    start.current = performance.now();
     dispatch(Get_All_Book_Student_Initial());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(bookList);
-  }, [bookList]);
+    if (bookList) {
+      setBookRender([...bookList].splice(bookPerPage * (currentPage.current - 1), bookPerPage));
+    }
+  }, [bookList, bookPerPage]);
 
-  return <Helmet title="Tài liệu">{bookList && <TabAllBooks bookList={bookList} />}</Helmet>;
+  return (
+    <Helmet title="Tài liệu">
+      {bookList && (
+        <>
+          {(end.current = performance.now())}
+          <TabAllBooks
+            totalBook={bookList.length}
+            executeTime={HELPERS.getExecuteTimeSecond(start.current, end.current)}
+            bookList={bookRender}
+            currentPage={currentPage.current}
+          />
+          {(totalPage.current = Math.ceil(bookList.length / bookPerPage))}
+          <Pagination
+            count={totalPage.current}
+            color="primary"
+            className="all-book__pagination"
+            size="large"
+            onChange={handleChange}
+          ></Pagination>
+        </>
+      )}
+    </Helmet>
+  );
 };
 
 export default AllBook;

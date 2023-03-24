@@ -97,3 +97,17 @@
     }
   }
 }
+
+.all-book__pagination {
+  margin-top: -4rem;
+  margin-bottom: 4rem;
+  & > ul {
+    justify-content: center;
+
+    & li button,
+    & li button svg {
+      font-size: 18px;
+      outline: none;
+    }
+  }
+}

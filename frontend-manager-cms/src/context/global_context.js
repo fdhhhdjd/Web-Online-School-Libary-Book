@@ -26,37 +26,6 @@ export const store_library_school_contextUser = createContext();
 export const useContextStudent = () => useContext(store_library_school_contextUser);
 
 export const DataProviderCMS = ({ children }) => {
-  //InitialState action
-  const dispatch = useDispatch();
-
-  // Get Token localStore
-  const token_access_localStorage = getToken(CONSTANTS.AUTH_TOKEN);
-
-  useEffect(() => {
-    // Check Token LocalStorage
-    if (token_access_localStorage) {
-      // Return true or false
-      const decodedToken = HELPERS.isTokenExpired(token_access_localStorage);
-
-      // Function new token
-      const newToken = () => {
-        //Token expired
-        if (decodedToken === CONSTANTS.DELETED_DISABLE) {
-          // Token expired, try to renew it
-          dispatch(Renew_Token_Cms_Initial());
-        }
-        // Schedule next token renewal
-        setTimeout(() => {
-          //Start
-          newToken();
-        }, CONSTANTS._4_MINUTES);
-      };
-
-      //Start
-      newToken();
-    }
-  }, [token_access_localStorage, dispatch]);
-
   //! Data
   // const data = {
   //   profile_student_context: AuthStudent(),

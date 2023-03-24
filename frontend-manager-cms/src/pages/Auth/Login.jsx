@@ -1,17 +1,45 @@
+//! LIBRARY
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+
+//! IMPORT
 import { SCHOOL_LOGO } from 'imports/home_import';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Login_Cms_Initial } from 'redux/managers/authentication_slice/auth_thunk';
+
+//! CUSTOM HOOK
+import Navigate from 'custom_hook/useNavigate/Navigate';
+
+//! UTILS
 import HELPERS from 'utils/helper';
+
+//! REDUX
+import { Login_Cms_Initial } from 'redux/managers/authentication_slice/auth_thunk';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const { admin_auth } = useSelector((state) => state.admin_user);
+
+  //Location
+  const location = useLocation();
+  // Navigate
+  const { navigateChangePage } = Navigate();
+
   const handleLogin = (e) => {
     e.preventDefault();
     const values = HELPERS.formDataGeneral(e.target);
 
     dispatch(Login_Cms_Initial(values));
   };
+
+  useEffect(() => {
+    if (admin_auth) {
+      if (location.state?.from) {
+        navigateChangePage(location.state.from);
+      } else {
+        navigateChangePage('/');
+      }
+    }
+  }, [admin_auth]);
   return (
     <div className="w-screen">
       <div className="h-screen grid grid-cols-5">

@@ -64,5 +64,8 @@ module.exports = {
         'no-unused-expressions': 'off',
         'eslint-disable-next-line implicit-arrow-linebreak': 'off',
         'eslint-disable object-curly-newline': 'off',
+        'brace-style': ['error', '1tbs', { allowSingleLine: true }],
+        'object-curly-newline': 'off',
+        'implicit-arrow-linebreak': 'off',
     },
 };

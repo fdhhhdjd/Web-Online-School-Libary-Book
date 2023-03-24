@@ -2,7 +2,7 @@ import Section, { SectionBody } from 'components/Section';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Borrow_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import { Borrow_Book_Student_Initial } from 'redux/student/borrow_book_slice/book_thunk';
 import Swal from 'sweetalert2';
 
 const TabDetailBook = ({ detailBook }) => {

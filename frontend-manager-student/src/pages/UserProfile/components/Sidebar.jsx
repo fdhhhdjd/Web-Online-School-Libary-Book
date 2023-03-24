@@ -19,7 +19,7 @@ const Sidebar = ({ pathName, profile_student }) => {
             <div className="profile__sidebar__user__info">
               <div>{profile_student?.data?.name}</div>
               <div>
-                <Link to="">
+                <Link to="/user/profile">
                   <i className="bx bxs-edit-alt"></i> Sửa hồ sơ
                 </Link>
               </div>
