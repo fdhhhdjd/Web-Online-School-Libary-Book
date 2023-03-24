@@ -42,9 +42,9 @@ module.exports = {
         'operator-linebreak': [2, 'before', { overrides: { '?': 'after' } }],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
+        // eslint-disable-next-line no-dupe-keys
         'no-return-await': 'off',
         'func-names': 'off',
-        'eqeqeq': 'off',
         'no-ternary': 0,
         'no-unneeded-ternary': 0,
         'import/order': 'off',
@@ -56,10 +56,13 @@ module.exports = {
         'consistent-return': 'off',
         'no-template-curly-in-string': 'off',
         'prefer-destructuring': 'off',
-        'radix': 'off',
+        radix: 'off',
         'no-else-return': 'off',
         'no-async-promise-executor': 'off',
         'no-promise-executor-return': 'off',
-        'no-unused-expressions': 'off'
+        // eslint-disable-next-line no-dupe-keys
+        'no-unused-expressions': 'off',
+        'eslint-disable-next-line implicit-arrow-linebreak': 'off',
+        'eslint-disable object-curly-newline': 'off',
     },
 };
