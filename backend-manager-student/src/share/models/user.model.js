@@ -46,11 +46,12 @@ module.exports = {
                 'user.isdeleted': student_query.isdeleted,
                 'user.user_id': student_query.user_id,
             })
-            .select({
-                phone_mobile_country_code: 'phone.mobile_country_code',
-                phone_mobile_network_code: 'phone.mobile_network_code',
-                phone_mobile_network_name: 'phone.mobile_network_name',
-            },
+            .select(
+                {
+                    phone_mobile_country_code: 'phone.mobile_country_code',
+                    phone_mobile_network_code: 'phone.mobile_network_code',
+                    phone_mobile_network_name: 'phone.mobile_network_name',
+                },
                 return_data,
             );
         return student;
@@ -115,8 +116,7 @@ module.exports = {
     createStudent: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result_student = knex('user').insert(data).onConflict('user_id').merge()
-                    .returning(['user_id']);
+                const result_student = knex('user').insert(data).onConflict('user_id').merge().returning(['user_id']);
                 resolve(result_student);
             } catch (error) {
                 reject(error);

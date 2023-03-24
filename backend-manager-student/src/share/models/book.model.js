@@ -13,8 +13,7 @@ module.exports = {
     createBook: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('books').insert(data).onConflict('book_id').merge()
-                    .returning(['book_id']);
+                const result = knex('books').insert(data).onConflict('book_id').merge().returning(['book_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);
@@ -33,12 +32,13 @@ module.exports = {
                 'books.isdeleted': student_query.isdeleted,
                 'books.book_id': student_query.book_id,
             })
-            .select({
-                name_author: 'authors.name',
-                dob_author: 'authors.dob',
-                gender_author: 'authors.gender',
-                image_author: 'authors.avatar_uri',
-            },
+            .select(
+                {
+                    name_author: 'authors.name',
+                    dob_author: 'authors.dob',
+                    gender_author: 'authors.gender',
+                    image_author: 'authors.avatar_uri',
+                },
                 'books.*',
             );
         return result;

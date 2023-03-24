@@ -297,13 +297,13 @@ module.exports = {
         return formattedDateTime;
     },
     /**
-    * Method Convert phone
-    * @author Nguyen Tien Tai
-    * @created_at 15/01/2023
-    * @function isExpired
-    * @param {time_expire_reset}
-    * @returns {Boolean}
-    */
+     * Method Convert phone
+     * @author Nguyen Tien Tai
+     * @created_at 15/01/2023
+     * @function isExpired
+     * @param {time_expire_reset}
+     * @returns {Boolean}
+     */
     isExpired(time_expire_reset) {
         const now = Date.now();
         const diff = time_expire_reset - now;
@@ -315,13 +315,13 @@ module.exports = {
         return true;
     },
     /**
-    * Method Convert phone
-    * @author Nguyen Tien Tai
-    * @created_at 24/03/2023
-    * @function isValidBigInt
-    * @param {id}
-    * @returns {Boolean}
-    */
+     * Method Convert phone
+     * @author Nguyen Tien Tai
+     * @created_at 24/03/2023
+     * @function isValidBigInt
+     * @param {id}
+     * @returns {Boolean}
+     */
     validateBigInt(id) {
         try {
             const bigIntValue = BigInt(id);
@@ -334,5 +334,4 @@ module.exports = {
             return false;
         }
     },
-
 };

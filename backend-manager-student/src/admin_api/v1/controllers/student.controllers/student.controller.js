@@ -72,9 +72,7 @@ const StudentController = {
                     email,
                     gender,
                     avatar_uri:
-                        gender === CONSTANTS.GENDER_MALE ?
-                            CONSTANTS.GENDER_IMAGE_MALE
-                            : CONSTANTS.GENDER_IMAGE_FEMALE,
+                        gender === CONSTANTS.GENDER_MALE ? CONSTANTS.GENDER_IMAGE_MALE : CONSTANTS.GENDER_IMAGE_FEMALE,
                 }),
             );
             if (result) {
@@ -115,7 +113,8 @@ const StudentController = {
      */
     updateStudent: async (req, res) => {
         // Input body
-        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.update_student_input;
+        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } =
+            req.body.input.update_student_input;
 
         // Check input
         if (!student_id || !HELPER.validateBigInt(student_id)) {
@@ -128,8 +127,9 @@ const StudentController = {
             });
         }
         if (
-            [name, avatar_uri, public_id_avatar, address, dob, gender]
-                .some((field) => field !== undefined && field.trim() === '')
+            [name, avatar_uri, public_id_avatar, address, dob, gender].some(
+                (field) => field !== undefined && field.trim() === '',
+            )
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

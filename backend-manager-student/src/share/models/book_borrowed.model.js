@@ -69,19 +69,12 @@ module.exports = {
                     queryBuilder.where('user_id', user_id);
                 }
             })
-            .select(
-                'books.name',
-                'books.image_uri',
-                'books.description',
-                'books.page_number',
-                'borrowed_book.*',
-                {
-                    name_author: 'authors.name',
-                    dob_author: 'authors.dob',
-                    gender_author: 'authors.gender',
-                    image_author: 'authors.avatar_uri',
-                },
-            )
+            .select('books.name', 'books.image_uri', 'books.description', 'books.page_number', 'borrowed_book.*', {
+                name_author: 'authors.name',
+                dob_author: 'authors.dob',
+                gender_author: 'authors.gender',
+                image_author: 'authors.avatar_uri',
+            })
             .orderBy('borrowed_book.updated_at', 'desc');
         return result;
     },
