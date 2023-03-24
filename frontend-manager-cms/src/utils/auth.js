@@ -44,3 +44,14 @@ export function getToken() {
 export function setToken(key, value) {
   return localStorage.setItem(key, value);
 }
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 02/03/2023
+ * @descriptionKey Get Token localStorage
+ * @function getToken
+ * @return {String}
+ */
+export function clearToken() {
+  return localStorage.clear(CONSTANTS.AUTH_TOKEN);
+}

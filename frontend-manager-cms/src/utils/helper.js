@@ -23,9 +23,9 @@ const HELPERS = {
       'X-APP-VERSION': CONSTANTS.APP_VERSION_HEADER,
       'X-DEVICE-NAME': window.navigator.userAgent,
     };
-    const token = getToken();
+    const token = getToken(CONSTANTS.AUTH_TOKEN);
     if (token) {
-      headers.Authorization = token ? `Bearer ${token}` : null;
+      headers.authorization = token ? `Bearer ${token}` : null;
     }
 
     return headers;

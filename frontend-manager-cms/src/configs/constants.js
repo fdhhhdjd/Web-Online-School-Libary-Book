@@ -79,5 +79,50 @@ const CONSTANTS = {
   OS_TYPE_HEADER: 'web',
   OS_VERSION_HEADER: '1.0',
   APP_VERSION_HEADER: '1.0',
+  ACCEPT_HEADER: 'application/json',
+  BEARER_HEADER: 'Bearer',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 15/03/2023
+   * @updated_at 22/03/2023
+   * @descriptionKey STATUS CODE
+   * @return {string}
+   */
+  STATUS: {
+    // 2XX
+    _OK: 200,
+    //4X,
+    _BAD_REQUEST: 400,
+    _UNAUTHORIZED: 401,
+    _NOT_FOUND: 404,
+  },
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey TIME OUT
+   * @return {number}
+   */
+  TIME_OUT_AXIOS: 3000,
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey Type data
+   * @return {*}
+   */
+  DATA: {
+    _NULL: 'null',
+  },
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey Name redux thunk
+   * @return {string}
+   */
+  REDUX_NAME: {
+    _AUTH: 'AUTH ADMIN',
+    _BOOK: 'BOOK ADMIN',
+    _MEDIA: 'MEDIA CLOUD',
+  },
 };
 export default CONSTANTS;
