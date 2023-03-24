@@ -6,9 +6,11 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.11.13",
     "@reduxjs/toolkit": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
     "@testing-library/jest-dom": "^5.11.4",

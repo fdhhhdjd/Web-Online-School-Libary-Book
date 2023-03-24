@@ -1,5 +1,5 @@
 // Change Password
-export { default as TabChangePassword } from 'pages/Auth/ChangePassword/component/TabChangePassword';
+export { default as TabChangePassword } from 'pages/Auth/ChangePassword/components/TabChangePassword';
 
 // Login
 export { default as TabLogin } from 'pages/Auth/Login/components/TabLogin';
