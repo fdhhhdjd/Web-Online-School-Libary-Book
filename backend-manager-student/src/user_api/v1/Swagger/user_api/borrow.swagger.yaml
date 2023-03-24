@@ -104,7 +104,7 @@ components:
     #!created_at 08/03/2023
     #!description: borrow book
 paths:
-    /v1/admin/private/borrow_book/update:
+    /v1/user/private/borrow_book/borrow:
         post:
             summary: Update Borrow_book
             tags: [Update Borrow_book]
@@ -162,5 +162,70 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
+                503:
+                    $ref: '#/components/responses/ServerFail'
+
+    #!@author Nguyễn Tiến Tài
+    #!created_at 09/03/2023
+    #!description: Detail Borrowed
+    /v1/user/private/borrow_book/detail/:borrowed_book_id:
+        get:
+            summary: Detail Borrowed
+            tags: [Detail Borrowed]
+            operationId: detailBorrowed
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            responses:
+                200:
+                    description: Detail success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                503:
+                    $ref: '#/components/responses/ServerFail'
+    #!@author Nguyễn Tiến Tài
+    #!created_at 03/02/2023
+    #!description: Get all categories
+    /v1/admin/private/borrow_book/all:
+        get:
+            summary: Get all Borrowed
+            tags: [Get all Borrowed]
+            operationId: getAllBorrowed
+            parameters:
+                - $ref: '#/components/parameters/COOKIE-CLIENT'
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                - $ref: '#/components/parameters/TOKEN'
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
                 503:
                     $ref: '#/components/responses/ServerFail'
