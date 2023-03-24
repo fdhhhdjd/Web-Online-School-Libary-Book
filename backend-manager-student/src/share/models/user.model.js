@@ -36,6 +36,28 @@ module.exports = {
     },
     /**
      * @author Nguyễn Tiến Tài
+     * @created_at 24/01/2023
+     * @description Get student info by ID
+     */
+    getStudentJoinPhoneById: async (student_query, return_data) => {
+        const student = await knex('user')
+            .leftJoin('phone', 'user.phone_id', '=', 'phone.phone_id')
+            .where({
+                'user.isdeleted': student_query.isdeleted,
+                'user.user_id': student_query.user_id,
+            })
+            .select(
+                {
+                    phone_mobile_country_code: 'phone.mobile_country_code',
+                    phone_mobile_network_code: 'phone.mobile_network_code',
+                    phone_mobile_network_name: 'phone.mobile_network_name',
+                },
+                return_data,
+            );
+        return student;
+    },
+    /**
+     * @author Nguyễn Tiến Tài
      * @created_at 13/02/2023
      * @description Update student
      */
@@ -60,4 +82,44 @@ module.exports = {
             .whereNot('role', CONSTANTS.ROLE.ROLE_STUDENT);
         return admins;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/03/2023
+     * @description  Get All Student Join Phone
+     */
+    getAllStudentJoinPhone: async (student_query, return_data) => {
+        const student = await knex('user')
+            .leftJoin('phone', 'user.phone_id', '=', 'phone.phone_id')
+            .where({
+                'user.isdeleted': student_query.isdeleted,
+            })
+            .modify((queryBuilder) => {
+                if (student_query.user_id) {
+                    queryBuilder.where('user_id', student_query.user_id);
+                }
+            })
+            .select(
+                {
+                    phone_mobile_country_code: 'phone.mobile_country_code',
+                    phone_mobile_network_code: 'phone.mobile_network_code',
+                    phone_mobile_network_name: 'phone.mobile_network_name',
+                },
+                return_data,
+            );
+        return student;
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/03/2023
+     * @description create Student
+     */
+    createStudent: (data) =>
+        new Promise((resolve, reject) => {
+            try {
+                const result_student = knex('user').insert(data).onConflict('user_id').merge().returning(['user_id']);
+                resolve(result_student);
+            } catch (error) {
+                reject(error);
+            }
+        }),
 };

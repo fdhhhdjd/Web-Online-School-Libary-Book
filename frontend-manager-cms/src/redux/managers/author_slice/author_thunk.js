@@ -1,14 +1,12 @@
 //! LIBRARY
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-//! NOTIFICATION
 
 //! API STUDENT
-import API_ADMIN from 'api/api_user';
+import API_ADMIN from 'api/api_admin';
 
 //! SHARE
 import HELPERS from 'utils/helper';
+import REQUEST from 'utils/request';
 
 /**
  * @author Nguyễn Tiến Tài
@@ -22,7 +20,7 @@ export const Get_Detail_Author_Cms_Initial = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.get(`${API_ADMIN.GET_DETAIL_AUTHOR_CMS}/${id}`, {
+      const response = await REQUEST.get(`${API_ADMIN.GET_DETAIL_AUTHOR_CMS}/${id}`, {
         headers: HELPERS.headerBrowser(),
         withCredentials: true,
       });
@@ -57,7 +55,7 @@ export const Get_Detail_Author_Cms_Initial = createAsyncThunk(
 export const Get_All_Author_Cms_Initial = createAsyncThunk('admin/cms/author/all', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await axios.get(`${API_ADMIN.GET_ALL_AUTHOR_CMS}`, {
+    const response = await REQUEST.get(`${API_ADMIN.GET_ALL_AUTHOR_CMS}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -93,7 +91,7 @@ export const Delete_Author_Cms_Initial = createAsyncThunk(
   async ({ author_id }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await axios.get(
+      const response = await REQUEST.get(
         `${API_ADMIN.GET_ALL_AUTHOR_CMS}`,
         {
           input: {

@@ -32,7 +32,7 @@ router.post('/delete', categoriesController.deleteCategories);
  * @author Nguyễn Tiến Tài
  * @created_at 03/01/2023
  * @description Route get detail categories
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/detail/:category_id', categoriesController.getDetailCategories);
 
@@ -40,7 +40,7 @@ router.get('/detail/:category_id', categoriesController.getDetailCategories);
  * @author Nguyễn Tiến Tài
  * @created_at 03/01/2023
  * @description Route get all categories
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/all', categoriesController.getAllCategories);
 

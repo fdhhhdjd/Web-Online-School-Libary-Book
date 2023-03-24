@@ -7,11 +7,14 @@ import EditAuthor from 'pages/Author/EditAuthor';
 import AddBook from 'pages/Book/AddBook';
 import Book from 'pages/Book/AllBook';
 import EditBook from 'pages/Book/EditBook';
+import Admin_Private_Router from 'private/Admin_Private_Router';
+import Admin_Private_Router_login from 'private/Admin_Private_Router_login';
 import Login from '../pages/Auth/Login';
 
 const RouteDataMain = [
   {
     path: '/',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar />
@@ -20,6 +23,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/all',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Danh sách tài liệu" content={<Book />} />
@@ -28,6 +32,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/:id',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Thông tin sách" content={<EditBook />} />
@@ -36,6 +41,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/add',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Thêm sách" content={<AddBook />} />
@@ -44,6 +50,7 @@ const RouteDataMain = [
   },
   {
     path: '/user/all',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Danh sách tài khoản người dùng" content={<AllUser />} />
@@ -52,6 +59,7 @@ const RouteDataMain = [
   },
   {
     path: '/user/add',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Thêm tài khoản" content={<AddUser />} />
@@ -60,6 +68,7 @@ const RouteDataMain = [
   },
   {
     path: '/author/all',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Danh sách tác giả" content={<AllAuthor />} />
@@ -68,6 +77,7 @@ const RouteDataMain = [
   },
   {
     path: '/author/:id',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Thông tin tác giả" content={<EditAuthor />} />
@@ -76,6 +86,7 @@ const RouteDataMain = [
   },
   {
     path: '/author/add',
+    private: <Admin_Private_Router_login />,
     main: (
       <>
         <Sidebar title="Thông tin tác giả" content={<AddAuthor />} />
@@ -84,6 +95,7 @@ const RouteDataMain = [
   },
   {
     path: '/login',
+    private: <Admin_Private_Router />,
     main: (
       <>
         <Login />
