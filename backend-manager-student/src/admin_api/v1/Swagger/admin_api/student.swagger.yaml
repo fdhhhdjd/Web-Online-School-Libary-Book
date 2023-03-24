@@ -4,7 +4,7 @@
 # Info Swagger Admin APi
 info:
     title: Document Admin
-    description: CURD Categories
+    description: CURD Student
     version: 1.0.0
 servers:
     - url: http://localhost:5000
@@ -100,14 +100,14 @@ components:
                                 type: object
                                 example: Out Of Service
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: create categories
+    #!created_at 25/03/2023
+    #!description: create student
 paths:
-    /v1/admin/private/categories/create:
+    /v1/admin/private/student/create:
         post:
-            summary: Create categories
-            tags: [Create categories]
-            operationId: createCategories
+            summary: Create Student
+            tags: [Create Student]
+            operationId: createStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -126,14 +126,38 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        categories_input:
+                                        create_student_input:
                                             type: object
                                             properties:
                                                 name:
                                                     type: string
                                                     example: Tai
+                                                mssv:
+                                                    type: number
+                                                    example: 60136782
+                                                phone_number:
+                                                    type: string
+                                                    example: 0798805764
+                                                class_room:
+                                                    type: string
+                                                    example: 60-CNTT2
+                                                email:
+                                                    type: string
+                                                    example: 60-CNTT2
+                                                dob:
+                                                    type: number
+                                                    example: 20000101
+                                                gender:
+                                                    type: number
+                                                    example: 1
                         required:
                             - name
+                            - mssv
+                            - email
+                            - gender
+                            - dob
+                            - class_room
+                            - phone_number
             responses:
                 200:
                     description: Create success
@@ -161,17 +185,30 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
+                500:
+                    description: Add database fail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 500
+                                    message:
+                                        type: string
+                                        example: Duplicate and Error unknown
                 503:
                     $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: update categories
-    /v1/admin/private/categories/update:
+    #!created_at 25/03/2023
+    #!description: update student
+    /v1/admin/private/student/update:
         post:
-            summary: Update Categories
-            tags: [Update Categories]
-            operationId: updateCategories
+            summary: Update Student
+            tags: [Update Student]
+            operationId: updateStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -190,18 +227,42 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        categories_input:
+                                        update_student_input:
                                             type: object
                                             properties:
-                                                category_id:
-                                                    type: string
-                                                    example: 1475825111725506562
+                                                student_id:
+                                                    type: number
+                                                    example: 12312312414
                                                 name:
                                                     type: string
                                                     example: Tai
+                                                mssv:
+                                                    type: number
+                                                    example: 60136782
+                                                phone_number:
+                                                    type: string
+                                                    example: 0798805764
+                                                class_room:
+                                                    type: string
+                                                    example: 60-CNTT2
+                                                email:
+                                                    type: string
+                                                    example: 60-CNTT2
+                                                dob:
+                                                    type: number
+                                                    example: 20000101
+                                                gender:
+                                                    type: number
+                                                    example: 1
                         required:
-                            - categories_id
+                            - student_id
                             - name
+                            - mssv
+                            - email
+                            - gender
+                            - dob
+                            - class_room
+                            - phone_number
             responses:
                 200:
                     description: update success
@@ -229,17 +290,30 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
+                500:
+                    description: Add database fail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 500
+                                    message:
+                                        type: string
+                                        example: Duplicate and Error unknown
                 503:
                     $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: delete categories
-    /v1/admin/private/categories/delete:
+    #!created_at 25/03/2023
+    #!description: delete student
+    /v1/admin/private/student/delete:
         post:
-            summary: Delete Categories
-            tags: [Delete Categories]
-            operationId: deleteCategories
+            summary: Delete Student
+            tags: [Delete Student]
+            operationId: deleteStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -258,14 +332,14 @@ paths:
                                 input:
                                     type: object
                                     properties:
-                                        categories_input:
+                                        student_id:
                                             type: object
                                             properties:
-                                                category_id:
+                                                student_id:
                                                     type: string
                                                     example: 1474830717476143106
                         required:
-                            - category_id
+                            - student_id
             responses:
                 200:
                     description: Delete success
@@ -293,16 +367,30 @@ paths:
                                     message:
                                         type: string
                                         example: Bad Request
+                500:
+                    description: Add database fail
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 500
+                                    message:
+                                        type: string
+                                        example: Duplicate and Error unknown
                 503:
                     $ref: '#/components/responses/ServerFail'
+
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: Detail categories
-    /v1/admin/private/categories/detail/:category_id:
+    #!created_at 25/03/2023
+    #!description: detail student
+    /v1/admin/private/student/detail/:student_id:
         get:
-            summary: Detail categories
-            tags: [Detail categories]
-            operationId: detailCategories
+            summary: Detail Student
+            tags: [Detail Student]
+            operationId: detailStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -327,14 +415,15 @@ paths:
                                         example: Success
                 503:
                     $ref: '#/components/responses/ServerFail'
+
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: Get all categories
-    /v1/admin/private/categories/all:
+    #!created_at 25/03/2023
+    #!description: all student
+    /v1/admin/private/student/all:
         get:
-            summary: Get all categories
-            tags: [Get all categories]
-            operationId: getAllCategories
+            summary: Get all Student
+            tags: [Get all Student]
+            operationId: getAllStudent
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'

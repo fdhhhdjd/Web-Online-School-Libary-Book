@@ -80,7 +80,7 @@ const authorController = {
         const { author_id, name, avatar_uri, dob, gender } = req.body.input.author_input;
 
         // Check input
-        if (!author_id) {
+        if (!author_id || !HELPER.validateBigInt(author_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),

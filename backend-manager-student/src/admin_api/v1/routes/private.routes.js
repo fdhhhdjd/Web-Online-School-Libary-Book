@@ -7,6 +7,7 @@ const bookPrivateRouter = require('./book.routes/book.private.route');
 const authorPrivateRouter = require('./author.routes/author.private.route');
 const categoriesPrivateRouter = require('./categories.routes/categories.private.route');
 const borrowBookPrivateRouter = require('./borrow_book_routes/borrow_book_private.route');
+const studentPrivateRouter = require('./student.routes/student.private.route');
 
 /**
  * @author Nguyễn Tiến Tài
@@ -43,5 +44,12 @@ router_private.use('/categories', categoriesPrivateRouter);
  * @description Route borrow book
  */
 router_private.use('/borrow_book', borrowBookPrivateRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 24/03/2023
+ * @description Route borrow book
+ */
+router_private.use('/student', studentPrivateRouter);
 
 module.exports = router_private;

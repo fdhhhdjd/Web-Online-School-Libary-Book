@@ -32,7 +32,7 @@ router.post('/delete', bookController.deleteBook);
  * @author Nguyễn Tiến Tài
  * @created_at 03/01/2023
  * @description Route get detail book
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/detail/:book_id', bookController.getDetailBook);
 
@@ -40,7 +40,7 @@ router.get('/detail/:book_id', bookController.getDetailBook);
  * @author Nguyễn Tiến Tài
  * @created_at 03/01/2023
  * @description Route get all book
- * @param {('POST')} [method='POST'] The request's method
+ * @param {('GET')} [method='GET'] The request's method
  */
 router.get('/all', bookController.getAllBook);
 

@@ -117,7 +117,7 @@ const bookController = {
         } = req.body.input.book_input;
 
         // Check input
-        if (!book_id) {
+        if (!book_id || !HELPER.validateBigInt(book_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -163,7 +163,11 @@ const bookController = {
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(
-                book_model.updateBook(data_update, { book_id }, { book_id: 'book_id' }),
+                book_model.updateBook(
+                    data_update,
+                    { book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                    { book_id: 'book_id' },
+                ),
             );
             if (result) {
                 // Create key Cache
