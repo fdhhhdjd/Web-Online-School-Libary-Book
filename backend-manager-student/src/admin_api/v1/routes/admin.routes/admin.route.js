@@ -5,6 +5,7 @@ const adminController = require('../../controllers/admin.controllers/admin.contr
  * @created_at 17/12/2022
  * @update_at 11/01/2023
  * @description Route login admin
+ * @param {('POST')} [method='POST'] The request's method
  */
 router.post('/login', adminController.LoginAdmin);
 

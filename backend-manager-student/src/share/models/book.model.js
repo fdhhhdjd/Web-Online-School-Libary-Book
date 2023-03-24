@@ -1,6 +1,9 @@
 //! DATABASE
 const knex = require('../db/postgresql');
 
+//! SHARE
+const CONSTANTS = require('../configs/constants');
+
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
@@ -22,8 +25,22 @@ module.exports = {
      * @created_at 03/01/2023
      * @description get book id
      */
-    getBookById: async (student_query, return_data) => {
-        const result = await knex('books').select(return_data).where(student_query);
+    getBookById: async (student_query) => {
+        const result = await knex('books')
+            .join('authors', 'books.author_id', '=', 'authors.author_id')
+            .where({
+                'books.isdeleted': student_query.isdeleted,
+                'books.book_id': student_query.book_id,
+            })
+            .select(
+                {
+                    name_author: 'authors.name',
+                    dob_author: 'authors.dob',
+                    gender_author: 'authors.gender',
+                    image_author: 'authors.avatar_uri',
+                },
+                'books.*',
+            );
         return result;
     },
     /**
@@ -46,8 +63,20 @@ module.exports = {
      * @updated_at 07/02/2023
      * @description Get all book
      */
-    getAllBook: async (student_query, return_data) => {
-        const result = await knex('books').select(return_data).where(student_query).orderBy('updated_at', 'desc');
+    getAllBook: async () => {
+        const result = await knex('books')
+            .join('authors', 'books.author_id', '=', 'authors.author_id')
+            .where('books.isdeleted', '=', CONSTANTS.DELETED_DISABLE)
+            .select(
+                {
+                    name_author: 'authors.name',
+                    dob_author: 'authors.dob',
+                    gender_author: 'authors.gender',
+                    image_author: 'authors.avatar_uri',
+                },
+                'books.*',
+            )
+            .orderBy('books.updated_at', 'desc');
         return result;
     },
 };
