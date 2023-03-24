@@ -77,7 +77,7 @@ const categoriesController = {
         const { category_id, name } = req.body.input.categories_input;
 
         // Check input
-        if (!category_id) {
+        if (!category_id || !HELPER.validateBigInt(category_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),

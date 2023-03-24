@@ -45,6 +45,9 @@ module.exports = {
         EXITS_DELETE_CATEGORIES: 'Categories already delete !',
         EXITS_UPDATE_BORROW: 'Already update borrow book !',
         EXITS_CAN_ONLY_TOW_BORROW: 'You can only borrow tow book!',
+        EXITS_EMAIL: 'Email not exit!',
+        EXITS_PHONE: 'Phone not exit!',
+        EXITS_MSSV: 'mssv not exit!',
 
         // ? ALREADY
         ALREADY_BOOK_BORROW: 'Book already borrow !!',
@@ -57,6 +60,7 @@ module.exports = {
         // ? FAIL
         BORROW_FAIL: 'Borrow Fail!',
         RESET_PASSWORD_FAIL: 'Reset Password Fail',
+        ERROR_UNKNOWN: 'Error unknown',
 
         // ? CONFLICT OR DUPLICATE
         CONFLICT_ADD_STUDENT: 'Nothing changes to update!',
@@ -86,6 +90,7 @@ module.exports = {
         // ? SUCCESS
         SUCCESS_CHANGE_PASSWORD: 'Change Password Success!',
         SUCCESS_UPDATE_BORROW: 'Update Student borrow book success !',
+        SUCCESS_UPDATE_STUDENT: 'Update Student success !',
         SUCCESS_UPDATE_BORROW_STUDENT_REFUND: 'Update Student refund book success !',
         SUCCESS_BORROW_BOOK_SUCCESS: 'Invite you go to Library confirm,Thank',
     },

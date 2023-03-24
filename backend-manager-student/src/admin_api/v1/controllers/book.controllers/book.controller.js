@@ -24,8 +24,16 @@ const bookController = {
      * @return {Object:{Number,String}
      */
     createBook: async (req, res) => {
-        const { name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image } =
-            req.body.input.author_input;
+        const {
+            name,
+            author_id,
+            image_uri,
+            description,
+            bookshelf,
+            language,
+            quantity,
+            public_id_image,
+        } = req.body.input.author_input;
 
         // Check input
         if (
@@ -117,7 +125,7 @@ const bookController = {
         } = req.body.input.book_input;
 
         // Check input
-        if (!book_id) {
+        if (!book_id || !HELPER.validateBigInt(book_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -163,7 +171,7 @@ const bookController = {
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(
-                book_model.updateBook(data_update, { book_id }, { book_id: 'book_id' }),
+                book_model.updateBook(data_update, { book_id, isdeleted: CONSTANTS.DELETED_DISABLE }, { book_id: 'book_id' }),
             );
             if (result) {
                 // Create key Cache

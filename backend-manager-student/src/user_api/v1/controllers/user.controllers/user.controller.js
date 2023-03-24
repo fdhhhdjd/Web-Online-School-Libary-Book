@@ -184,8 +184,8 @@ const userController = {
                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                 domain:
-                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                         : CONSTANTS.HEADER_DOMAIN,
                 maxAge: CONSTANTS._1_MONTH,
             });
@@ -422,8 +422,8 @@ const userController = {
                                 sameSite: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 secure: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ? true : false,
                                 domain:
-                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT
-                                        ? req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
+                                    CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT ?
+                                        req.headers[CONSTANTS.HEADER_HEADER_FORWARDED_HOST]?.split(':')[0]
                                         : CONSTANTS.HEADER_DOMAIN,
                                 maxAge: CONSTANTS._1_MONTH,
                             });
@@ -586,17 +586,17 @@ const userController = {
         try {
             // Check student exit database
             let data_return = {
-                user_id: 'user_id',
-                role: 'role',
-                mssv: 'mssv',
-                name: 'name',
-                avatar_uri: 'avatar_uri',
-                email: 'email',
-                address: 'address',
-                dob: 'dob',
-                gender: 'gender',
-                class: 'class',
-                phone_hidden: 'phone_hidden',
+                user_id: 'user.user_id',
+                role: 'user.role',
+                mssv: 'user.mssv',
+                name: 'user.name',
+                avatar_uri: 'user.avatar_uri',
+                email: 'user.email',
+                address: 'user.address',
+                dob: 'user.dob',
+                gender: 'user.gender',
+                class: 'user.class',
+                phone_hidden: 'user.phone_hidden',
             };
             let data_query = {
                 user_id,
@@ -622,7 +622,7 @@ const userController = {
             }
 
             // Take data database
-            let users = await user_model.getStudentById(data_query, data_return);
+            let users = await user_model.getStudentJoinPhoneById(data_query, data_return);
 
             // Check account exits
             const user = users[0];
@@ -650,6 +650,7 @@ const userController = {
                 },
             });
         } catch (err) {
+            console.error(err);
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),

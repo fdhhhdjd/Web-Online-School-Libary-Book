@@ -62,10 +62,6 @@ module.exports = {
      * @returns {boolean}
      */
     validatePhone(phone) {
-        // var phoneRegex = /^+?([0-9]{2})\)?([0-9]{9})$/;
-        // var phoneRegex = /^(\+91-|\+91|0)?\d{11}$/;
-        // var vnf_regex = /((09|03|07|08|05|01)+([0-9]{9|8})\b)/g;
-        // const phoneRegex = /^[0-9\+]{10,15}$/g;
         const phoneVietNam = REGEX.REGEX_PHONE;
         return phoneVietNam.test(phone);
     },
@@ -300,6 +296,14 @@ module.exports = {
         const formattedDateTime = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         return formattedDateTime;
     },
+    /**
+    * Method Convert phone
+    * @author Nguyen Tien Tai
+    * @created_at 15/01/2023
+    * @function isExpired
+    * @param {time_expire_reset}
+    * @returns {Boolean}
+    */
     isExpired(time_expire_reset) {
         const now = Date.now();
         const diff = time_expire_reset - now;
@@ -310,4 +314,25 @@ module.exports = {
         // Expired
         return true;
     },
+    /**
+    * Method Convert phone
+    * @author Nguyen Tien Tai
+    * @created_at 24/03/2023
+    * @function isValidBigInt
+    * @param {id}
+    * @returns {Boolean}
+    */
+    validateBigInt(id) {
+        try {
+            const bigIntValue = BigInt(id);
+            if (bigIntValue.toString() !== id) {
+                return false;
+            }
+            // input is a valid bigint
+            return true;
+        } catch (error) {
+            return false;
+        }
+    },
+
 };
