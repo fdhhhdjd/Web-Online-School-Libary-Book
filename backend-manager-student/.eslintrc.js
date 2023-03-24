@@ -62,7 +62,7 @@ module.exports = {
         'no-promise-executor-return': 'off',
         // eslint-disable-next-line no-dupe-keys
         'no-unused-expressions': 'off',
-        'eslint-disable-next-line implicit-arrow-linebreak': 'off',
-        'eslint-disable object-curly-newline': 'off',
+        'implicit-arrow-linebreak': 'off',
+        'object-curly-newline': 'off',
     },
 };
