@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Section, { SectionBody } from 'components/Section';
 import Filter from 'components/Filter';
 
-const TabAllBooks = ({ bookList }) => {
+const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime }) => {
   return (
     <Section>
       <SectionBody>
@@ -18,7 +18,9 @@ const TabAllBooks = ({ bookList }) => {
           <Col sm={9}>
             <div className="book__container main">
               <div className="book__container__header">
-                <div className="header__data">Trang 1 trong 6151 kết quả (0.1093984 giây)</div>
+                <div className="header__data">
+                  Trang {currentPage} trong {totalBook} kết quả ({executeTime} giây)
+                </div>
                 <div className="header__sort">
                   <span>Sắp xếp theo</span>
                   <select name="selectedFruit">

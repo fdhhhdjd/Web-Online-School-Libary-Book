@@ -131,6 +131,16 @@ const HELPERS = {
     // Del input
     return e.target.reset();
   },
+
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 22/03/2023
+   * @description Get execute time
+   * @param {start, end}
+   */
+  getExecuteTimeSecond(start, end) {
+    return ((end - start) / 1000).toFixed(5);
+  },
 };
 
 export default HELPERS;
