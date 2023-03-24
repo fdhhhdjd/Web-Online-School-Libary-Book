@@ -175,7 +175,7 @@ const StudentController = {
                 ),
             );
             if (result) {
-                // Create key redis  profile
+                // Create key redis profile
                 const key_student_id = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
                     user_id: student_id,
                 });
@@ -255,6 +255,13 @@ const StudentController = {
                 ),
             );
             if (result) {
+                // Create key redis  profile
+                const key_student_id = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+                    user_id: student_id,
+                });
+                // Delete cache profile student
+                MEMORY_CACHE.delKeyCache(key_student_id);
+
                 return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
                     status: CONSTANTS.HTTP.STATUS_2XX_OK,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
