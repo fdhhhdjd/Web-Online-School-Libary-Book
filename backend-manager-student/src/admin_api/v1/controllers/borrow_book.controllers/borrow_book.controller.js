@@ -22,7 +22,13 @@ const BorrowBookController = {
      * @return {Object:{Number,String}
      */
     updateBorrowBook: async (req, res) => {
-        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
+        const {
+            book_id,
+            user_id,
+            start_date,
+            due_date,
+            status,
+        } = req.body.input.borrow_book_input;
 
         // Check input
         if (!book_id || !user_id || !start_date || !due_date || !status) {
@@ -188,7 +194,7 @@ const BorrowBookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 09/03/2022
-     * @description Get All Borrowed Book
+     * @description Detail Borrowed Book
      * @function borrowBook
      * @return {Object:{Number,String}
      */
@@ -207,7 +213,7 @@ const BorrowBookController = {
         }
         try {
             // Take data db
-            const result_borrow_book_detail = await borrow_book_model.getBorrowBook(borrowed_book_id);
+            const result_borrow_book_detail = await borrow_book_model.getBorrowBook(borrowed_book_id, null);
 
             if (result_borrow_book_detail) {
                 return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({

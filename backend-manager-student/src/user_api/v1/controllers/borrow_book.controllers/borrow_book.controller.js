@@ -21,7 +21,7 @@ const BorrowBookController = {
      * @created_at 08/03/2022
      * @description Borrowed Book
      * @function borrowBook
-     * @return {Object:{Number,String}
+     * @return {Object}
      */
     borrowBook: async (req, res) => {
         // Book input
@@ -148,6 +148,98 @@ const BorrowBookController = {
                 return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
                     status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
+                });
+            }
+        } catch (error) {
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/03/2022
+     * @description Get All Borrowed Book
+     * @function borrowBook
+     * @return {Object}
+     */
+
+    borrowBookAll: async (req, res) => {
+        try {
+            // Take user Id
+            const { id } = req.auth_user;
+            if (!id) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.INVALID_INPUT,
+                    },
+                });
+            }
+
+            // Take data db
+            const result_borrow_book = await borrowed_book_model.getBorrowBook(null, id);
+
+            if (result_borrow_book) {
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: {
+                        result: result_borrow_book,
+                    },
+                });
+            }
+        } catch (error) {
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
+            });
+        }
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 24/03/2022
+     * @description Detail Borrowed Book
+     * @function borrowBook
+     * @return {Object:{Number,String}
+     */
+    getDetailBorrowBook: async (req, res) => {
+        // Take param
+        const borrowed_book_id = req.params.borrowed_book_id;
+
+        // Take user Id
+        const { id } = req.auth_user;
+
+        // Check input
+        if (!id || !borrowed_book_id) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
+            });
+        }
+        try {
+            // Take data db
+            const result_borrow_book_detail = await borrowed_book_model.getBorrowBook(borrowed_book_id, id);
+
+            if (result_borrow_book_detail) {
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: {
+                        result: result_borrow_book_detail,
+                    },
                 });
             }
         } catch (error) {
