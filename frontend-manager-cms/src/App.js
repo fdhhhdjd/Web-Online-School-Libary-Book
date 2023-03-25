@@ -28,6 +28,7 @@ import { NotFound } from 'imports/notfound_import/index';
 import Navigate from 'custom_hook/useNavigate/Navigate';
 import { useDispatch } from 'react-redux';
 import { Renew_Token_Cms_Initial } from 'redux/managers/authentication_slice/auth_thunk';
+import { useEffect } from 'react';
 
 function App() {
   // Navigate
@@ -51,13 +52,18 @@ function App() {
         !originalConfig._retry &&
         !isRefreshing
       ) {
-        originalConfig._retry = CONSTANTS.DELETED_ENABLE;
+        originalConfig._retry = CONSTANTS.DELETED_DISABLE;
         originalConfig.headers = { ...originalConfig.headers };
 
         setIsRefreshing(true);
 
         try {
-          dispatch(Renew_Token_Cms_Initial());
+          const response = await axios.get(`${API_ADMIN.RENEW_TOKEN_CMS}`, {
+            headers: HELPERS.headerBrowser(),
+            withCredentials: CONSTANTS.DELETED_ENABLE,
+          });
+          // Save LocalStorage
+          setToken(CONSTANTS.AUTH_TOKEN, response?.data?.element?.result?.access_token);
 
           setIsRefreshing(false);
 

@@ -12,6 +12,7 @@ const EditAuthor = () => {
   const detailAuthor = useSelector((state) => state.author.detail_author?.element?.result);
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+  const [detail, setDetail] = useState(null);
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -25,7 +26,7 @@ const EditAuthor = () => {
 
   useEffect(() => {
     dispatch(Get_Detail_Author_Cms_Initial({ id }));
-  }, []);
+  }, [dispatch, id]);
 
   useEffect(() => {
     setPreview(detailAuthor?.avatar_uri);
@@ -44,7 +45,9 @@ const EditAuthor = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile, detailAuthor?.avatar_uri]);
 
-  console.log(moment(detailAuthor?.dob).date());
+  useEffect(() => {
+    setDetail(detailAuthor);
+  }, [detailAuthor]);
 
   return (
     <form className="w-full mt-10" autoComplete="nope">
@@ -59,7 +62,7 @@ const EditAuthor = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-id"
                 type="text"
-                defaultValue={detailAuthor?.author_id}
+                defaultValue={detail?.author_id}
                 disabled
                 readOnly
               />
@@ -74,7 +77,7 @@ const EditAuthor = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailAuthor?.name}
+                defaultValue={detail?.name}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -89,13 +92,13 @@ const EditAuthor = () => {
                   className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="gender"
                 >
-                  <option value={1} selected={detailAuthor?.gender === 1}>
+                  <option defaultValue={1} selected={detail?.gender === 1}>
                     Nam
                   </option>
-                  <option value={0} selected={detailAuthor?.gender === 0}>
+                  <option defaultValue={0} selected={detail?.gender === 0}>
                     Nữ
                   </option>
-                  <option value={3} selected={detailAuthor?.gender === 3}>
+                  <option defaultValue={3} selected={detail?.gender === 3}>
                     Khác
                   </option>
                 </select>
@@ -126,7 +129,7 @@ const EditAuthor = () => {
               </label>
               <div className="date-picker">
                 <DayPicker
-                  defaultValue={moment(detailAuthor?.dob).date()}
+                  defaultValue={moment(detail?.dob).date()}
                   year={date.year} // mandatory
                   month={date.month} // mandatory
                   endYearGiven // mandatory if end={} is given in YearPicker
@@ -140,7 +143,7 @@ const EditAuthor = () => {
                 />
 
                 <MonthPicker
-                  defaultValue={moment(detailAuthor?.dob).month() + 1}
+                  defaultValue={moment(detail?.dob).month() + 1}
                   numeric // to get months as numbers
                   endYearGiven // mandatory if end={} is given in YearPicker
                   year={date.year} // mandatory
@@ -154,7 +157,7 @@ const EditAuthor = () => {
                 />
 
                 <YearPicker
-                  defaultValue={moment(detailAuthor?.dob).year()}
+                  defaultValue={moment(detail?.dob).year()}
                   start={1980} // default is 1900
                   end={2023} // default is current year
                   reverse // default is ASCENDING

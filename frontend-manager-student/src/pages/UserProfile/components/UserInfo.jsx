@@ -42,8 +42,6 @@ const UserInfo = () => {
     handleUpload(e);
   };
 
-  console.log(profile_student);
-
   useEffect(() => {
     setGender(profile_student?.data?.gender);
     setPreview(profile_student?.data?.avatar_uri);

@@ -18,11 +18,13 @@ import store from 'redux/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DataProviderCMS } from 'context/global_context';
+import RouterNprogress from 'plugins/Nprogress/RouterNprogress';
 
 ReactDOM.render(
   <Provider store={store}>
     <DataProviderCMS>
       <Router>
+        <RouterNprogress />
         <App />
       </Router>
     </DataProviderCMS>
