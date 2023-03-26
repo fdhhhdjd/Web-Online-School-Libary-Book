@@ -1,5 +1,11 @@
+//! LIBRARY
 const rateLimit = require('express-rate-limit');
+
+//! CONFIGS
 const CONFIGS = require('../configs/config');
+const CONSTANTS = require('../configs/constants');
+
+//! ERROR
 const { returnReasons } = require('./handle_error');
 
 /**
@@ -13,8 +19,8 @@ module.exports = rateLimit({
     windowMs: CONFIGS.IPA_API_RATE_LIMIT_DURATION * 1000, // in milliseconds
     max: CONFIGS.IPA_API_RATE_LIMIT,
     message: {
-        status: 429,
-        message: returnReasons('429'),
+        status: CONSTANTS.HTTP.STATUS_4XX_TOO_MANY_REQUESTS,
+        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_TOO_MANY_REQUESTS),
     },
-    standardHeaders: true,
+    standardHeaders: CONSTANTS.DELETED_ENABLE,
 });
