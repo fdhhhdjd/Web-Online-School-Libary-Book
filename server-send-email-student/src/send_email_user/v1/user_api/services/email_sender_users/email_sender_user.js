@@ -101,7 +101,7 @@ const emailSenderUsers = {
             from: CONFIGS.SMTP_MAIL,
             to: message.email,
             subject: name_subject,
-            template: TEMPLATE_EMAIL.STUDENT_RESET_PASSWORD.TEMPLATE,
+            template: TEMPLATE_EMAIL.STUDENT_VERIFICATION_EMAIL.TEMPLATE,
             attachments: [
                 {
                     filename: 'logo.png',
