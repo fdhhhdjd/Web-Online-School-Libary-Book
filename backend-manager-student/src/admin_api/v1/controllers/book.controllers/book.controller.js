@@ -21,11 +21,11 @@ const bookController = {
      * @created_at 03/02/2022
      * @description create book
      * @function createBook
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     createBook: async (req, res) => {
         const { name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image } =
-            req.body.input.author_input;
+            req.body.input.book_input;
 
         // Check input
         if (
