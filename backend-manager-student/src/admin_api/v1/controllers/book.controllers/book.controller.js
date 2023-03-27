@@ -252,7 +252,7 @@ const bookController = {
                     {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { book_id },
+                    { book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { book_id: 'book_id' },
                 ),
             );
