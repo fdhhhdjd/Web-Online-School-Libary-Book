@@ -19,7 +19,7 @@ const student_model = require('../../../../share/models/user.model');
 const StudentController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 24/03/2022
+     * @created_at 24/03/2023
      * @description create Student
      * @function createStudent
      * @return {Object}
@@ -106,7 +106,7 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 24/03/2022
+     * @created_at 24/03/2023
      * @description update Student
      * @function updateStudent
      * @return {Object}
@@ -209,7 +209,7 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 25/03/2022
+     * @created_at 25/03/2023
      * @description deleteStudent
      * @function deleteStudent
      * @return {Object}
@@ -339,7 +339,7 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 09/03/2022
+     * @created_at 09/03/2023
      * @description Detail Borrowed Book
      * @function borrowBook
      * @return {Object:{Number,String}

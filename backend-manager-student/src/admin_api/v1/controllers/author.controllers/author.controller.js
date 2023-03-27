@@ -13,16 +13,16 @@ const author_model = require('../../../../share/models/author.model');
 const authorController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description create Author
      * @function createAuthor
      * @return {Object:{Number,String}}
      */
     createAuthor: async (req, res) => {
-        const { name, avatar_uri, dob, gender } = req.body.input.author_input;
+        const { name, avatar_uri, dob, gender, nation } = req.body.input.author_input;
 
         // Check input
-        if (!name || !avatar_uri || !dob || !gender) {
+        if (!name || !avatar_uri || !dob || !gender || !nation) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -42,6 +42,7 @@ const authorController = {
                     avatar_uri,
                     dob,
                     gender,
+                    nation,
                 }),
             );
             if (result) {
@@ -71,13 +72,13 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description update Author
      * @function updateAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     updateAuthor: async (req, res) => {
-        const { author_id, name, avatar_uri, dob, gender } = req.body.input.author_input;
+        const { author_id, name, avatar_uri, dob, gender, nation } = req.body.input.author_input;
 
         // Check input
         if (!author_id || !HELPER.validateBigInt(author_id)) {
@@ -95,6 +96,7 @@ const authorController = {
             (name !== undefined && name.trim() === '')
             || (avatar_uri !== undefined && avatar_uri.trim() === '')
             || (dob !== undefined && dob.trim() === '')
+            || (nation !== undefined && nation.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -131,8 +133,9 @@ const authorController = {
                         avatar_uri,
                         dob,
                         gender,
+                        nation,
                     },
-                    { author_id },
+                    { author_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { author_id: 'author_id' },
                 ),
             );
@@ -163,16 +166,16 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description delete Author
      * @function deleteAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     deleteAuthor: async (req, res) => {
         const { author_id } = req.body.input.author_input;
 
         // Check input
-        if (!author_id) {
+        if (!author_id || !HELPER.validateBigInt(author_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -205,7 +208,7 @@ const authorController = {
                     {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { author_id },
+                    { author_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { author_id: 'author_id' },
                 ),
             );
@@ -236,10 +239,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description detail Author
      * @function getDetailAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getDetailAuthor: async (req, res) => {
         const author_id = req.params.author_id;
@@ -280,10 +283,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description Get all Author
      * @function getAllAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getAllAuthor: async (req, res) => {
         try {

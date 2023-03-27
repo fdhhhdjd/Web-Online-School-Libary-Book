@@ -13,7 +13,7 @@ const category_model = require('../../../../share/models/categories.model');
 const categoriesController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description create categories
      * @function InsertCategory
      * @return {Object:{Number,String}}
@@ -68,10 +68,10 @@ const categoriesController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description update category
      * @function updateAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     updateCategories: async (req, res) => {
         const { category_id, name } = req.body.input.categories_input;
@@ -107,7 +107,7 @@ const categoriesController = {
                     {
                         name,
                     },
-                    { category_id },
+                    { category_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { category_id: 'category_id' },
                 ),
             );
@@ -138,10 +138,10 @@ const categoriesController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description delete category
      * @function deleteCategories
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     deleteCategories: async (req, res) => {
         const { category_id } = req.body.input.categories_input;
@@ -179,7 +179,7 @@ const categoriesController = {
                     {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { category_id },
+                    { category_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { category_id: 'category_id' },
                 ),
             );
@@ -210,10 +210,10 @@ const categoriesController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description detail category
      * @function getDetailAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getDetailCategories: async (req, res) => {
         const category_id = req.params.category_id;
@@ -254,10 +254,10 @@ const categoriesController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description Get all categories
      * @function getAllCategories
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getAllCategories: async (req, res) => {
         try {
