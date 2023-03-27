@@ -13,7 +13,7 @@ const author_model = require('../../../../share/models/author.model');
 const authorController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description create Author
      * @function createAuthor
      * @return {Object:{Number,String}}
@@ -71,10 +71,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description update Author
      * @function updateAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     updateAuthor: async (req, res) => {
         const { author_id, name, avatar_uri, dob, gender } = req.body.input.author_input;
@@ -163,10 +163,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description delete Author
      * @function deleteAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     deleteAuthor: async (req, res) => {
         const { author_id } = req.body.input.author_input;
@@ -236,10 +236,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description detail Author
      * @function getDetailAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getDetailAuthor: async (req, res) => {
         const author_id = req.params.author_id;
@@ -280,10 +280,10 @@ const authorController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description Get all Author
      * @function getAllAuthor
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getAllAuthor: async (req, res) => {
         try {

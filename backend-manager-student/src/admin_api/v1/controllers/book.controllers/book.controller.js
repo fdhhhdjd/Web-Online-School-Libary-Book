@@ -18,14 +18,15 @@ const book_admin_service = require('../../../../share/services/admin_service/boo
 const bookController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
+     * @created_at 27/03/2023
      * @description create book
      * @function createBook
      * @return {Object:{Number,String}}
      */
     createBook: async (req, res) => {
-        const { name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image } =
-            req.body.input.book_input;
+        const { name, author_id, image_uri, description, page_number, bookshelf, language, quantity, public_id_image }
+            = req.body.input.book_input;
 
         // Check input
         if (
@@ -37,6 +38,7 @@ const bookController = {
             || !language
             || !quantity
             || !public_id_image
+            || !page_number
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -54,13 +56,13 @@ const bookController = {
             description,
             bookshelf,
             language,
-            page_number: 0,
             total_comment: 0,
             total_like: 0,
             total_rating: 0,
             quantity,
             status: CONSTANTS.STATUS_BOOK.STILL,
             public_id_image,
+            page_number,
         };
         try {
             // create book database
@@ -97,10 +99,10 @@ const bookController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description update book
      * @function updateBook
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     updateBook: async (req, res) => {
         const {
@@ -113,6 +115,7 @@ const bookController = {
             language,
             quantity,
             status,
+            page_number,
             public_id_image,
         } = req.body.input.book_input;
 
@@ -137,6 +140,7 @@ const bookController = {
             || (language !== undefined && language.trim() === '')
             || (quantity !== undefined && quantity.trim() === '')
             || (public_id_image !== undefined && public_id_image.trim() === '')
+            || (page_number !== undefined && page_number.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -157,6 +161,7 @@ const bookController = {
             quantity,
             status,
             public_id_image,
+            page_number,
         };
         try {
             // update book database
@@ -204,7 +209,7 @@ const bookController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description delete book
      * @function deleteBook
      * @return {Object:{Number,String}}
@@ -286,10 +291,10 @@ const bookController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description detail book
      * @function getDetailBook
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getDetailBook: async (req, res) => {
         const book_id = req.params.book_id;
@@ -350,10 +355,10 @@ const bookController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 03/02/2022
+     * @created_at 03/02/2023
      * @description Get all book
      * @function getAllBook
-     * @return {Object:{Number,String}
+     * @return {Object:{Number,String}}
      */
     getAllBook: async (req, res) => {
         try {

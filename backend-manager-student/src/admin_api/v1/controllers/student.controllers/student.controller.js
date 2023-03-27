@@ -19,7 +19,7 @@ const student_model = require('../../../../share/models/user.model');
 const StudentController = {
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 24/03/2022
+     * @created_at 24/03/2023
      * @description create Student
      * @function createStudent
      * @return {Object}
@@ -106,15 +106,15 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 24/03/2022
+     * @created_at 24/03/2023
      * @description update Student
      * @function updateStudent
      * @return {Object}
      */
     updateStudent: async (req, res) => {
         // Input body
-        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } =
-            req.body.input.update_student_input;
+        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender }
+            = req.body.input.update_student_input;
 
         // Check input
         if (!student_id || !HELPER.validateBigInt(student_id)) {
@@ -209,7 +209,7 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 25/03/2022
+     * @created_at 25/03/2023
      * @description deleteStudent
      * @function deleteStudent
      * @return {Object}
@@ -339,7 +339,7 @@ const StudentController = {
     },
     /**
      * @author Nguyễn Tiến Tài
-     * @created_at 09/03/2022
+     * @created_at 09/03/2023
      * @description Detail Borrowed Book
      * @function borrowBook
      * @return {Object:{Number,String}
