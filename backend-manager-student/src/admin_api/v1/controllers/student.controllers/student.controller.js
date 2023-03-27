@@ -113,8 +113,8 @@ const StudentController = {
      */
     updateStudent: async (req, res) => {
         // Input body
-        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender }
-            = req.body.input.update_student_input;
+        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } =
+            req.body.input.update_student_input;
 
         // Check input
         if (!student_id || !HELPER.validateBigInt(student_id)) {
