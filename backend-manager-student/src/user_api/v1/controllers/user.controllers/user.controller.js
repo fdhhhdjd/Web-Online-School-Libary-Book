@@ -22,7 +22,7 @@ const user_service = require('../../../../share/services/user_service/user_servi
 const verification_service = require('../../../../share/services/user_service/verification.service');
 
 //! MIDDLAWARE
-const { returnReasons } = require('../../../../share/middleware/handle_error');
+const { returnReasons, returnDuplicate } = require('../../../../share/middleware/handle_error');
 
 const userController = {
     /**
@@ -1487,6 +1487,13 @@ const userController = {
             { verify_id: 'verify_id' },
         );
 
+        // Create key redis profile
+        const key_profile_student = HELPER.getURIFromTemplate(CONSTANTS.KEY_PROFILE_STUDENT, {
+            user_id,
+        });
+        // Del key redis cache
+        MEMORY_CACHE.delKeyCache(key_profile_student);
+
         return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
             status: CONSTANTS.HTTP.STATUS_2XX_OK,
             message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
@@ -1507,7 +1514,7 @@ const userController = {
         const { name, avatar_uri, public_id_avatar, address, dob, gender } = req.body.input.user_update_profile_input;
 
         // Check user_id
-        if (!id) {
+        if (!id || !HELPER.validateBigInt(id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -1519,11 +1526,9 @@ const userController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '')
-            || (avatar_uri !== undefined && avatar_uri.trim() === '')
-            || (public_id_avatar !== undefined && public_id_avatar.trim() === '')
-            || (address !== undefined && address.trim() === '')
-            || (dob !== undefined && dob.trim() === '')
+            [name, avatar_uri, public_id_avatar, address, dob, gender].some(
+                (field) => field !== undefined && field.trim() === '',
+            )
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -1563,7 +1568,11 @@ const userController = {
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(
-                user_model.updateStudent(data_update, { user_id: id }, { user_id: 'user_id' }),
+                user_model.updateStudent(
+                    data_update,
+                    { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                    { user_id: 'user_id' },
+                ),
             );
 
             // Update student success
@@ -1587,6 +1596,9 @@ const userController = {
                 return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
                     status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
+                    element: {
+                        result: returnDuplicate(err),
+                    },
                 });
             }
         } catch (error) {
