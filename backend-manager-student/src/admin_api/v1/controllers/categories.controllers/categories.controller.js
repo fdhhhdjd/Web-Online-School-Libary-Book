@@ -107,7 +107,7 @@ const categoriesController = {
                     {
                         name,
                     },
-                    { category_id },
+                    { category_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { category_id: 'category_id' },
                 ),
             );
@@ -179,7 +179,7 @@ const categoriesController = {
                     {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { category_id },
+                    { category_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { category_id: 'category_id' },
                 ),
             );
