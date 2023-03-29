@@ -19,10 +19,10 @@ const authorController = {
      * @return {Object:{Number,String}}
      */
     createAuthor: async (req, res) => {
-        const { name, avatar_uri, dob, gender, nation } = req.body.input.author_input;
+        const { name, avatar_uri, public_id_avatar, dob, gender, nation } = req.body.input.author_input;
 
         // Check input
-        if (!name || !avatar_uri || !dob || !gender || !nation) {
+        if (!name || !avatar_uri || !dob || !gender || !nation || !public_id_avatar) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -43,6 +43,7 @@ const authorController = {
                     dob,
                     gender,
                     nation,
+                    public_id_avatar,
                 }),
             );
             if (result) {
@@ -78,7 +79,7 @@ const authorController = {
      * @return {Object:{Number,String}}
      */
     updateAuthor: async (req, res) => {
-        const { author_id, name, avatar_uri, dob, gender, nation } = req.body.input.author_input;
+        const { author_id, name, avatar_uri, dob, gender, nation, public_id_avatar } = req.body.input.author_input;
 
         // Check input
         if (!author_id || !HELPER.validateBigInt(author_id)) {
@@ -93,10 +94,9 @@ const authorController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '')
-            || (avatar_uri !== undefined && avatar_uri.trim() === '')
-            || (dob !== undefined && dob.trim() === '')
-            || (nation !== undefined && nation.trim() === '')
+            [name, avatar_uri, public_id_avatar, nation, dob, gender].some(
+                (field) => field !== undefined && field.trim() === '',
+            )
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -133,6 +133,7 @@ const authorController = {
                         avatar_uri,
                         dob,
                         gender,
+                        public_id_avatar,
                         nation,
                     },
                     { author_id, isdeleted: CONSTANTS.DELETED_DISABLE },

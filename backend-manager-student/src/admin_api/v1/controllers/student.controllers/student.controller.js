@@ -314,7 +314,7 @@ const StudentController = {
             };
             // Take data db
             const result_student = await student_model.getAllStudentJoinPhone(
-                { isdeleted: CONSTANTS.DELETED_DISABLE },
+                { isdeleted: CONSTANTS.DELETED_DISABLE, role: CONSTANTS.ROLE.ROLE_STUDENT },
                 data_return,
             );
 

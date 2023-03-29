@@ -139,5 +139,12 @@ module.exports = {
      */
     THRESHOLD: 100 * 1000,
     LEVEL: 6,
-
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description ERROR CRASH SERVER
+     */
+    ERROR_REJECTION: 'unhandledRejection',
+    ERROR_EXCEPTION: 'uncaughtException',
+    SIGINT: 'SIGINT',
 };

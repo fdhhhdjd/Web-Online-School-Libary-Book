@@ -437,4 +437,13 @@ module.exports = {
     // Student
     KEY_USER_EXIT_U: 'student_api*',
     DELETE_KEY_CACHE_LRU: 'student_api_delete_key_lru',
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description ERROR CRASH SERVER
+     */
+    ERROR_REJECTION: 'unhandledRejection',
+    ERROR_EXCEPTION: 'uncaughtException',
+    SIGINT: 'SIGINT',
 };

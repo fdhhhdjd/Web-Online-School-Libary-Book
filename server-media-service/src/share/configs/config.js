@@ -68,4 +68,11 @@ module.exports = {
     * @description MachineNo
     */
     MACHINE_NO: process.env.MACHINE_NO,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description CONNECT TELEGRAM
+     */
+    KEY_TELEGRAM: process.env.KEY_TELEGRAM,
+    KEY_CHAT_ID: process.env.KEY_CHAT_ID,
 };
