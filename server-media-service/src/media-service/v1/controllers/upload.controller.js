@@ -156,7 +156,7 @@ const uploadController = {
             console.error(error);
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
-                element: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
             });
         }
     },

@@ -113,8 +113,8 @@ const StudentController = {
      */
     updateStudent: async (req, res) => {
         // Input body
-        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } =
-            req.body.input.update_student_input;
+        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender }
+            = req.body.input.update_student_input;
 
         // Check input
         if (!student_id || !HELPER.validateBigInt(student_id)) {
@@ -314,7 +314,7 @@ const StudentController = {
             };
             // Take data db
             const result_student = await student_model.getAllStudentJoinPhone(
-                { isdeleted: CONSTANTS.DELETED_DISABLE },
+                { isdeleted: CONSTANTS.DELETED_DISABLE, role: CONSTANTS.ROLE.ROLE_STUDENT },
                 data_return,
             );
 

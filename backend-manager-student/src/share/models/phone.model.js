@@ -10,7 +10,8 @@ module.exports = {
     createPhone: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('phone').insert(data).onConflict('phone_id').merge().returning(['phone_id']);
+                const result = knex('phone').insert(data).onConflict('phone_id').merge()
+                    .returning(['phone_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);
