@@ -48,6 +48,7 @@
         "ioredis": "^5.2.4",
         "nodemailer": "^6.8.0",
         "nodemailer-express-handlebars": "^5.0.0",
-        "async-retry": "^1.3.3"
+        "async-retry": "^1.3.3",
+        "node-telegram-bot-api": "^0.61.0"
     }
 }
