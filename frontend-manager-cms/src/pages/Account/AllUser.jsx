@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Delete_Account_Cms_Initial, Get_All_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
+import HELPERS from 'utils/helper';
+import NOTIFICATION from 'utils/notification';
 
 const AllUser = () => {
+  const dispatch = useDispatch();
+  const accountList = useSelector((state) => state.student.all_accounts?.element?.result);
+  const [allAccount, setAllAcount] = useState(null);
+
+  const handleDelete = (student_id) => {
+    // Delete function
+    const deleteBook = () => {
+      dispatch(Delete_Account_Cms_Initial({ student_id })).then(() => {
+        dispatch(Get_All_Account_Cms_Initial());
+      });
+    };
+
+    // Confirm box to delete
+    NOTIFICATION.swalConfirmDelete('Bạn có muốn xóa tài khoản này', '', 'Đồng ý', deleteBook);
+  };
+
+  useEffect(() => {
+    dispatch(Get_All_Account_Cms_Initial());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setAllAcount(accountList);
+  }, [accountList]);
+
   return (
     <div className="container mt-20">
       <div className="flex flex-col">
@@ -47,45 +75,61 @@ const AllUser = () => {
                       ID
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
+                      Mã số sinh viên
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
                       Tên
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
+                      Lớp
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
                       Giới tính
                     </th>
-                    <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Số lượng sách
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
-                      Quốc gia
+                    <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
+                      Truy cập
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
-                      Edit
+                      Chỉnh sửa
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
-                      Delete
+                      Xóa
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                      {'author?.author_id'}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{'author?.name'}</td>
-                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                      {'author?.gender' === 0 ? 'Nữ' : 'Nam'}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">03</td>
-                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">Việt Nam</td>
-                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                      <Link to={`/author/${'author?.author_id'}`} className="text-green-500 hover:text-green-700">
-                        Edit
-                      </Link>
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                      <button className="text-red-500 hover:text-red-700">Delete</button>
-                    </td>
-                  </tr>
+                  {allAccount &&
+                    allAccount?.map((account, idx) => (
+                      <tr key={idx}>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                          {account?.user_id}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{account?.mssv}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{account?.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{account?.class}</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                          {HELPERS.getGenderLabel(account?.gender)}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <Link to={`/user/view/${account?.user_id}`} className="text-green-500 hover:text-green-700">
+                            Truy cập
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <Link to={`/user/edit/${account?.user_id}`} className="text-green-500 hover:text-green-700">
+                            Chỉnh sửa
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDelete(account?.user_id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

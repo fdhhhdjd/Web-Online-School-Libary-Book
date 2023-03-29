@@ -52,7 +52,7 @@ function App() {
         !originalConfig._retry &&
         !isRefreshing
       ) {
-        originalConfig._retry = CONSTANTS.DELETED_DISABLE;
+        originalConfig._retry = CONSTANTS.DELETED_ENABLE;
         originalConfig.headers = { ...originalConfig.headers };
 
         setIsRefreshing(true);

@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from 'configs/constants';
 
 //! REDUX THUNK
-import { Upload_Media_Initial } from './media_thunk';
+import { Upload_Media_Initial, Destroy_Media_Initial } from './media_thunk';
 
 const initialState = {
   loading_media: false,
@@ -31,6 +31,17 @@ const Media_Cloud = createSlice({
       state.result_upload = action.payload.element;
     },
     [Upload_Media_Initial.rejected]: (state, action) => {
+      state.loading_media = false;
+      state.error = action.payload;
+    },
+    //* Destroy Cloud
+    [Destroy_Media_Initial.pending]: (state, action) => {
+      state.loading_media = true;
+    },
+    [Destroy_Media_Initial.fulfilled]: (state, action) => {
+      state.loading_media = false;
+    },
+    [Destroy_Media_Initial.rejected]: (state, action) => {
       state.loading_media = false;
       state.error = action.payload;
     },

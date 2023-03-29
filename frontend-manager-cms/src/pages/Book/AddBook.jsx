@@ -1,50 +1,66 @@
-import { useEffect, useState } from 'react';
+//! LIBRARY
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { allLanguageOption } from 'utils/dummy';
 
 //! CUSTOMER HOOK
+import Loading from 'components/Loading';
+import SelectBox from 'components/SelectBox';
 import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
+import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
+import { Create_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
 
 const AddBook = () => {
   const dispatch = useDispatch();
   const { handleUpload } = useUploadCloud();
+  const { result_upload, loading_media } = useSelector((state) => ({
+    ...state.media,
+  }));
+  const authorList = useRef([]);
+  const [authorID, setAuthorID] = useState(null);
+  const [language, setLanguage] = useState();
+  const [isReset, setIsReset] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const [selectedFile, setSelectedFile] = useState();
-  const [preview, setPreview] = useState('https://www.boldstrokesbooks.com/assets/bsb/images/book-default-cover.jpg');
 
   const onSelectFile = (e) => {
-    console.log('haha');
-    if (!e.target.files || e.target.files.length === 0) {
-      // setSelectedFile(profile_student?.data?.image_uri);
-      return;
-    }
-
-    // get first image
-    setSelectedFile(e.target.files[0]);
-    console.log(e);
+    handleUpload(e);
   };
 
   const handleCreateBook = (data) => {
-    console.log(data);
+    const { image, ...result } = data;
+
+    dispatch(
+      Create_Book_Cms_Initial({
+        ...result,
+        language,
+        author_id: authorID,
+        image_uri: result_upload?.result?.url,
+        public_id_image: result_upload?.result?.public_id,
+      }),
+    ).then(() => {
+      reset();
+      setIsReset(true);
+    });
   };
 
   useEffect(() => {
-    if (!selectedFile) {
-      setPreview('https://www.boldstrokesbooks.com/assets/bsb/images/book-default-cover.jpg');
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+    dispatch(Get_All_Author_Cms_Initial()).then((result) => {
+      const data = result?.payload?.element?.result;
+      data?.forEach((item) =>
+        authorList.current.push({
+          value: item.author_id,
+          label: `${item.author_id} ${item.name}`,
+        }),
+      );
+    });
+  }, []);
 
   return (
     <form className="w-full mt-10" autoComplete="nope" onSubmit={handleSubmit(handleCreateBook)}>
@@ -53,7 +69,7 @@ const AddBook = () => {
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="name">
-                Tên tác giả
+                Tên sách
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -120,27 +136,28 @@ const AddBook = () => {
                 id="page_number"
                 type="text"
                 placeholder="Gia Bảo..."
-              // {...register('page_number', {
-              //   required: true,
-              // })}
+                {...register('page_number', {
+                  required: true,
+                })}
               />
+              <div className="mt-1 text-red-700">
+                {errors?.page_number?.type === 'required' ? 'Mời bạn nhập số trang của sách' : ''}
+              </div>
             </div>
             <div className="w-full md:w-1/2 px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="language">
                 Ngôn ngữ
               </label>
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="language"
-                type="text"
-                placeholder="Gia Bảo..."
-                {...register('language', {
-                  required: true,
-                })}
-              />
-              <div className="mt-1 text-red-700">
-                {errors?.language?.type === 'required' ? 'Mời bạn nhập ngôn ngữ sách' : ''}
-              </div>
+              <SelectBox optionData={allLanguageOption} isReset={isReset} setData={setLanguage} />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
+                Tác giả
+              </label>
+              <SelectBox optionData={authorList.current} isReset={isReset} setData={setAuthorID} />
             </div>
           </div>
 
@@ -183,15 +200,26 @@ const AddBook = () => {
             <div className="w-full px-3">
               <div className="profile__info__image">
                 <div className="profile__info__image__preview">
-                  <img src={preview} alt="" />
+                  {loading_media ? (
+                    <Loading />
+                  ) : (
+                    <img
+                      src={
+                        result_upload
+                          ? result_upload?.result?.url
+                          : 'https://www.boldstrokesbooks.com/assets/bsb/images/book-default-cover.jpg'
+                      }
+                      alt=""
+                    />
+                  )}
                 </div>
                 <input
                   type="file"
                   id="avatar"
-                  onChange={onSelectFile}
                   className="hidden"
                   {...register('image', {
                     required: true,
+                    onChange: (e) => onSelectFile(e),
                   })}
                 />
                 <div className="mt-1 text-red-700">

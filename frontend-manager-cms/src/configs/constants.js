@@ -45,8 +45,8 @@ const CONSTANTS = {
    * @description Delete Flag
    * @return {Boolean}
    */
-  DELETED_ENABLE: false,
-  DELETED_DISABLE: true,
+  DELETED_ENABLE: true,
+  DELETED_DISABLE: false,
 
   /**
    * @author Nguyễn Tiến Tài
@@ -124,5 +124,13 @@ const CONSTANTS = {
     _BOOK: 'BOOK ADMIN',
     _MEDIA: 'MEDIA CLOUD',
   },
+  MEDIA_TYPE: {
+    JPEG: 'image/jpeg',
+    PNG: 'image/png',
+    FILE: 'file',
+  },
+
+  defaultImageAuthor:
+    'https://res.cloudinary.com/dfupi3m0b/image/upload/v1679983323/library_school_image/images/1467365270468165634/1668798157976240128/1679983321408-user.png',
 };
 export default CONSTANTS;

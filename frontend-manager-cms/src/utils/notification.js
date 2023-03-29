@@ -23,7 +23,7 @@ const NOTIFICATION = {
   },
 
   /**
-   * @author Nguyễn Tiến Tài
+   * @author Châu Gia Bảo
    * @created_at 02/03/2023
    * @descriptionKey success
    */
@@ -35,6 +35,27 @@ const NOTIFICATION = {
       customClass: 'swal-wide',
       confirmButtonColor: '#3085d6',
       confirmButtonText: 'Xác nhận',
+    });
+  },
+
+  /**
+   * @author Châu Gia Bảo
+   * @created_at 02/03/2023
+   * @descriptionKey success
+   */
+  swalConfirmDelete(title, text, confirmButtonText, action) {
+    Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        action();
+      }
     });
   },
 

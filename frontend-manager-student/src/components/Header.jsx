@@ -105,7 +105,9 @@ const Header = (props) => {
               <div className="header__menu__item header__menu__right__item">
                 {profile_student ? (
                   <>
-                    <img src={profile_student?.data?.avatar_uri} alt="" />
+                    <div className="img-avatar">
+                      <img src={profile_student?.data?.avatar_uri} alt="" />
+                    </div>
                     <div className="header__submenu header__submenu__user">
                       {userSubNav &&
                         userSubNav.map((item, idx) => (
