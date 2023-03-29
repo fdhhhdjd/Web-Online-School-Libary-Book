@@ -309,4 +309,13 @@ module.exports = {
             WAV: 'audio/wav',
         },
     },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description ERROR CRASH SERVER
+     */
+    ERROR_REJECTION: 'unhandledRejection',
+    ERROR_EXCEPTION: 'uncaughtException',
+    SIGINT: 'SIGINT',
 };

@@ -133,4 +133,12 @@ module.exports = {
      */
     IPA_API_RATE_LIMIT_DURATION: process.env.IPA_API_RATE_LIMIT_DURATION,
     IPA_API_RATE_LIMIT: process.env.IPA_API_RATE_LIMIT,
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description CONNECT TELEGRAM
+     */
+    KEY_TELEGRAM: process.env.KEY_TELEGRAM,
+    KEY_CHAT_ID: process.env.KEY_CHAT_ID,
 };

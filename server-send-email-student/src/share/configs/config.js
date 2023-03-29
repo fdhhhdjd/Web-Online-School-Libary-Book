@@ -31,4 +31,11 @@ module.exports = {
      * @description ENVIRONMENT
      */
     NODE_ENV: process.env.NODE_ENV,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 29/03/2023
+     * @description CONNECT TELEGRAM
+     */
+    KEY_TELEGRAM: process.env.KEY_TELEGRAM,
+    KEY_CHAT_ID: process.env.KEY_CHAT_ID,
 };

@@ -10,6 +10,7 @@ module.exports = {
      * @description Message
      */
     MEDIA: {
+        SERVER: 'Server Media Api',
         NO_FILE_PROVIDED: 'No file provided!',
         NO_FILE_AUTH_GENERATOR: 'auth_general_id not exit!',
         NO_SIZE_IMAGE_BIG: 'Image size is too big!',
