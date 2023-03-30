@@ -26,9 +26,7 @@ const PORT = CONFIGS.PORT_STUDENT_API || 5001;
 const server = app.listen(PORT);
 console.info(`Server is listening on port:http://localhost:${PORT}`);
 
-const handleError = (err) => {
-    handleException(err, CONSTANTS.NAME_SERVER.STUDENT, PORT);
-};
+const handleError = (err) => handleException(err, CONSTANTS.NAME_SERVER.STUDENT, PORT);
 
 process.on(CONSTANTS.ERROR_REJECTION, handleError);
 

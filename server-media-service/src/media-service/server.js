@@ -26,9 +26,7 @@ const server = app.listen(PORT, () => {
     console.info(`Server is listening on port:http://localhost:${PORT}`);
 });
 
-const handleError = (err) => {
-    handleException(err, CONSTANTS.NAME_SERVER.MEDIA, PORT);
-};
+const handleError = (err) => handleException(err, CONSTANTS.NAME_SERVER.MEDIA, PORT);
 
 process.on(CONSTANTS.ERROR_REJECTION, handleError);
 

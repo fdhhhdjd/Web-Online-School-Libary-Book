@@ -26,9 +26,7 @@ const PORT = CONFIGS.PORT_ADMIN_API || 5000;
 const server = app.listen(PORT);
 console.info(`Server is listening on port:http://localhost:${PORT}`);
 
-const handleError = (err) => {
-    handleException(err, CONSTANTS.NAME_SERVER.ADMIN, PORT);
-};
+const handleError = (err) => handleException(err, CONSTANTS.NAME_SERVER.ADMIN, PORT);
 
 process.on(CONSTANTS.ERROR_REJECTION, handleError);
 
