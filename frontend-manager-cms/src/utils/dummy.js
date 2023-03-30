@@ -168,6 +168,25 @@ export const genderOption = [
   },
 ];
 
+export const statusBorrowOption = [
+  {
+    value: 10,
+    label: 'Chờ xác nhận',
+  },
+  {
+    value: 20,
+    label: 'Đang mượn',
+  },
+  {
+    value: 30,
+    label: 'Đã trả',
+  },
+  {
+    value: 40,
+    label: 'Quá hạn',
+  },
+];
+
 export const nationOption = [
   { value: 'Afghanistan', label: 'Afghanistan' },
   { value: 'Aland Islands', label: 'Aland Islands' },
@@ -428,7 +447,7 @@ export const sideBarMenu = [
   { title: 'Tài khoản', src: UserIcon, route: '/user/all', gap: true },
   { title: 'Sách', src: CalenderIcon, route: '/book/all' },
   { title: 'Tác giả', src: UserIcon, route: '/author/all' },
-  { title: 'Sách mượn', src: CalenderIcon, route: '/book/all' },
+  { title: 'Sách mượn', src: CalenderIcon, route: '/borrow/all' },
   { title: 'Search', src: SearchIcon, route: '/search' },
   { title: 'Analytics', src: ChartIcon, route: '/report' },
   { title: 'Files ', src: FolderIcon, gap: true, route: '/files' },

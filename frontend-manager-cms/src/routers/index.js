@@ -14,6 +14,8 @@ import EditBook from 'pages/Book/EditBook';
 import Login from '../pages/Auth/Login';
 
 //! PRIVATE ROUTES
+import AllBorrowBook from 'pages/BorrowBook/AllBorrowBook';
+import EditBorrow from 'pages/BorrowBook/EditBorrow';
 import AdminPrivateRouter from 'private/Admin_Private_Router';
 import AdminPrivateRouterlogin from 'private/Admin_Private_Router_login';
 
@@ -51,6 +53,24 @@ const RouteDataMain = [
     main: (
       <>
         <Sidebar title="Thêm sách" content={<AddBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/borrow/all',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Danh sách sách mượn" content={<AllBorrowBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/borrow/edit/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Cập nhật sách mượn" content={<EditBorrow />} />
       </>
     ),
   },
