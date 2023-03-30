@@ -7,6 +7,12 @@
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description PORT Send Email
+     */
+    PORT_EMAIL: process.env.PORT_EMAIL,
+    /**
+     * @author Nguyễn Tiến Tài
      * @created_at 16/12/2022
      * @description SMTP Settings
      */

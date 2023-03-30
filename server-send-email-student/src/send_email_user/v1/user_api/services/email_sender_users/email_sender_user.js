@@ -56,7 +56,7 @@ const emailSenderUsers = {
         const type = CONSTANTS.TYPE_STUDENT;
         const message = message_sub.data_reset;
         message.support_email = CONFIGS.SMTP_MAIL;
-        const name_subject = HELPERS.getURIFromTemplate(TEMPLATE_EMAIL.STUDENT_RESET_PASSWORD.SUBJECT, {
+        const name_subject = HELPERS.getURIFromTemplate1(TEMPLATE_EMAIL.STUDENT_RESET_PASSWORD.SUBJECT, {
             name: message.name,
         });
         const option = {

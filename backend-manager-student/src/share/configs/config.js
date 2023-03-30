@@ -7,6 +7,13 @@
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
+     * @created_at 30/3/2023
+     * @description Port Server
+     */
+    PORT_STUDENT_API: process.env.PORT_USER_API,
+    PORT_ADMIN_API: process.env.PORT_ADMIN_API,
+    /**
+     * @author Nguyễn Tiến Tài
      * @created_at 16/12/2022
      * @description SMTP Settings
      */

@@ -1,8 +1,7 @@
-const CONSTANTS = require('../configs/constants')
+const CONSTANTS = require('../configs/constants');
 
 const { REDIS_MASTER } = require('../db/init_multiple_redis');
 const MEMORY_CACHE = require('./limited_redis');
-
 
 /**
  * @author Nguyễn Tiến Tài
@@ -24,16 +23,16 @@ const sendEmailWithLock = async (key, value) => {
         try {
             // send email here
             const publishResult = await REDIS_MASTER.publish(lockKey, value_convert);
-            console.log(`Published to ${publishResult} subscribers.`);
+            console.info(`Published to ${publishResult} subscribers.`);
         } finally {
-            console.log('Del success')
+            console.info('Del success');
             // release lock by deleting the key
             await MEMORY_CACHE.delKeyCache(lockKey);
         }
     } else {
         throw new Error('Cannot acquire lock.');
     }
-}
+};
 module.exports = {
-    sendEmailWithLock
-}
+    sendEmailWithLock,
+};

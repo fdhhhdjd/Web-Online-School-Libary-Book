@@ -1,6 +1,6 @@
 //! MEMORY CACHE
-const { REDIS_MASTER } = require('../db/init_multiple_redis');
 const MEMORY_CACHE = require('./limited_redis');
+const { REDIS_MASTER } = require('../db/init_multiple_redis');
 
 //! SHARE
 const CONSTANTS = require('../configs/constants');
@@ -64,8 +64,22 @@ const queueMessageTelegram = async (key, value) => {
         console.info('Del success');
     }
 };
+const handleException = (err, name, port) => {
+    console.error('Unhandled Exception:', err);
+    const message = HELPER.getURIFromTemplate(CONSTANTS.STRING_SERVER.URL, {
+        name,
+        port: port || '',
+        errorName: err.name,
+        errorMessage: err.message,
+    });
+    // Publish data queue Redis
+    return queueMessageTelegram(CONSTANTS.QUEUE.REDIS_SERVER_CRON, {
+        message,
+    });
+};
 module.exports = {
     sendEmailWithLock,
     queueMessageUserApi,
     queueMessageTelegram,
+    handleException,
 };
