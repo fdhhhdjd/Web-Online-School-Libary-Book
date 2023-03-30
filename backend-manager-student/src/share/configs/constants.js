@@ -436,6 +436,7 @@ module.exports = {
      */
     // Student
     KEY_USER_EXIT_U: 'student_api*',
+    KEY_USER_EXIT_A: 'admin_api*',
     DELETE_KEY_CACHE_LRU: 'student_api_delete_key_lru',
 
     /**
@@ -446,4 +447,13 @@ module.exports = {
     ERROR_REJECTION: 'unhandledRejection',
     ERROR_EXCEPTION: 'uncaughtException',
     SIGINT: 'SIGINT',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description KEY QUEUE
+     */
+    QUEUE: {
+        REDIS_SERVER_ADMIN: 'admin_unErrorServer',
+        REDIS_SERVER_STUDENT: 'user_unErrorServer',
+    },
 };

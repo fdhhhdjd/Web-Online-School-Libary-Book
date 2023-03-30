@@ -4,10 +4,12 @@ const dotenv = require('dotenv');
 //! APP
 const app = require('./app');
 
+//! REDIS PUBSUB
+const REDIS_PUB_SUB = require('../share/utils/redis_pub_sub_helper');
+
 //! SHARE
 const CONSTANTS = require('../share/configs/constants');
 const MESSAGES = require('../share/configs/message');
-const { sendTelegram } = require('../share/utils/telegram');
 
 //! USED LIBRARY
 dotenv.config();
@@ -27,9 +29,11 @@ console.info(`Server is listening on port:http://localhost:${PORT}`);
 
 const handleException = (err) => {
     console.error('Unhandled Exception:', err);
-
-    const message = `Server Student and Admin ${PORT}:: ${err.name}: ${err.message}`;
-    sendTelegram(message);
+    const message = `Server Admin ${PORT}:: ${err.name}: ${err.message}`;
+    // Publish data queue Redis
+    return REDIS_PUB_SUB.queueMessageTelegram(CONSTANTS.QUEUE.REDIS_SERVER_ADMIN, {
+        message,
+    });
 };
 
 process.on(CONSTANTS.ERROR_REJECTION, handleException);
@@ -38,6 +42,6 @@ process.on(CONSTANTS.ERROR_EXCEPTION, handleException);
 
 process.on(CONSTANTS.SIGINT, () => {
     server.close(() => {
-        console.error('Server Student and Admin::: Off ');
+        console.error('Server Admin::: Off ');
     });
 });

@@ -4,10 +4,12 @@ const dotenv = require('dotenv');
 //!  APP
 const app = require('./app');
 
+//! REDIS PUBSUB
+const REDIS_PUB_SUB = require('../share/utils/redis_pub_sub_helper');
+
 //! SHARE
 const CONSTANTS = require('../share/configs/constants');
 const MESSAGE = require('../share/configs/message');
-const { sendTelegram } = require('../share/utils/telegram');
 
 dotenv.config();
 
@@ -27,9 +29,11 @@ const server = app.listen(PORT, () => {
 
 const handleException = (err) => {
     console.error('Unhandled Exception:', err);
-
     const message = `Server Media ${PORT}:: ${err.name}: ${err.message}`;
-    sendTelegram(message);
+    // Publish data queue Redis
+    return REDIS_PUB_SUB.queueMessageTelegram(CONSTANTS.QUEUE.REDIS_SERVER_MEDIA, {
+        message,
+    });
 };
 
 process.on(CONSTANTS.ERROR_REJECTION, handleException);

@@ -65,7 +65,7 @@ module.exports = {
                 if (borrow_book_id && !user_id) {
                     queryBuilder.where('borrowed_book_id', borrow_book_id);
                 }
-                if (!borrow_book_id && !user_id) {
+                if (!borrow_book_id && user_id) {
                     queryBuilder.where('user_id', user_id);
                 }
             })
