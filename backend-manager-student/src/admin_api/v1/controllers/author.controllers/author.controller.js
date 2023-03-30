@@ -93,11 +93,7 @@ const authorController = {
         }
 
         // Check Input is empty
-        if (
-            [name, avatar_uri, public_id_avatar, nation, dob, gender].some(
-                (field) => field !== undefined && field.trim() === '',
-            )
-        ) {
+        if (!name || !avatar_uri || !public_id_avatar || !nation || !dob || !gender) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),

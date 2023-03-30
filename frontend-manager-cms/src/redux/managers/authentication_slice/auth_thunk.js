@@ -89,7 +89,7 @@ export const Login_Cms_Initial = createAsyncThunk('admin/cms/mssv', async ({ mss
 export const Renew_Token_Cms_Initial = createAsyncThunk('student/new/token', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await REQUEST.get(`${API_ADMIN.RENEW_TOKEN_CMS}`, {
+    const response = await axios.get(`${API_ADMIN.RENEW_TOKEN_CMS}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
@@ -101,7 +101,6 @@ export const Renew_Token_Cms_Initial = createAsyncThunk('student/new/token', asy
     if (successData) {
       // return result data
       const result_data = HELPERS.takeDataResponse(successData);
-      console.log(result_data.data.access_token, '');
       // Save LocalStorage
       setToken(CONSTANTS.AUTH_TOKEN, result_data.data.access_token);
 

@@ -13,6 +13,7 @@ import {
   Change_Password_Initial,
   Forget_Password_Initial,
   Reset_Password_Initial,
+  Update_Student_Initial,
 } from './auth_thunk';
 
 const initialState = {
@@ -62,6 +63,20 @@ const Authentication = createSlice({
     },
 
     [Profile_Student_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* UPDATE PROFILE
+    [Update_Student_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+
+    [Update_Student_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+
+    [Update_Student_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -50,7 +50,7 @@ const HELPERS = {
     };
     const token = getToken(CONSTANTS.AUTH_TOKEN);
     if (token) {
-      headers.Authorization = token ? `Bearer ${token}` : null;
+      headers.athorization = token ? `Bearer ${token}` : null;
     }
 
     return headers;

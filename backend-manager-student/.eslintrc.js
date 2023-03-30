@@ -12,12 +12,10 @@ module.exports = {
         // 'arrow-parens': 'off',
         'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
         'arrow-parens': ['error', 'always'],
-        eqeqeq: 'error',
         'function-paren-newline': 'off',
 
         indent: ['error', 4],
         camelcase: 'off',
-        'linebreak-style': [2, 'unix'],
         'no-useless-escape': 'off',
         'no-console': [
             'error',
@@ -39,7 +37,6 @@ module.exports = {
                 allow: [],
             },
         ],
-        'operator-linebreak': ['error', 'before', { overrides: { '?': 'after' } }],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
         // eslint-disable-next-line no-dupe-keys
@@ -56,7 +53,7 @@ module.exports = {
         'consistent-return': 'off',
         'no-template-curly-in-string': 'off',
         'prefer-destructuring': 'off',
-        radix: 'off',
+        'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
         'no-else-return': 'off',
         'no-async-promise-executor': 'off',
         'no-promise-executor-return': 'off',

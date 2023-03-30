@@ -116,3 +116,19 @@ img {
   height: 270px !important;
   font-size: 1.2rem !important;
 }
+
+.error-msg {
+  color: #ec1d25;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+
+  i {
+    margin-top: 0.3rem;
+  }
+}
+
+.error-input {
+  border-color: #ec1d25;
+  border-width: 1px;
+}

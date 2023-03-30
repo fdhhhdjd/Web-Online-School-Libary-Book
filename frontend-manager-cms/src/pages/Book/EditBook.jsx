@@ -9,6 +9,7 @@ const EditBook = () => {
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+  const [detail, setDetai] = useState(null);
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -20,9 +21,11 @@ const EditBook = () => {
     setSelectedFile(e.target.files[0]);
   };
 
+  console.log('re render');
+
   useEffect(() => {
     dispatch(Get_Detail_Book_Cms_Initial({ book_id: id }));
-  }, []);
+  }, [dispatch, id]);
 
   useEffect(() => {
     setPreview(detailBook?.image_uri);
@@ -42,7 +45,7 @@ const EditBook = () => {
   }, [selectedFile, detailBook?.image_uri]);
 
   useEffect(() => {
-    console.log(detailBook);
+    setDetai(detailBook);
   }, [detailBook]);
 
   return (
@@ -58,7 +61,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-id"
                 type="text"
-                defaultValue={detailBook?.author_id}
+                defaultValue={detail?.book_id}
                 disabled
                 readOnly
               />
@@ -73,7 +76,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailBook?.name}
+                defaultValue={detail?.name}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -88,7 +91,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailBook?.quantity}
+                defaultValue={detail?.quantity}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -100,7 +103,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailBook?.bookshelf}
+                defaultValue={detail?.bookshelf}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -115,7 +118,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailBook?.page_number}
+                defaultValue={detail?.page_number}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -127,7 +130,7 @@ const EditBook = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="name"
                 type="text"
-                defaultValue={detailBook?.language}
+                defaultValue={detail?.language}
                 placeholder="Gia Bảo..."
               />
             </div>
@@ -143,7 +146,7 @@ const EditBook = () => {
                 rows="4"
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 placeholder="Write your thoughts here..."
-                defaultValue={detailBook?.description}
+                defaultValue={detail?.description}
               ></textarea>
             </div>
           </div>

@@ -30,6 +30,23 @@ const HELPERS = {
 
     return headers;
   },
+  headerBrowserMedia: () => {
+    // add the authorization to the headers
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+      'X-DEVICE-ID': getDeviceId(),
+      'X-OS-TYPE': CONSTANTS.OS_TYPE_HEADER,
+      'X-OS-VERSION': CONSTANTS.OS_VERSION_HEADER,
+      'X-APP-VERSION': CONSTANTS.APP_VERSION_HEADER,
+      'X-DEVICE-NAME': window.navigator.userAgent,
+    };
+    const token = getToken(CONSTANTS.AUTH_TOKEN);
+    if (token) {
+      headers.authorization = token ? `Bearer ${token}` : null;
+    }
+
+    return headers;
+  },
   formDataGeneral: (target) => {
     const formData = new FormData(target);
     return Object.fromEntries(formData);
@@ -65,6 +82,16 @@ const HELPERS = {
       return false;
     } catch (err) {
       return false;
+    }
+  },
+  getGenderLabel: (gender) => {
+    switch (gender) {
+      case 0:
+        return 'Nữ';
+      case 1:
+        return 'Nam';
+      default:
+        return 'Khác';
     }
   },
 };
