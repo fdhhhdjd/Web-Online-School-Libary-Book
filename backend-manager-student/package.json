@@ -76,8 +76,7 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^4.6.0",
         "ua-parser-js": "^1.0.33",
-        "crypto": "^1.0.1",
-        "node-telegram-bot-api": "^0.61.0"
+        "crypto": "^1.0.1"
     },
     "devDependencies": {
         "jest": "^29.3.1"

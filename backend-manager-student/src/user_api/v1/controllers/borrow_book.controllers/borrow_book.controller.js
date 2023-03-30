@@ -62,15 +62,15 @@ const BorrowBookController = {
             if (data_borrow_book.length > 0 && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE) {
                 let result_borrow;
                 switch (data_borrow_book[0].status) {
-                    case CONSTANTS.STATUS_BORROW.PENDING:
-                        result_borrow = MESSAGES.GENERAL.ALREADY_BOOK_BORROW;
-                        break;
-                    case CONSTANTS.STATUS_BORROW.BORROWING:
-                        result_borrow = MESSAGES.GENERAL.PLEASE_REFUND_BOOK;
-                        break;
-                    default:
-                        result_borrow = MESSAGES.GENERAL.BORROW_FAIL;
-                        break;
+                case CONSTANTS.STATUS_BORROW.PENDING:
+                    result_borrow = MESSAGES.GENERAL.ALREADY_BOOK_BORROW;
+                    break;
+                case CONSTANTS.STATUS_BORROW.BORROWING:
+                    result_borrow = MESSAGES.GENERAL.PLEASE_REFUND_BOOK;
+                    break;
+                default:
+                    result_borrow = MESSAGES.GENERAL.BORROW_FAIL;
+                    break;
                 }
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

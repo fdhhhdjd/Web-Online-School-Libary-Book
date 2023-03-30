@@ -318,4 +318,12 @@ module.exports = {
     ERROR_REJECTION: 'unhandledRejection',
     ERROR_EXCEPTION: 'uncaughtException',
     SIGINT: 'SIGINT',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description KEY QUEUE
+     */
+    QUEUE: {
+        REDIS_SERVER_MEDIA: 'media_unErrorServer',
+    },
 };
