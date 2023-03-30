@@ -4,12 +4,11 @@ const dotenv = require('dotenv');
 //!  APP
 const app = require('./app');
 
-//! REDIS PUBSUB
-const REDIS_PUB_SUB = require('../share/utils/redis_pub_sub_helper');
-
 //! SHARE
 const CONSTANTS = require('../share/configs/constants');
+const CONFIGS = require('../share/configs/config');
 const MESSAGE = require('../share/configs/message');
+const { handleException } = require('../share/utils/redis_pub_sub_helper');
 
 dotenv.config();
 
@@ -22,23 +21,18 @@ app.get('/', (req, res) => {
     return res.send(health_check);
 });
 
-const PORT = process.env.PORT_MEDIA || 8000;
+const PORT = CONFIGS.PORT_MEDIA || 8000;
 const server = app.listen(PORT, () => {
     console.info(`Server is listening on port:http://localhost:${PORT}`);
 });
 
-const handleException = (err) => {
-    console.error('Unhandled Exception:', err);
-    const message = `Server Media ${PORT}:: ${err.name}: ${err.message}`;
-    // Publish data queue Redis
-    return REDIS_PUB_SUB.queueMessageTelegram(CONSTANTS.QUEUE.REDIS_SERVER_MEDIA, {
-        message,
-    });
+const handleError = (err) => {
+    handleException(err, CONSTANTS.NAME_SERVER.MEDIA, PORT);
 };
 
-process.on(CONSTANTS.ERROR_REJECTION, handleException);
+process.on(CONSTANTS.ERROR_REJECTION, handleError);
 
-process.on(CONSTANTS.ERROR_EXCEPTION, handleException);
+process.on(CONSTANTS.ERROR_EXCEPTION, handleError);
 
 process.on(CONSTANTS.SIGINT, () => {
     server.close(() => {

@@ -1,6 +1,7 @@
 //! Share
 const HELPER = require('../../../../share/utils/helper');
 const CONSTANTS = require('../../../../share/configs/constants');
+const { handleException } = require('../../../../share/utils/redis_pub_sub_helper');
 
 //! Model
 const user_verification_model = require('../../../../share/models/user_verification.model');
@@ -41,6 +42,7 @@ module.exports = {
             }
         } catch (error) {
             console.error('UPDATE FAIL!', error);
+            handleException(error, CONSTANTS.NAME_SERVER.CRON);
         }
     },
 };

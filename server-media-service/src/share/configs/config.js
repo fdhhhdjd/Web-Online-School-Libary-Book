@@ -7,6 +7,12 @@
 module.exports = {
     /**
      * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description PORT MEDIA
+     */
+    PORT_MEDIA: process.env.PORT_MEDIA,
+    /**
+     * @author Nguyễn Tiến Tài
      * @created_at 28/12/2022
      * @description Cloundinary
      */

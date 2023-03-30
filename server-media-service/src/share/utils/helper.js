@@ -5,6 +5,7 @@ const { Sonyflake } = require('sonyflake');
 const TOKENS = require('../../share/utils/token')
 const CONSTANTS = require('../configs/constants')
 const CONFIGS = require('../configs/config')
+const REGEX = require('../configs/regex')
 /**
 * @author Nguyễn Tiến Tài
 * @created_at 12/01/2023
@@ -88,5 +89,15 @@ module.exports = {
         } catch (err) {
             return CONSTANTS.DELETED_DISABLE;
         }
-    }
+    },
+    /**
+ * @author Nguyễn Tiến Tài
+ * @created_at 30/03/2023
+ * @description from String template to URI
+ * @param {template,data}
+ * @returns {string}
+ */
+    getURIFromTemplate(template, data) {
+        return template.replace(REGEX.REGEX_TEMPLATE_STRING, (_, key) => data[key]);
+    },
 }
