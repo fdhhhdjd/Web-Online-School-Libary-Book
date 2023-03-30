@@ -1,20 +1,26 @@
+//! COMPONENTS
 import Sidebar from 'components/Sidebar';
+
+//! PAGES
 import AddUser from 'pages/Account/AddUser';
 import AllUser from 'pages/Account/AllUser';
+import EditUser from 'pages/Account/EditUser';
 import AddAuthor from 'pages/Author/AddAuthor';
 import AllAuthor from 'pages/Author/AllAuthor';
 import EditAuthor from 'pages/Author/EditAuthor';
 import AddBook from 'pages/Book/AddBook';
 import Book from 'pages/Book/AllBook';
 import EditBook from 'pages/Book/EditBook';
-import Admin_Private_Router from 'private/Admin_Private_Router';
-import Admin_Private_Router_login from 'private/Admin_Private_Router_login';
 import Login from '../pages/Auth/Login';
+
+//! PRIVATE ROUTES
+import AdminPrivateRouter from 'private/Admin_Private_Router';
+import AdminPrivateRouterlogin from 'private/Admin_Private_Router_login';
 
 const RouteDataMain = [
   {
     path: '/',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar />
@@ -23,7 +29,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/all',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Danh sách tài liệu" content={<Book />} />
@@ -32,7 +38,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/:id',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Thông tin sách" content={<EditBook />} />
@@ -41,7 +47,7 @@ const RouteDataMain = [
   },
   {
     path: '/book/add',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Thêm sách" content={<AddBook />} />
@@ -50,7 +56,7 @@ const RouteDataMain = [
   },
   {
     path: '/user/all',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Danh sách tài khoản người dùng" content={<AllUser />} />
@@ -58,8 +64,17 @@ const RouteDataMain = [
     ),
   },
   {
+    path: '/user/edit/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Chỉnh sửa tài khoản người dùng" content={<EditUser />} />
+      </>
+    ),
+  },
+  {
     path: '/user/add',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Thêm tài khoản" content={<AddUser />} />
@@ -68,7 +83,7 @@ const RouteDataMain = [
   },
   {
     path: '/author/all',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Danh sách tác giả" content={<AllAuthor />} />
@@ -76,8 +91,8 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/author/:id',
-    private: <Admin_Private_Router_login />,
+    path: '/author/edit/:id',
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Thông tin tác giả" content={<EditAuthor />} />
@@ -86,7 +101,7 @@ const RouteDataMain = [
   },
   {
     path: '/author/add',
-    private: <Admin_Private_Router_login />,
+    private: <AdminPrivateRouterlogin />,
     main: (
       <>
         <Sidebar title="Thông tin tác giả" content={<AddAuthor />} />
@@ -95,7 +110,7 @@ const RouteDataMain = [
   },
   {
     path: '/login',
-    private: <Admin_Private_Router />,
+    private: <AdminPrivateRouter />,
     main: (
       <>
         <Login />

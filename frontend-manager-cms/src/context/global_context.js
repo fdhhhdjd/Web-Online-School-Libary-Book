@@ -1,17 +1,10 @@
 //! LIBRARY
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 
 //! SHARE
-import CONSTANTS from 'configs/constants';
-import { getToken } from 'utils/auth';
 
 //! CONTEXT CHILD
-import { useDispatch } from 'react-redux';
-import HELPERS from 'utils/helper';
 // import AuthStudent from './auth_cms/auth_cms';
-
-//! REDUX THUNK CALL API
-import { Renew_Token_Cms_Initial } from 'redux/managers/authentication_slice/auth_thunk';
 
 /**
  * @author Nguyễn Tiến Tài

@@ -2,7 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Delete_Book_Cms_Initial, Get_All_Book_Cms_Initial, Get_Detail_Book_Cms_Initial } from './book_thunk';
+import {
+  Create_Book_Cms_Initial,
+  Delete_Book_Cms_Initial,
+  Get_All_Book_Cms_Initial,
+  Get_Detail_Book_Cms_Initial,
+} from './book_thunk';
 
 const initialState = {
   loading: false,
@@ -38,6 +43,19 @@ const Book = createSlice({
       state.detail_book = action.payload;
     },
     [Get_Detail_Book_Cms_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Create book CMS
+    [Create_Book_Cms_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Create_Book_Cms_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.detail_book = action.payload;
+    },
+    [Create_Book_Cms_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

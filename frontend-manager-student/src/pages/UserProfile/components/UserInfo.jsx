@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { DayPicker, MonthPicker, YearPicker } from 'react-dropdown-date';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
 
 //! CUSTOMER HOOK
 import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
@@ -10,9 +11,11 @@ import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
 //!IMPORT
 import { Loading } from 'imports/loading_import';
 import moment from 'moment/moment';
+import { Update_Student_Initial } from 'redux/student/authentication_slice/auth_thunk';
 
 const UserInfo = () => {
   //Store Profile
+  const dispatch = useDispatch();
   const { profile_student } = useSelector((state) => ({
     ...state.auth_student,
   }));
@@ -22,45 +25,31 @@ const UserInfo = () => {
     ...state.media,
   }));
 
+  // react hook form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   // date picking setting
   const [date, setDate] = useState({ year: '', month: '', day: '' });
   const [gender, setGender] = useState(null);
-  const [selectedFile, setSelectedFile] = useState();
-  const [preview, setPreview] = useState();
 
   //File custom hook media
   const { handleUpload } = useUploadCloud();
 
-  const onSelectFile = (e) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setSelectedFile(profile_student?.data?.avatar_uri);
-      return;
-    }
-
-    // get first image
-    setSelectedFile(e.target.files[0]);
-    handleUpload(e);
+  // Update Profile Func
+  const updateProfile = (result) => {
+    const data = { ...result, gender, avatar_uri: result_upload?.result?.url || profile_student?.data?.avatar_uri };
+    dispatch(Update_Student_Initial(data));
   };
 
-  console.log(profile_student);
+  console.log(result_upload, loading_media);
 
   useEffect(() => {
     setGender(profile_student?.data?.gender);
-    setPreview(profile_student?.data?.avatar_uri);
   }, [profile_student]);
-
-  useEffect(() => {
-    if (!selectedFile) {
-      setPreview(profile_student?.data?.avatar_uri);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile, profile_student?.data?.avatar_uri]);
 
   return (
     <React.Fragment>
@@ -72,24 +61,54 @@ const UserInfo = () => {
         <Row>
           <Col md={8}>
             <Row className="info_border">
-              <Col md={3} className="profile__info__content__label">
+              <Col md={4} className="profile__info__content__label">
                 <div className="profile__info__content__label-item">Họ và Tên</div>
+                <div className="error-msg">
+                  {errors?.name?.type === 'required' && <i className="bx bx-error-alt"></i>}
+                </div>
                 <div className="profile__info__content__label-item">Mã số sinh viên</div>
                 <div className="profile__info__content__label-item">Email</div>
+                <div className="profile__info__content__label-item">Địa chỉ</div>
+                <div className="error-msg">
+                  {errors?.address?.type === 'required' && <i className="bx bx-error-alt"></i>}
+                </div>
+
                 <div className="profile__info__content__label-item">Số điện thoại</div>
                 <div className="profile__info__content__label-item">Giới tính</div>
                 <div className="profile__info__content__label-item">Ngày sinh</div>
-                <div className="profile__info__content__label-item">
+                <div className="profile__info__content__label-item" onClick={handleSubmit(updateProfile)}>
                   <button>Lưu</button>
                 </div>
               </Col>
-              <Col md={9} className="profile__info__content__input">
-                {/* <div className="profile__info__content__input-item">{profile_student?.data?.name}</div> */}
+              <Col md={8} className="profile__info__content__input">
                 <div className="profile__info__content__input-item">
-                  <input type="text" defaultValue={profile_student?.data?.name} className="input-user" />
+                  <input
+                    type="text"
+                    defaultValue={profile_student?.data?.name}
+                    className={`input-user ${errors?.name?.type === 'required' ? 'error-input' : ''}`}
+                    {...register('name', {
+                      required: true,
+                    })}
+                  />
+                  <div className="error-msg">
+                    {errors?.name?.type === 'required' ? 'Tên vui lòng không để trống' : ''}
+                  </div>
                 </div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.mssv}</div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.email}</div>
+                <div className="profile__info__content__input-item">
+                  <input
+                    type="text"
+                    defaultValue={profile_student?.data?.address}
+                    className={`input-user ${errors?.address?.type === 'required' ? 'error-input' : ''}`}
+                    {...register('address', {
+                      required: true,
+                    })}
+                  />
+                  <div className="error-msg">
+                    {errors?.address?.type === 'required' ? 'Địa chỉ vui lòng không để trống' : ''}
+                  </div>
+                </div>
                 <div className="profile__info__content__input-item">{profile_student?.data?.phone_hidden}</div>
                 <div className="profile__info__content__input-item">
                   <span>
@@ -164,9 +183,13 @@ const UserInfo = () => {
           <Col md={4}>
             <div className="profile__info__image">
               <div className="profile__info__image__preview">
-                {loading_media ? <Loading /> : <img src={result_upload ? result_upload.url : preview} alt="" />}
+                {loading_media ? (
+                  <Loading />
+                ) : (
+                  <img src={result_upload ? result_upload?.result?.url : profile_student?.data?.avatar_uri} alt="" />
+                )}
               </div>
-              <input type="file" name="file" id="avatar" className="hidden" onChange={onSelectFile} />
+              <input type="file" name="file" id="avatar" className="hidden" onChange={handleUpload} />
               <label htmlFor="avatar">Chọn ảnh</label>
               <div className="profile__info__image__preview__require">
                 Dung lượng file tối đa 1 MB

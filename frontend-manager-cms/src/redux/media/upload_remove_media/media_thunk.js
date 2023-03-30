@@ -15,8 +15,8 @@ import CONSTANTS from 'configs/constants';
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 15/03/2023
- * @descriptionKey Upload Media
- * @function Upload_Media_Initial
+ * @descriptionKey Destroy Media
+ * @function Destroy_Media_Initial
  * @return {Object}
  */
 export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ formData }, { rejectWithValue }) => {
@@ -50,10 +50,10 @@ export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ fo
   }
 });
 /**
- * @author Nguyễn Tiến Tài
- * @created_at 15/03/2023
- * @descriptionKey Upload Media
- * @function Upload_Media_Initial
+ * @author Châu Gia Bảo
+ * @created_at 26/03/2023
+ * @descriptionKey Destroy Media
+ * @function Destroy_Media_Initial
  * @return {Object}
  */
 export const Destroy_Media_Initial = createAsyncThunk('media/destroy', async ({ public_id }, { rejectWithValue }) => {

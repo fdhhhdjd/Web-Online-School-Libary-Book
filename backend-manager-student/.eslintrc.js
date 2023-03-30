@@ -12,12 +12,11 @@ module.exports = {
         // 'arrow-parens': 'off',
         'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
         'arrow-parens': ['error', 'always'],
-        eqeqeq: 'error',
         'function-paren-newline': 'off',
 
         indent: ['error', 4],
         camelcase: 'off',
-        'linebreak-style': [2, 'unix'],
+        // 'linebreak-style': [2, 'unix'],
         'no-useless-escape': 'off',
         'no-console': [
             'error',
@@ -42,6 +41,7 @@ module.exports = {
         'operator-linebreak': ['error', 'before', { overrides: { '?': 'after' } }],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
+        'linebreak-style': ['error', process.platform === 'win64' && 'win32' ? 'windows' : 'unix'],
         // eslint-disable-next-line no-dupe-keys
         'no-return-await': 'off',
         'func-names': 'off',

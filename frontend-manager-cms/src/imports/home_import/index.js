@@ -9,3 +9,4 @@ export { default as ControlIcon } from '../../assets/icons/control.png';
 export { default as SearchIcon } from '../../assets/icons/Search.png';
 export { default as UserIcon } from '../../assets/icons/User.png';
 export { default as logo } from '../../assets/icons/logo.png';
+export { default as BookIcon } from '../../assets/icons/book_icon-removebg-preview.png';

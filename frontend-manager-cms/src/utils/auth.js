@@ -30,8 +30,8 @@ export function getDeviceId() {
  * @function getToken
  * @return {String}
  */
-export function getToken() {
-  return localStorage.getItem(CONSTANTS.AUTH_TOKEN);
+export function getToken(key) {
+  return localStorage.getItem(key);
 }
 
 /**

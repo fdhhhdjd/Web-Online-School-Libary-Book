@@ -471,3 +471,68 @@ export const Reset_Password_Initial = createAsyncThunk(
     }
   },
 );
+
+/**
+ * @author Châu Gia Bảo
+ * @created_at 26/03/2023
+ * @descriptionKey Call api Edit Profile Student
+ * @function Update_Student_Initial
+ * @return {Object}
+ */
+export const Update_Student_Initial = createAsyncThunk(
+  'student/update/profile',
+  async ({ name, address, gender, avatar_uri }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      console.log({
+        name,
+        address,
+        gender,
+        avatar_uri,
+      });
+      const response = await REQUEST.post(
+        `${API_STUDENT.UPDATE_PROFILE_STUDENT}`,
+        {
+          input: {
+            user_update_profile_input: {
+              name,
+              address,
+              gender,
+              avatar_uri,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: CONSTANTS.DELETED_ENABLE,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        NOTIFICATION.swalSuccess('Cập nhật tài khoản thành công', '');
+      }
+    } catch (error) {
+      console.log(error);
+      //Take response Error
+      const errorData = error.response.data;
+
+      if (errorData) {
+        const error_general = {
+          message: errorData?.element?.result || errorData.message,
+          status: errorData.status,
+        };
+
+        // Notification Error
+        NOTIFICATION.notifyError(error_general.message);
+      }
+
+      // return error
+      return rejectWithValue(errorData);
+    }
+  },
+);

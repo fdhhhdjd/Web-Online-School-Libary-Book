@@ -1,23 +1,29 @@
-import React, { useEffect } from 'react';
+//! LIBRARY
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+//! REDUX THUNK
 import { Delete_Book_Cms_Initial, Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
 
 const Book = () => {
   const dispatch = useDispatch();
   const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+  const [allBook, setAllBook] = useState(null);
 
   const handleDelete = (book_id) => {
-    dispatch(Delete_Book_Cms_Initial({ book_id }));
+    dispatch(Delete_Book_Cms_Initial({ book_id })).then(() => {
+      dispatch(Get_All_Book_Cms_Initial());
+    });
   };
 
   useEffect(() => {
     dispatch(Get_All_Book_Cms_Initial());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(Get_All_Book_Cms_Initial());
-  // }, [bookList, dispatch]);
+  useEffect(() => {
+    setAllBook(bookList);
+  }, [bookList]);
 
   return (
     <div className="container mt-20">
@@ -84,8 +90,8 @@ const Book = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {bookList &&
-                    bookList?.map((book, idx) => (
+                  {allBook &&
+                    allBook?.map((book, idx) => (
                       <tr key={idx}>
                         <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                           {book?.book_id}

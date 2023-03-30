@@ -24,6 +24,12 @@ const API_STUDENT = {
    */
   PROFILE_STUDENT: '/student/v1/user/private/profile',
   /**
+   * @author Châu Gia Bảo
+   * @created_at 26/03/2023
+   * @descriptionKey API profile student
+   */
+  UPDATE_PROFILE_STUDENT: '/student/v1/user/private/update/profile',
+  /**
    * @author Nguyễn Tiến Tài
    * @created_at 06/03/2023
    * @descriptionKey API LOGOUT

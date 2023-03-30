@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Delete_Author_Cms_Initial, Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
@@ -6,9 +6,12 @@ import { Delete_Author_Cms_Initial, Get_All_Author_Cms_Initial } from 'redux/man
 const AllAuthor = () => {
   const dispatch = useDispatch();
   const authorList = useSelector((state) => state.author.all_authors_list);
+  const [allAuthor, setAllAuthor] = useState(null);
 
   const handleDelete = (author_id) => {
-    dispatch(Delete_Author_Cms_Initial({ author_id }));
+    dispatch(Delete_Author_Cms_Initial({ author_id })).then(() => {
+      dispatch(Get_All_Author_Cms_Initial());
+    });
   };
 
   useEffect(() => {
@@ -16,7 +19,7 @@ const AllAuthor = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(authorList?.element?.result);
+    setAllAuthor(authorList);
   }, [authorList]);
 
   return (
@@ -76,16 +79,19 @@ const AllAuthor = () => {
                       Quốc gia
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
-                      Edit
+                      Truy cập
                     </th>
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
-                      Delete
+                      Chỉnh sửa
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase ">
+                      Xóa
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {authorList &&
-                    authorList?.element?.result.map((author, idx) => (
+                  {allAuthor &&
+                    allAuthor?.element?.result.map((author, idx) => (
                       <tr key={idx}>
                         <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                           {author?.author_id}
@@ -95,10 +101,21 @@ const AllAuthor = () => {
                           {author?.gender === 0 ? 'Nữ' : 'Nam'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">03</td>
-                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">Việt Nam</td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{author?.nation}</td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <Link to={`/author/${author?.author_id}`} className="text-green-500 hover:text-green-700">
-                            Edit
+                          <Link
+                            to={`/author/edit/${author?.author_id}`}
+                            className="text-green-500 hover:text-green-700"
+                          >
+                            Truy cập
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                          <Link
+                            to={`/author/edit/${author?.author_id}`}
+                            className="text-green-500 hover:text-green-700"
+                          >
+                            Chỉnh sửa
                           </Link>
                         </td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
@@ -106,7 +123,7 @@ const AllAuthor = () => {
                             className="text-red-500 hover:text-red-700"
                             onClick={() => handleDelete(author?.author_id)}
                           >
-                            Delete
+                            Xóa
                           </button>
                         </td>
                       </tr>

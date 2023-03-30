@@ -161,11 +161,16 @@
           }
         }
 
-        img {
-          width: 35px;
+        .img-avatar {
           border-radius: 50%;
-          object-fit: contain;
-          object-position: center;
+          width: 35px;
+
+          img {
+            border-radius: 50%;
+            width: 100%;
+            object-fit: contain;
+            object-position: center;
+          }
         }
       }
 
