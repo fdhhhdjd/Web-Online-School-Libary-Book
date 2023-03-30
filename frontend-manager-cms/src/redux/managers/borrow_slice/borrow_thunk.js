@@ -13,21 +13,22 @@ import REQUEST from 'utils/request';
 
 /**
  * @author Châu Gia Bảo
- * @created_at 28/03/2023
- * @descriptionKey Call api Get All Account admin cms
- * @function Get_All_Account_Cms_Initial
+ * @created_at 30/03/2023
+ * @descriptionKey Call api Get All Borrow Book admin cms
+ * @function Get_All_Borrow_Book_Cms_Initial
  * @return {Object}
  */
-export const Get_All_Account_Cms_Initial = createAsyncThunk('admin/cms/account/all', async (_, { rejectWithValue }) => {
+export const Get_All_Borrow_Cms_Initial = createAsyncThunk('admin/cms/borrow/all', async (_, { rejectWithValue }) => {
   try {
     //Call Api axios
-    const response = await REQUEST.get(`${API_ADMIN.GET_ALL_ACCOUNT_CMS}`, {
+    const response = await REQUEST.get(`${API_ADMIN.GET_ALL_BORROW_CMS}`, {
       headers: HELPERS.headerBrowser(),
       withCredentials: true,
     });
 
     //Take response Success
     const successData = response.data;
+    console.log(successData);
 
     //Check data
     if (successData) {
@@ -47,22 +48,22 @@ export const Get_All_Account_Cms_Initial = createAsyncThunk('admin/cms/account/a
 
 /**
  * @author Châu Gia Bảo
- * @created_at 28/03/2023
- * @descriptionKey Call api Delete Account admin cms
- * @function Delete_Account_Cms_Initial
+ * @created_at 19/03/2023
+ * @descriptionKey Call api Delete Book admin cms
+ * @function Delete_Book_Cms_Initial
  * @return {Object}
  */
-export const Delete_Account_Cms_Initial = createAsyncThunk(
-  'admin/cms/account/delete',
-  async ({ student_id }, { rejectWithValue }) => {
+export const Delete_Book_Cms_Initial = createAsyncThunk(
+  'admin/cms/book/delete',
+  async ({ book_id }, { rejectWithValue }) => {
     try {
       //Call Api axios
       const response = await REQUEST.post(
-        `${API_ADMIN.DELETE_ACCOUNT_CMS}`,
+        `${API_ADMIN.DELETE_BOOK_CMS}`,
         {
           input: {
-            student_id: {
-              student_id,
+            book_input: {
+              book_id,
             },
           },
         },
@@ -97,16 +98,16 @@ export const Delete_Account_Cms_Initial = createAsyncThunk(
 /**
  * @author Châu Gia Bảo
  * @created_at 09/03/2023
- * @descriptionKey Call api Get Detail Account admin cms
- * @function Get_Detail_Account_Cms_Initial
+ * @descriptionKey Call api Get detail Book admin cms
+ * @function Get_Detail_Borrow_Cms_Initial
  * @return {Object}
  */
-export const Get_Detail_Account_Cms_Initial = createAsyncThunk(
-  'admin/cms/account/detail',
-  async ({ student_id }, { rejectWithValue }) => {
+export const Get_Detail_Borrow_Cms_Initial = createAsyncThunk(
+  'admin/cms/borrow/detail',
+  async ({ id }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      const response = await REQUEST.get(`${API_ADMIN.GET_DETAIL_ACCOUNT_CMS}/${student_id}`, {
+      const response = await REQUEST.get(`${API_ADMIN.GET_DETAIL_BORROW_CMS}/${id}`, {
         headers: HELPERS.headerBrowser(),
         withCredentials: true,
       });
@@ -134,27 +135,32 @@ export const Get_Detail_Account_Cms_Initial = createAsyncThunk(
 /**
  * @author Châu Gia Bảo
  * @created_at 26/03/2023
- * @descriptionKey Call api Create student admin cms
- * @function Create_Account_Cms_Initial
+ * @descriptionKey Call api Create Book admin cms
+ * @function Create_Book_Cms_Initial
  * @return {Object}
  */
-export const Create_Account_Cms_Initial = createAsyncThunk(
-  'admin/cms/account/create',
-  async ({ name, mssv, phone_number, class_room, email, dob, gender }, { rejectWithValue }) => {
+export const Create_Book_Cms_Initial = createAsyncThunk(
+  'admin/cms/book/create',
+  async (
+    { name, image_uri, description, author_id, bookshelf, language, quantity, public_id_image, page_number },
+    { rejectWithValue },
+  ) => {
     try {
       //Call Api axios
       const response = await REQUEST.post(
-        `${API_ADMIN.CREATE_ACCOUNT_CMS}`,
+        `${API_ADMIN.CREATE_BOOK_CMS}`,
         {
           input: {
-            create_student_input: {
+            book_input: {
               name,
-              mssv,
-              phone_number,
-              class_room,
-              email,
-              dob,
-              gender,
+              author_id,
+              image_uri,
+              page_number,
+              description,
+              bookshelf,
+              language,
+              quantity,
+              public_id_image,
             },
           },
         },
@@ -165,59 +171,12 @@ export const Create_Account_Cms_Initial = createAsyncThunk(
       );
 
       //Take response Success
-      const successData = response?.data;
+      const successData = response.data;
 
       //Check data
       if (successData) {
         // return result data
-        NOTIFICATION.swalSuccess('Tạo tài khoản thành công', '');
-        return successData;
-      }
-    } catch (error) {
-      if (error) {
-        //Take response Error
-        const errorData = error.response.data;
-
-        // return error
-        return rejectWithValue(errorData);
-      }
-    }
-  },
-);
-
-export const Edit_Account_Cms_Initial = createAsyncThunk(
-  'admin/cms/account/edit',
-  async ({ name, mssv, phone_number, class_room, email, dob, gender }, { rejectWithValue }) => {
-    try {
-      //Call Api axios
-      const response = await REQUEST.post(
-        `${API_ADMIN.EDIT_ACCOUNT_CMS}`,
-        {
-          input: {
-            update_student_input: {
-              name,
-              mssv,
-              phone_number,
-              class_room,
-              email,
-              dob,
-              gender,
-            },
-          },
-        },
-        {
-          headers: HELPERS.headerBrowser(),
-          withCredentials: true,
-        },
-      );
-
-      //Take response Success
-      const successData = response?.data;
-
-      //Check data
-      if (successData) {
-        // return result data
-        NOTIFICATION.swalSuccess('Tạo tài khoản thành công', '');
+        NOTIFICATION.swalSuccess('Tạo sách thành công', '');
         return successData;
       }
     } catch (error) {

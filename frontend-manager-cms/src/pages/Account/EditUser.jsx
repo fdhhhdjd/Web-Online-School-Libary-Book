@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SelectBox from 'components/SelectBox';
 import Calendar from 'react-calendar';
 import { useParams } from 'react-router-dom';
-import { Get_Detail_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
+import { Edit_Account_Cms_Initial, Get_Detail_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
 import { classOption, genderOption } from 'utils/dummy';
 import HELPERS from 'utils/helper';
 
@@ -38,7 +38,17 @@ const EditUser = () => {
     console.log({
       ...data,
       dob: moment(dob || detail?.dob).format('YYYYMMDD'),
+      gender: gender || detail?.gender,
+      class_room: classroom || detail?.class,
     });
+    dispatch(
+      Edit_Account_Cms_Initial({
+        ...data,
+        dob: moment(dob || detail?.dob).format('YYYYMMDD'),
+        gender: gender || detail?.gender,
+        class_room: classroom || detail?.class,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -97,7 +107,12 @@ const EditUser = () => {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender">
                   Giới tính
                 </label>
-                {detail?.gender && (
+                {console.log({
+                  value: detail?.gender,
+                  label: HELPERS.getGenderLabel(detail?.gender),
+                })}
+
+                {detail?.gender >= 0 && (
                   <SelectBox
                     optionData={genderOption}
                     defaultValue={{

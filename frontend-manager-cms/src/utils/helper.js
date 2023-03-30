@@ -1,5 +1,6 @@
 //!LIBRARY
 import jwt_decode from 'jwt-decode';
+import moment from 'moment';
 
 //! SHARE
 import CONSTANTS from 'configs/constants';
@@ -92,6 +93,23 @@ const HELPERS = {
         return 'Nam';
       default:
         return 'Khác';
+    }
+  },
+  formatTimeWithHour: (time) => {
+    return moment(time).format('DD-MM-YYYY, h:mm:ss a');
+  },
+  getStatusBorrow: (status) => {
+    switch (status) {
+      case 10:
+        return 'Chờ xác nhận';
+      case 20:
+        return 'Đang mượn';
+      case 30:
+        return 'Đã trả';
+      case 40:
+        return 'Quá hạn';
+      default:
+        return 'Chưa xác định';
     }
   },
 };
