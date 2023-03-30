@@ -43,7 +43,8 @@ module.exports = {
      * @created_at 16/12/2022
      * @description Time cron
      */
-    _5_SECONDS_CRON: '*/5 * * * *',
+    _5_SECONDS_CRON: '*/5 * * * * *',
+    _5_MINUTE_CRON: '*/5 * * * *',
 
     /**
      * @author Nguyễn Tiến Tài
@@ -455,5 +456,24 @@ module.exports = {
     QUEUE: {
         REDIS_SERVER_ADMIN: 'admin_unErrorServer',
         REDIS_SERVER_STUDENT: 'user_unErrorServer',
+        REDIS_SERVER_CRON: 'cron_unErrorServer',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description STRING_SERVER
+     */
+    STRING_SERVER: {
+        URL: 'Server ${name} ${port}:: ${errorName}: ${errorMessage}',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description NAME_SERVER
+     */
+    NAME_SERVER: {
+        ADMIN: 'admin',
+        STUDENT: 'student',
+        CRON: 'cron',
     },
 };
