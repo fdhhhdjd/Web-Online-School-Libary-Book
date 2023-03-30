@@ -112,11 +112,15 @@ module.exports = {
     // MEDIA
     KEY_MEDIA_EXIT_M: 'm*',
 
+    // CRON
+    KEY_CRON_EXIT_C: 'c*',
+
     // SERVER ALL
     KEY_SERVER: {
         REDIS_SERVER_ADMIN: 'admin_unErrorServer',
         REDIS_SERVER_STUDENT: 'user_unErrorServer',
         REDIS_SERVER_MEDIA: 'media_unErrorServer',
+        REDIS_SERVER_CRON: 'cron_unErrorServer',
     },
     /**
    * @author Nguyễn Tiến Tài
@@ -157,4 +161,20 @@ module.exports = {
     ERROR_REJECTION: 'unhandledRejection',
     ERROR_EXCEPTION: 'uncaughtException',
     SIGINT: 'SIGINT',
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description NAME_SERVER
+     */
+    NAME_SERVER: {
+        SEND_EMAIL: 'SEND_EMAIL',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description STRING_SERVER
+     */
+    STRING_SERVER: {
+        URL: 'Server ${name} ${port}:: ${errorName}: ${errorMessage}',
+    },
 };

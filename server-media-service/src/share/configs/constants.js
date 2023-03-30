@@ -326,4 +326,20 @@ module.exports = {
     QUEUE: {
         REDIS_SERVER_MEDIA: 'media_unErrorServer',
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description NAME_SERVER
+     */
+    NAME_SERVER: {
+        MEDIA: 'media',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 30/03/2023
+     * @description STRING_SERVER
+     */
+    STRING_SERVER: {
+        URL: 'Server ${name} ${port}:: ${errorName}: ${errorMessage}',
+    },
 };
