@@ -119,7 +119,8 @@ module.exports = {
     createStudent: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result_student = knex('user').insert(data).onConflict('user_id').merge().returning(['user_id']);
+                const result_student = knex('user').insert(data).onConflict('user_id').merge()
+                    .returning(['user_id']);
                 resolve(result_student);
             } catch (error) {
                 reject(error);

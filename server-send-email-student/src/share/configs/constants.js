@@ -108,6 +108,16 @@ module.exports = {
     // Admin
     KEY_ADMIN_EXIT_A: 'a*',
     KEY_ADMIN_WARNING_TOKEN: 'admin_send_email_warning_token',
+
+    // MEDIA
+    KEY_MEDIA_EXIT_M: 'm*',
+
+    // SERVER ALL
+    KEY_SERVER: {
+        REDIS_SERVER_ADMIN: 'admin_unErrorServer',
+        REDIS_SERVER_STUDENT: 'user_unErrorServer',
+        REDIS_SERVER_MEDIA: 'media_unErrorServer',
+    },
     /**
    * @author Nguyễn Tiến Tài
    * @created_at 19/02/2023

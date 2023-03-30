@@ -6,9 +6,28 @@ const CONFIGS = require('../configs/config');
 
 /**
  * @author Nguyễn Tiến Tài
- * @created_at 03/01/2023
- * @description Connect Cache Redis Master
+ * @created_at 22/01/2023
+ * @updated_at 15/03/2023
+ * @description Connect Cache Redis Master and Slave
  */
+const ConnectionRedis = (REDIS) => {
+    REDIS.on('connect', function() {
+        console.info(`Client connected to redis Push ${JSON.stringify(this.options.user)}`);
+    });
+    REDIS.on('ready', function() {
+        console.info(`Client connected to redis push and ready to use ${JSON.stringify(this.options.host)}...`);
+    });
+    REDIS.on('error', (error) => {
+        console.info(error);
+    });
+    REDIS.on('end', function() {
+        console.info(`Client disconnected from redis push ${JSON.stringify(this.options.user)}`);
+    });
+    REDIS.on('SIGINT', () => {
+        REDIS.quit();
+    });
+};
+
 const REDIS_MASTER = new IOREDIS({
     port: CONFIGS.REDIS_PORT,
     host: CONFIGS.REDIS_HOST,
@@ -16,20 +35,8 @@ const REDIS_MASTER = new IOREDIS({
     password: CONFIGS.REDIS_PASSWORD,
 });
 
-REDIS_MASTER.on("connect", () => {
-    console.log("Client connected to redis Push...");
-});
-REDIS_MASTER.on("ready", () => {
-    console.log("Client connected to redis push and ready to use...");
-});
-REDIS_MASTER.on("error", (error) => {
-    console.log("fail");
-});
-REDIS_MASTER.on("end", () => {
-    console.log("Client disconnected from redis push");
-});
-REDIS_MASTER.on("SIGINT", () => {
-    REDIS_MASTER.quit();
-});
+ConnectionRedis(REDIS_MASTER);
 
-module.exports = REDIS_MASTER;
+module.exports = {
+    REDIS_MASTER,
+};

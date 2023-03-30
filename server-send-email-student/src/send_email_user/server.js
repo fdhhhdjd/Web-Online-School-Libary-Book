@@ -28,7 +28,7 @@ const handleException = (err) => {
     console.error('Unhandled Exception:', err);
 
     const message = `Server Send Email ${PORT}:: ${err.name}: ${err.message}`;
-    sendTelegram(message);
+    sendTelegram({ message });
 };
 
 process.on(CONSTANTS.ERROR_REJECTION, handleException);

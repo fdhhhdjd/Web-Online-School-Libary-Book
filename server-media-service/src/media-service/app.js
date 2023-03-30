@@ -13,7 +13,7 @@ const DEVICE_MIDDLEWARE = require('../share/middlewares/device.middleware');
 
 //! SHARE
 const MEDIA_API = require('./v1/routes/index.route');
-const CONSTANTS = require('../share/configs/constants')
+const CONSTANTS = require('../share/configs/constants');
 const OPTIONS = require('../share/configs/option');
 const CONFIGS = require('../share/configs/config');
 
@@ -60,5 +60,7 @@ app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
 app.use(MEDIA_API);
+
+//! REDIS PUBSUB
 
 module.exports = app;
