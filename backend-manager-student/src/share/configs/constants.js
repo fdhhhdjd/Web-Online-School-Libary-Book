@@ -17,7 +17,7 @@ module.exports = {
     _5_MINUTES: 5 * 60 * 1000,
     _10_MINUTES: 10 * 60 * 1000,
     _15_MINUTES: 15 * 60 * 1000,
-    _1_DAY_S: 1 * 60 * 60 * 1000,
+    _1_DAY_S: 1000 * 60 * 60 * 24,
     _7_DAY_S: 7 * 60 * 60 * 1000,
     _1_HOURS_S: 60 * 60 * 1000,
     _1_YEAR: 365 * 24 * 60 * 60 * 1000,
@@ -409,7 +409,10 @@ module.exports = {
         PENDING: 10, // Chờ xác nhận
         BORROWING: 20, // Đang mượn
         DONE: 30, // Đã trả
-        EXPIRED: 40, // Hết hạn
+        EXPIRED: 40, // Hết hạn,
+        CANCEL: 50, // Hủy
+        LOST_BOOK_PROCESSING: 60, // Mất sách chưa được sử lý.
+        LOST_BOOK_PROCESSED: 70, // Mất sách đã được sử lý.
     },
     /**
      * @author Nguyễn Tiến Tài

@@ -14,6 +14,14 @@ router.post('/login', userController.loginStudent);
 
 /**
  * @author Nguyễn Tiến Tài
+ * @created_at 04/04/2023
+ * @description Route Register Student
+ * @param {('POST')} [method='POST'] The request's method
+ */
+router.post('/register', userController.registerStudent);
+
+/**
+ * @author Nguyễn Tiến Tài
  * @created_at 04/02/2023
  * @description Route renew-token token
  * @param {('GET')} [method='GET'] The request's method

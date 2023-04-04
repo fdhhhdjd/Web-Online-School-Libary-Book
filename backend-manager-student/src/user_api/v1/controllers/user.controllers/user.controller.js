@@ -21,6 +21,9 @@ const geo_service = require('../../../../share/services/geo.service');
 const user_service = require('../../../../share/services/user_service/user_service');
 const verification_service = require('../../../../share/services/user_service/verification.service');
 
+//! DATABASE
+const knex = require('../../../../share/db/postgresql');
+
 //! MIDDLAWARE
 const { returnReasons, returnDuplicate } = require('../../../../share/middleware/handle_error');
 
@@ -36,7 +39,6 @@ const userController = {
      */
     loginStudent: async (req, res) => {
         const { mssv, password } = req.body.input.user_login_input;
-
         // Take device id header
         let { device_id } = req.device;
 
@@ -240,6 +242,147 @@ const userController = {
                 });
             }
         } catch (err) {
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
+            });
+        }
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/04/2023
+     * @description Register student
+     * @function registerStudent
+     * @param { mssv,password }
+     * @return { Object }
+     */
+    registerStudent: async (req, res) => {
+        const {
+            name,
+            mssv,
+            avatar_uri,
+            public_id_avatar,
+            password,
+            phone_number,
+            email,
+            dob,
+            address,
+            gender,
+            class_room,
+        } = req.body.input.user_register_input;
+
+        // Check input register
+        if (
+            !mssv
+            || !password
+            || !HELPER.isNumeric(mssv)
+            || !name
+            || !phone_number
+            || !email
+            || !dob
+            || !address
+            || !gender
+            || !class_room
+        ) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
+            });
+        }
+        const check_email = HELPER.validateEmail(email);
+
+        const check_phone = HELPER.validatePhone(phone_number);
+
+        if (!check_email || !check_phone) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_EMAIL_PHONE,
+                },
+            });
+        }
+        try {
+            // Check student exit database
+            let users = await user_model.getStudentById(
+                {
+                    mssv,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                { user_id: 'user_id' },
+            );
+            if (users[0]) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.ALREADY_ACCOUNT_STUDENT,
+                    },
+                });
+            }
+
+            // Phone hide
+            const phone_hide = HELPER.maskLastPhoneNumber(phone_number);
+            // Encode Password
+            const password_student = await PASSWORD.encodePassword(password);
+            const data_register = {
+                user_id: RANDOMS.createID(),
+                name,
+                mssv,
+                password: password_student,
+                phone_number,
+                phone_hidden: phone_hide,
+                dob,
+                class: class_room,
+                email,
+                gender,
+                avatar_uri:
+                    avatar_uri || gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
+                        ? CONSTANTS.GENDER_IMAGE_MALE
+                        : CONSTANTS.GENDER_IMAGE_FEMALE,
+                public_id_avatar:
+                    public_id_avatar || gender.toLowerCase() === CONSTANTS.GENDER_MALE_STRING
+                        ? CONSTANTS.GENDER_IMAGE_MALE
+                        : CONSTANTS.GENDER_IMAGE_FEMALE,
+            };
+            let err;
+            let data;
+            // start transaction
+            const trx = await knex.transaction();
+
+            // insert student object into database
+            [err, data] = await HELPER.handleRequest(user_model.createStudent(data_register));
+
+            // error rollback data
+            if (err) {
+                trx.rollback();
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: returnDuplicate(err),
+                    },
+                });
+            }
+            if (data) {
+                // commit transaction succcess
+                trx.commit();
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: {
+                        result: MESSAGES.GENERAL.SUCCESS_REGISTER_STUDENT,
+                    },
+                });
+            }
+        } catch (error) {
+            console.error(error);
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),

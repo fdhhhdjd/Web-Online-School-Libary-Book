@@ -209,6 +209,95 @@ paths:
                     $ref: '#/components/responses/isMatchPassword'
                 503:
                     $ref: '#/components/responses/ServerFail'
+    #!@author Nguyễn Tiến Tài
+    #!created_at 04/04/2023
+    #!description: Register Student
+    /api/v1/user/register:
+        post:
+            summary: Register User
+            tags: [Register User]
+            operationId: registerStudent
+            parameters:
+                - $ref: '#/components/parameters/X-DEVICE-ID'
+                - $ref: '#/components/parameters/X-OS-TYPE'
+                - $ref: '#/components/parameters/X-OS-VERSION'
+                - $ref: '#/components/parameters/X-APP-VERSION'
+                - $ref: '#/components/parameters/X-DEVICE-NAME'
+                  schema:
+                      $ref: '#/components/headers/AuthHeader'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        user_register_input:
+                                            type: object
+                                            properties:
+                                                mssv:
+                                                    type: number
+                                                    example: 60137255
+                                                password:
+                                                    type: string
+                                                    example: '20000531'
+                                                name:
+                                                    type: string
+                                                    example: 'name'
+                                                phone_number:
+                                                    type: number
+                                                    example: 0123456789
+                                                email:
+                                                    type: string
+                                                    example: tai@gmail.com
+                                                dob:
+                                                    type: date
+                                                    example: 2000-02-02
+                                                address:
+                                                    type: string
+                                                    example: 'nha trang'
+                                                gender:
+                                                    type: number
+                                                    example: 1
+                                                class_room:
+                                                    type: string
+                                                    example: 'CNTT-2'
+                        required:
+                            - mssv
+                            - password
+                            - name
+                            - phone_number
+                            - email
+                            - dob
+                            - address
+                            - gender
+                            - class_room
+            responses:
+                200:
+                    description: Register Success
+                    headers:
+                        $ref: '#/components/SaveCookie'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    element:
+                                        type: object
+                                        example: { result: 'register success' }
+                401:
+                    $ref: '#/components/responses/isMatchPassword'
+                503:
+                    $ref: '#/components/responses/ServerFail'
 
     #!@author Nguyễn Tiến Tài
     #!created_at 05/02/2023

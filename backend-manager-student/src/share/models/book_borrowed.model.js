@@ -69,12 +69,20 @@ module.exports = {
                     queryBuilder.where('user_id', user_id);
                 }
             })
-            .select('books.name', 'books.image_uri', 'books.description', 'books.page_number', 'borrowed_book.*', {
-                name_author: 'authors.name',
-                dob_author: 'authors.dob',
-                gender_author: 'authors.gender',
-                image_author: 'authors.avatar_uri',
-            })
+            .select(
+                'books.name',
+                'books.image_uri',
+                'books.description',
+                'books.quantity',
+                'books.page_number',
+                'borrowed_book.*',
+                {
+                    name_author: 'authors.name',
+                    dob_author: 'authors.dob',
+                    gender_author: 'authors.gender',
+                    image_author: 'authors.avatar_uri',
+                },
+            )
             .orderBy('borrowed_book.updated_at', 'desc');
         return result;
     },
@@ -91,7 +99,15 @@ module.exports = {
                 // Query 1: createBorrowBook
                 const borrowBookId = await trx('borrowed_book')
                     .update({ status: data_update_borrow.status })
-                    .where({ book_id: data_update_borrow.book_id, user_id: data_update_borrow.user_id })
+                    .where({
+                        book_id: data_update_borrow.book_id,
+                        user_id: data_update_borrow.user_id,
+                    })
+                    .modify((queryBuilder) => {
+                        if (data_update_borrow.borrowed_book_id) {
+                            queryBuilder.where('borrowed_book_id', data_update_borrow.borrowed_book_id);
+                        }
+                    })
                     .returning(['borrowed_book_id']);
 
                 // Query 2: updateBorrowBook
@@ -149,6 +165,54 @@ module.exports = {
             .select(return_data)
             .where(user_query)
             .whereNot('status', CONSTANTS.STATUS_BORROW.DONE);
+        return result;
+    },
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 03/04/2023
+     * @description Transaction Delete Borrow Book and Update book
+     */
+    transactionDeleteBorrowAndUpdateBook: async (data_delete_borrow_book, data_update_borrow) =>
+        new Promise(async (resolve, reject) => {
+            // start transaction
+            const trx = await knex.transaction();
+            try {
+                // Query 1: createBorrowBook
+                const borrowBookId = await trx('borrowed_book')
+                    .update({ isdeleted: data_delete_borrow_book.isdeleted })
+                    .where({ borrowed_book_id: data_delete_borrow_book.borrowed_book_id })
+                    .returning(['borrowed_book_id']);
+
+                // Query 2: updateBorrowBook
+                const updatedData = await trx('books')
+                    .update({ quantity: data_update_borrow.quantity })
+                    .where({ book_id: data_update_borrow.book_id })
+                    .returning(['book_id']);
+
+                // Commit transaction
+                await trx.commit();
+                return resolve(borrowBookId, updatedData);
+            } catch (error) {
+                trx.rollback();
+                reject(error);
+            }
+        }),
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/04/2023
+     * @description get rating and borrowed status done
+     */
+    getRatingsAndBorrowBookStatusDone: async (student_query) => {
+        const result = await knex('borrowed_book')
+            .join('book_rates', 'book_rates.book_id', '=', 'borrowed_book.book_id')
+            .where('borrowed_book.isdeleted', '=', student_query.isdeleted)
+            .where('book_rates.isdeleted', '=', student_query.isdeleted)
+            .where('borrowed_book.borrowed_book_id', '=', student_query.borrowed_book_id)
+            .where('book_rates.user_id', '=', student_query.user_id)
+            .where('borrowed_book.status', '=', student_query.status)
+            .where('book_rates.book_id', '=', student_query.book_id)
+            .select('book_rates.*');
         return result;
     },
 };

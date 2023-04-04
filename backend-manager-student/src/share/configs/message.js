@@ -36,10 +36,12 @@ module.exports = {
         INVALID_DATE: 'Invalid date of birth',
         INVALID_MUTILP_FIELD: 'Please provide non-empty values for all fields',
         INVALID_UNAUTHORIZED: 'Unauthorized',
+        INVALID_RATING: 'Invalid Rating',
 
         // ? EXITS
         EXITS_EMAIL_PHONE: 'Email or Phone or Email or Mssv exits !',
         EXITS_NOT_BOOK: 'Book Not Found!',
+        EXITS_NOT_BORROW_BOOK: 'Borrow Book Not Found!',
         EXITS_DELETE_BOOK: 'Book already delete!',
         EXITS_DELETE_AUTHOR: 'Author already delete!',
         EXITS_DELETE_CATEGORIES: 'Categories already delete !',
@@ -47,18 +49,25 @@ module.exports = {
         EXITS_CAN_ONLY_TOW_BORROW: 'You can only borrow tow book!',
         EXITS_EMAIL: 'Email not exit!',
         EXITS_PHONE: 'Phone not exit!',
-        EXITS_MSSV: 'mssv not exit!',
+        EXITS_MSSV: 'Mssv not exit!',
+        EXITS_FAVORITE: 'Favorite not exit!',
 
         // ? ALREADY
         ALREADY_BOOK_BORROW: 'Book already borrow !!',
         ALREADY_EMAIL_CHECK_LINK: 'Link reset Exit Please check Email !',
+        ALREADY_RATING_BOOK: 'You already rating book !',
+        ALREADY_FAVORITE: 'Favorite already exits!',
+        ALREADY_ACCOUNT_STUDENT: 'Account student already exits !',
 
         // ? PLEASE
         PLEASE_REFUND_BOOK: 'Please refund the book !!',
         PLEASE_CHECK_EMAIL: 'Please check Email!',
+        PLEASE_LOST_BOOK_PROCESSING: 'Please process book lost before borrow book !',
+        PLEASE_DELETE_BORROW_BOOK_PENDING: 'You can only delete borrow_book pending!',
 
         // ? FAIL
         BORROW_FAIL: 'Borrow Fail!',
+        RATING_FAIL: 'Rating Fail!',
         RESET_PASSWORD_FAIL: 'Reset Password Fail',
         ERROR_UNKNOWN: 'Error unknown',
 
@@ -93,5 +102,9 @@ module.exports = {
         SUCCESS_UPDATE_STUDENT: 'Update Student success !',
         SUCCESS_UPDATE_BORROW_STUDENT_REFUND: 'Update Student refund book success !',
         SUCCESS_BORROW_BOOK_SUCCESS: 'Invite you go to Library confirm,Thank',
+        SUCCESS_BORROW_BOOK_ADMIN_SUCCESS: 'Create borrow student Success',
+        SUCCESS_RATING_SUCCESS: 'Rating book success!',
+        SUCCESS_DELETE_BORROW_BOOK: 'Delete success borrow book!',
+        SUCCESS_REGISTER_STUDENT: 'Register student success!',
     },
 };
