@@ -53,7 +53,7 @@ const AuthorForm = (props) => {
                 id="name"
                 type="text"
                 placeholder="Gia Bảo..."
-                defaultValue={props.defaultData.name}
+                defaultValue={props.defaultData?.name}
                 {...register('name', {
                   required: true,
                 })}
@@ -68,12 +68,12 @@ const AuthorForm = (props) => {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender">
                 Giới tính
               </label>
-              {props.defaultData.gender >= 0 ? (
+              {props.defaultData?.gender >= 0 ? (
                 <SelectBox
                   optionData={genderOption}
                   defaultValue={{
-                    value: props.defaultData.gender,
-                    label: HELPERS.getGenderLabel(props.defaultData.gender),
+                    value: props.defaultData?.gender,
+                    label: HELPERS.getGenderLabel(props.defaultData?.gender),
                   }}
                   setData={props.setGender}
                 />
@@ -85,12 +85,12 @@ const AuthorForm = (props) => {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nation">
                 Quốc gia
               </label>
-              {props.defaultData.nation ? (
+              {props.defaultData?.nation ? (
                 <SelectBox
                   optionData={nationOption}
                   defaultValue={{
-                    value: props.defaultData.nation,
-                    label: props.defaultData.nation,
+                    value: props.defaultData?.nation,
+                    label: props.defaultData?.nation,
                   }}
                   setData={props.setNation}
                 />
@@ -105,8 +105,8 @@ const AuthorForm = (props) => {
                 Ngày sinh
               </label>
               <div className="date-picker">
-                {props.defaultData.dob ? (
-                  <Calendar defaultValue={props.defaultData.defaultDob} onChange={props.setDob} value={props.dob} />
+                {props.defaultData?.dob ? (
+                  <Calendar defaultValue={props.defaultData?.dob} onChange={props.setDob} value={props.dob} />
                 ) : (
                   <Calendar onChange={props.setDob} value={props.dob} />
                 )}
@@ -131,7 +131,14 @@ const AuthorForm = (props) => {
             <div className="w-full px-3">
               <div className="profile__info__image">
                 <div className="profile__info__image__preview">
-                  {loading_media ? <Loading /> : <img src={result_upload?.result?.url || defaultImageAuthor} alt="" />}
+                  {loading_media ? (
+                    <Loading />
+                  ) : (
+                    <img
+                      src={result_upload?.result?.url || props.defaultData?.avatar_uri || defaultImageAuthor}
+                      alt=""
+                    />
+                  )}
                 </div>
                 {!props.readOnly && (
                   <>

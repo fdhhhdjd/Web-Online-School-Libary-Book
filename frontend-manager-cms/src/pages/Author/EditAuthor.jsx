@@ -52,8 +52,7 @@ const EditAuthor = () => {
           setGender={setGender}
           setNation={setNation}
           setDob={setDob}
-          dob={dob}
-          defaultDob={new Date(moment(detail?.dob).format())}
+          dob={new Date(moment(detail?.dob).format())}
         />
       )}
     </>

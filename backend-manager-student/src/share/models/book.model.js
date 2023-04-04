@@ -66,6 +66,7 @@ module.exports = {
     getAllBook: async () => {
         const result = await knex('books')
             .join('authors', 'books.author_id', '=', 'authors.author_id')
+            .join('book_rates', 'books.book_id', '=', 'book_rates.book_id')
             .where('books.isdeleted', '=', CONSTANTS.DELETED_DISABLE)
             .select(
                 {
@@ -73,6 +74,9 @@ module.exports = {
                     dob_author: 'authors.dob',
                     gender_author: 'authors.gender',
                     image_author: 'authors.avatar_uri',
+                },
+                {
+                    star: 'book_rates.rating',
                 },
                 'books.*',
             )

@@ -45,6 +45,18 @@ const BorrowBookController = {
                 { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
                 { book_id: 'book_id', status: 'status' },
             );
+            // Check book lost processing
+            const checkArray = (arr) => !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
+            if (!checkArray(check_borrow_book)) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.PLEASE_LOST_BOOK_PROCESSING,
+                    },
+                });
+            }
+            // Check count total
             if (check_borrow_book.length >= 2) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

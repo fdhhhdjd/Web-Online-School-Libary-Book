@@ -24,10 +24,6 @@ const EditBook = () => {
   console.log('re render');
 
   useEffect(() => {
-    dispatch(Get_Detail_Book_Cms_Initial({ book_id: id }));
-  }, [dispatch, id]);
-
-  useEffect(() => {
     setPreview(detailBook?.image_uri);
   }, [detailBook]);
 
@@ -43,6 +39,10 @@ const EditBook = () => {
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile, detailBook?.image_uri]);
+
+  useEffect(() => {
+    dispatch(Get_Detail_Book_Cms_Initial({ book_id: id }));
+  }, [dispatch, id]);
 
   useEffect(() => {
     setDetai(detailBook);

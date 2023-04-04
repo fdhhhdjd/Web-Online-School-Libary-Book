@@ -1,14 +1,14 @@
 #!@author Nguyễn Tiến Tài
 #!created_at 08/02/2023
 #!description: General
-# Info Swagger Admin APi
+# Info Swagger User APi
 info:
-    title: Document Admin
-    description: CURD Borrow Book
+    title: Document Student
+    description: CURD FAVORITE
     version: 1.0.0
 servers:
-    - url: http://localhost:5000
-      description: Local development server admin api
+    - url: http://localhost:5001
+      description: Local development server user api
 # General
 components:
     # Parameter
@@ -99,163 +99,15 @@ components:
                             element:
                                 type: object
                                 example: Out Of Service
-
+paths:
     #!@author Nguyễn Tiến Tài
     #!created_at 04/04/2023
-    #!description: Create borrow book
-paths:
-    /v1/admin/private/borrow_book/create:
-        post:
-            summary: Create Borrow_book
-            tags: [Create Borrow_book]
-            operationId: createBorrowBook
-            parameters:
-                - $ref: '#/components/parameters/COOKIE-CLIENT'
-                - $ref: '#/components/parameters/X-DEVICE-ID'
-                - $ref: '#/components/parameters/X-OS-TYPE'
-                - $ref: '#/components/parameters/X-OS-VERSION'
-                - $ref: '#/components/parameters/X-APP-VERSION'
-                - $ref: '#/components/parameters/X-DEVICE-NAME'
-                - $ref: '#/components/parameters/TOKEN'
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                input:
-                                    type: object
-                                    properties:
-                                        borrow_book_input:
-                                            type: object
-                                            properties:
-                                                book_id:
-                                                    type: string
-                                                    example: '1475825111725506562'
-                                                user_id:
-                                                    type: string
-                                                    example: '1475825111725506562'
-                        required:
-                            - book_id
-                            - user_id
-            responses:
-                200:
-                    description: update success
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 200
-                                    message:
-                                        type: string
-                                        example: Success
-                400:
-                    description: Invalid input
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 400
-                                    message:
-                                        type: string
-                                        example: Bad Request
-                503:
-                    $ref: '#/components/responses/ServerFail'
-    #!@author Nguyễn Tiến Tài
-    #!created_at 08/03/2023
-    #!description: update borrow book
-    /v1/admin/private/borrow_book/update:
-        post:
-            summary: Update Borrow_book
-            tags: [Update Borrow_book]
-            operationId: updateBorrowBook
-            parameters:
-                - $ref: '#/components/parameters/COOKIE-CLIENT'
-                - $ref: '#/components/parameters/X-DEVICE-ID'
-                - $ref: '#/components/parameters/X-OS-TYPE'
-                - $ref: '#/components/parameters/X-OS-VERSION'
-                - $ref: '#/components/parameters/X-APP-VERSION'
-                - $ref: '#/components/parameters/X-DEVICE-NAME'
-                - $ref: '#/components/parameters/TOKEN'
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                input:
-                                    type: object
-                                    properties:
-                                        borrow_book_input:
-                                            type: object
-                                            properties:
-                                                book_id:
-                                                    type: string
-                                                    example: '1475825111725506562'
-                                                user_id:
-                                                    type: string
-                                                    example: '1475825111725506562'
-                                                start_date:
-                                                    type: string
-                                                    example: '2023-03-08 15:20:00'
-                                                due_date:
-                                                    type: string
-                                                    example: '2023-03-15 15:20:00'
-                                                status:
-                                                    type: number
-                                                    example: 20
-                        required:
-                            - book_id
-                            - user_id
-                            - start_date
-                            - due_date
-                            - status
-            responses:
-                200:
-                    description: update success
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 200
-                                    message:
-                                        type: string
-                                        example: Success
-                400:
-                    description: Invalid input
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    status:
-                                        type: integer
-                                        example: 400
-                                    message:
-                                        type: string
-                                        example: Bad Request
-                503:
-                    $ref: '#/components/responses/ServerFail'
-
-    #!@author Nguyễn Tiến Tài
-    #!created_at 09/03/2023
-    #!description: Detail Borrowed
-    /v1/admin/private/borrow_book/detail/:borrowed_book_id:
+    #!description: CREATE FAVORITE
+    /v1/user/private/favorite/create:
         get:
-            summary: Detail Borrowed
-            tags: [Detail Borrowed]
-            operationId: detailBorrowed
+            summary: Detail favorite
+            tags: [Detail favorite]
+            operationId: detailFavorite
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -264,6 +116,24 @@ paths:
                 - $ref: '#/components/parameters/X-APP-VERSION'
                 - $ref: '#/components/parameters/X-DEVICE-NAME'
                 - $ref: '#/components/parameters/TOKEN'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        favorite_input:
+                                            type: object
+                                            properties:
+                                                book_id:
+                                                    type: number
+                                                    example: 1486024816199729154
+                        required:
+                            - book_id
             responses:
                 200:
                     description: Detail success
@@ -278,16 +148,29 @@ paths:
                                     message:
                                         type: string
                                         example: Success
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
+                                    message:
+                                        type: string
+                                        example: Success
                 503:
                     $ref: '#/components/responses/ServerFail'
     #!@author Nguyễn Tiến Tài
-    #!created_at 03/02/2023
-    #!description: Get all categories
-    /v1/admin/private/borrow_book/all:
+    #!created_at 04/04/2023
+    #!description: DEL FAVORITE
+    /v1/user/private/favorite/delete:
         get:
-            summary: Get all Borrowed
-            tags: [Get all Borrowed]
-            operationId: getAllBorrowed
+            summary: Get all favorite
+            tags: [Get all favorite]
+            operationId: getAllFavorite
             parameters:
                 - $ref: '#/components/parameters/COOKIE-CLIENT'
                 - $ref: '#/components/parameters/X-DEVICE-ID'
@@ -296,6 +179,24 @@ paths:
                 - $ref: '#/components/parameters/X-APP-VERSION'
                 - $ref: '#/components/parameters/X-DEVICE-NAME'
                 - $ref: '#/components/parameters/TOKEN'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                input:
+                                    type: object
+                                    properties:
+                                        favorite_input:
+                                            type: object
+                                            properties:
+                                                favorite_book_id:
+                                                    type: number
+                                                    example: 1486024816199729154
+                        required:
+                            - favorite_book_id
             responses:
                 200:
                     description: success
@@ -307,6 +208,19 @@ paths:
                                     status:
                                         type: integer
                                         example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                400:
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 400
                                     message:
                                         type: string
                                         example: Success
