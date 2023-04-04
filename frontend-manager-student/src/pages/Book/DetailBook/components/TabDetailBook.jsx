@@ -1,13 +1,15 @@
+import { Rating, Stack } from '@mui/material';
 import Section, { SectionBody } from 'components/Section';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { Borrow_Book_Student_Initial } from 'redux/student/borrow_book_slice/book_thunk';
+import { useDispatch, useSelector } from 'react-redux';
+import { Borrow_Book_Student_Initial } from 'redux/student/borrow_book_slice/borrow_thunk';
 import Swal from 'sweetalert2';
 
 const TabDetailBook = ({ detailBook }) => {
   const dispatch = useDispatch();
-
+  const borrowError = useSelector((state) => state.borrow?.error);
+  console.log(borrowError);
   const handleBorrowBook = () => {
     Swal.fire({
       title: 'Xác nhận đăng kí mượn sách',
@@ -22,15 +24,23 @@ const TabDetailBook = ({ detailBook }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (detailBook?.quantity > 0) {
-          dispatch(Borrow_Book_Student_Initial({ book_id: detailBook.book_id }));
-
-          Swal.fire({
-            title: 'Đăng kí mượn sách thành công',
-            text: 'Bạn có 24 giờ kể từ thời gian đăng kí mượn để lên thư viện ITC nhận sách. \n Nếu sau 24 giờ vẫn chưa lấy sách thì xem như đã hủy mượn sách',
-            icon: 'success',
-            customClass: 'swal-wide',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Xác nhận',
+          dispatch(Borrow_Book_Student_Initial({ book_id: detailBook.book_id })).then((result) => {
+            if (result?.payload?.status === 400) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Lỗi xử lý',
+                text: 'Bạn chỉ được mượn tối đa 2 cuốn sách',
+              });
+            } else {
+              Swal.fire({
+                title: 'Đăng kí mượn sách thành công',
+                text: 'Bạn có 24 giờ kể từ thời gian đăng kí mượn để lên thư viện ITC nhận sách. \n Nếu sau 24 giờ vẫn chưa lấy sách thì xem như đã hủy mượn sách',
+                icon: 'success',
+                customClass: 'swal-wide',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Xác nhận',
+              });
+            }
           });
         }
       }
@@ -105,6 +115,15 @@ const TabDetailBook = ({ detailBook }) => {
                     <div className="book__view__comment">
                       <div className="book__view__comment__title">
                         <span>Bình luận & đánh giá</span>
+                      </div>
+                      <div className="book__view__rating">
+                        <span className="book__view__rating__title">Đánh giá của bạn:</span>
+                        <Stack spacing={1}>
+                          <Rating className="rating" name="half-rating" defaultValue={2.5} precision={0.5} />
+                        </Stack>
+                        <div className="book__view__btn">
+                          <button className="rate-btn">Đánh giá</button>
+                        </div>
                       </div>
                     </div>
                   </Col>

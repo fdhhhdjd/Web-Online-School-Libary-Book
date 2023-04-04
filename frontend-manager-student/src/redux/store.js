@@ -10,6 +10,7 @@ import AuthenticationSlice from './student/authentication_slice/auth_slice';
 import CONFIGS from 'configs/configs';
 import BookSlice from './student/book_slice/book_slice';
 import MediaSlice from './media/upload_remove_media/media_slice';
+import BorrowBookSlice from './student/borrow_book_slice/borrow_slice';
 const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
 };
@@ -18,6 +19,7 @@ const store = configureStore({
   reducer: {
     auth_student: AuthenticationSlice,
     book: BookSlice,
+    borrow: BorrowBookSlice,
     media: MediaSlice,
     reducer: rootReducer,
   },

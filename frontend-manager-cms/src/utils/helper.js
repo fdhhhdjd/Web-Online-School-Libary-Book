@@ -101,16 +101,51 @@ const HELPERS = {
   getStatusBorrow: (status) => {
     switch (status) {
       case 10:
-        return 'Chờ xác nhận';
+        return {
+          label: 'Chờ xác nhận',
+          className: 'pending',
+        };
       case 20:
-        return 'Đang mượn';
+        return {
+          label: 'Đang mượn',
+          className: 'processing',
+        };
       case 30:
-        return 'Đã trả';
+        return {
+          label: 'Đã trả',
+          className: 'success',
+        };
       case 40:
-        return 'Quá hạn';
+        return {
+          label: 'Quá hạn',
+          className: 'errror',
+        };
+
+      case 50: {
+        return {
+          label: 'Đã mất (Chưa xử lý)',
+          className: 'blue',
+        };
+      }
+
+      case 60: {
+        return {
+          label: 'Đã mất (Đã xử lý)',
+          txtColor: 'blue',
+          bgColor: 'white',
+        };
+      }
       default:
         return 'Chưa xác định';
     }
+  },
+  getAuthorNameByID: (id, authorList) => {
+    const author = authorList && authorList.find((author) => author.value === id);
+    return author;
+  },
+
+  handleSearchText: (item, searchValue) => {
+    return item.toLowerCase().trim().includes(searchValue.toLowerCase().trim());
   },
 };
 

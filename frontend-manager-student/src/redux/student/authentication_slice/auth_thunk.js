@@ -122,7 +122,7 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
 });
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 15/03/2023
  * @descriptionKey Call api Profile Student
  * @function Send_Mail_ForgetPass_Student_Initial
@@ -170,7 +170,7 @@ export const Send_Mail_Student_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 06/03/2023
  * @descriptionKey Call api Logout Student
  * @function Logout_Student_Initial
@@ -473,7 +473,7 @@ export const Reset_Password_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 26/03/2023
  * @descriptionKey Call api Edit Profile Student
  * @function Update_Student_Initial
@@ -481,15 +481,9 @@ export const Reset_Password_Initial = createAsyncThunk(
  */
 export const Update_Student_Initial = createAsyncThunk(
   'student/update/profile',
-  async ({ name, address, gender, avatar_uri }, { rejectWithValue }) => {
+  async ({ name, address, gender, avatar_uri, dob }, { rejectWithValue }) => {
     try {
       //Call Api axios
-      console.log({
-        name,
-        address,
-        gender,
-        avatar_uri,
-      });
       const response = await REQUEST.post(
         `${API_STUDENT.UPDATE_PROFILE_STUDENT}`,
         {
@@ -499,6 +493,7 @@ export const Update_Student_Initial = createAsyncThunk(
               address,
               gender,
               avatar_uri,
+              dob,
             },
           },
         },
@@ -515,6 +510,7 @@ export const Update_Student_Initial = createAsyncThunk(
       if (successData) {
         // return result data
         NOTIFICATION.swalSuccess('Cập nhật tài khoản thành công', '');
+        return successData;
       }
     } catch (error) {
       console.log(error);

@@ -1,12 +1,13 @@
 import BookCard from 'components/BookCard';
 import CategoryCard from 'components/CategoryCard';
 import Grid from 'components/Grid';
+import Loading from 'components/Loading';
 import NewsCard from 'components/NewsCard';
 import Section, { SectionBody, SectionTitle } from 'components/Section';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SlickSlider from 'react-slick';
-import { mockDataBook, mockDataEvents } from 'utils/dummy';
+import { mockDataEvents } from 'utils/dummy';
 
 const TabHome = () => {
   const settings = {
@@ -119,11 +120,12 @@ const TabHome = () => {
           Tài liệu nổi bật
         </SectionTitle>
         <SectionBody>
-          <SlickSlider {...settings}>
+          {/* <SlickSlider {...settings}>
             {mockDataBook.map((item, index) => (
               <BookCard key={index} img01={item.image01} name={item.title} slug={item.slug} author={item.author} />
             ))}
-          </SlickSlider>
+          </SlickSlider> */}
+          <Loading />
         </SectionBody>
       </Section>
     </>

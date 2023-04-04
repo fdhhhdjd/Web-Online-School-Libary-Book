@@ -10,7 +10,7 @@ import REQUEST from 'utils/request';
 import CONSTANTS from 'configs/constants';
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 10/03/2023
  * @descriptionKey Call api Get All Book student
  * @function Get_All_Book_Student_Initial
@@ -44,7 +44,7 @@ export const Get_All_Book_Student_Initial = createAsyncThunk('customer/book/all'
 });
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 10/03/2023
  * @descriptionKey Call api Get All Book student
  * @function Get_Detail_Book_Student_Initial

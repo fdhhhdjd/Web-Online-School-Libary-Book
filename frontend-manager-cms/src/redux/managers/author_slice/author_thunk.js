@@ -81,7 +81,7 @@ export const Get_All_Author_Cms_Initial = createAsyncThunk('admin/cms/author/all
 });
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 09/03/2023
  * @descriptionKey Call api Delete Author admin cms
  * @function Delete_Author_Cms_Initial
@@ -130,7 +130,7 @@ export const Delete_Author_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 09/03/2023
  * @descriptionKey Call api Create Author admin cms
  * @function Create_Author_Cms_Initial
@@ -183,7 +183,7 @@ export const Create_Author_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 29/03/2023
  * @descriptionKey Call api Edit Author admin cms
  * @function Edit_Author_Cms_Initial
