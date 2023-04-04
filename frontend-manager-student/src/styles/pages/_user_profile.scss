@@ -89,18 +89,49 @@
         border-right: 1px solid #ccc;
       }
 
-      &__label,
-      &__input {
+      &__label {
         &-item ~ &-item {
           margin-top: 2.5rem;
+        }
+
+        &-item {
+          width: 150px;
+        }
+      }
+
+      &__input {
+        &-item {
+          color: $txt-main-color;
+
+          input[type='radio'] {
+            margin-right: 3px;
+          }
+
+          label {
+            margin-right: 15px;
+          }
+
+          input {
+            border-radius: 5px;
+            padding: 5px;
+
+            &:focus {
+              outline: none;
+              @include hologram-border(3);
+            }
+          }
         }
       }
 
       &__label {
-        text-align: right;
         color: #888;
 
-        button {
+        .content-input {
+          @include flex(center, flex-start);
+          margin-bottom: 20px;
+        }
+
+        .profile__info__submit-btn {
           margin-top: 1rem;
           outline: none;
           padding: 8px 25px;
@@ -113,48 +144,6 @@
           &:hover {
             opacity: 0.9;
           }
-        }
-      }
-
-      &__input {
-        margin-top: -3px;
-        color: $txt-main-color;
-
-        .input-user {
-          padding-left: 1rem;
-        }
-
-        input {
-          margin-right: 0.5rem;
-        }
-
-        label {
-          margin-right: 2rem;
-        }
-      }
-
-      .date-picker {
-        .dropdown-date {
-          margin-top: 1.5rem;
-          font-size: 20px;
-          border: 1px solid black;
-        }
-
-        .option {
-          margin-left: 10px;
-        }
-
-        select {
-          padding: 0.5rem 1rem;
-          border-radius: 3px;
-        }
-
-        select ~ select {
-          margin-left: 1rem;
-        }
-
-        .error {
-          border: 1px solid red;
         }
       }
     }

@@ -56,15 +56,29 @@
 
       span {
         button {
+          outline: none;
+          font-size: 1.4rem;
+          border: none;
+          border-radius: 5px;
+          font-weight: 700;
+          padding: 5px 10px;
+          margin-left: 0.8rem;
+          color: $txt-second-color;
+
           &.pending {
-            font-size: 1.4rem;
-            border: none;
-            border-radius: 5px;
-            font-weight: 700;
-            color: $txt-second-color;
-            padding: 5px 10px;
-            margin-left: 0.8rem;
+            background: #2a9df4;
+          }
+
+          &.borrowing {
             background: #fce205;
+          }
+
+          &.refund {
+            background: #86dc3d;
+          }
+
+          &.expired {
+            background: #ec1d25;
           }
         }
       }

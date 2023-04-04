@@ -10,41 +10,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import SelectBox from 'components/SelectBox';
 import Calendar from 'react-calendar';
 import { useParams } from 'react-router-dom';
-import { Edit_Account_Cms_Initial, Get_Detail_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
+import { Get_Detail_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
 import { classOption, genderOption } from 'utils/dummy';
 import HELPERS from 'utils/helper';
 import { reset_detail_account } from 'redux/managers/student_slice/student_slice';
 
-const EditUser = () => {
+const ViewUser = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
   // react hook form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
+  const { register, reset } = useForm();
 
   // state
-  const [gender, setGender] = useState();
-  const [classroom, setClassroom] = useState();
-  const [dob, setDob] = useState(null);
   const detailAccount = useSelector((state) => state.student.detail_account?.element?.result[0]);
-
-  // create book
-  const handleEdit = (data) => {
-    dispatch(
-      Edit_Account_Cms_Initial({
-        ...data,
-        student_id: id,
-        dob: moment(dob || detailAccount?.dob).format('YYYYMMDD'),
-        gender: gender || detailAccount?.gender.toString(),
-        class_room: classroom || detailAccount?.class,
-      }),
-    );
-  };
 
   useEffect(() => {
     dispatch(Get_Detail_Account_Cms_Initial({ student_id: id })).then((result) => {
@@ -59,7 +38,7 @@ const EditUser = () => {
 
   return (
     <>
-      <form className="w-full mt-10" autoComplete="nope" onSubmit={handleSubmit(handleEdit)}>
+      <form className="w-full mt-10" autoComplete="nope">
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -68,34 +47,26 @@ const EditUser = () => {
                   Tên sinh viên
                 </label>
                 <input
+                  disabled
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="name"
                   type="text"
                   placeholder="Gia Bảo..."
-                  {...register('name', {
-                    required: true,
-                  })}
+                  {...register('name')}
                 />
-                <div className="mt-1 text-red-700">
-                  {errors?.name?.type === 'required' ? 'Mời bạn nhập tên sinh viên' : ''}
-                </div>
               </div>
               <div className="w-full md:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="name">
-                  Địa chỉ
+                  Mã số sinh viên
                 </label>
                 <input
+                  disabled
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="name"
                   type="text"
                   placeholder="50121..."
-                  {...register('address', {
-                    required: true,
-                  })}
+                  {...register('mssv')}
                 />
-                <div className="mt-1 text-red-700">
-                  {errors?.mssv?.type === 'required' ? 'Mời bạn nhập mã số sinh viên' : ''}
-                </div>
               </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -104,14 +75,14 @@ const EditUser = () => {
                   Giới tính
                 </label>
 
-                {detailAccount?.gender >= 0 && (
+                {detailAccount.gender >= 0 && (
                   <SelectBox
+                    isDisabled={true}
                     optionData={genderOption}
                     defaultValue={{
-                      value: detailAccount?.gender,
-                      label: HELPERS.getGenderLabel(detailAccount?.gender),
+                      value: detailAccount.gender,
+                      label: HELPERS.getGenderLabel(detailAccount.gender),
                     }}
-                    setData={setGender}
                   />
                 )}
               </div>
@@ -119,14 +90,14 @@ const EditUser = () => {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nation">
                   Lớp
                 </label>
-                {detailAccount?.class && (
+                {detailAccount.class && (
                   <SelectBox
+                    isDisabled={true}
                     optionData={classOption}
                     defaultValue={{
-                      value: detailAccount?.class,
-                      label: detailAccount?.class,
+                      value: detailAccount.class,
+                      label: detailAccount.class,
                     }}
-                    setData={setClassroom}
                   />
                 )}
               </div>
@@ -137,34 +108,26 @@ const EditUser = () => {
                   Số điện thoại
                 </label>
                 <input
+                  disabled
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="phone"
                   type="text"
                   placeholder="090..."
-                  {...register('phone_number', {
-                    required: true,
-                  })}
+                  {...register('phone_number')}
                 />
-                <div className="mt-1 text-red-700">
-                  {errors?.phone_number?.type === 'required' ? 'Mời bạn nhập số điện thoại' : ''}
-                </div>
               </div>
               <div className="w-full md:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
                   Email
                 </label>
                 <input
+                  disabled
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="email"
                   type="text"
                   placeholder="example@gmail.com"
-                  {...register('email', {
-                    required: true,
-                  })}
+                  {...register('email')}
                 />
-                <div className="mt-1 text-red-700">
-                  {errors?.email?.type === 'required' ? 'Mời bạn nhập email' : ''}
-                </div>
               </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -173,24 +136,13 @@ const EditUser = () => {
                   Ngày sinh
                 </label>
                 <div className="date-picker">
-                  {detailAccount?.dob && (
+                  {detailAccount.dob && (
                     <Calendar
-                      defaultValue={new Date(moment(detailAccount?.dob).format())}
-                      onChange={setDob}
-                      value={new Date(moment(detailAccount?.dob).format())}
+                      defaultValue={new Date(moment(detailAccount.dob).format())}
+                      value={new Date(moment(detailAccount.dob).format())}
                     />
                   )}
                 </div>
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
-                <button
-                  type="submit"
-                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded float-right"
-                >
-                  Lưu
-                </button>
               </div>
             </div>
           </div>
@@ -200,4 +152,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default ViewUser;

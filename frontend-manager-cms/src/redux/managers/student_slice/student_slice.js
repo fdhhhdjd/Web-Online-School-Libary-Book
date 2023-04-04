@@ -18,7 +18,11 @@ const initialState = {
 const Student = createSlice({
   name: 'CMS Student',
   initialState,
-  reducers: {},
+  reducers: {
+    reset_detail_account: (state) => {
+      state.detail_account = null;
+    },
+  },
   extraReducers: {
     //* Get all account CMS
     [Get_All_Account_Cms_Initial.pending]: (state, action) => {
@@ -60,4 +64,6 @@ const Student = createSlice({
   },
 });
 const StudentSlice = Student.reducer;
+export const { reset_detail_account } = Student.actions;
+
 export default StudentSlice;

@@ -22,7 +22,7 @@ const NOTIFICATION = {
   },
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 16/03/2023
    * @descriptionKey success
    */

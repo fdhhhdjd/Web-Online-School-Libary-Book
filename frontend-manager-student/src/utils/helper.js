@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { getDeviceId, getToken } from './auth';
 import CONSTANTS from 'configs/constants';
 import REGEX from './regex';
+import moment from 'moment';
 
 const HELPERS = {
   /**
@@ -133,13 +134,64 @@ const HELPERS = {
   },
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 22/03/2023
    * @description Get execute time
    * @param {start, end}
    */
   getExecuteTimeSecond(start, end) {
     return ((end - start) / 1000).toFixed(5);
+  },
+
+  formatTimeWithHour: (time) => {
+    return moment(time).format('DD-MM-YYYY, h:mm:ss a');
+  },
+
+  formatTimeWithDate: (time) => {
+    return moment(time).format('DD-MM-YYYY');
+  },
+
+  getStatusBorrow: (status, dueDate) => {
+    const today = moment().format();
+    const dueDateFormat = moment(dueDate).diff(today, 'days');
+    switch (status) {
+      case 10:
+        return {
+          label: 'Chờ xác nhận',
+          className: 'pending',
+        };
+      case 20:
+        return {
+          label: `Đang mượn, còn ${dueDateFormat} ngày`,
+          className: 'borrowing',
+        };
+      case 30:
+        return {
+          label: 'Đã trả',
+          className: 'refund',
+        };
+      case 40:
+        return {
+          label: 'Quá hạn',
+          className: 'expired',
+        };
+
+      case 50: {
+        return {
+          label: 'Đã mất (Chưa xử lý)',
+          className: 'blue',
+        };
+      }
+
+      case 60: {
+        return {
+          label: 'Đã mất (Đã xử lý)',
+          className: 'blue',
+        };
+      }
+      default:
+        return 'Chưa xác định';
+    }
   },
 };
 

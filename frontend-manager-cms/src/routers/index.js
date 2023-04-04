@@ -14,10 +14,14 @@ import EditBook from 'pages/Book/EditBook';
 import Login from '../pages/Auth/Login';
 
 //! PRIVATE ROUTES
+import ViewBook from 'pages/Book/ViewBook';
 import AllBorrowBook from 'pages/BorrowBook/AllBorrowBook';
 import EditBorrow from 'pages/BorrowBook/EditBorrow';
 import AdminPrivateRouter from 'private/Admin_Private_Router';
 import AdminPrivateRouterlogin from 'private/Admin_Private_Router_login';
+import ViewAuthor from 'pages/Author/ViewAuthor';
+import ViewUser from 'pages/Account/ViewUser';
+import ViewBorrowBook from 'pages/BorrowBook/ViewBorrowBook';
 
 const RouteDataMain = [
   {
@@ -39,11 +43,20 @@ const RouteDataMain = [
     ),
   },
   {
-    path: '/book/:id',
+    path: '/book/edit/:id',
     private: <AdminPrivateRouterlogin />,
     main: (
       <>
-        <Sidebar title="Thông tin sách" content={<EditBook />} />
+        <Sidebar title="Chỉnh sửa sách" content={<EditBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/book/view/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Thông tin sách" content={<ViewBook />} />
       </>
     ),
   },
@@ -75,6 +88,15 @@ const RouteDataMain = [
     ),
   },
   {
+    path: '/borrow/view/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Thông tin sách mượn" content={<ViewBorrowBook />} />
+      </>
+    ),
+  },
+  {
     path: '/user/all',
     private: <AdminPrivateRouterlogin />,
     main: (
@@ -89,6 +111,15 @@ const RouteDataMain = [
     main: (
       <>
         <Sidebar title="Chỉnh sửa tài khoản người dùng" content={<EditUser />} />
+      </>
+    ),
+  },
+  {
+    path: '/user/view/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Thông tin tài khoản người dùng" content={<ViewUser />} />
       </>
     ),
   },
@@ -116,6 +147,15 @@ const RouteDataMain = [
     main: (
       <>
         <Sidebar title="Thông tin tác giả" content={<EditAuthor />} />
+      </>
+    ),
+  },
+  {
+    path: '/author/view/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Thông tin tác giả" content={<ViewAuthor />} />
       </>
     ),
   },

@@ -23,7 +23,7 @@ const NOTIFICATION = {
   },
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 02/03/2023
    * @descriptionKey success
    */
@@ -39,7 +39,7 @@ const NOTIFICATION = {
   },
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 02/03/2023
    * @descriptionKey success
    */

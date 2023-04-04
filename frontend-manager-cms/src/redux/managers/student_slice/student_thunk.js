@@ -12,7 +12,7 @@ import NOTIFICATION from 'utils/notification';
 import REQUEST from 'utils/request';
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 28/03/2023
  * @descriptionKey Call api Get All Account admin cms
  * @function Get_All_Account_Cms_Initial
@@ -46,7 +46,7 @@ export const Get_All_Account_Cms_Initial = createAsyncThunk('admin/cms/account/a
 });
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 28/03/2023
  * @descriptionKey Call api Delete Account admin cms
  * @function Delete_Account_Cms_Initial
@@ -95,7 +95,7 @@ export const Delete_Account_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 09/03/2023
  * @descriptionKey Call api Get Detail Account admin cms
  * @function Get_Detail_Account_Cms_Initial
@@ -132,7 +132,7 @@ export const Get_Detail_Account_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 26/03/2023
  * @descriptionKey Call api Create student admin cms
  * @function Create_Account_Cms_Initial
@@ -187,7 +187,7 @@ export const Create_Account_Cms_Initial = createAsyncThunk(
 
 export const Edit_Account_Cms_Initial = createAsyncThunk(
   'admin/cms/account/edit',
-  async ({ name, mssv, phone_number, class_room, email, dob, gender }, { rejectWithValue }) => {
+  async ({ name, mssv, phone_number, class_room, email, dob, gender, student_id }, { rejectWithValue }) => {
     try {
       //Call Api axios
       const response = await REQUEST.post(
@@ -195,6 +195,7 @@ export const Edit_Account_Cms_Initial = createAsyncThunk(
         {
           input: {
             update_student_input: {
+              student_id,
               name,
               mssv,
               phone_number,

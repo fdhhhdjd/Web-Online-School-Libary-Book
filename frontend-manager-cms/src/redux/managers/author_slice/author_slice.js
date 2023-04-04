@@ -19,7 +19,11 @@ const initialState = {
 const Author = createSlice({
   name: 'CMS Author',
   initialState,
-  reducers: {},
+  reducers: {
+    reset_detail_author: (state) => {
+      state.detail_author = null;
+    },
+  },
   extraReducers: {
     //* Get all author
     [Get_All_Author_Cms_Initial.pending]: (state, action) => {
@@ -73,4 +77,5 @@ const Author = createSlice({
   },
 });
 const AuthorSlice = Author.reducer;
+export const { reset_detail_author } = Author.actions;
 export default AuthorSlice;

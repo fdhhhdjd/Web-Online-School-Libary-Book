@@ -19,7 +19,11 @@ const initialState = {
 const Book = createSlice({
   name: 'CMS Book',
   initialState,
-  reducers: {},
+  reducers: {
+    reset_detail_book: (state) => {
+      state.detail_book = null;
+    },
+  },
   extraReducers: {
     //* Get all book CMS
     [Get_All_Book_Cms_Initial.pending]: (state, action) => {
@@ -74,4 +78,6 @@ const Book = createSlice({
   },
 });
 const BookSlice = Book.reducer;
+export const { reset_detail_book } = Book.actions;
+
 export default BookSlice;
