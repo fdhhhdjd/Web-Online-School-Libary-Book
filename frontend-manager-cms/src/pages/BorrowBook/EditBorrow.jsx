@@ -1,43 +1,53 @@
 //! COMPONENTS
 import SelectBox from 'components/SelectBox';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 //! LIBRARY
-import Calendar from 'react-calendar';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Get_Detail_Borrow_Cms_Initial } from 'redux/managers/borrow_slice/borrow_thunk';
-import { Get_Detail_Account_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
+import { reset_detail_borrow } from 'redux/managers/borrow_slice/borrow_slice';
+import { Get_Detail_Borrow_Cms_Initial, Update_Borrow_Cms_Initial } from 'redux/managers/borrow_slice/borrow_thunk';
 
 //! REDUX THUNK
 
 //! DUMMY DATA
-import { nationOption, statusBorrowOption } from 'utils/dummy';
+import { statusBorrowOption } from 'utils/dummy';
 import HELPERS from 'utils/helper';
 
-const EditBorrow = (props) => {
+const EditBorrow = () => {
   // redux
   const dispatch = useDispatch();
   const detailBook = useSelector((state) => state.borrow.detail_borrow?.element?.result[0]);
 
   // state
   const { id } = useParams();
-  const [detail, setDetai] = useState(null);
   const [status, setStatus] = useState();
 
-  const handleEditBorrow = () => { };
+  const handleEditBorrow = (e) => {
+    e.preventDefault();
+
+    const data = {
+      book_id: detailBook?.book_id,
+      user_id: detailBook?.user_id,
+      status: status || detailBook?.status,
+      start_date: moment().format(),
+      due_date: moment().add('14', 'days').format(),
+    };
+
+    dispatch(Update_Borrow_Cms_Initial(data));
+  };
 
   useEffect(() => {
     dispatch(Get_Detail_Borrow_Cms_Initial({ id }));
-  }, [dispatch, id]);
 
-  useEffect(() => {
-    setDetai(detailBook);
-  }, [detailBook]);
+    return () => {
+      dispatch(reset_detail_borrow());
+    };
+  }, []);
 
   return (
-    <form className="w-full mt-10" autoComplete="nope" onSubmit={handleEditBorrow}>
+    <form className="w-full mt-10" autoComplete="nope" onSubmit={(e) => handleEditBorrow(e)}>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full">
           <div className="flex flex-wrap -mx-3 mb-6">
@@ -45,12 +55,12 @@ const EditBorrow = (props) => {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender">
                 Tình trạng
               </label>
-              {detail?.status && (
+              {detailBook?.status && (
                 <SelectBox
                   optionData={statusBorrowOption}
                   defaultValue={{
-                    value: detail?.status,
-                    label: HELPERS.getStatusBorrow(detail?.status),
+                    value: detailBook?.status,
+                    label: HELPERS.getStatusBorrow(detailBook?.status).label,
                   }}
                   setData={setStatus}
                 />
@@ -91,18 +101,33 @@ const EditBorrow = (props) => {
               </div>
             </div>
           </div>
-          {!props.readOnly && (
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
-                <button
-                  type="submit"
-                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded float-right"
-                >
-                  Lưu
-                </button>
-              </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="gender">
+                Hạn trả
+              </label>
+              {detailBook?.due_date && (
+                <input
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="name"
+                  type="text"
+                  placeholder="Gia Bảo..."
+                  disabled
+                  defaultValue={moment(detailBook?.due_date).format('DD/MM/YYYY')}
+                />
+              )}
             </div>
-          )}
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <button
+                type="submit"
+                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded float-right"
+              >
+                Lưu
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </form>

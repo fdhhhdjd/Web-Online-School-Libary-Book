@@ -47,7 +47,7 @@ export const Get_All_Book_Cms_Initial = createAsyncThunk('admin/cms/book/all', a
 });
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 19/03/2023
  * @descriptionKey Call api Delete Book admin cms
  * @function Delete_Book_Cms_Initial
@@ -96,7 +96,7 @@ export const Delete_Book_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 09/03/2023
  * @descriptionKey Call api Get detail Book admin cms
  * @function Get_Detail_Book_Cms_Initial
@@ -133,7 +133,7 @@ export const Get_Detail_Book_Cms_Initial = createAsyncThunk(
 );
 
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 26/03/2023
  * @descriptionKey Call api Create Book admin cms
  * @function Create_Book_Cms_Initial
@@ -177,6 +177,66 @@ export const Create_Book_Cms_Initial = createAsyncThunk(
       if (successData) {
         // return result data
         NOTIFICATION.swalSuccess('Tạo sách thành công', '');
+        return successData;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 26/03/2023
+ * @descriptionKey Call api Create Book admin cms
+ * @function Create_Book_Cms_Initial
+ * @return {Object}
+ */
+export const Edit_Book_Cms_Initial = createAsyncThunk(
+  'admin/cms/book/edit',
+  async (
+    { book_id, name, image_uri, description, author_id, bookshelf, language, quantity, public_id_image, page_number },
+    { rejectWithValue },
+  ) => {
+    try {
+      //Call Api axios
+      const response = await REQUEST.post(
+        `${API_ADMIN.EDIT_BOOK_CMS}`,
+        {
+          input: {
+            book_input: {
+              book_id,
+              name,
+              author_id,
+              image_uri,
+              page_number,
+              description,
+              bookshelf,
+              language,
+              quantity,
+              public_id_image,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        NOTIFICATION.swalSuccess('Cập nhật thành công', '');
         return successData;
       }
     } catch (error) {

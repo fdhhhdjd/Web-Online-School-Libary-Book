@@ -13,6 +13,7 @@ const SelectBox = (props) => {
         options={props.optionData}
         // value={props.isReset ? '' : props.data}
         defaultValue={props?.defaultValue}
+        isDisabled={props.isDisabled}
       />
     </>
   );

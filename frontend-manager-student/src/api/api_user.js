@@ -24,7 +24,7 @@ const API_STUDENT = {
    */
   PROFILE_STUDENT: '/student/v1/user/private/profile',
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 26/03/2023
    * @descriptionKey API profile student
    */
@@ -42,45 +42,45 @@ const API_STUDENT = {
    */
   RE_NEW_TOKEN_STUDENT: '/student/v1/user/renew-token',
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
    * @descriptionKey API GET ALL BOOK
    */
   GET_ALL_BOOK_STUDENT: '/student/v1/user/book/all',
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
    * @descriptionKey API GET DETAIL BOOK
    */
   GET_DETAIL_BOOK_STUDENT: '/student/v1/user/book/detail',
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
    * @descriptionKey API GET BORROW BOOK
    */
   BORROW_BOOK_STUDENT: '/student/v1/user/private/borrow_book/borrow',
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
    * @descriptionKey API GET ALL BOOK
    */
   EMAIL_FORGET_PASSWORD: '/student/v1/user/forget-password',
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
    * @descriptionKey API GET ALL BOOK
    */
   RESET_FORGET_PASSWORD: '/student/v1/user/reset',
 
   /**
-   * @author Châu Gia Bảo
+   * @author Nguyễn Tiến Tài
    * @created_at 22/03/2023
    * @descriptionKey API GET ALL BOOK
    */
-  GET_ALL_BORROWED_BOOK: '/student/v1/user/reset',
+  GET_ALL_BORROWED_BOOK: '/student/v1/user/private/borrow_book/all',
 };
 export default API_STUDENT;
