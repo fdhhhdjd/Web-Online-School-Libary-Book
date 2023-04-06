@@ -101,7 +101,6 @@ module.exports = {
                     .update({ status: data_update_borrow.status })
                     .where({
                         book_id: data_update_borrow.book_id,
-                        user_id: data_update_borrow.user_id,
                     })
                     .modify((queryBuilder) => {
                         if (data_update_borrow.borrowed_book_id) {
@@ -180,7 +179,7 @@ module.exports = {
             try {
                 // Query 1: createBorrowBook
                 const borrowBookId = await trx('borrowed_book')
-                    .update({ isdeleted: data_delete_borrow_book.isdeleted })
+                    .update({ status: data_delete_borrow_book.status })
                     .where({ borrowed_book_id: data_delete_borrow_book.borrowed_book_id })
                     .returning(['borrowed_book_id']);
 

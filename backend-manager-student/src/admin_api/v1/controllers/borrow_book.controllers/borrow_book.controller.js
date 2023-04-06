@@ -25,9 +25,9 @@ const BorrowBookController = {
      */
     createBorrowBook: async (req, res) => {
         // Book input
-        const { book_id, user_id } = req.body.input.borrow_book_input;
+        const { book_id, user_id, quantity } = req.body.input.borrow_book_input;
 
-        if (!HELPER.validateBigInt(book_id) || !HELPER.validateBigInt(user_id)) {
+        if (!HELPER.validateBigInt(book_id) || !HELPER.validateBigInt(user_id) || !quantity) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -36,12 +36,41 @@ const BorrowBookController = {
                 },
             });
         }
+        if (quantity > 2 || quantity === 0) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.EXITS_CAN_ONLY_TOW_BORROW,
+                },
+            });
+        }
         try {
             // Check Student tow a borrow book
             const check_borrow_book = await borrow_book_model.checkBorrowBook(
                 { user_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { book_id: 'book_id', status: 'status' },
+                { book_id: 'book_id', status: 'status', user_id: 'user_id', quantity: 'quantity' },
             );
+            // Check book lost processing
+            const checkLostProcessing = (arr) =>
+                !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
+            const totalQuantity = check_borrow_book.reduce((acc, cur) => {
+                if (cur.user_id === user_id) {
+                    return acc + cur.quantity;
+                }
+                return acc;
+            }, 0);
+            const newTotalQuantity = Number(totalQuantity) + +quantity;
+            if (!checkLostProcessing(check_borrow_book) || newTotalQuantity > 2) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.PLEASE_LOST_BOOK_PROCESSING,
+                    },
+                });
+            }
+            // Check count total
             if (check_borrow_book.length >= 2) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -56,24 +85,17 @@ const BorrowBookController = {
                 { book_id, isdeleted: CONSTANTS.DELETED_DISABLE, user_id },
                 '*',
             );
-            if (data_borrow_book.length > 0 && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE) {
-                let result_borrow;
-                switch (data_borrow_book[0].status) {
-                    case CONSTANTS.STATUS_BORROW.PENDING:
-                        result_borrow = MESSAGES.GENERAL.ALREADY_BOOK_BORROW;
-                        break;
-                    case CONSTANTS.STATUS_BORROW.BORROWING:
-                        result_borrow = MESSAGES.GENERAL.PLEASE_REFUND_BOOK;
-                        break;
-                    default:
-                        result_borrow = MESSAGES.GENERAL.BORROW_FAIL;
-                        break;
-                }
+            // Condition  refund book
+            const check_refund_book =
+                data_borrow_book.length > 0
+                && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE
+                && data_borrow_book[0].status === CONSTANTS.STATUS_BORROW.BORROWING;
+            if (check_refund_book) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: result_borrow,
+                        result: MESSAGES.GENERAL.PLEASE_REFUND_BOOK,
                     },
                 });
             }
@@ -105,15 +127,20 @@ const BorrowBookController = {
 
             // create book_borrowed database
             const data_insert = {
-                borrowed_book_id: RANDOMS.createID(),
+                borrowed_book_id:
+                    data_borrow_book.length > 0 ? data_borrow_book[0].borrowed_book_id : RANDOMS.createID(),
                 book_id,
                 user_id,
+                quantity:
+                    data_borrow_book.length > 0
+                        ? Number(data_borrow_book[0].quantity) + Number(quantity)
+                        : Number(quantity),
                 status: CONSTANTS.STATUS_BORROW.PENDING,
             };
 
             // update quantity book database
             const data_update = {
-                quantity: data_book[0].quantity - 1,
+                quantity: Number(data_book[0].quantity) - Number(quantity),
             };
 
             let err;
@@ -166,10 +193,10 @@ const BorrowBookController = {
      * @return {Object:{Number,String}}
      */
     updateBorrowBook: async (req, res) => {
-        const { book_id, user_id, start_date, due_date, status } = req.body.input.borrow_book_input;
+        const { borrowed_book_id, book_id, start_date, due_date, status } = req.body.input.borrow_book_input;
 
         // Check input
-        if (!HELPER.validateBigInt(book_id) || !HELPER.validateBigInt(user_id) || !start_date || !due_date || !status) {
+        if (!HELPER.validateBigInt(borrowed_book_id) || !HELPER.validateBigInt(book_id) || !status) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -179,21 +206,20 @@ const BorrowBookController = {
             });
         }
         const data_update = {
-            book_id,
-            user_id,
+            borrowed_book_id,
             start_date,
             due_date,
             status,
         };
-        let data_book;
+        let data_book_borrow;
         try {
             // Check data book exits
-            data_book = await borrow_book_model.getBorrowBookById(
-                { book_id, user_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { status: 'status' },
+            data_book_borrow = await borrow_book_model.getBorrowBookById(
+                { borrowed_book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
+                { status: 'status', book_id: 'book_id', quantity: 'quantity' },
             );
 
-            if (!data_book.length) {
+            if (!data_book_borrow.length) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -203,7 +229,7 @@ const BorrowBookController = {
                 });
             }
 
-            if (data_book[0].status === status) {
+            if (data_book_borrow[0].status === status) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -214,12 +240,15 @@ const BorrowBookController = {
             }
             let err;
             let result;
-            if (status === CONSTANTS.STATUS_BORROW.BORROWING) {
+            if (
+                Number(status) === CONSTANTS.STATUS_BORROW.BORROWING
+                || Number(status) === CONSTANTS.STATUS_BORROW.EXPIRED
+            ) {
                 // update book database
                 [err, result] = await HELPER.handleRequest(
                     borrow_book_model.updateBorrowBook(
                         data_update,
-                        { book_id, user_id },
+                        { borrowed_book_id },
                         { borrowed_book_id: 'borrowed_book_id' },
                     ),
                 );
@@ -238,19 +267,22 @@ const BorrowBookController = {
                         message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                     });
                 }
-            } else if (status === CONSTANTS.STATUS_BORROW.DONE) {
+            } else if (
+                Number(status) === CONSTANTS.STATUS_BORROW.DONE
+                || Number(status) === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSED
+            ) {
                 // Check data book exits
-                data_book = await book_model.getBookById(
+                const data_book = await book_model.getBookById(
                     { book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
                     { quantity: 'quantity' },
                 );
                 const data_update_book = {
                     book_id,
-                    quantity: data_book[0].quantity + 1,
+                    quantity: Number(data_book[0].quantity) + Number(data_book_borrow[0].quantity),
                 };
                 const data_update_borrow = {
                     book_id,
-                    user_id,
+                    borrowed_book_id,
                     status,
                 };
                 // update book database
@@ -404,7 +436,6 @@ const BorrowBookController = {
                 {
                     borrowed_book_id: 'borrowed_book_id',
                     book_id: 'book_id',
-                    user_id: 'user_id',
                 },
             );
             if (!result_borrow_book_detail || !result_borrow_book_detail.length) {
@@ -417,7 +448,6 @@ const BorrowBookController = {
                 });
             } else if (result_borrow_book_detail) {
                 const book_id = result_borrow_book_detail[0].book_id;
-                const user_id = result_borrow_book_detail[0].user_id;
 
                 const data_book = await book_model.getBookById(
                     {
@@ -433,7 +463,6 @@ const BorrowBookController = {
                 const data_update_borrow = {
                     borrowed_book_id,
                     book_id,
-                    user_id,
                     status: CONSTANTS.STATUS_BORROW.CANCEL,
                 };
                 let err;

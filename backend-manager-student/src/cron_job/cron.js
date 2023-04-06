@@ -21,9 +21,16 @@ cron.schedule(CONSTANTS._5_MINUTE_CRON, async () => {
         cron_verification_student.cron_deleted_verification_student(),
         // Delete reset password
         cron_reset_password_student.cron_deleted_reset_password_student(),
+    ]);
+    console.info('Both tasks 5 Minute completed successfully');
+});
+
+cron.schedule(CONSTANTS._1_DAY_CRON, async () => {
+    await Promise.all([
         // Change status borrow book
         cron_borrow_book_student.cron_change_status_borrow_book_student(),
     ]);
-    console.info('Both tasks completed successfully');
+    console.info('Both tasks 1 day completed successfully');
 });
+
 console.info('Server cron running !!!');

@@ -25,12 +25,11 @@ const BorrowBookController = {
      */
     borrowBook: async (req, res) => {
         // Book input
-        const { book_id } = req.body.input.borrow_book_input;
+        const { book_id, quantity } = req.body.input.borrow_book_input;
 
         // Take user Id
         const { id } = req.auth_user;
-
-        if (!book_id || !id) {
+        if (!HELPER.validateBigInt(book_id) || !HELPER.validateBigInt(id) || !quantity) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -39,15 +38,32 @@ const BorrowBookController = {
                 },
             });
         }
+        if (quantity > 2 || quantity === 0) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.EXITS_CAN_ONLY_TOW_BORROW,
+                },
+            });
+        }
         try {
             // Check Student tow a borrow book
             const check_borrow_book = await borrowed_book_model.checkBorrowBook(
                 { user_id: id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { book_id: 'book_id', status: 'status' },
+                { book_id: 'book_id', status: 'status', user_id: 'user_id', quantity: 'quantity' },
             );
             // Check book lost processing
-            const checkArray = (arr) => !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
-            if (!checkArray(check_borrow_book)) {
+            const checkLostProcessing = (arr) =>
+                !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
+            const totalQuantity = check_borrow_book.reduce((acc, cur) => {
+                if (cur.user_id === id) {
+                    return acc + cur.quantity;
+                }
+                return acc;
+            }, 0);
+            const newTotalQuantity = Number(totalQuantity) + +quantity;
+            if (!checkLostProcessing(check_borrow_book) || newTotalQuantity > 2) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -71,24 +87,16 @@ const BorrowBookController = {
                 { book_id, isdeleted: CONSTANTS.DELETED_DISABLE, user_id: id },
                 '*',
             );
-            if (data_borrow_book.length > 0 && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE) {
-                let result_borrow;
-                switch (data_borrow_book[0].status) {
-                    case CONSTANTS.STATUS_BORROW.PENDING:
-                        result_borrow = MESSAGES.GENERAL.ALREADY_BOOK_BORROW;
-                        break;
-                    case CONSTANTS.STATUS_BORROW.BORROWING:
-                        result_borrow = MESSAGES.GENERAL.PLEASE_REFUND_BOOK;
-                        break;
-                    default:
-                        result_borrow = MESSAGES.GENERAL.BORROW_FAIL;
-                        break;
-                }
+            const refund_book =
+                data_borrow_book.length > 0
+                && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE
+                && data_borrow_book[0].status;
+            if (refund_book) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: result_borrow,
+                        result: MESSAGES.GENERAL.PLEASE_REFUND_BOOK,
                     },
                 });
             }
@@ -120,15 +128,20 @@ const BorrowBookController = {
 
             // create book_borrowed database
             const data_insert = {
-                borrowed_book_id: RANDOMS.createID(),
+                borrowed_book_id:
+                    data_borrow_book.length > 0 ? data_borrow_book[0].borrowed_book_id : RANDOMS.createID(),
                 book_id,
                 user_id: id,
+                quantity:
+                    data_borrow_book.length > 0
+                        ? Number(data_borrow_book[0].quantity) + Number(quantity)
+                        : Number(quantity),
                 status: CONSTANTS.STATUS_BORROW.PENDING,
             };
 
             // update quantity book database
             const data_update = {
-                quantity: data_book[0].quantity - 1,
+                quantity: Number(data_book[0].quantity) - Number(quantity),
             };
 
             let err;
@@ -157,12 +170,14 @@ const BorrowBookController = {
             }
             // Insert or update error
             if (err) {
+                console.error(err);
                 return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
                     status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
             }
         } catch (error) {
+            console.error(error);
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
