@@ -25,31 +25,31 @@ const Filter = () => {
                 <div className="shop__sidebar__categories">
                   <ul className="nice-scroll">
                     <li>
-                      <a href="#">Men (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Women (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Bags (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Clothing (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Shoes (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Accessories (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Kids (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Kids (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                     <li>
-                      <a href="#">Kids (20)</a>
+                      <a href="#">Sách tham khảo (20)</a>
                     </li>
                   </ul>
                 </div>
@@ -67,16 +67,16 @@ const Filter = () => {
                 <div className="shop__sidebar__brand">
                   <ul>
                     <li>
-                      <a href="#">Louis Vuitton</a>
+                      <a href="#">Sách tham khảo</a>
                     </li>
                     <li>
-                      <a href="#">Chanel</a>
+                      <a href="#">Sách tham khảo</a>
                     </li>
                     <li>
-                      <a href="#">Hermes</a>
+                      <a href="#">Sách tham khảo</a>
                     </li>
                     <li>
-                      <a href="#">Gucci</a>
+                      <a href="#">Sách tham khảo</a>
                     </li>
                   </ul>
                 </div>
@@ -92,13 +92,13 @@ const Filter = () => {
             <div id="collapseSix" className="collapse show" data-parent="#accordionExample">
               <div className="card-body">
                 <div className="shop__sidebar__tags">
-                  <a href="#">Product</a>
-                  <a href="#">Bags</a>
-                  <a href="#">Shoes</a>
-                  <a href="#">Fashio</a>
-                  <a href="#">Clothing</a>
-                  <a href="#">Hats</a>
-                  <a href="#">Accessories</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
+                  <a href="#">Sách tham khảo</a>
                 </div>
               </div>
             </div>

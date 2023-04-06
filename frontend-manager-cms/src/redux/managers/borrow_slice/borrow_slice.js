@@ -14,7 +14,11 @@ const initialState = {
 const BorrowBook = createSlice({
   name: 'CMS Borrow Book',
   initialState,
-  reducers: {},
+  reducers: {
+    reset_detail_borrow: (state) => {
+      state.detail_borrow = null;
+    },
+  },
   extraReducers: {
     //* Get all borrow CMS
     [Get_All_Borrow_Cms_Initial.pending]: (state, action) => {
@@ -44,4 +48,6 @@ const BorrowBook = createSlice({
   },
 });
 const BorrowBookSlice = BorrowBook.reducer;
+export const { reset_detail_borrow } = BorrowBook.actions;
+
 export default BorrowBookSlice;

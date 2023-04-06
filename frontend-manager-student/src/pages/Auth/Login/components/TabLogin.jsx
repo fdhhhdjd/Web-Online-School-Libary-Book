@@ -10,6 +10,7 @@ import { Login_Mssv_Initial } from 'redux/student/authentication_slice/auth_thun
 
 //! IMPORT
 import { TabForgetPassword } from 'imports/auth_import';
+import Loading from 'components/Loading';
 
 const TabLogin = ({ showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
@@ -84,9 +85,7 @@ const TabLogin = ({ showLogin, setShowLogin }) => {
                     {errors?.password?.type === 'required' ? 'Mời bạn nhập mật khẩu' : ''}
                   </div>
 
-                  <div className="btns">
-                    {loading_login ? <p>Loading...</p> : <button type="submit">Đăng nhập</button>}
-                  </div>
+                  <div className="btns">{loading_login ? <Loading /> : <button type="submit">Đăng nhập</button>}</div>
                   <span className="forget" onClick={() => setForgetPage(true)}>
                     Quên mật khẩu?
                   </span>

@@ -50,7 +50,7 @@ export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ fo
   }
 });
 /**
- * @author Châu Gia Bảo
+ * @author Nguyễn Tiến Tài
  * @created_at 26/03/2023
  * @descriptionKey Destroy Media
  * @function Destroy_Media_Initial

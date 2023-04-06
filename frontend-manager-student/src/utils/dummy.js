@@ -23,10 +23,6 @@ export const navInfo = [
     ],
   },
   {
-    displayText: 'Phụ kiện',
-    path: '/accessories',
-  },
-  {
     displayText: 'Liên hệ',
     path: '/contact',
   },

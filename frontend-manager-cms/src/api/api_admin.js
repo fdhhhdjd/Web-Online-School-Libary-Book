@@ -7,6 +7,7 @@ const API_ADMIN = {
   GET_ALL_BOOK_CMS: '/manager/v1/admin/private/book/all',
   GET_DETAIL_BOOK_CMS: '/manager/v1/admin/private/book/detail',
   CREATE_BOOK_CMS: '/manager/v1/admin/private/book/create',
+  EDIT_BOOK_CMS: '/manager/v1/admin/private/book/update',
   DELETE_BOOK_CMS: '/manager/v1/admin/private/book/delete',
 
   //! borrow  book api

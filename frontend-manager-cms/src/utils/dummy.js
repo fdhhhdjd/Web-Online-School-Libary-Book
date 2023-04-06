@@ -170,6 +170,10 @@ export const genderOption = [
 
 export const statusBorrowOption = [
   {
+    value: 0,
+    label: 'Tất cả',
+  },
+  {
     value: 10,
     label: 'Chờ xác nhận',
   },
@@ -497,5 +501,73 @@ export const classOption = [
   {
     label: 'CD21CT8',
     value: 'CD21CT8',
+  },
+];
+
+export const borrowSearchOption = [
+  {
+    label: 'Mã sách mượn',
+    value: 'borrowed_book_id',
+  },
+  {
+    label: 'Tên sách',
+    value: 'name',
+  },
+  {
+    label: 'Mã số sinh viên',
+    value: 'user_id',
+  },
+];
+
+export const bookSearchOption = [
+  {
+    label: 'Mã sách',
+    value: 'book_id',
+  },
+  {
+    label: 'Tên sách',
+    value: 'name',
+  },
+  {
+    label: 'Kệ sách',
+    value: 'bookshelf',
+  },
+];
+
+export const authorSearchOption = [
+  {
+    label: 'Mã tác giả',
+    value: 'author_id',
+  },
+  {
+    label: 'Tên tác giả',
+    value: 'name',
+  },
+  {
+    label: 'Kệ sách',
+    value: 'bookshelf',
+  },
+  {
+    label: 'Quốc gia',
+    value: 'nation',
+  },
+];
+
+export const accountSearchOption = [
+  {
+    label: 'Mã tài khoản',
+    value: 'user_id',
+  },
+  {
+    label: 'Tên tài khoản',
+    value: 'name',
+  },
+  {
+    label: 'Mã số sinh viên',
+    value: 'mssv',
+  },
+  {
+    label: 'Lớp',
+    value: 'class',
   },
 ];

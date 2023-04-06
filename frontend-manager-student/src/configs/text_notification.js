@@ -1,6 +1,6 @@
 const TEXT_NOTIFICATION = {
   /**
-   * @author Nguyễn Tiến Tài,Châu Gia Bảo
+   * @author Nguyễn Tiến Tài,Nguyễn Tiến Tài
    * @created_at 04/03/2023
    * @updated_at 15/03/2023,16/03/2023
    * @description Text title web
@@ -22,7 +22,7 @@ const TEXT_NOTIFICATION = {
     'Đã gửi link reset password đến ${email}. Vui lòng vào email của bạn để tiếp tục',
   NOTIFICATION_LOGIN_SESSION_EXPIRE: 'Phiên đăng nhập của bạn đã hết hạn',
   /**
-   * @author Nguyễn Tiến Tài,Châu Gia Bảo
+   * @author Nguyễn Tiến Tài,Nguyễn Tiến Tài
    * @created_at 19/03/2023
    * @description Text input
    */

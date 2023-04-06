@@ -1,9 +1,9 @@
 //!LIBRARY
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { DayPicker, MonthPicker, YearPicker } from 'react-dropdown-date';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import Calendar from 'react-calendar';
 
 //! CUSTOMER HOOK
 import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
@@ -30,25 +30,29 @@ const UserInfo = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
-  // date picking setting
-  const [date, setDate] = useState({ year: '', month: '', day: '' });
   const [gender, setGender] = useState(null);
+  const [dob, setDob] = useState(null);
 
   //File custom hook media
   const { handleUpload } = useUploadCloud();
 
   // Update Profile Func
   const updateProfile = (result) => {
-    const data = { ...result, gender, avatar_uri: result_upload?.result?.url || profile_student?.data?.avatar_uri };
+    const data = {
+      ...result,
+      dob: moment(dob || profile_student?.dob).format('YYYYMMDD'),
+      gender: gender.toString(),
+      avatar_uri: result_upload?.result?.url || profile_student?.data?.avatar_uri,
+    };
     dispatch(Update_Student_Initial(data));
   };
 
-  console.log(result_upload, loading_media);
-
   useEffect(() => {
     setGender(profile_student?.data?.gender);
+    reset(profile_student?.data);
   }, [profile_student]);
 
   return (
@@ -60,125 +64,111 @@ const UserInfo = () => {
       <div className="profile__info__content">
         <Row>
           <Col md={8}>
-            <Row className="info_border">
-              <Col md={4} className="profile__info__content__label">
-                <div className="profile__info__content__label-item">Họ và Tên</div>
-                <div className="error-msg">
-                  {errors?.name?.type === 'required' && <i className="bx bx-error-alt"></i>}
-                </div>
-                <div className="profile__info__content__label-item">Mã số sinh viên</div>
-                <div className="profile__info__content__label-item">Email</div>
-                <div className="profile__info__content__label-item">Địa chỉ</div>
-                <div className="error-msg">
-                  {errors?.address?.type === 'required' && <i className="bx bx-error-alt"></i>}
-                </div>
-
-                <div className="profile__info__content__label-item">Số điện thoại</div>
-                <div className="profile__info__content__label-item">Giới tính</div>
-                <div className="profile__info__content__label-item">Ngày sinh</div>
-                <div className="profile__info__content__label-item" onClick={handleSubmit(updateProfile)}>
-                  <button>Lưu</button>
-                </div>
-              </Col>
-              <Col md={8} className="profile__info__content__input">
-                <div className="profile__info__content__input-item">
-                  <input
-                    type="text"
-                    defaultValue={profile_student?.data?.name}
-                    className={`input-user ${errors?.name?.type === 'required' ? 'error-input' : ''}`}
-                    {...register('name', {
-                      required: true,
-                    })}
-                  />
-                  <div className="error-msg">
-                    {errors?.name?.type === 'required' ? 'Tên vui lòng không để trống' : ''}
-                  </div>
-                </div>
-                <div className="profile__info__content__input-item">{profile_student?.data?.mssv}</div>
-                <div className="profile__info__content__input-item">{profile_student?.data?.email}</div>
-                <div className="profile__info__content__input-item">
-                  <input
-                    type="text"
-                    defaultValue={profile_student?.data?.address}
-                    className={`input-user ${errors?.address?.type === 'required' ? 'error-input' : ''}`}
-                    {...register('address', {
-                      required: true,
-                    })}
-                  />
-                  <div className="error-msg">
-                    {errors?.address?.type === 'required' ? 'Địa chỉ vui lòng không để trống' : ''}
-                  </div>
-                </div>
-                <div className="profile__info__content__input-item">{profile_student?.data?.phone_hidden}</div>
-                <div className="profile__info__content__input-item">
-                  <span>
-                    <input type="radio" name="gender" id="male" checked={gender === 1} onChange={() => setGender(1)} />
-                    <label htmlFor="male">Nam</label>
-                  </span>
-                  <span>
+            <div className="info_border">
+              <div md={4} className="profile__info__content__label">
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Họ và Tên</div>
+                  <div className="profile__info__content__input-item">
                     <input
-                      type="radio"
-                      name="gender"
-                      id="female"
-                      checked={gender === 2}
-                      onChange={() => setGender(2)}
+                      type="text"
+                      defaultValue={profile_student?.data?.name}
+                      className={`input-user ${errors?.name?.type === 'required' ? 'error-input' : ''}`}
+                      {...register('name', {
+                        required: true,
+                      })}
                     />
-                    <label htmlFor="female">Nữ</label>
-                  </span>
-                  <span>
-                    <input type="radio" name="gender" id="more" checked={gender === 3} onChange={() => setGender(3)} />
-                    <label htmlFor="more">Khác</label>
-                  </span>
+                    <div className="error-msg">
+                      {errors?.name?.type === 'required' ? 'Tên vui lòng không để trống' : ''}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="date-picker">
-                  <DayPicker
-                    defaultValue={moment(profile_student?.data?.dob).date()}
-                    year={date.year} // mandatory
-                    month={date.month} // mandatory
-                    endYearGiven // mandatory if end={} is given in YearPicker
-                    value={date.day} // mandatory
-                    onChange={(day) => {
-                      // mandatory
-                      setDate((prev) => ({ ...prev, day }));
-                    }}
-                    id={'day'}
-                    classes={`dropdown-date `}
-                    optionClasses={'option'}
-                  />
-
-                  <MonthPicker
-                    defaultValue={moment(profile_student?.data?.dob).month() + 1}
-                    numeric // to get months as numbers
-                    endYearGiven // mandatory if end={} is given in YearPicker
-                    year={date.year} // mandatory
-                    value={date.month} // mandatory
-                    onChange={(month) => {
-                      // mandatory
-                      setDate((prev) => ({ ...prev, month }));
-                    }}
-                    id={'month'}
-                    classes={`dropdown-date`}
-                    optionClasses={'option'}
-                  />
-
-                  <YearPicker
-                    defaultValue={moment(profile_student?.data?.dob).year()}
-                    start={1980} // default is 1900
-                    end={2023} // default is current year
-                    reverse // default is ASCENDING
-                    value={date.year} // mandatory
-                    onChange={(year) => {
-                      // mandatory
-                      setDate((prev) => ({ ...prev, year }));
-                    }}
-                    id={'year'}
-                    classes={`dropdown-date`}
-                    optionClasses={'option'}
-                  />
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Mã số sinh viên</div>
+                  <div className="profile__info__content__input-item">{profile_student?.data?.mssv}</div>
                 </div>
-              </Col>
-            </Row>
+
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Email</div>
+                  <div className="profile__info__content__input-item">{profile_student?.data?.email}</div>
+                </div>
+
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Địa chỉ</div>
+                  <div className="profile__info__content__input-item">
+                    <input
+                      type="text"
+                      defaultValue={profile_student?.data?.address}
+                      className={`input-user ${errors?.address?.type === 'required' ? 'error-input' : ''}`}
+                      {...register('address', {
+                        required: true,
+                      })}
+                    />
+                    <div className="error-msg">
+                      {errors?.address?.type === 'required' ? 'Địa chỉ vui lòng không để trống' : ''}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Số điện thoại</div>
+                  <div className="profile__info__content__input-item">{profile_student?.data?.phone_hidden}</div>
+                </div>
+
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Giới tính</div>
+                  <div className="profile__info__content__input-item">
+                    <span>
+                      <input
+                        type="radio"
+                        name="gender"
+                        id="male"
+                        checked={gender === 1}
+                        onChange={() => setGender(1)}
+                      />
+                      <label htmlFor="male">Nam</label>
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        name="gender"
+                        id="female"
+                        checked={gender === 2}
+                        onChange={() => setGender(2)}
+                      />
+                      <label htmlFor="female">Nữ</label>
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        name="gender"
+                        id="more"
+                        checked={gender === 3}
+                        onChange={() => setGender(3)}
+                      />
+                      <label htmlFor="more">Khác</label>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="content-input">
+                  <div className="profile__info__content__label-item">Ngày sinh</div>
+                  {profile_student?.data?.dob && (
+                    <Calendar
+                      defaultValue={new Date(moment(profile_student?.data.dob).format())}
+                      onChange={setDob}
+                      value={new Date(moment(profile_student?.data.dob).format())}
+                    />
+                  )}
+                </div>
+
+                <div className="profile__info__content__input-item">
+                  <button className="profile__info__submit-btn" onClick={handleSubmit(updateProfile)}>
+                    Lưu
+                  </button>
+                </div>
+              </div>
+            </div>
           </Col>
           <Col md={4}>
             <div className="profile__info__image">
