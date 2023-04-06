@@ -89,9 +89,9 @@ const BorrowBookController = {
                 '*',
             );
             const refund_book =
-                data_borrow_book.length > 0 &&
-                data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE &&
-                data_borrow_book[0].status;
+                data_borrow_book.length > 0
+                && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE
+                && data_borrow_book[0].status;
             if (refund_book) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

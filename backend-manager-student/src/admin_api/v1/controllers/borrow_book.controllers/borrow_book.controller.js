@@ -88,9 +88,9 @@ const BorrowBookController = {
             );
             // Condition  refund book
             const check_refund_book =
-                data_borrow_book.length > 0 &&
-                data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE &&
-                data_borrow_book[0].status === CONSTANTS.STATUS_BORROW.BORROWING;
+                data_borrow_book.length > 0
+                && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE
+                && data_borrow_book[0].status === CONSTANTS.STATUS_BORROW.BORROWING;
             if (check_refund_book) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -242,8 +242,8 @@ const BorrowBookController = {
             let err;
             let result;
             if (
-                Number(status) === CONSTANTS.STATUS_BORROW.BORROWING ||
-                Number(status) === CONSTANTS.STATUS_BORROW.EXPIRED
+                Number(status) === CONSTANTS.STATUS_BORROW.BORROWING
+                || Number(status) === CONSTANTS.STATUS_BORROW.EXPIRED
             ) {
                 // update book database
                 [err, result] = await HELPER.handleRequest(
@@ -269,8 +269,8 @@ const BorrowBookController = {
                     });
                 }
             } else if (
-                Number(status) === CONSTANTS.STATUS_BORROW.DONE ||
-                Number(status) === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSED
+                Number(status) === CONSTANTS.STATUS_BORROW.DONE
+                || Number(status) === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSED
             ) {
                 // Check data book exits
                 const data_book = await book_model.getBookById(
