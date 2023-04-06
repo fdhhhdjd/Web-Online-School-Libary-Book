@@ -38,7 +38,7 @@ module.exports = {
                 allow: [],
             },
         ],
-        'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],
+        'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '&&': 'before' } }],
         'import/prefer-default-export': 'off',
         'import/no-unresolved': 'off',
         'linebreak-style': ['error', process.platform === 'win64' && 'win32' ? 'windows' : 'unix'],

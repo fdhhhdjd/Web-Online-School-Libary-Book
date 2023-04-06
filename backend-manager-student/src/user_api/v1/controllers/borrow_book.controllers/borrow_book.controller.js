@@ -19,6 +19,7 @@ const BorrowBookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 08/03/2022
+     * @updated_at 06/04/2022
      * @description Borrowed Book
      * @function borrowBook
      * @return {Object}
@@ -38,7 +39,7 @@ const BorrowBookController = {
                 },
             });
         }
-        if (quantity > 2 || quantity === 0) {
+        if (quantity > CONSTANTS.LIMIT_BORROW || quantity === CONSTANTS.BORROW_ZERO) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -63,7 +64,7 @@ const BorrowBookController = {
                 return acc;
             }, 0);
             const newTotalQuantity = Number(totalQuantity) + +quantity;
-            if (!checkLostProcessing(check_borrow_book) || newTotalQuantity > 2) {
+            if (!checkLostProcessing(check_borrow_book) || newTotalQuantity > CONSTANTS.LIMIT_BORROW) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -73,7 +74,7 @@ const BorrowBookController = {
                 });
             }
             // Check count total
-            if (check_borrow_book.length >= 2) {
+            if (check_borrow_book.length >= CONSTANTS.LIMIT_BORROW) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),

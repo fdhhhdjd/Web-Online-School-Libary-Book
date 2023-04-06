@@ -418,6 +418,14 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 06/04/2023
+     * @description limit borrow book
+     * @param { Number }
+     */
+    LIMIT_BORROW: 2,
+    BORROW_ZERO: 0,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/04/2023
      * @description Status type database
      * @param { String }
      */
