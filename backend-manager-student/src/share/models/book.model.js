@@ -13,8 +13,7 @@ module.exports = {
     createBook: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('books').insert(data).onConflict('book_id').merge()
-                    .returning(['book_id']);
+                const result = knex('books').insert(data).onConflict('book_id').merge().returning(['book_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);

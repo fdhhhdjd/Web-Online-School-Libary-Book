@@ -54,7 +54,8 @@ const BorrowBookController = {
                 { book_id: 'book_id', status: 'status', user_id: 'user_id', quantity: 'quantity' },
             );
             // Check book lost processing
-            const checkLostProcessing = (arr) => !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
+            const checkLostProcessing = (arr) =>
+                !arr.some((obj) => obj.status === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSING);
             const totalQuantity = check_borrow_book.reduce((acc, cur) => {
                 if (cur.user_id === id) {
                     return acc + cur.quantity;
@@ -86,7 +87,10 @@ const BorrowBookController = {
                 { book_id, isdeleted: CONSTANTS.DELETED_DISABLE, user_id: id },
                 '*',
             );
-            const refund_book = data_borrow_book.length > 0 && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE && data_borrow_book[0].status;
+            const refund_book =
+                data_borrow_book.length > 0
+                && data_borrow_book[0].status !== CONSTANTS.STATUS_BORROW.DONE
+                && data_borrow_book[0].status;
             if (refund_book) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -124,10 +128,14 @@ const BorrowBookController = {
 
             // create book_borrowed database
             const data_insert = {
-                borrowed_book_id: data_borrow_book.length > 0 ? data_borrow_book[0].borrowed_book_id : RANDOMS.createID(),
+                borrowed_book_id:
+                    data_borrow_book.length > 0 ? data_borrow_book[0].borrowed_book_id : RANDOMS.createID(),
                 book_id,
                 user_id: id,
-                quantity: data_borrow_book.length > 0 ? Number(data_borrow_book[0].quantity) + Number(quantity) : Number(quantity),
+                quantity:
+                    data_borrow_book.length > 0
+                        ? Number(data_borrow_book[0].quantity) + Number(quantity)
+                        : Number(quantity),
                 status: CONSTANTS.STATUS_BORROW.PENDING,
             };
 
