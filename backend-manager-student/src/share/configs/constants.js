@@ -45,6 +45,7 @@ module.exports = {
      */
     _5_SECONDS_CRON: '*/5 * * * * *',
     _5_MINUTE_CRON: '*/5 * * * *',
+    _1_DAY_CRON: '0 0 * * *',
 
     /**
      * @author Nguyễn Tiến Tài
@@ -413,6 +414,17 @@ module.exports = {
         CANCEL: 50, // Hủy
         LOST_BOOK_PROCESSING: 60, // Mất sách chưa được sử lý.
         LOST_BOOK_PROCESSED: 70, // Mất sách đã được sử lý.
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 06/04/2023
+     * @description Status type database
+     * @param { String }
+     */
+    TYPE_DATABASE: {
+        INSERT: 1, // Thêm mới
+        UPDATE: 2, // Chỉnh sữa
+        DELETE: 3, // Xóa
     },
     /**
      * @author Nguyễn Tiến Tài

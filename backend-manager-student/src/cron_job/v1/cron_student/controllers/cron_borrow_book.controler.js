@@ -29,10 +29,10 @@ module.exports = {
                     // Check status equa peding
                     const status_pending = borrowBook.status === CONSTANTS.STATUS_BORROW.PENDING;
                     if (diffDays > 1 && status_pending) {
-                        // Delete book_borrowed database
+                        // Update Cancel book_borrowed database
                         const data_delete_borrow_book = {
                             borrowed_book_id: borrowBook.borrowed_book_id,
-                            isdeleted: CONSTANTS.DELETED_ENABLE,
+                            status: CONSTANTS.STATUS_BORROW.CANCEL,
                         };
                         // update quantity book database
                         const data_update_book = {

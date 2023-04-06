@@ -31,10 +31,10 @@ const ratingController = {
         const { id } = req.auth_user;
         // Check input
         if (
-            !HELPER.validateBigInt(book_id)
-            || !HELPER.validateBigInt(rating)
-            || !HELPER.validateBigInt(id)
-            || !HELPER.validateBigInt(borrowed_book_id)
+            !HELPER.validateBigInt(book_id) ||
+            !HELPER.validateBigInt(rating) ||
+            !HELPER.validateBigInt(id) ||
+            !HELPER.validateBigInt(borrowed_book_id)
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

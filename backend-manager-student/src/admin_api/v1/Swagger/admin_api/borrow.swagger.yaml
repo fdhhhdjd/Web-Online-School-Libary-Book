@@ -197,10 +197,7 @@ paths:
                                         borrow_book_input:
                                             type: object
                                             properties:
-                                                book_id:
-                                                    type: string
-                                                    example: '1475825111725506562'
-                                                user_id:
+                                                borrowed_book_id:
                                                     type: string
                                                     example: '1475825111725506562'
                                                 start_date:

@@ -30,15 +30,15 @@ const bookController = {
 
         // Check input
         if (
-            !name
-            || !author_id
-            || !image_uri
-            || !description
-            || !bookshelf
-            || !language
-            || !quantity
-            || !public_id_image
-            || !page_number
+            !name ||
+            !author_id ||
+            !image_uri ||
+            !description ||
+            !bookshelf ||
+            !language ||
+            !quantity ||
+            !public_id_image ||
+            !page_number
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -132,15 +132,15 @@ const bookController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '')
-            || (author_id !== undefined && author_id.trim() === '')
-            || (image_uri !== undefined && image_uri.trim() === '')
-            || (description !== undefined && description.trim() === '')
-            || (bookshelf !== undefined && bookshelf.trim() === '')
-            || (language !== undefined && language.trim() === '')
-            || (quantity !== undefined && quantity.trim() === '')
-            || (public_id_image !== undefined && public_id_image.trim() === '')
-            || (page_number !== undefined && page_number.trim() === '')
+            (name !== undefined && name.trim() === '') ||
+            (author_id !== undefined && author_id.trim() === '') ||
+            (image_uri !== undefined && image_uri.trim() === '') ||
+            (description !== undefined && description.trim() === '') ||
+            (bookshelf !== undefined && bookshelf.trim() === '') ||
+            (language !== undefined && language.trim() === '') ||
+            (quantity !== undefined && quantity.trim() === '') ||
+            (public_id_image !== undefined && public_id_image.trim() === '') ||
+            (page_number !== undefined && page_number.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
