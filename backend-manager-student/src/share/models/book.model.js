@@ -28,6 +28,7 @@ module.exports = {
     getBookById: async (student_query) => {
         const result = await knex('books')
             .join('authors', 'books.author_id', '=', 'authors.author_id')
+            .leftJoin('book_rates', 'books.book_id', '=', 'book_rates.book_id')
             .where({
                 'books.isdeleted': student_query.isdeleted,
                 'books.book_id': student_query.book_id,
@@ -38,6 +39,9 @@ module.exports = {
                     dob_author: 'authors.dob',
                     gender_author: 'authors.gender',
                     image_author: 'authors.avatar_uri',
+                },
+                {
+                    star: 'book_rates.rating',
                 },
                 'books.*',
             );
@@ -66,7 +70,7 @@ module.exports = {
     getAllBook: async () => {
         const result = await knex('books')
             .join('authors', 'books.author_id', '=', 'authors.author_id')
-            .join('book_rates', 'books.book_id', '=', 'book_rates.book_id')
+            .leftJoin('book_rates', 'books.book_id', '=', 'book_rates.book_id')
             .where('books.isdeleted', '=', CONSTANTS.DELETED_DISABLE)
             .select(
                 {

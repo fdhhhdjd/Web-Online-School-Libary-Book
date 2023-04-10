@@ -57,6 +57,7 @@ const authorController = {
             }
             if (err) {
                 return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
+                    err,
                     status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
