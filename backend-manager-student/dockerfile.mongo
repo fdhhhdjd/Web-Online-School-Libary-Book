@@ -1,0 +1,13 @@
+FROM mongo
+
+# copy javascript
+COPY /mongo/init-mongo.js /docker-entrypoint-initdb.d/
+
+# Public  port 0 0 0 0 
+CMD ["mongod", "--bind_ip_all"]
+
+
+
+
+
+

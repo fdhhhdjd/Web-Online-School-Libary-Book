@@ -480,6 +480,7 @@ module.exports = {
         REDIS_SERVER_ADMIN: 'admin_unErrorServer',
         REDIS_SERVER_STUDENT: 'user_unErrorServer',
         REDIS_SERVER_CRON: 'cron_unErrorServer',
+        REDIS_DB: 'db_fail',
     },
     /**
      * @author Nguyễn Tiến Tài
@@ -498,5 +499,33 @@ module.exports = {
         ADMIN: 'admin',
         STUDENT: 'student',
         CRON: 'cron',
+        DB: 'database',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 10/04/2023
+     * @description NAME_DATABASE
+     */
+    NAME_DATABASE: {
+        PG: 'PostgreSQL',
+        MONGO: 'MongoDB',
+        REDIS: 'REDIS',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 10/04/2023
+     * @description Setup Mongo
+     */
+    MONGO: {
+        POOL_SIZE: 50,
+        STRING_CONNECT: 'mongodb://${user}:${password}@${host}:${port}/${db}?authSource=${source}',
+    },
+    PG: {
+        POSTGRES_CONNECT_MIN: 2,
+        POSTGRES_CONNECT_MAX: 10,
+        ACQUIRE_TIMEOUT_MILLIS: 30000,
+        CREATE_TIMEOUT_MILLIS: 30000,
+        IDLE_TIMEOUT_MILLIS: 30000,
+        REAP_INTERVAL_MILLIS: 1000,
     },
 };

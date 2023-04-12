@@ -25,6 +25,9 @@ const DEVICE_MIDDLEWARE = require('../share/middleware/device.middleware');
 //! IMPORT ROUTES
 const USER_API = require('./v1/routes/index.router');
 
+//! INIT DB
+require('../share/db/init.mongodb');
+
 //! USED LIBRARY
 const app = express();
 if (CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_PRODUCT) {

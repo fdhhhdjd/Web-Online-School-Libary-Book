@@ -8,6 +8,7 @@ const { sendTelegram } = require('../../../../share/utils/telegram');
      * @return { Object }
     */
 const sendMessageTelegram = {
+    // eslint-disable-next-line consistent-return
     handleException: (message) => {
         try {
             return sendTelegram(message);

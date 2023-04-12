@@ -56,13 +56,11 @@
         "express-rate-limit": "^6.7.0",
         "express-session": "^1.17.3",
         "geoip-lite": "^1.4.6",
-        "google-auth-library": "^8.7.0",
         "helmet": "^6.0.1",
         "ioredis": "^5.2.4",
         "jsonwebtoken": "^8.5.1",
         "knex": "^2.3.0",
         "node-cron": "^3.0.2",
-        "node-fetch": "^3.3.0",
         "nodemailer": "^6.8.0",
         "nodemailer-express-handlebars": "^6.0.0",
         "sonyflake": "^1.1.2",
@@ -76,7 +74,8 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^4.6.0",
         "ua-parser-js": "^1.0.33",
-        "crypto": "^1.0.1"
+        "crypto": "^1.0.1",
+        "mongoose": "^7.0.3"
     },
     "devDependencies": {
         "jest": "^29.3.1"

@@ -66,13 +66,6 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 22/01/2023
-     * @description MAX MIN CONNECT DB
-     */
-    POSTGRES_CONNECT_MIN: process.env.POSTGRES_CONNECT_MIN,
-    POSTGRES_CONNECT_MAX: process.env.POSTGRES_CONNECT_MAX,
-    /**
-     * @author Nguyễn Tiến Tài
-     * @created_at 22/01/2023
      * @description ENVIRONMENT
      */
     NODE_ENV: process.env.NODE_ENV,
@@ -140,4 +133,15 @@ module.exports = {
      */
     IPA_API_RATE_LIMIT_DURATION: process.env.IPA_API_RATE_LIMIT_DURATION,
     IPA_API_RATE_LIMIT: process.env.IPA_API_RATE_LIMIT,
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 09/04/2023
+     * @description Configs Mongo
+     */
+    MONGO_INIT_DB_ROOT_USERNAME: process.env.MONGO_INITDB_ROOT_USERNAME,
+    MONGO_INI_TDB_ROOT_PASSWORD: process.env.MONGO_INITDB_ROOT_PASSWORD,
+    MONGO_INIT_DB_DATABASE: process.env.MONGO_INITDB_DATABASE,
+    MONGO_INIT_MONGO_PORT: process.env.MONGO_INITDB_PORT,
+    MONGO_INIT_MONGO_HOST: process.env.MONGO_INITDB_HOST,
+    MONGO_INIT_DB_SOURCE: process.env.MONGO_INITDB_SOURCE,
 };

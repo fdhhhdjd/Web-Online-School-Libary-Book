@@ -41,9 +41,19 @@ module.exports = {
      */
     getAllFavorite: async (student_query, return_data) => {
         const result = await knex('favorite_book')
-            .select(return_data)
+            .join('books', 'books.book_id', '=', 'favorite_book.book_id')
+            .select(
+                {
+                    name_book: 'books.name',
+                    image_book: 'books.image_uri',
+                    description_book: 'books.description',
+                    quantity_book: 'books.quantity',
+                    status_book: 'books.status',
+                },
+                return_data,
+            )
             .where(student_query)
-            .orderBy('updated_at', 'desc');
+            .orderBy('favorite_book.updated_at', 'desc');
         return result;
     },
     /**

@@ -50,6 +50,12 @@ cronChannelHandlers.set(
     CONSTANTS.KEY_SERVER.REDIS_SERVER_CRON, telegram_sender_message.handleException,
 );
 
+//! New Map DB
+const dbChannelHandlers = new Map();
+cronChannelHandlers.set(
+    CONSTANTS.KEY_SERVER.REDIS_DB, telegram_sender_message.handleException,
+);
+
 //! Start Subscribe to user and admin channels
 REDIS_MASTER.on('ready', async () => {
     try {
@@ -57,8 +63,9 @@ REDIS_MASTER.on('ready', async () => {
         REDIS_MASTER.psubscribe(`${CONSTANTS.KEY_ADMIN_EXIT_A}`);
         REDIS_MASTER.psubscribe(`${CONSTANTS.KEY_MEDIA_EXIT_M}`);
         REDIS_MASTER.psubscribe(`${CONSTANTS.KEY_CRON_EXIT_C}`);
+        REDIS_MASTER.psubscribe(`${CONSTANTS.KEY_CRON_EXIT_DB}`);
 
-        console.info(`Redis subscribed to all channels starting with ${CONSTANTS.KEY_USER_EXIT_U} or ${CONSTANTS.KEY_ADMIN_EXIT_A} or ${CONSTANTS.KEY_MEDIA_EXIT_M} or ${CONSTANTS.KEY_CRON_EXIT_C} `);
+        console.info(`Redis subscribed to all channels starting with ${CONSTANTS.KEY_USER_EXIT_U} or ${CONSTANTS.KEY_ADMIN_EXIT_A} or ${CONSTANTS.KEY_MEDIA_EXIT_M} or ${CONSTANTS.KEY_CRON_EXIT_C} or ${CONSTANTS.KEY_CRON_EXIT_DB}  `);
     } catch (error) {
         console.error('Failed to subscribe to Redis channels:', error);
     }
@@ -70,7 +77,8 @@ REDIS_MASTER.on('pmessage', async (pattern, channel, message) => {
     const handler = userChannelHandlers.get(channel)
         || adminChannelHandlers.get(channel)
         || mediaChannelHandlers.get(channel)
-        || cronChannelHandlers.get(channel);
+        || cronChannelHandlers.get(channel)
+        || dbChannelHandlers.get(channel);
     if (handler) {
         try {
             handler(JSON.parse(message));

@@ -170,5 +170,45 @@ const FavoriteController = {
             });
         }
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 04/04/2023
+     * @description get all Favorite
+     * @function createFavorites
+     * @return {Object:{Number,String}}
+     */
+    getallFavorites: async (req, res) => {
+        try {
+            // Take user Id
+            const { id } = req.auth_user;
+
+            // Take data db
+            const result_favorite = await favorite_model.getAllFavorite(
+                {
+                    'favorite_book.user_id': id,
+                    'favorite_book.isdeleted': CONSTANTS.DELETED_DISABLE,
+                },
+                'favorite_book.*',
+            );
+            if (result_favorite) {
+                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                    element: {
+                        result: result_favorite,
+                    },
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
+                element: {
+                    result: MESSAGES.GENERAL.SERVER_OUT_OF_SERVICE,
+                },
+            });
+        }
+    },
 };
 module.exports = FavoriteController;

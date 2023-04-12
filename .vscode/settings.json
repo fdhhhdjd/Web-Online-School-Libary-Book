@@ -44,5 +44,8 @@
     "MIDDLAWARE",
     "Middlawre",
     "mutilp"
-  ]
+  ],
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  }
 }
