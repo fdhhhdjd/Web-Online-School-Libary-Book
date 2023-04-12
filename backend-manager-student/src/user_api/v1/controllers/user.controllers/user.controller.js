@@ -276,16 +276,16 @@ const userController = {
 
         // Check input register
         if (
-            !mssv ||
-            !password ||
-            !HELPER.isNumeric(mssv) ||
-            !name ||
-            !phone_number ||
-            !email ||
-            !dob ||
-            !address ||
-            !gender ||
-            !class_room
+            !mssv
+            || !password
+            || !HELPER.isNumeric(mssv)
+            || !name
+            || !phone_number
+            || !email
+            || !dob
+            || !address
+            || !gender
+            || !class_room
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

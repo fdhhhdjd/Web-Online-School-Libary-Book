@@ -10,8 +10,7 @@ module.exports = {
     createRatings: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('book_rates').insert(data).onConflict('rate_id').merge()
-                    .returning(['rate_id']);
+                const result = knex('book_rates').insert(data).onConflict('rate_id').merge().returning(['rate_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);

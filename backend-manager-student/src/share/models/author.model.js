@@ -10,8 +10,7 @@ module.exports = {
     createAuthor: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('authors').insert(data).onConflict('author_id').merge()
-                    .returning(['author_id']);
+                const result = knex('authors').insert(data).onConflict('author_id').merge().returning(['author_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);

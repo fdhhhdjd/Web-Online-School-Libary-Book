@@ -629,11 +629,11 @@ const adminController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '') ||
-            (avatar_uri !== undefined && avatar_uri.trim() === '') ||
-            (public_id_avatar !== undefined && public_id_avatar.trim() === '') ||
-            (address !== undefined && address.trim() === '') ||
-            (dob !== undefined && dob.trim() === '')
+            (name !== undefined && name.trim() === '')
+            || (avatar_uri !== undefined && avatar_uri.trim() === '')
+            || (public_id_avatar !== undefined && public_id_avatar.trim() === '')
+            || (address !== undefined && address.trim() === '')
+            || (dob !== undefined && dob.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
