@@ -72,8 +72,26 @@ const handleException = (err, name, port) => {
         errorName: err.name,
         errorMessage: err.message,
     });
+    let message_queue;
+    switch (name) {
+        case CONSTANTS.NAME_SERVER.STUDENT:
+            message_queue = CONSTANTS.QUEUE.REDIS_SERVER_STUDENT;
+            break;
+        case CONSTANTS.NAME_SERVER.ADMIN:
+            message_queue = CONSTANTS.QUEUE.REDIS_SERVER_ADMIN;
+            break;
+        case CONSTANTS.NAME_SERVER.CRON:
+            message_queue = CONSTANTS.QUEUE.REDIS_SERVER_CRON;
+            break;
+        case CONSTANTS.NAME_SERVER.DB:
+            message_queue = CONSTANTS.QUEUE.REDIS_DB;
+            break;
+        default:
+            message_queue = CONSTANTS.QUEUE.REDIS_SERVER_CRON;
+            break;
+    }
     // Publish data queue Redis
-    return queueMessageTelegram(CONSTANTS.QUEUE.REDIS_SERVER_CRON, {
+    return queueMessageTelegram(message_queue, {
         message,
     });
 };

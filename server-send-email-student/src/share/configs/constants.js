@@ -115,12 +115,16 @@ module.exports = {
     // CRON
     KEY_CRON_EXIT_C: 'c*',
 
+    // DB
+    KEY_CRON_EXIT_DB: 'db*',
+
     // SERVER ALL
     KEY_SERVER: {
         REDIS_SERVER_ADMIN: 'admin_unErrorServer',
         REDIS_SERVER_STUDENT: 'user_unErrorServer',
         REDIS_SERVER_MEDIA: 'media_unErrorServer',
         REDIS_SERVER_CRON: 'cron_unErrorServer',
+        REDIS_DB: 'db_fail',
     },
     /**
    * @author Nguyễn Tiến Tài

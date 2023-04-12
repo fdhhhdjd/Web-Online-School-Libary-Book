@@ -20,4 +20,12 @@ router.post('/create', favoriteBookController.createFavorites);
  */
 router.post('/delete', favoriteBookController.deleteFavorites);
 
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 12/04/2023
+ * @description Route Get All Favorite
+ * @param {('GET')} [method='GET'] The request's method
+ */
+router.get('/get/all', favoriteBookController.getallFavorites);
+
 module.exports = router;

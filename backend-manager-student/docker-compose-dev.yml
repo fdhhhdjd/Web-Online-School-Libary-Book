@@ -2,6 +2,7 @@
 #! Description: Docker Compose Dev
 #!@ Created_At : 20-12-2022.
 #!@ Update_At: 21-12-2022, 22-12-2022, 16-01-2023, 12-03-2023, 18-03-2023.
+#!@ Updated_At: 12-04-2023
 
 version: '3.7'
 
@@ -171,12 +172,43 @@ services:
             timeout: 3s
             retries: 3
 
+    ###! mongo
+    mongodb:
+        container_name: mongodb
+        image: mongo:latest
+        build:
+            context: .
+            dockerfile: dockerfile.mongo
+        restart: unless-stopped
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: '${MONGO_INITDB_ROOT_USERNAME}'
+            MONGO_INITDB_ROOT_PASSWORD: '${MONGO_INITDB_ROOT_PASSWORD}'
+            MONGO_INITDB_DATABASE: '${MONGO_INITDB_DATABASE}'
+        volumes:
+            - mongo_db_data:/data/db
+        ports:
+            - ${MONGO_INITDB_PORT}:${MONGO_INITDB_PORT}
+        env_file:
+            - .env
+        networks:
+            - libary_school
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'mongosh --username ${MONGO_INITDB_ROOT_USERNAME} --password ${MONGO_INITDB_ROOT_PASSWORD} --eval "printjson(db.serverStatus())"',
+                ]
+            interval: 10s
+            timeout: 3s
+            retries: 3
+
     ###! WebServer:NGINX ###
     nginx:
         image: nginx:1.21.3
         container_name: nginx_libary_school
         depends_on:
             - postgresql
+            - mongodb
             - redis-master
             - redis-slave
             - admin_api
@@ -205,6 +237,8 @@ networks:
         external: true
 volumes:
     db_data:
+        driver: local
+    mongo_db_data:
         driver: local
     frontend-manager-student:
         driver: local
