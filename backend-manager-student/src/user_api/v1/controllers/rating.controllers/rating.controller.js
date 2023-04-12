@@ -30,12 +30,7 @@ const ratingController = {
         // Take user Id
         const { id } = req.auth_user;
         // Check input
-        if (
-            !HELPER.validateBigInt(book_id)
-            || !HELPER.validateBigInt(rating)
-            || !HELPER.validateBigInt(id)
-            || !HELPER.validateBigInt(borrowed_book_id)
-        ) {
+        if (!HELPER.validateBigInt(book_id) || !HELPER.validateBigInt(id) || !HELPER.validateBigInt(borrowed_book_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -153,6 +148,7 @@ const ratingController = {
             }
         } catch (error) {
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
+                error,
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
                 element: {
