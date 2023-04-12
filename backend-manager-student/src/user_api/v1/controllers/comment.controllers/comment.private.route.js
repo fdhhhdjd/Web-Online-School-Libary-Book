@@ -45,14 +45,11 @@ const commentController = {
                 isdeleted: CONSTANTS.DELETED_DISABLE,
                 slug: parent_slug,
             };
-            const parenSlug = await comment_model.getCommentById(
-                search_paren_slug,
-                {
-                    full_slug: 'full_slug',
-                    slug: 'slug',
-                    comment_replies_num: 'comment_replies_num',
-                },
-            );
+            const parenSlug = await comment_model.getCommentById(search_paren_slug, {
+                full_slug: 'full_slug',
+                slug: 'slug',
+                comment_replies_num: 'comment_replies_num',
+            });
             let total_replies = 0;
             if (parenSlug[0]) {
                 // comment child

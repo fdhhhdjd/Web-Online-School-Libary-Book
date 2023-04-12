@@ -41,9 +41,7 @@ const commentController = {
             // create comment database
             let err;
             let result;
-            [err, result] = await HELPER.handleRequest(
-                comment_model.getAllComment(match, '*'),
-            );
+            [err, result] = await HELPER.handleRequest(comment_model.getAllComment(match, '*'));
             if (result) {
                 return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
                     status: CONSTANTS.HTTP.STATUS_2XX_OK,

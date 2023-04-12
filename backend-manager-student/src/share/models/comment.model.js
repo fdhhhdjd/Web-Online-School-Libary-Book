@@ -36,7 +36,10 @@ module.exports = {
      * @description Get all comment
      */
     getAllComment: async (student_query, return_data) => {
-        const result = await knex('book_comments').select(return_data).where(student_query).orderBy('updated_at', 'desc');
+        const result = await knex('book_comments')
+            .select(return_data)
+            .where(student_query)
+            .orderBy('updated_at', 'desc');
         return result;
     },
 };

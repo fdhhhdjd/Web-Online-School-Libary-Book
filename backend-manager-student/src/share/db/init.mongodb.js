@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 //! CONFIGS
 const CONSTANTS = require('../configs/constants');
 const HELPERS = require('../utils/helper');
-const { db: { host, port, db, user, password, source } } = require('../configs/configs.mongodb');
+const {
+    db: { host, port, db, user, password, source },
+} = require('../configs/configs.mongodb');
 
 //! PUBSUB
 const { handleException } = require('../utils/redis_pub_sub_helper');
@@ -40,17 +42,21 @@ class Database {
             mongoose.set('debug', { color: CONSTANTS.DELETED_ENABLE });
         }
 
-        mongoose.connect(connectString, {
-            maxPoolSize: CONSTANTS.MONGO.POOL_SIZE,
-            useNewUrlParser: CONSTANTS.DELETED_ENABLE,
-            useUnifiedTopology: CONSTANTS.DELETED_ENABLE,
+        mongoose
+            .connect(connectString, {
+                maxPoolSize: CONSTANTS.MONGO.POOL_SIZE,
+                useNewUrlParser: CONSTANTS.DELETED_ENABLE,
+                useUnifiedTopology: CONSTANTS.DELETED_ENABLE,
+                // eslint-disable-next-line no-unused-vars
+            })
             // eslint-disable-next-line no-unused-vars
-        }).then((_) => {
-            console.info('CONNECTED TO MONGODB SUCCESS !!');
-        }).catch((err) => {
-            handleException(err, CONSTANTS.NAME_SERVER.DB, CONSTANTS.NAME_DATABASE.MONGO);
-            console.error(err);
-        });
+            .then((_) => {
+                console.info('CONNECTED TO MONGODB SUCCESS !!');
+            })
+            .catch((err) => {
+                handleException(err, CONSTANTS.NAME_SERVER.DB, CONSTANTS.NAME_DATABASE.MONGO);
+                console.error(err);
+            });
     }
 
     static getInstance() {
