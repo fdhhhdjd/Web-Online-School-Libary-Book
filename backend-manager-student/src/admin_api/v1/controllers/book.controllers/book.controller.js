@@ -11,6 +11,7 @@ const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
 const book_model = require('../../../../share/models/book.model');
+const book_borrowed_model = require('../../../../share/models/book_borrowed.model');
 
 //! SERVICE
 const book_admin_service = require('../../../../share/services/admin_service/book_service');
@@ -19,26 +20,37 @@ const bookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
-     * @created_at 27/03/2023
+     * @created_at 27/03/2023, 14/04/2023
      * @description create book
      * @function createBook
      * @return {Object:{Number,String}}
      */
     createBook: async (req, res) => {
-        const { name, author_id, image_uri, description, page_number, bookshelf, language, quantity, public_id_image } =
-            req.body.input.book_input;
+        const {
+            name,
+            author_id,
+            image_uri,
+            description,
+            page_number,
+            bookshelf,
+            language,
+            quantity,
+            public_id_image,
+            real_quantity,
+        } = req.body.input.book_input;
 
         // Check input
         if (
-            !name
-            || !author_id
-            || !image_uri
-            || !description
-            || !bookshelf
-            || !language
-            || !quantity
-            || !public_id_image
-            || !page_number
+            !name ||
+            !author_id ||
+            !image_uri ||
+            !description ||
+            !bookshelf ||
+            !language ||
+            !quantity ||
+            !public_id_image ||
+            !page_number ||
+            !real_quantity
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -63,6 +75,7 @@ const bookController = {
             status: CONSTANTS.STATUS_BOOK.STILL,
             public_id_image,
             page_number,
+            real_quantity,
         };
         try {
             // create book database
@@ -132,15 +145,15 @@ const bookController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '')
-            || (author_id !== undefined && author_id.trim() === '')
-            || (image_uri !== undefined && image_uri.trim() === '')
-            || (description !== undefined && description.trim() === '')
-            || (bookshelf !== undefined && bookshelf.trim() === '')
-            || (language !== undefined && language.trim() === '')
-            || (quantity !== undefined && quantity.trim() === '')
-            || (public_id_image !== undefined && public_id_image.trim() === '')
-            || (page_number !== undefined && page_number.trim() === '')
+            (name !== undefined && name.trim() === '') ||
+            (author_id !== undefined && author_id.trim() === '') ||
+            (image_uri !== undefined && image_uri.trim() === '') ||
+            (description !== undefined && description.trim() === '') ||
+            (bookshelf !== undefined && bookshelf.trim() === '') ||
+            (language !== undefined && language.trim() === '') ||
+            (quantity !== undefined && quantity.trim() === '') ||
+            (public_id_image !== undefined && public_id_image.trim() === '') ||
+            (page_number !== undefined && page_number.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -253,10 +266,23 @@ const bookController = {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
                     { book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                    { book_id: 'book_id' },
+                    {
+                        book_id: 'book_id',
+                        isdeleted: 'isdeleted',
+                    },
                 ),
             );
             if (result) {
+                // Update borrow book database
+                book_borrowed_model.updateBorrowBook(
+                    {
+                        isdeleted: CONSTANTS.DELETED_ENABLE,
+                    },
+                    {
+                        book_id: result[0].book_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                );
                 // Create key Cache
                 const key_cache_book_detail = HELPER.getURIFromTemplate(CONSTANTS.KEY_REDIS.DETAIL_BOOK, {
                     book_id,
