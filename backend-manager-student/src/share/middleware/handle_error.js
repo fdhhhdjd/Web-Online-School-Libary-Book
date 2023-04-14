@@ -13,8 +13,8 @@ module.exports = {
      * @return { String }
      */
     returnReasons: (code) =>
-        CONSTANTS.reasonPhraseCodeProNewMap().get(code.toString()) ||
-        CONSTANTS.reasonPhraseCodeProNewMap().get(CONSTANTS.HTTP.NO_STATUS_DEFAULT),
+        CONSTANTS.reasonPhraseCodeProNewMap().get(code.toString())
+        || CONSTANTS.reasonPhraseCodeProNewMap().get(CONSTANTS.HTTP.NO_STATUS_DEFAULT),
 
     /**
      * @author Nguyễn Tiến Tài
@@ -28,18 +28,18 @@ module.exports = {
         const constraint = error.constraint;
         let message;
         switch (constraint) {
-        case KEY_DUPLICATE.DUPLICATE_KEY_EMAIL:
-            message = MESSAGES.GENERAL.EXITS_EMAIL;
-            break;
-        case KEY_DUPLICATE.DUPLICATE_KEY_PHONE:
-            message = MESSAGES.GENERAL.EXITS_PHONE;
-            break;
-        case KEY_DUPLICATE.DUPLICATE_KEY_MSSV:
-            message = MESSAGES.GENERAL.EXITS_MSSV;
-            break;
-        default:
-            message = MESSAGES.GENERAL.ERROR_UNKNOWN;
-            break;
+            case KEY_DUPLICATE.DUPLICATE_KEY_EMAIL:
+                message = MESSAGES.GENERAL.EXITS_EMAIL;
+                break;
+            case KEY_DUPLICATE.DUPLICATE_KEY_PHONE:
+                message = MESSAGES.GENERAL.EXITS_PHONE;
+                break;
+            case KEY_DUPLICATE.DUPLICATE_KEY_MSSV:
+                message = MESSAGES.GENERAL.EXITS_MSSV;
+                break;
+            default:
+                message = MESSAGES.GENERAL.ERROR_UNKNOWN;
+                break;
         }
         return message;
     },
