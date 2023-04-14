@@ -1,5 +1,8 @@
+//! LIBRARY
 const { Sonyflake } = require('sonyflake');
 const OtpGenerator = require('otp-generator');
+
+//! SHARE
 const REGEX = require('../configs/regex');
 const CONFIGS = require('../configs/config');
 const CONSTANTS = require('../configs/constants');

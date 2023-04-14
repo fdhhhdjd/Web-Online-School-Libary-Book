@@ -1,3 +1,4 @@
+//! CACHING
 const { REDIS_MASTER, REDIS_SLAVE } = require('../db/init_multiple_redis');
 
 /**
