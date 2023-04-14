@@ -528,4 +528,8 @@ module.exports = {
         IDLE_TIMEOUT_MILLIS: 30000,
         REAP_INTERVAL_MILLIS: 1000,
     },
+    MONGO_SCHEMA: {
+        DOCUMENT_NAME: 'book_comment',
+        COLLECTION_NAME: 'book_comments',
+    },
 };

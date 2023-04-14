@@ -6,8 +6,9 @@ const HELPER = require('../../../../share/utils/helper');
 //! MIDDLEWARE
 const { returnReasons } = require('../../../../share/middleware/handle_error');
 
-//! MODEL
-const comment_model = require('../../../../share/models/comment.model');
+//! SERVICE
+const { list_comment } = require('../../../../share/services/user_service/comment_service');
+const book_model = require('../../../../share/models/book.model');
 
 const commentController = {
     /**
@@ -19,7 +20,7 @@ const commentController = {
     listComment: async (req, res) => {
         const { book_id, slug } = req.body.input.comment_input;
 
-        // Check input
+        // Validate input
         if (!HELPER.validateBigInt(book_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -29,36 +30,59 @@ const commentController = {
                 },
             });
         }
+
         try {
+            // Check if book exists
+            const book = await book_model.getBookById(
+                {
+                    book_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    book_id: 'book_id',
+                },
+            );
+            if (!book || !book.length) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.EXITS_NOT_BOOK,
+                    },
+                });
+            }
+
+            // Retrieve comments for book
             const match = {
                 book_id,
                 isdeleted: CONSTANTS.DELETED_DISABLE,
             };
             if (slug !== '') {
-                // eslint-disable-next-line dot-notation
-                match['full_slug'] = new RegExp(slug, 'i');
+                match.full_slug = new RegExp(slug, 'i');
             }
-            // create comment database
-            let err;
-            let result;
-            [err, result] = await HELPER.handleRequest(comment_model.getAllComment(match, '*'));
-            if (result) {
-                return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
-                    status: CONSTANTS.HTTP.STATUS_2XX_OK,
-                    message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
-                    element: {
-                        result,
-                    },
-                });
-            }
-            if (err) {
-                return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
-                    status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
-                    message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
-                });
-            }
+
+            const search_data = {
+                _id: 0,
+                user_id: 1,
+                book_id: 1,
+                content: 1,
+                slug: 1,
+                full_slug: 1,
+                parent_slug: 1,
+                comment_replies_num: 1,
+            };
+            const comments = await list_comment(match, search_data);
+
+            // Return list of comments
+            return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
+                status: CONSTANTS.HTTP.STATUS_2XX_OK,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
+                element: {
+                    result: comments,
+                },
+            });
         } catch (error) {
-            console.error(error);
+            // Handle errors
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),
@@ -69,4 +93,5 @@ const commentController = {
         }
     },
 };
+
 module.exports = commentController;
