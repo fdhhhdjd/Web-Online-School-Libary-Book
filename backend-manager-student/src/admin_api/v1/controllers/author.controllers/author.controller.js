@@ -9,6 +9,7 @@ const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
 const author_model = require('../../../../share/models/author.model');
+const book_model = require('../../../../share/models/book.model');
 
 const authorController = {
     /**
@@ -57,7 +58,6 @@ const authorController = {
             }
             if (err) {
                 return res.status(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR).json({
-                    err,
                     status: CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR),
                 });
@@ -169,6 +169,7 @@ const authorController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
+     * @updated_at 14/04/2023
      * @description delete Author
      * @function deleteAuthor
      * @return {Object:{Number,String}}
@@ -189,8 +190,13 @@ const authorController = {
         try {
             // Check account  already delete
             const result_author_detail = await author_model.getAuthorById(
-                { author_id, isdeleted: CONSTANTS.DELETED_ENABLE },
-                { author_id: 'author_id' },
+                {
+                    author_id,
+                    isdeleted: CONSTANTS.DELETED_ENABLE,
+                },
+                {
+                    author_id: 'author_id',
+                },
             );
 
             if (result_author_detail.length > 0) {
@@ -202,6 +208,22 @@ const authorController = {
                     },
                 });
             }
+            const check_author_exit_book = await book_model.checkAuthorExitBook({
+                author_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            });
+
+            // Check author already created book or yet
+            if (Number(check_author_exit_book[0]?.count) > 0) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.ALREADY_AUTHOR_BOOK,
+                    },
+                });
+            }
+
             // Delete author database
             let err;
             let result;

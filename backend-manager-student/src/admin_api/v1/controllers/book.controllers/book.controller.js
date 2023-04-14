@@ -19,7 +19,7 @@ const bookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
-     * @created_at 27/03/2023
+     * @created_at 27/03/2023, 14/04/2023
      * @description create book
      * @function createBook
      * @return {Object:{Number,String}}
@@ -63,6 +63,7 @@ const bookController = {
             status: CONSTANTS.STATUS_BOOK.STILL,
             public_id_image,
             page_number,
+            real_quantity: quantity,
         };
         try {
             // create book database
@@ -132,15 +133,9 @@ const bookController = {
 
         // Check Input is empty
         if (
-            (name !== undefined && name.trim() === '')
-            || (author_id !== undefined && author_id.trim() === '')
-            || (image_uri !== undefined && image_uri.trim() === '')
-            || (description !== undefined && description.trim() === '')
-            || (bookshelf !== undefined && bookshelf.trim() === '')
-            || (language !== undefined && language.trim() === '')
-            || (quantity !== undefined && quantity.trim() === '')
-            || (public_id_image !== undefined && public_id_image.trim() === '')
-            || (page_number !== undefined && page_number.trim() === '')
+            [name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image, page_number].some(
+                (field) => field !== undefined && field.trim() === '',
+            )
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -150,6 +145,22 @@ const bookController = {
                 },
             });
         }
+        const book = await book_model.getBookById({
+            book_id,
+            isdeleted: CONSTANTS.DELETED_DISABLE,
+        });
+
+        if (!book || !book.length) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.EXITS_NOT_BOOK,
+                },
+            });
+        }
+        // if quantity already update
+        const quantity_update = quantity ? Number(quantity) : 0;
 
         const data_update = {
             name,
@@ -162,6 +173,7 @@ const bookController = {
             status,
             public_id_image,
             page_number,
+            real_quantity: Number(book[0].quantity) + Number(quantity_update),
         };
         try {
             // update book database
@@ -244,16 +256,22 @@ const bookController = {
                     },
                 });
             }
-            // Delete book_id database
+            // Delete book, borrow, favorite database
             let err;
             let result;
             [err, result] = await HELPER.handleRequest(
-                book_model.updateBook(
+                book_model.transactionDeleteBook(
                     {
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { book_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                    { book_id: 'book_id' },
+                    {
+                        book_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    {
+                        book_id: 'book_id',
+                        isdeleted: 'isdeleted',
+                    },
                 ),
             );
             if (result) {
@@ -269,7 +287,7 @@ const bookController = {
                     status: CONSTANTS.HTTP.STATUS_2XX_OK,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: result[0].book_id,
+                        result: book_id,
                     },
                 });
             }

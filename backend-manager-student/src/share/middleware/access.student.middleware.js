@@ -10,6 +10,7 @@ const MEMORY_CACHE = require('../utils/limited_redis');
 
 //! MODEL
 const user_device_model = require('../models/user_device.model');
+const user_model = require('../models/user.model');
 
 //! HANDLE ERROR
 const { returnReasons } = require('./handle_error');
@@ -17,6 +18,7 @@ const { returnReasons } = require('./handle_error');
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 05/02/2023
+ * @created_at 14/04/2023
  * @description Check Middlawre
  * @function accessStudentMiddleware
  */
@@ -50,8 +52,14 @@ const accessStudentMiddleware = async (req, res, next) => {
 
         // Take data device student
         const data_device = await user_device_model.getDeviceId(
-            { device_uuid: device_id },
-            { public_key: 'public_key' },
+            {
+                device_uuid: device_id,
+                isdeleted: CONSTANTS.DELETED_DISABLE,
+            },
+            {
+                public_key: 'public_key',
+                user_id: 'user_id',
+            },
         );
 
         // Check data null
@@ -61,6 +69,20 @@ const accessStudentMiddleware = async (req, res, next) => {
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 element: {
                     result: MESSAGES.GENERAL.NOTFOUND_DEVICE,
+                },
+            });
+        }
+        // Check user exits
+        const check_user = await user_model.checkAuthorExitBook({
+            user_id: data_device[0]?.user_id,
+            isdeleted: CONSTANTS.DELETED_DISABLE,
+        });
+        if (Number(check_user[0]?.count) <= 0 || !check_user) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
                 },
             });
         }

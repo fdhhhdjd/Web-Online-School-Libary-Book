@@ -125,4 +125,14 @@ module.exports = {
                 reject(error);
             }
         }),
+
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/04/2023
+     * @description Check user exits
+     */
+    checkAuthorExitBook: async (student_query) => {
+        const result = await knex('user').where(student_query).count();
+        return result;
+    },
 };
