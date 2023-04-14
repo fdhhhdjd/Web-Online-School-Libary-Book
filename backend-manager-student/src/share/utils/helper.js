@@ -1,9 +1,11 @@
+//! LIBRARY
 const geo_ip = require('geoip-lite');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
 const UAParser = require('ua-parser-js');
 const axios = require('axios');
 
+//! SHARE
 const CONFIGS = require('../configs/config');
 const CONSTANTS = require('../configs/constants');
 const REGEX = require('../configs/regex');

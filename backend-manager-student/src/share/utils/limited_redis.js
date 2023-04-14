@@ -1,4 +1,6 @@
+//! CACHING
 const { REDIS_MASTER } = require('../db/init_multiple_redis');
+
 /**
  * @author Nguyễn Tiến Tài
  * @param {key, value, ttl}
