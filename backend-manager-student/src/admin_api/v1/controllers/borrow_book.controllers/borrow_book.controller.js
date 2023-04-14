@@ -242,8 +242,8 @@ const BorrowBookController = {
             let err;
             let result;
             if (
-                Number(status) === CONSTANTS.STATUS_BORROW.BORROWING ||
-                Number(status) === CONSTANTS.STATUS_BORROW.EXPIRED
+                Number(status) === CONSTANTS.STATUS_BORROW.BORROWING
+                || Number(status) === CONSTANTS.STATUS_BORROW.EXPIRED
             ) {
                 // update book database
                 [err, result] = await HELPER.handleRequest(
@@ -269,8 +269,8 @@ const BorrowBookController = {
                     });
                 }
             } else if (
-                Number(status) === CONSTANTS.STATUS_BORROW.DONE ||
-                Number(status) === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSED
+                Number(status) === CONSTANTS.STATUS_BORROW.DONE
+                || Number(status) === CONSTANTS.STATUS_BORROW.LOST_BOOK_PROCESSED
             ) {
                 // Check data book exits
                 const data_book = await book_model.getBookById(
