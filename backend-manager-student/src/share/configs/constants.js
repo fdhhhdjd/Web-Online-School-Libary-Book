@@ -514,7 +514,7 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 10/04/2023
-     * @description Setup Mongo
+     * @description Setup Mongo PostgreSQL
      */
     MONGO: {
         POOL_SIZE: 50,
@@ -531,5 +531,13 @@ module.exports = {
     MONGO_SCHEMA: {
         DOCUMENT_NAME: 'book_comment',
         COLLECTION_NAME: 'book_comments',
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 10/04/2023
+     * @description Setup string soft delete
+     */
+    STRING_DELETE_FLAG: {
+        VALUE_TIME: '${value}_deleted_${time}',
     },
 };

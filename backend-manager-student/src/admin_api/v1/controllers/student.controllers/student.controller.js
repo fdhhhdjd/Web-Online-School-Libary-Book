@@ -210,6 +210,7 @@ const StudentController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 25/03/2023
+     * @updated_at 14/03/2023
      * @description deleteStudent
      * @function deleteStudent
      * @return {Object}
@@ -230,9 +231,18 @@ const StudentController = {
         try {
             // Check account already delete
             const result_student_detail = await student_model.getStudentById(
-                { user_id: student_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { user_id: 'user_id' },
+                {
+                    user_id: student_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    user_id: 'user_id',
+                    email: 'email',
+                    phone_number: 'phone_number',
+                    mssv: 'mssv',
+                },
             );
+
             if (!result_student_detail.length || !result_student_detail) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -248,10 +258,18 @@ const StudentController = {
             [err, result] = await HELPER.handleRequest(
                 student_model.updateStudent(
                     {
+                        email: HELPER.getDeleteString(result_student_detail[0]?.email),
+                        phone_number: HELPER.getDeleteString(result_student_detail[0]?.phone_number),
+                        mssv: HELPER.getDeleteString(result_student_detail[0]?.mssv),
                         isdeleted: CONSTANTS.DELETED_ENABLE,
                     },
-                    { user_id: student_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                    { user_id: 'user_id' },
+                    {
+                        user_id: student_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
+                    {
+                        user_id: 'user_id',
+                    },
                 ),
             );
             if (result) {

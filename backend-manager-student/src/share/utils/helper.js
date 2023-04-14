@@ -334,4 +334,23 @@ module.exports = {
             return false;
         }
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/04/2023
+     * @description get delete string
+     * @param {value}
+     * @returns {string}
+     */
+    getDeleteString(value) {
+        const date_now = new Date().getTime();
+        const getURIFromTemplate = (template, data) => template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
+        return getURIFromTemplate(
+            CONSTANTS.STRING_DELETE_FLAG.VALUE_TIME,
+            {
+                value: value ?? '',
+                time: date_now,
+            },
+        );
+    },
+
 };

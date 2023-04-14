@@ -58,6 +58,7 @@ module.exports = {
         ALREADY_RATING_BOOK: 'You already rating book !',
         ALREADY_FAVORITE: 'Favorite already exits!',
         ALREADY_ACCOUNT_STUDENT: 'Account student already exits !',
+        ALREADY_AUTHOR_BOOK: 'Please delete book before delete author !',
 
         // ? PLEASE
         PLEASE_REFUND_BOOK: 'Please refund the book !!',

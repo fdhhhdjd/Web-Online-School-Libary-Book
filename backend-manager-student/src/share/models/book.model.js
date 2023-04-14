@@ -13,7 +13,8 @@ module.exports = {
     createBook: (data) =>
         new Promise((resolve, reject) => {
             try {
-                const result = knex('books').insert(data).onConflict('book_id').merge().returning(['book_id']);
+                const result = knex('books').insert(data).onConflict('book_id').merge()
+                    .returning(['book_id']);
                 resolve(result);
             } catch (error) {
                 reject(error);
@@ -87,4 +88,48 @@ module.exports = {
             .orderBy('books.updated_at', 'desc');
         return result;
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/04/2023
+     * @description Check author exit book
+     */
+    checkAuthorExitBook: async (student_query) => {
+        const result = await knex('books').where(student_query).count();
+        return result;
+    },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 14/04/2023
+     * @description Transaction Delete Book
+     */
+    transactionDeleteBook: async (data, student_query, return_data) =>
+        new Promise(async (resolve, reject) => {
+            // start transaction
+            const trx = await knex.transaction();
+            try {
+                // Query 1: updateBorrowBook
+                const updatedBook = trx('books').update(data).where(student_query).returning(return_data);
+
+                // Query 2: updateBorrowBook
+                const updateBorrowBook = trx('borrowed_book').update(data).where(student_query).returning(return_data);
+
+                // Query 3: updateFavorite
+                const updateFavorite = trx('favorite_book').update(data).where(student_query).returning(return_data);
+
+                // Run Sequential async function
+                Promise.all([updatedBook, updateBorrowBook, updateFavorite])
+                    .then((final_rs) => {
+                        // Commit transaction
+                        trx.commit();
+                        return resolve(final_rs);
+                    })
+                    .catch((error) => {
+                        trx.rollback();
+                        reject(error);
+                    });
+            } catch (error) {
+                trx.rollback();
+                reject(error);
+            }
+        }),
 };
