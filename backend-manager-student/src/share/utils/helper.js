@@ -343,14 +343,11 @@ module.exports = {
      */
     getDeleteString(value) {
         const date_now = new Date().getTime();
-        const getURIFromTemplate = (template, data) => template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
-        return getURIFromTemplate(
-            CONSTANTS.STRING_DELETE_FLAG.VALUE_TIME,
-            {
-                value: value ?? '',
-                time: date_now,
-            },
-        );
+        const getURIFromTemplate = (template, data) =>
+            template.replace(REGEX.REGEX_IS_STRING_PARAM, (_, key) => data[key]);
+        return getURIFromTemplate(CONSTANTS.STRING_DELETE_FLAG.VALUE_TIME, {
+            value: value ?? '',
+            time: date_now,
+        });
     },
-
 };
