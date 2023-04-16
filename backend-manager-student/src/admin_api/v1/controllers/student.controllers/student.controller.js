@@ -187,48 +187,47 @@ const StudentController = {
                 },
             });
         }
-
-        if (role) {
-            const result_detail_role = await student_model.getAdminId(
-                {
-                    user_id: admin_id,
-                    isdeleted: CONSTANTS.DELETED_DISABLE,
-                },
-                {
-                    role: 'role',
-                },
-            );
-            if (!result_detail_role || !result_detail_role.length) {
-                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
-                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
-                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
-                    element: {
-                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
+        try {
+            if (role) {
+                const result_detail_role = await student_model.getAdminId(
+                    {
+                        user_id: admin_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
                     },
-                });
-            }
-            if (Number(result_detail_role[0]?.role === CONSTANTS.ROLE.ROLE_MANAGER)) {
-                if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT) {
+                    {
+                        role: 'role',
+                    },
+                );
+                if (!result_detail_role || !result_detail_role.length) {
                     return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                         status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                         message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                         element: {
-                            result: MESSAGES.GENERAL.INVALID_ROLE,
+                            result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
                         },
                     });
                 }
+                if (Number(result_detail_role[0]?.role === CONSTANTS.ROLE.ROLE_MANAGER)) {
+                    if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT) {
+                        return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                            status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                            element: {
+                                result: MESSAGES.GENERAL.INVALID_ROLE,
+                            },
+                        });
+                    }
+                }
             }
-        }
-        const data_update = {
-            name,
-            avatar_uri,
-            public_id_avatar,
-            address,
-            dob,
-            gender,
-            role,
-        };
-        try {
+            const data_update = {
+                name,
+                avatar_uri,
+                public_id_avatar,
+                address,
+                dob,
+                gender,
+                role,
+            };
             // Check data book exits
             const result_student = await student_model.getStudentById(
                 {
