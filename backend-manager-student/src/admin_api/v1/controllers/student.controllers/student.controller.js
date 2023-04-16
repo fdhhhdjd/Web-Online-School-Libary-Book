@@ -25,14 +25,23 @@ const StudentController = {
      * @return {Object}
      */
     createStudent: async (req, res) => {
-        const { name, mssv, phone_number, dob, class_room, email, gender } = req.body.input.create_student_input;
+        const { name, mssv, phone_number, dob, class_room, email, gender, role } = req.body.input.create_student_input;
         // Check input
-        if (!name || !mssv || !phone_number || !dob || !class_room || !email || !gender) {
+        if (!name || !mssv || !phone_number || !dob || !class_room || !email || !gender || !role) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                 element: {
                     result: MESSAGES.GENERAL.INVALID_INPUT,
+                },
+            });
+        }
+        if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT && Number(role) !== CONSTANTS.ROLE.ROLE_MANAGER) {
+            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                element: {
+                    result: MESSAGES.GENERAL.INVALID_ROLE,
                 },
             });
         }
@@ -70,6 +79,7 @@ const StudentController = {
                     dob,
                     class: class_room,
                     email,
+                    role,
                     gender,
                     avatar_uri:
                         gender === CONSTANTS.GENDER_MALE ? CONSTANTS.GENDER_IMAGE_MALE : CONSTANTS.GENDER_IMAGE_FEMALE,
@@ -113,7 +123,7 @@ const StudentController = {
      */
     updateStudent: async (req, res) => {
         // Input body
-        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender } =
+        const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender, role } =
             req.body.input.update_student_input;
 
         // Check input
@@ -127,7 +137,7 @@ const StudentController = {
             });
         }
         if (
-            [name, avatar_uri, public_id_avatar, address, dob, gender].some(
+            [name, avatar_uri, public_id_avatar, address, dob, gender, role].some(
                 (field) => field !== undefined && field.trim() === '',
             )
         ) {
@@ -139,6 +149,18 @@ const StudentController = {
                 },
             });
         }
+
+        if (role) {
+            if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT && Number(role) !== CONSTANTS.ROLE.ROLE_MANAGER) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.INVALID_ROLE,
+                    },
+                });
+            }
+        }
         const data_update = {
             name,
             avatar_uri,
@@ -146,12 +168,18 @@ const StudentController = {
             address,
             dob,
             gender,
+            role,
         };
         try {
             // Check data book exits
             const result_student = await student_model.getStudentById(
-                { user_id: student_id, isdeleted: CONSTANTS.DELETED_DISABLE },
-                { user_id: 'user_id' },
+                {
+                    user_id: student_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    user_id: 'user_id',
+                },
             );
 
             if (!result_student || !result_student.length) {
@@ -238,6 +266,7 @@ const StudentController = {
                 {
                     user_id: 'user_id',
                     email: 'email',
+                    name: 'name',
                     phone_number: 'phone_number',
                     mssv: 'mssv',
                 },
@@ -259,6 +288,7 @@ const StudentController = {
                 student_model.updateStudent(
                     {
                         email: HELPER.getDeleteString(result_student_detail[0]?.email),
+                        name: HELPER.getDeleteString(result_student_detail[0]?.name),
                         phone_number: HELPER.getDeleteString(result_student_detail[0]?.phone_number),
                         mssv: HELPER.getDeleteString(result_student_detail[0]?.mssv),
                         isdeleted: CONSTANTS.DELETED_ENABLE,

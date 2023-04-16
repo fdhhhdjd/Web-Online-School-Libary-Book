@@ -128,14 +128,10 @@ const BorrowBookController = {
 
             // create book_borrowed database
             const data_insert = {
-                borrowed_book_id:
-                    data_borrow_book.length > 0 ? data_borrow_book[0].borrowed_book_id : RANDOMS.createID(),
+                borrowed_book_id: RANDOMS.createID(),
                 book_id,
                 user_id,
-                quantity:
-                    data_borrow_book.length > 0
-                        ? Number(data_borrow_book[0].quantity) + Number(quantity)
-                        : Number(quantity),
+                quantity: Number(quantity),
                 status: CONSTANTS.STATUS_BORROW.PENDING,
             };
 

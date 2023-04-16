@@ -37,6 +37,7 @@ module.exports = {
         INVALID_MUTILP_FIELD: 'Please provide non-empty values for all fields',
         INVALID_UNAUTHORIZED: 'Unauthorized',
         INVALID_RATING: 'Invalid Rating',
+        INVALID_ROLE: 'Invalid create role manager or student',
 
         // ? EXITS
         EXITS_EMAIL_PHONE: 'Email or Phone or Email or Mssv exits !',

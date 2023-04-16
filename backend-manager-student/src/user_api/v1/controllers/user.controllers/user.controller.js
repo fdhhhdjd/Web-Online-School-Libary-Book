@@ -276,16 +276,16 @@ const userController = {
 
         // Check input register
         if (
-            !mssv
-            || !password
-            || !HELPER.isNumeric(mssv)
-            || !name
-            || !phone_number
-            || !email
-            || !dob
-            || !address
-            || !gender
-            || !class_room
+            !mssv ||
+            !password ||
+            !HELPER.isNumeric(mssv) ||
+            !name ||
+            !phone_number ||
+            !email ||
+            !dob ||
+            !address ||
+            !gender ||
+            !class_room
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -419,7 +419,10 @@ const userController = {
 
                 // Check Token old
                 const refetch_token_old = await user_device_model.getDeviceId(
-                    { device_uuid: device.device_id },
+                    {
+                        device_uuid: device.device_id,
+                        isdeleted: CONSTANTS.DELETED_DISABLE,
+                    },
                     {
                         refresh_token: 'refresh_token',
                         user_id: 'user_id',
@@ -474,7 +477,15 @@ const userController = {
                         isdeleted: CONSTANTS.DELETED_DISABLE,
                     };
                     let users = await user_model.getStudentById(data_query, data_return);
-
+                    if (!users || !users.length) {
+                        return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                            status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                            element: {
+                                result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
+                            },
+                        });
+                    }
                     // Assign from object
                     refetch_token_old[0].name = users[0].name;
                     refetch_token_old[0].email = users[0].email;
@@ -506,6 +517,15 @@ const userController = {
                     [err, result] = await HELPER.handleRequest(
                         user_device_model.checkUserByToken(refresh_token_cookie, device.device_id),
                     );
+                    if (!result || !result.length) {
+                        return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                            status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                            message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                            element: {
+                                result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
+                            },
+                        });
+                    }
                     // Student exits
                     if (result) {
                         const refresh_token_exit = refresh_token_cookie;
