@@ -26,8 +26,22 @@ const StudentController = {
      */
     createStudent: async (req, res) => {
         const { name, mssv, phone_number, dob, class_room, email, gender, role } = req.body.input.create_student_input;
+
+        // Take admin Id
+        const admin_id = req.auth_user.id;
+
         // Check input
-        if (!name || !mssv || !phone_number || !dob || !class_room || !email || !gender || !role) {
+        if (
+            !name ||
+            !mssv ||
+            !phone_number ||
+            !dob ||
+            !class_room ||
+            !email ||
+            !gender ||
+            !role ||
+            !HELPER.validateBigInt(admin_id)
+        ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -36,35 +50,56 @@ const StudentController = {
                 },
             });
         }
-        if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT && Number(role) !== CONSTANTS.ROLE.ROLE_MANAGER) {
-            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
-                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
-                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
-                element: {
-                    result: MESSAGES.GENERAL.INVALID_ROLE,
-                },
-            });
-        }
 
-        const check_email = HELPER.validateEmail(email);
-
-        const check_phone = HELPER.validatePhone(phone_number);
-
-        if (!check_email || !check_phone) {
-            return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
-                status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
-                message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
-                element: {
-                    result: MESSAGES.GENERAL.INVALID_EMAIL_PHONE,
-                },
-            });
-        }
-
-        const phone_hide = HELPER.maskLastPhoneNumber(phone_number);
-        const password = HELPER.handleRemoveHyphen(dob);
-
-        const password_student = await PASSWORD.encodePassword(password);
         try {
+            const result_detail_role = await student_model.getAdminId(
+                {
+                    user_id: admin_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    role: 'role',
+                },
+            );
+            if (!result_detail_role || !result_detail_role.length) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
+                    },
+                });
+            }
+            if (Number(result_detail_role[0]?.role === CONSTANTS.ROLE.ROLE_MANAGER)) {
+                if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT) {
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                        element: {
+                            result: MESSAGES.GENERAL.INVALID_ROLE,
+                        },
+                    });
+                }
+            }
+
+            const check_email = HELPER.validateEmail(email);
+
+            const check_phone = HELPER.validatePhone(phone_number);
+
+            if (!check_email || !check_phone) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.GENERAL.INVALID_EMAIL_PHONE,
+                    },
+                });
+            }
+
+            const phone_hide = HELPER.maskLastPhoneNumber(phone_number);
+            const password = HELPER.handleRemoveHyphen(dob);
+
+            const password_student = await PASSWORD.encodePassword(password);
             // create Category database
             let err;
             let result;
@@ -126,8 +161,11 @@ const StudentController = {
         const { student_id, name, avatar_uri, public_id_avatar, address, dob, gender, role } =
             req.body.input.update_student_input;
 
+        // Take admin Id
+        const admin_id = req.auth_user.id;
+
         // Check input
-        if (!student_id || !HELPER.validateBigInt(student_id)) {
+        if (!student_id || !HELPER.validateBigInt(student_id) || !HELPER.validateBigInt(admin_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -151,14 +189,34 @@ const StudentController = {
         }
 
         if (role) {
-            if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT && Number(role) !== CONSTANTS.ROLE.ROLE_MANAGER) {
+            const result_detail_role = await student_model.getAdminId(
+                {
+                    user_id: admin_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    role: 'role',
+                },
+            );
+            if (!result_detail_role || !result_detail_role.length) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
                     element: {
-                        result: MESSAGES.GENERAL.INVALID_ROLE,
+                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
                     },
                 });
+            }
+            if (Number(result_detail_role[0]?.role === CONSTANTS.ROLE.ROLE_MANAGER)) {
+                if (Number(role) !== CONSTANTS.ROLE.ROLE_STUDENT) {
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                        element: {
+                            result: MESSAGES.GENERAL.INVALID_ROLE,
+                        },
+                    });
+                }
             }
         }
         const data_update = {
@@ -246,8 +304,11 @@ const StudentController = {
     deleteStudent: async (req, res) => {
         const { student_id } = req.body.input.student_id;
 
+        // Take admin Id
+        const admin_id = req.auth_user.id;
+
         // Check input
-        if (!student_id || !req.body) {
+        if (!HELPER.validateBigInt(student_id) || !req.body || !HELPER.validateBigInt(admin_id)) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -257,6 +318,24 @@ const StudentController = {
             });
         }
         try {
+            const result_detail_role = await student_model.getAdminId(
+                {
+                    user_id: admin_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                {
+                    role: 'role',
+                },
+            );
+            if (!result_detail_role || !result_detail_role.length) {
+                return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                    status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                    message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                    element: {
+                        result: MESSAGES.ADMIN.NOT_EXIT_ACCOUNT,
+                    },
+                });
+            }
             // Check account already delete
             const result_student_detail = await student_model.getStudentById(
                 {
@@ -269,6 +348,7 @@ const StudentController = {
                     name: 'name',
                     phone_number: 'phone_number',
                     mssv: 'mssv',
+                    role: 'role',
                 },
             );
 
@@ -280,6 +360,17 @@ const StudentController = {
                         result: MESSAGES.STUDENT.NOT_EXIT_ACCOUNT,
                     },
                 });
+            }
+            if (Number(result_detail_role[0]?.role === CONSTANTS.ROLE.ROLE_MANAGER)) {
+                if (Number(result_student_detail[0]?.role) !== CONSTANTS.ROLE.ROLE_STUDENT) {
+                    return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
+                        status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
+                        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
+                        element: {
+                            result: MESSAGES.GENERAL.INVALID_ROLE,
+                        },
+                    });
+                }
             }
             // Delete author database
             let err;
