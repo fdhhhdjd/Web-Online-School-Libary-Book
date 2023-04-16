@@ -132,9 +132,9 @@ paths:
                                                 book_id:
                                                     type: number
                                                     example: 13456789
-                                                category_id:
-                                                    type: number
-                                                    example: 13456789
+                                                book_categories_array:
+                                                    type: string
+                                                    example: '[{"category_id":"1475794147142008836"},{"category_id":"1475794147142008835"}]'
                         required:
                             - book_id
                             - category_id
