@@ -123,9 +123,9 @@ const bookCategoriesController = {
 
         // Check input
         if (
-            !HELPER.validateBigInt(category_id) ||
-            !HELPER.validateBigInt(book_id) ||
-            !HELPER.validateBigInt(book_categories_id)
+            !HELPER.validateBigInt(category_id)
+            || !HELPER.validateBigInt(book_id)
+            || !HELPER.validateBigInt(book_categories_id)
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,

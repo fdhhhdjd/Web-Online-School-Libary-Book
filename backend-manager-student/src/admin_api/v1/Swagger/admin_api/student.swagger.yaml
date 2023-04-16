@@ -150,6 +150,9 @@ paths:
                                                 gender:
                                                     type: number
                                                     example: 1
+                                                tole:
+                                                    type: number
+                                                    example: 1
                         required:
                             - name
                             - mssv
@@ -158,6 +161,7 @@ paths:
                             - dob
                             - class_room
                             - phone_number
+                            - role
             responses:
                 200:
                     description: Create success
@@ -254,6 +258,9 @@ paths:
                                                 gender:
                                                     type: number
                                                     example: 1
+                                                role:
+                                                    type: number
+                                                    example: 1
                         required:
                             - student_id
                             - name
@@ -263,6 +270,7 @@ paths:
                             - dob
                             - class_room
                             - phone_number
+                            - role
             responses:
                 200:
                     description: update success
