@@ -540,4 +540,12 @@ module.exports = {
     STRING_DELETE_FLAG: {
         VALUE_TIME: '${value}_deleted_${time}',
     },
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 17/04/2023
+     * @description Array empty
+     */
+    ARRAY: {
+        EMPTY: 0,
+    },
 };

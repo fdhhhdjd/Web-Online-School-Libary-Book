@@ -68,5 +68,6 @@ module.exports = {
         'no-unused-expressions': 'off',
         'implicit-arrow-linebreak': 'off',
         'object-curly-newline': 'off',
+        'no-nested-ternary': 'off',
     },
 };
