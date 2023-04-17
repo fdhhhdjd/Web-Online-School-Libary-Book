@@ -11,9 +11,11 @@ const { returnReasons } = require('../../../../share/middleware/handle_error');
 
 //! MODEL
 const book_model = require('../../../../share/models/book.model');
+const book_category_model = require('../../../../share/models/book_categories.model');
 
 //! SERVICE
 const book_admin_service = require('../../../../share/services/admin_service/book_service');
+const book_categories_admin_service = require('../../../../share/services/admin_service/book_categories.service');
 
 const bookController = {
     /**
@@ -25,8 +27,18 @@ const bookController = {
      * @return {Object:{Number,String}}
      */
     createBook: async (req, res) => {
-        const { name, author_id, image_uri, description, page_number, bookshelf, language, quantity, public_id_image } =
-            req.body.input.book_input;
+        const {
+            name,
+            author_id,
+            image_uri,
+            description,
+            page_number,
+            bookshelf,
+            language,
+            quantity,
+            public_id_image,
+            book_categories_array,
+        } = req.body.input.book_input;
 
         // Check input
         if (
@@ -48,8 +60,15 @@ const bookController = {
                 },
             });
         }
+        // Parse data json
+        let book_categories_array_parse = null;
+        if (book_categories_array) {
+            book_categories_array_parse = JSON.parse(book_categories_array);
+        }
+
+        const book_id = RANDOMS.createID();
         const data_insert = {
-            book_id: RANDOMS.createID(),
+            book_id,
             name,
             author_id,
             image_uri,
@@ -69,16 +88,33 @@ const bookController = {
             // create book database
             let err;
             let result;
+            let result_insert_book_categories;
             [err, result] = await HELPER.handleRequest(book_model.createBook(data_insert));
             if (result) {
+                if (book_categories_array_parse) {
+                    result_insert_book_categories = await book_categories_admin_service.handleSaveMultiBookCategories(
+                        book_id,
+                        book_categories_array_parse,
+                        null,
+                    );
+                }
                 // Del key Redis
                 MEMORY_CACHE.delKeyCache(CONSTANTS.KEY_REDIS.ALL_BOOK);
-
                 return res.status(CONSTANTS.HTTP.STATUS_2XX_OK).json({
                     status: CONSTANTS.HTTP.STATUS_2XX_OK,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: result[0].book_id,
+                        result: {
+                            insert_book: result[0].book_id,
+                            // eslint-disable-next-line no-nested-ternary
+
+                            insert_book_categories:
+                                result_insert_book_categories === undefined
+                                    ? null
+                                    : result_insert_book_categories
+                                    ? MESSAGES.GENERAL.SERVER_INSERT_FAIL
+                                    : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
+                        },
                     },
                 });
             }
@@ -101,6 +137,7 @@ const bookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
+     * @updated_at 17/04/2023
      * @description update book
      * @function updateBook
      * @return {Object:{Number,String}}
@@ -118,6 +155,7 @@ const bookController = {
             status,
             page_number,
             public_id_image,
+            book_categories_array,
         } = req.body.input.book_input;
 
         // Check input
@@ -144,6 +182,11 @@ const bookController = {
                     result: MESSAGES.GENERAL.INVALID_MUTILP_FIELD,
                 },
             });
+        }
+        // Parse data json
+        let book_categories_array_parse = null;
+        if (book_categories_array) {
+            book_categories_array_parse = JSON.parse(book_categories_array);
         }
         const book = await book_model.getBookById({
             book_id,
@@ -176,9 +219,20 @@ const bookController = {
             real_quantity: Number(book[0].quantity) + Number(quantity_update),
         };
         try {
+            // Check Student tow a borrow book
+            // Get data book_categories
+            const book_categories = await book_category_model.getAllBookCategories(
+                {
+                    book_id,
+                    isdeleted: CONSTANTS.DELETED_DISABLE,
+                },
+                '*',
+            );
             // update book database
             let err;
             let result;
+            let result_insert_book_categories;
+
             [err, result] = await HELPER.handleRequest(
                 book_model.updateBook(
                     data_update,
@@ -187,6 +241,14 @@ const bookController = {
                 ),
             );
             if (result) {
+                if (book_categories_array_parse) {
+                    // insert book categories array
+                    result_insert_book_categories = await book_categories_admin_service.handleSaveMultiBookCategories(
+                        book_id,
+                        book_categories_array_parse,
+                        book_categories,
+                    );
+                }
                 // Create key Cache
                 const key_cache_book_detail = HELPER.getURIFromTemplate(CONSTANTS.KEY_REDIS.DETAIL_BOOK, {
                     book_id,
@@ -199,7 +261,17 @@ const bookController = {
                     status: CONSTANTS.HTTP.STATUS_2XX_OK,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_2XX_OK),
                     element: {
-                        result: result[0].book_id,
+                        result: {
+                            insert_book: result[0].book_id,
+                            // eslint-disable-next-line no-nested-ternary
+
+                            insert_book_categories:
+                                result_insert_book_categories === undefined
+                                    ? null
+                                    : result_insert_book_categories
+                                    ? MESSAGES.GENERAL.SERVER_UPDATE_FAIL
+                                    : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
+                        },
                     },
                 });
             }
@@ -242,12 +314,17 @@ const bookController = {
         try {
             // Check account  already delete
             const result_book_detail = await book_model.getBookById(
-                { book_id, isdeleted: CONSTANTS.DELETED_ENABLE },
-                { book_id: 'book_id' },
+                {
+                    book_id,
+                    isdeleted: CONSTANTS.DELETED_ENABLE,
+                },
+                {
+                    book_id: 'book_id',
+                },
             );
 
             // Check Book already delete
-            if (result_book_detail.length > 0) {
+            if (result_book_detail.length > CONSTANTS.ARRAY.EMPTY) {
                 return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                     status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
                     message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST),
@@ -256,6 +333,7 @@ const bookController = {
                     },
                 });
             }
+
             // Delete book, borrow, favorite database
             let err;
             let result;
