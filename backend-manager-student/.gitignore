@@ -9,3 +9,4 @@ file
 scrip/log_scrip_redis_date.txt
 scrip/.env
 test/jest/.env
+mongo
