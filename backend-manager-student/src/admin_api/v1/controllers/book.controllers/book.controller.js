@@ -42,15 +42,15 @@ const bookController = {
 
         // Check input
         if (
-            !name ||
-            !author_id ||
-            !image_uri ||
-            !description ||
-            !bookshelf ||
-            !language ||
-            !quantity ||
-            !public_id_image ||
-            !page_number
+            !name
+            || !author_id
+            || !image_uri
+            || !description
+            || !bookshelf
+            || !language
+            || !quantity
+            || !public_id_image
+            || !page_number
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
