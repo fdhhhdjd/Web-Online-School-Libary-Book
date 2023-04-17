@@ -32,15 +32,15 @@ const StudentController = {
 
         // Check input
         if (
-            !name ||
-            !mssv ||
-            !phone_number ||
-            !dob ||
-            !class_room ||
-            !email ||
-            !gender ||
-            !role ||
-            !HELPER.validateBigInt(admin_id)
+            !name
+            || !mssv
+            || !phone_number
+            || !dob
+            || !class_room
+            || !email
+            || !gender
+            || !role
+            || !HELPER.validateBigInt(admin_id)
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
