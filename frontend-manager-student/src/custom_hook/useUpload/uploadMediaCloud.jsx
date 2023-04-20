@@ -1,12 +1,12 @@
 //!LIBRARY
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 //!REDUX THUNK
 import { Destroy_Media_Initial, Upload_Media_Initial } from 'redux/media/upload_remove_media/media_thunk';
 
 //!SHARE
-import CONSTANTS from 'configs/constants';
-import { useState } from 'react';
+import CONSTANTS from '../../configs/constants';
 import NOTIFICATION from 'utils/notification';
 
 const useUploadCloud = () => {
