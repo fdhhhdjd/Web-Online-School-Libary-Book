@@ -99,6 +99,7 @@ module.exports = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 14/04/2023
+     * @updated_at 17/04/2023
      * @description Transaction Delete Book
      */
     transactionDeleteBook: async (data, student_query, return_data) =>
@@ -115,8 +116,14 @@ module.exports = {
                 // Query 3: updateFavorite
                 const updateFavorite = trx('favorite_book').update(data).where(student_query).returning(return_data);
 
+                // Query 4: updateBookCategories
+                const updateBookCategories = trx('book_categories')
+                    .update(data)
+                    .where(student_query)
+                    .returning(return_data);
+
                 // Run Sequential async function
-                Promise.all([updatedBook, updateBorrowBook, updateFavorite])
+                Promise.all([updatedBook, updateBorrowBook, updateFavorite, updateBookCategories])
                     .then((final_rs) => {
                         // Commit transaction
                         trx.commit();

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Destroy_Media_Initial, Upload_Media_Initial } from 'redux/media/upload_remove_media/media_thunk';
 
 //!SHARE
-import CONSTANTS from 'configs/constants';
+import CONSTANTS from '../../configs/constants';
 import { useState } from 'react';
 import NOTIFICATION from 'utils/notification';
 

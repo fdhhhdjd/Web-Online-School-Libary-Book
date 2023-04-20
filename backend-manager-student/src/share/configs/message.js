@@ -97,7 +97,10 @@ module.exports = {
         EXPIRED_SESSION_TOKEN: 'Login session expired',
 
         // ? SERVER
-        SERVER_OUT_OF_SERVICE: 'Out Of Service',
+        SERVER_OUT_OF_SERVICE: 'Out Of Service!',
+        SERVER_INSERT_FAIL: 'Insert Fail!',
+        SERVER_UPDATE_FAIL: 'Update Fail!',
+        SERVER_CURD_SUCCESS: 'Success!',
 
         // ? SUCCESS
         SUCCESS_CHANGE_PASSWORD: 'Change Password Success!',
