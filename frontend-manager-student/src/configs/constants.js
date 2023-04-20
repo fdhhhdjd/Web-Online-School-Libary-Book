@@ -133,7 +133,21 @@ const CONSTANTS = {
   REDUX_NAME: {
     _AUTH: 'AUTH STUDENT',
     _BOOK: 'BOOK STUDENT',
+    _COMMENT: 'COMMENT STUDENT',
     _MEDIA: 'MEDIA CLOUD',
+    _BORROW: 'BORROW STUDENT',
+    _RATING: 'RATING STUDENT',
+    _FAVORITE: 'FAVORITE STUDENT',
+  },
+
+  STATUS_BORROW: {
+    PENDING: 10, // Chờ xác nhận
+    BORROWING: 20, // Đang mượn
+    DONE: 30, // Đã trả
+    EXPIRED: 40, // Hết hạn,
+    CANCEL: 50, // Hủy
+    LOST_BOOK_PROCESSING: 60, // Mất sách chưa được xử lý.
+    LOST_BOOK_PROCESSED: 70, // Mất sách đã được xử lý.
   },
 };
 export default CONSTANTS;

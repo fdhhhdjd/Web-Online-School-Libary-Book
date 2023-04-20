@@ -9,19 +9,27 @@ import { useParams } from 'react-router-dom';
 
 //! REDUX THUNK
 import { Get_Detail_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import { reset_detail_book } from 'redux/student/book_slice/book_slice';
+import { Get_Comment_Initial } from 'redux/student/comment_slice/comment_thunk';
 
 const DetailBook = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
 
+  const loading = useSelector((state) => state.book.loading);
+
   useEffect(() => {
     dispatch(Get_Detail_Book_Student_Initial({ id }));
-  }, [dispatch, id]);
+
+    return () => {
+      dispatch(reset_detail_book());
+    };
+  }, []);
 
   return (
     <Helmet title="Harry Porter">
-      <TabDetailBook detailBook={detailBook} />
+      <TabDetailBook detailBook={detailBook} loading={loading} />
     </Helmet>
   );
 };

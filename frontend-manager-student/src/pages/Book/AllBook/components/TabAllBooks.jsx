@@ -1,15 +1,22 @@
 /* eslint-disable prettier/prettier */
 //! LIBRARY
-import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 //! COMPONENT
-import Section, { SectionBody } from 'components/Section';
 import Filter from 'components/Filter';
-import { Skeleton } from '@mui/material';
+import Section, { SectionBody } from 'components/Section';
+import { useDispatch } from 'react-redux';
+import HELPERS from 'utils/helper';
+import AllBookSkeleton from './AllBookSkeleton';
 
-const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime }) => {
+const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime, loading }) => {
+  const dispatch = useDispatch();
+
+  const handleFavorite = (book_id) => {
+    HELPERS.handleFavoriteBook(book_id, dispatch);
+  }
+
   return (
     <Section>
       <SectionBody>
@@ -34,8 +41,8 @@ const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime }) => {
               </div>
 
               <div className="book__list">
-                {bookList
-                  ? bookList.map((book, idx) => (
+                {!loading
+                  ? bookList?.map((book, idx) => (
                     <div className="book__list__item" key={idx}>
                       <div className="book__list__item__name">
                         <Link to={`/book/${book.book_id}`}>{book.name}</Link>
@@ -65,7 +72,7 @@ const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime }) => {
                                 Thể loại: <Link to="/category">Trinh thám</Link>
                               </span>
 
-                              <span>
+                              <span style={{ cursor: "pointer" }} onClick={() => handleFavorite(book.book_id)}>
                                 <i className="bx bxs-heart" style={{ color: '#ec1d25 ' }}></i>
                                 <span style={{ fontWeight: 'normal' }}>Lưu vào danh sách yêu thích</span>
                               </span>
@@ -75,45 +82,7 @@ const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime }) => {
                       </Row>
                     </div>
                   ))
-                  : Array.from(new Array(4)).map((item, idx) => (
-                    <div className="book__list__item" key={idx}>
-                      <div className="book__list__item__name">
-                        <Skeleton variant="text" sx={{ fontSize: '2.5rem' }} width="200px" />
-                      </div>
-                      <Row>
-                        <Col sm={1}>
-                          <div className="book__list__item__img">
-                            <Skeleton variant="rectangular" width={130} height={150} />
-                          </div>
-                        </Col>
-                        <Col sm={11}>
-                          <div className="book__data">
-                            <div className="book__data__author">
-                              <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="200px" />
-                            </div>
-                            <div className="book__data__publisher">
-                              <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="180px" />
-                            </div>
-                            <div className="book__data__album">
-                              <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="160px" />
-                            </div>
-                            <div className="book__data__id">
-                              <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="180px" />
-                            </div>
-                            <div className="book__data__category">
-                              <span>
-                                <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="230px" />
-                              </span>
-
-                              <span>
-                                <Skeleton variant="text" sx={{ fontSize: '1.6rem' }} width="200px" />{' '}
-                              </span>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-                  ))}
+                  : <AllBookSkeleton amount={4} />}
               </div>
             </div>
           </Col>

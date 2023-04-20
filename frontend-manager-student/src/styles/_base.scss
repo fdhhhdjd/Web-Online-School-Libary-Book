@@ -130,3 +130,61 @@ img {
   border-color: #ec1d25;
   border-width: 1px;
 }
+
+.modal-box {
+  @include hologram-border(2);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background: #fff;
+  // boxShadow: 24;
+  padding: 3.5rem 8rem;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 3rem;
+  text-align: center;
+}
+
+.modal-desc {
+  text-align: center;
+  font-size: 1.8rem;
+  font-style: italic;
+
+  .book-name {
+    font-weight: 700;
+  }
+}
+
+.rating {
+  margin: 0 auto;
+  font-size: 5rem !important;
+
+  svg {
+    margin-top: 4.5px;
+  }
+}
+
+.book__view__btn {
+  text-align: center;
+
+  .rate-btn {
+    text-align: center;
+    font-size: 1.5rem;
+    background: #0d296b;
+    color: #fff;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    transition: all 0.4s ease-in-out;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

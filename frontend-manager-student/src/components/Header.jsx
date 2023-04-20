@@ -97,11 +97,11 @@ const Header = (props) => {
               <div className="header__menu__item header__menu__right__item">
                 <i className="bx bx-search"></i>
               </div>
-              {/* <div className="header__menu__item header__menu__right__item">
-                <Link to="/cart">
-                  <i className="bx bx-shopping-bag" style={{ fontSize: 20 }}></i>
+              <div className="header__menu__item header__menu__right__item">
+                <Link to="/user/favorite">
+                  <i className="bx bx-heart"></i>
                 </Link>
-              </div> */}
+              </div>
               <div className="header__menu__item header__menu__right__item">
                 {profile_student ? (
                   <>

@@ -1,19 +1,19 @@
 //!LIBRARY
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 //!REDUX THUNK
 import { Destroy_Media_Initial, Upload_Media_Initial } from 'redux/media/upload_remove_media/media_thunk';
 
 //!SHARE
 import CONSTANTS from 'configs/constants';
-import { useState } from 'react';
 import NOTIFICATION from 'utils/notification';
 
 const useUploadCloud = () => {
   //Store Media
   const dispatch = useDispatch();
   const [uploadCount, setUploadCount] = useState(0);
-  const [resultImage, setResultImage] = useState();
+  const [resultExcel, setResultExcel] = useState();
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -22,27 +22,27 @@ const useUploadCloud = () => {
       const file = e.target.files[0];
       if (!file) return NOTIFICATION.notifyError('File not Exists');
 
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return NOTIFICATION.notifyError('Size too large !');
+      const fileType = file.name.split('.').pop();
 
-      //Check type file
-      if (file.type !== CONSTANTS.MEDIA_TYPE.JPEG && file.type !== CONSTANTS.MEDIA_TYPE.PNG) {
+      console.log(fileType === CONSTANTS.EXCEL_TYPE);
+
+      // Check type file
+      if (fileType !== CONSTANTS.EXCEL_TYPE) {
         // 1mb
         return NOTIFICATION.notifyError('File format is incorrect.');
       }
       // Create Form data save image computer
       let formData = new FormData();
       formData.append(CONSTANTS.MEDIA_TYPE.FILE, file);
-      console.log(resultImage);
-      if (uploadCount > 0 && resultImage?.public_id) {
-        console.log(resultImage?.public_id, '----', resultImage.url);
-        dispatch(Destroy_Media_Initial({ public_id: resultImage?.public_id }));
+      console.log(resultExcel);
+      if (uploadCount > 0 && resultExcel?.public_id) {
+        console.log(resultExcel?.public_id, '----', resultExcel.url);
+        dispatch(Destroy_Media_Initial({ public_id: resultExcel?.public_id }));
       }
 
       //Action upload
       dispatch(Upload_Media_Initial({ formData })).then((result) => {
-        setResultImage(result?.payload?.element?.result);
+        setResultExcel(result?.payload?.element?.result);
         setUploadCount(uploadCount + 1);
       });
     } catch (error) {

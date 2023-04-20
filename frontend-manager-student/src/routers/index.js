@@ -13,6 +13,7 @@ import LINK_ROUTER from '../configs/link_router';
 
 //! COMPONENT
 import Layout from 'components/Layout';
+import TabFavoriteBook from 'pages/Book/FavoriteBook/components/TabFavoriteBook';
 
 const RouteDataMain = [
   {
@@ -36,6 +37,14 @@ const RouteDataMain = [
     main: (
       <>
         <Layout content={<DetailBook />} />
+      </>
+    ),
+  },
+  {
+    path: LINK_ROUTER.LINK._FAVORITE_BOOK,
+    main: (
+      <>
+        <Layout content={<TabFavoriteBook />} />
       </>
     ),
   },

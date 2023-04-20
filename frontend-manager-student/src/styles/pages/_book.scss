@@ -54,6 +54,20 @@
         align-items: flex-start;
       }
 
+      &-btn {
+        background: $txt-main-color;
+        color: #fff;
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 1.4rem;
+        transition: all 0.4s ease-in-out;
+
+        &:hover {
+          opacity: 0.9;
+          cursor: pointer;
+        }
+      }
+
       span {
         button {
           outline: none;
@@ -123,5 +137,17 @@
       font-size: 18px;
       outline: none;
     }
+  }
+}
+
+.book__favorite {
+  padding: 0 20rem;
+
+  @include tablet {
+    padding: 0;
+  }
+
+  @include mobile {
+    padding: 0;
   }
 }

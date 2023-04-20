@@ -1,0 +1,18 @@
+.book__data__category {
+  span:nth-child(2) {
+    display: flex;
+  }
+
+  .minus {
+    margin-top: 0.8rem;
+  }
+
+  .borrow-btn {
+    background: $txt-main-color;
+    color: #fff !important;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

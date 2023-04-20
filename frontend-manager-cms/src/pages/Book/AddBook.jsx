@@ -7,7 +7,7 @@ import { allLanguageOption } from 'utils/dummy';
 //! CUSTOMER HOOK
 import Loading from 'components/Loading';
 import SelectBox from 'components/SelectBox';
-import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
+import useUploadCloud from 'custom_hook/useUpload/uploadImageCloud';
 import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 import { Create_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
 

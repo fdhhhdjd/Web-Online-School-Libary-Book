@@ -14,45 +14,6 @@
     // }
   }
 
-  &__rating {
-    @include flex(center, flex-start);
-    margin-top: 1rem;
-
-    &__title {
-      font-weight: 700;
-      font-size: 2rem;
-      margin-right: 1.5rem;
-    }
-
-    .rating {
-      font-size: 3.5rem;
-
-      span {
-        color: $txt-main-color;
-      }
-
-      svg {
-        margin-top: 2.5px;
-      }
-    }
-
-    .rate-btn {
-      background: #0d296b;
-      color: #fff;
-      outline: none;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      margin-left: 1.5rem;
-      margin-top: -2rem;
-      transition: all 0.4s ease-in-out;
-
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-  }
-
   &__btns {
     margin-top: 2rem !important;
 
@@ -132,7 +93,6 @@
       text-transform: capitalize;
     }
 
-    &__rate,
     &__author,
     &__id,
     &__publisher,
@@ -142,6 +102,14 @@
         font-size: 2rem;
         color: $txt-main-color;
         margin-left: 0.5rem;
+      }
+    }
+
+    &__rate {
+      @include flex(center, flex-start);
+
+      .MuiRating-readOnly {
+        font-size: 2rem;
       }
     }
   }
@@ -170,6 +138,7 @@
 
   &__comment {
     margin-top: 5rem;
+
     &__title {
       @include hologram_text;
       font-weight: 700;
@@ -180,6 +149,102 @@
 
       span {
         @include hologram_text;
+      }
+    }
+
+    &__content {
+      .comment {
+        margin-top: 2rem;
+        &__input {
+          label {
+            margin-left: 2rem;
+            img {
+              border-radius: 50%;
+              width: 75%;
+            }
+          }
+
+          &__btn {
+            &:hover,
+            &:focus {
+              box-shadow: inset -8rem 0 0 0 #0d296b, inset 8rem 0 0 0 #0d296b;
+              color: #fff;
+            }
+
+            display: block;
+            margin-left: auto;
+            color: $txt-main-color;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            border: 2px solid #0d296b;
+            font-size: 1.3rem;
+            background: none;
+            line-height: 1;
+            padding: 12px 30px;
+            transition: 0.5s;
+          }
+
+          textarea {
+            padding: 15px;
+            width: 100%;
+            border: 1px solid $txt-main-color;
+            outline-color: $txt-main-color;
+            border-radius: 10px;
+            margin-bottom: 10px;
+          }
+        }
+
+        &__card {
+          margin-top: 1rem;
+
+          &__see-more {
+            padding: 10px;
+            background: $txt-main-color;
+            margin: 0 auto;
+            margin-top: 2.5rem;
+            width: 200px;
+            color: #fff;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+              opacity: 0.8;
+              cursor: pointer;
+            }
+          }
+
+          &__item {
+            margin-top: 3rem;
+
+            &__content {
+              background: #f4f4f4;
+              padding: 15px 0 15px 20px;
+              border-radius: 10px;
+            }
+
+            &__response {
+              margin-left: 10px;
+              margin-top: 10px;
+              color: $txt-main-color;
+              cursor: pointer;
+            }
+          }
+
+          &__name {
+            margin-right: 20px;
+            font-weight: 700;
+          }
+
+          &__time {
+            font-style: italic;
+            font-size: 1.4rem;
+          }
+
+          &__body {
+            margin-top: 5px;
+          }
+        }
       }
     }
   }

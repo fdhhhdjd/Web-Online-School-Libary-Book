@@ -14,8 +14,9 @@ const Search = ({ filterOption, setData, initData, dataFilter, data }) => {
   };
 
   const handleSearch = () => {
-    const result =
-      dataFilter || data.filter((item) => HELPERS.handleSearchText(item[option.value], searchRef.current.value));
+    const result = (dataFilter || data).filter((item) =>
+      HELPERS.handleSearchText(item[option.value], searchRef.current.value),
+    );
     setData(result);
   };
 

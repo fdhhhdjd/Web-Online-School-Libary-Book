@@ -18,6 +18,10 @@ const BorrowBook = createSlice({
     reset_detail_borrow: (state) => {
       state.detail_borrow = null;
     },
+
+    reset_all_borrow: (state) => {
+      state.all_borrow_list = null;
+    },
   },
   extraReducers: {
     //* Get all borrow CMS
@@ -48,6 +52,6 @@ const BorrowBook = createSlice({
   },
 });
 const BorrowBookSlice = BorrowBook.reducer;
-export const { reset_detail_borrow } = BorrowBook.actions;
+export const { reset_detail_borrow, reset_all_borrow } = BorrowBook.actions;
 
 export default BorrowBookSlice;
