@@ -114,7 +114,7 @@ const CONSTANTS = {
    * @descriptionKey TIME OUT
    * @return {number}
    */
-  TIME_OUT_AXIOS: 3000,
+  TIME_OUT_AXIOS: 10000,
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 22/03/2023
