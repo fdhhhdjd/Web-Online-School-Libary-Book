@@ -29,6 +29,9 @@ module.exports = {
         NOT_EXIT_ACCOUNT: 'Account admin not exit!',
     },
     GENERAL: {
+        // ? EMPTY
+        STRING_EMPTY: '',
+
         // ? INVALID INPUT HEADER,..
         INVALID_INPUT: 'Invalid input!',
         INVALID_HEADER: 'Invalid Header!',
@@ -42,6 +45,7 @@ module.exports = {
         // ? EXITS
         EXITS_EMAIL_PHONE: 'Email or Phone or Email or Mssv exits !',
         EXITS_NOT_BOOK: 'Book Not Found!',
+        EXITS_NOT_COMMENT: 'Comment Not Found!',
         EXITS_NOT_BORROW_BOOK: 'Borrow Book Not Found!',
         EXITS_DELETE_BOOK: 'Book already delete!',
         EXITS_DELETE_AUTHOR: 'Author already delete!',
@@ -101,6 +105,7 @@ module.exports = {
         SERVER_INSERT_FAIL: 'Insert Fail!',
         SERVER_UPDATE_FAIL: 'Update Fail!',
         SERVER_CURD_SUCCESS: 'Success!',
+        INTERNAL_SERVER: 'Internal Server Error',
 
         // ? SUCCESS
         SUCCESS_CHANGE_PASSWORD: 'Change Password Success!',

@@ -112,8 +112,8 @@ const bookController = {
                                 result_insert_book_categories === undefined
                                     ? null
                                     : result_insert_book_categories
-                                    ? MESSAGES.GENERAL.SERVER_INSERT_FAIL
-                                    : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
+                                        ? MESSAGES.GENERAL.SERVER_INSERT_FAIL
+                                        : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
                         },
                     },
                 });
@@ -269,8 +269,8 @@ const bookController = {
                                 result_insert_book_categories === undefined
                                     ? null
                                     : result_insert_book_categories
-                                    ? MESSAGES.GENERAL.SERVER_UPDATE_FAIL
-                                    : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
+                                        ? MESSAGES.GENERAL.SERVER_UPDATE_FAIL
+                                        : MESSAGES.GENERAL.SERVER_CURD_SUCCESS,
                         },
                     },
                 });

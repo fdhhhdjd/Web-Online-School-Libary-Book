@@ -19,5 +19,8 @@ module.exports = {
         NO_EXPIRED_TOKEN: 'Expired Token !',
         NO_SERVER_OUT_OF_SERVICE: 'Out Of Service!',
         NO_DEVICE_MISSING: 'Missing Device!',
+        NOT_FOUND: 'Not Found!',
+        INTERNAL_SERVER: 'Internal Server Error',
+        STRING_EMPTY: '',
     },
 };

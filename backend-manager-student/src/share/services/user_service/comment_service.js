@@ -46,6 +46,9 @@ const list_comment = async (match, search_data) => {
     return list_comment;
 };
 
+const list_comment_slug = async (match, search_data) =>
+    await COMMENT.find(match, search_data).sort({ full_slug: 1 }).lean();
+
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 13/04/2023
@@ -54,8 +57,27 @@ const list_comment = async (match, search_data) => {
  */
 const get_paren_slug = async (data) => await COMMENT.findOne(data).lean();
 
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 23/04/2023
+ * @description Delete comment
+ * @function delete_comment
+ */
+const delete_comment = async (commentId) => await COMMENT.deleteOne(commentId);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 23/04/2023
+ * @description get paren slug
+ * @function get_comment_id
+ */
+const get_comment_id = async (data) => await COMMENT.findOne(data).lean();
+
 module.exports = {
     insert_comment,
     list_comment,
     get_paren_slug,
+    delete_comment,
+    get_comment_id,
+    list_comment_slug,
 };
