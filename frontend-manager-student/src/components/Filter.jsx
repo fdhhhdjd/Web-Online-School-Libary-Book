@@ -1,7 +1,8 @@
 //! LIBRARY
 import React from 'react';
 
-const Filter = () => {
+const Filter = ({ data }) => {
+  console.log(data, 'category');
   return (
     <div className="shop__sidebar">
       <div className="shop__sidebar__search">
@@ -16,41 +17,19 @@ const Filter = () => {
         <div className="accordion" id="accordionExample">
           <div className="card">
             <div className="card-heading">
-              <a data-toggle="collapse" data-target="#collapseOne">
-                Categories
+              <a href="ok" data-toggle="collapse" data-target="#collapseOne">
+                Thể loại
               </a>
             </div>
             <div id="collapseOne" className="collapse show" data-parent="#accordionExample">
               <div className="card-body">
                 <div className="shop__sidebar__categories">
                   <ul className="nice-scroll">
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo (20)</a>
-                    </li>
+                    {data?.map((item, idx) => (
+                      <li key={idx}>
+                        <a href="ok">{item.name}</a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -59,7 +38,7 @@ const Filter = () => {
           <div className="card">
             <div className="card-heading">
               <a data-toggle="collapse" data-target="#collapseTwo">
-                Branding
+                Ngành
               </a>
             </div>
             <div id="collapseTwo" className="collapse show" data-parent="#accordionExample">

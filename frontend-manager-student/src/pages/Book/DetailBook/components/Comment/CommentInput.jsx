@@ -1,18 +1,12 @@
 //! LIBRARY
 import { TextareaAutosize } from '@mui/material';
-import { store_library_school_contextUser } from 'contexts/global_context';
-import { useContext } from 'react';
 import { useRef } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Create_Comment_Initial } from 'redux/student/comment_slice/comment_thunk';
+import { Create_Comment_Initial, Get_Comment_Initial } from 'redux/student/comment_slice/comment_thunk';
 
-const CommentInput = ({ slug }) => {
+const CommentInput = ({ slug, loading, setShowCommentReply, setCommentReplyPreview }) => {
   const textRef = useRef();
-
-  // context
-  const dataContext = useContext(store_library_school_contextUser);
-  const [showCommentReply, setShowCommentReply] = dataContext.commentReply;
 
   // redux
   const dispatch = useDispatch();
@@ -20,24 +14,31 @@ const CommentInput = ({ slug }) => {
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
 
   const handlePostComment = () => {
+    setCommentReplyPreview &&
+      setCommentReplyPreview({
+        full_name: profile?.name,
+        avatar_uri_user: profile?.avatar_uri,
+        book_id: detailBook?.book_id,
+        parent_slug: slug,
+        content: textRef.current.value,
+      });
+
     dispatch(
       Create_Comment_Initial({
         book_id: detailBook?.book_id,
         parent_slug: slug,
         content: textRef.current.value,
       }),
-    );
-
-    setShowCommentReply(false);
-
-    console.log({
-      book_id: detailBook?.book_id,
-      parent_slug: slug,
-      content: textRef.current.value,
+    ).then(() => {
+      dispatch(Get_Comment_Initial({ book_id: detailBook?.book_id }));
     });
+
+    textRef.current.value = '';
+    setShowCommentReply && setShowCommentReply(false);
   };
+
   return (
-    <Row className="comment">
+    <Row className="comment ">
       <Col md={2}>
         <label htmlFor="comment">
           <img src={profile?.avatar_uri} alt="" />
@@ -53,7 +54,7 @@ const CommentInput = ({ slug }) => {
           ref={textRef}
         />
         <button className="comment__input__btn submit-btn" onClick={handlePostComment}>
-          Đăng
+          {loading ? 'Đang gửi' : 'Đăng'}
         </button>
       </Col>
     </Row>

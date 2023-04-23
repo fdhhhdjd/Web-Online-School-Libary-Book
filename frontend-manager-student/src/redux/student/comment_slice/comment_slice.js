@@ -39,9 +39,7 @@ const Comment = createSlice({
     [Create_Comment_Initial.pending]: (state, action) => {
       state.loading = true;
     },
-    [Create_Comment_Initial.fulfilled]: (state, action) => {
-      state.loading = false;
-    },
+    [Create_Comment_Initial.fulfilled]: (state, action) => {},
     [Create_Comment_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;

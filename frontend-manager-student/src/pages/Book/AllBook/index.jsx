@@ -10,6 +10,7 @@ import Helmet from 'components/Helmet';
 //! REDUX THUNK
 import { Get_All_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
 import HELPERS from 'utils/helper';
+import { Get_All_Category_Initial } from 'redux/student/category_slice/category_thunk';
 
 const AllBook = () => {
   // pagination state
@@ -22,6 +23,7 @@ const AllBook = () => {
   // redux
   const dispatch = useDispatch();
   const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+  const categoryList = useSelector((state) => state.category.all_categories?.element?.result);
   const [bookRender, setBookRender] = useState(null);
   const loading = useSelector((state) => state.book.loading);
 
@@ -35,6 +37,7 @@ const AllBook = () => {
   useEffect(() => {
     start.current = performance.now();
     dispatch(Get_All_Book_Student_Initial());
+    dispatch(Get_All_Category_Initial());
   }, [dispatch]);
 
   useEffect(() => {
@@ -48,6 +51,7 @@ const AllBook = () => {
       <>
         {(end.current = performance.now())}
         <TabAllBooks
+          category={categoryList}
           totalBook={bookList?.length}
           executeTime={HELPERS.getExecuteTimeSecond(start.current, end.current)}
           bookList={bookRender}

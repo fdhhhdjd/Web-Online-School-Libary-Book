@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import HELPERS from 'utils/helper';
 import AllBookSkeleton from './AllBookSkeleton';
 
-const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime, loading }) => {
+const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime, loading, category }) => {
   const dispatch = useDispatch();
 
   const handleFavorite = (book_id) => {
@@ -22,7 +22,7 @@ const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime, loading })
       <SectionBody>
         <Row>
           <Col sm={3}>
-            <Filter />
+            <Filter data={category} />
           </Col>
           <Col sm={9}>
             <div className="book__container main">
@@ -56,7 +56,7 @@ const TabAllBooks = ({ bookList, currentPage, totalBook, executeTime, loading })
                         <Col sm={11}>
                           <div className="book__data">
                             <div className="book__data__author">
-                              Tác giả: <Link to="/author">Gia Bảo</Link>
+                              Tác giả: <Link to="/author">{book?.name_author}</Link>
                             </div>
                             <div className="book__data__publisher">
                               Nhà xuất bản: <Link to="/publisher">Gia Bảo</Link>

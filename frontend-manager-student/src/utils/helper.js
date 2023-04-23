@@ -301,6 +301,14 @@ const HELPERS = {
   getDiffTimeComment: (commentDate) => {
     console.log(commentDate);
   },
+
+  sliceComment: (commentList, amount) => {
+    return commentList.slice(0, amount);
+  },
+
+  countMainComment: (commentList) => {
+    return commentList?.filter((item) => item.parent_slug === '').length;
+  },
 };
 
 export default HELPERS;

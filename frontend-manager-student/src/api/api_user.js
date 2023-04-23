@@ -117,5 +117,12 @@ const API_STUDENT = {
    * @descriptionKey API CREATE COMMENT
    */
   CREATE_COMMENT: '/student/v1/user/private/comment/create',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API GET ALL CATEGORY
+   */
+  GET_ALL_CATEGORY: '/student/v1/user/categories/all',
 };
 export default API_STUDENT;

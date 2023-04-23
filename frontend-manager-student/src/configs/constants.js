@@ -133,6 +133,7 @@ const CONSTANTS = {
   REDUX_NAME: {
     _AUTH: 'AUTH STUDENT',
     _BOOK: 'BOOK STUDENT',
+    _CATEGORY: 'CATEGORY STUDENT',
     _COMMENT: 'COMMENT STUDENT',
     _MEDIA: 'MEDIA CLOUD',
     _BORROW: 'BORROW STUDENT',
@@ -148,6 +149,11 @@ const CONSTANTS = {
     CANCEL: 50, // Hủy
     LOST_BOOK_PROCESSING: 60, // Mất sách chưa được xử lý.
     LOST_BOOK_PROCESSED: 70, // Mất sách đã được xử lý.
+  },
+
+  COMMENT: {
+    MAIN_COMMENT_RENDER_AMOUNT: 5,
+    SUB_COMMENT_RENDER_AMOUNT: 3,
   },
 };
 export default CONSTANTS;

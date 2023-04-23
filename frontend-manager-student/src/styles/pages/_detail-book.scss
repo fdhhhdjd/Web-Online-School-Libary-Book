@@ -155,6 +155,7 @@
     &__content {
       .comment {
         margin-top: 2rem;
+
         &__input {
           label {
             margin-left: 2rem;
@@ -198,6 +199,10 @@
         &__card {
           margin-top: 1rem;
 
+          &__preview {
+            opacity: 0.5;
+          }
+
           &__see-more {
             padding: 10px;
             background: $txt-main-color;
@@ -216,6 +221,16 @@
 
           &__item {
             margin-top: 3rem;
+
+            &__see-more {
+              text-align: center;
+              margin-top: 1rem;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
 
             &__content {
               background: #f4f4f4;
