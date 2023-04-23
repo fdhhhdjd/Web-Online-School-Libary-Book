@@ -129,6 +129,7 @@ const CONSTANTS = {
     PNG: 'image/png',
     FILE: 'file',
   },
+  EXCEL_TYPE: 'xlsx',
 
   defaultImageAuthor:
     'https://res.cloudinary.com/dfupi3m0b/image/upload/v1679983323/library_school_image/images/1467365270468165634/1668798157976240128/1679983321408-user.png',

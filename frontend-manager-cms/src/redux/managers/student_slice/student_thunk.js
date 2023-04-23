@@ -232,3 +232,44 @@ export const Edit_Account_Cms_Initial = createAsyncThunk(
     }
   },
 );
+
+export const Create_Account_Excel_Cms_Initial = createAsyncThunk(
+  'admin/cms/account/create/excel',
+  async ({ url_document }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await REQUEST.post(
+        `${API_ADMIN.CREATE_ACCOUNT_EXCEL}`,
+        {
+          input: {
+            admin_add_student_input: {
+              url_document,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response?.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        NOTIFICATION.swalSuccess('Thêm tài khoản thành công', '');
+        return successData;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);

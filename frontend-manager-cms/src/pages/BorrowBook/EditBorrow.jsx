@@ -28,8 +28,8 @@ const EditBorrow = () => {
     e.preventDefault();
 
     const data = {
+      borrowed_book_id: detailBook?.borrowed_book_id,
       book_id: detailBook?.book_id,
-      user_id: detailBook?.user_id,
       status: status || detailBook?.status,
       start_date: moment().format(),
       due_date: moment().add('14', 'days').format(),

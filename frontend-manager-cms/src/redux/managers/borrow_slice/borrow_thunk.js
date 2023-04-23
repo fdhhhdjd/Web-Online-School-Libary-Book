@@ -200,7 +200,7 @@ export const Create_Book_Cms_Initial = createAsyncThunk(
  */
 export const Update_Borrow_Cms_Initial = createAsyncThunk(
   'admin/cms/borrow/update',
-  async ({ status, book_id, user_id, start_date, due_date }, { rejectWithValue }) => {
+  async ({ status, book_id, start_date, due_date, borrowed_book_id }, { rejectWithValue }) => {
     try {
       //Call Api axios
       const response = await REQUEST.post(
@@ -208,8 +208,8 @@ export const Update_Borrow_Cms_Initial = createAsyncThunk(
         {
           input: {
             borrow_book_input: {
+              borrowed_book_id,
               book_id,
-              user_id,
               start_date,
               due_date,
               status,

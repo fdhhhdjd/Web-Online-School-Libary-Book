@@ -1,11 +1,20 @@
+//! LIBRARY
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+//! DUMMY
 import { sideBarMenu } from 'utils/dummy';
 import { ControlIcon, logo } from '../imports/home_import/index';
+import { useSelector } from 'react-redux';
 
 const Sidebar = (props) => {
   const pathName = useLocation().pathname;
   const [open, setOpen] = useState(true);
+
+  //redux
+  const profile = useSelector((state) => state.admin_user.admin_profile?.data);
+
+  console.log(profile, 'profile');
 
   return (
     <div className="flex">
@@ -18,8 +27,14 @@ const Sidebar = (props) => {
           alt=""
         />
         <div className="flex gap-x-4 items-center">
-          <img src={logo} className={`cursor-pointer duration-500 ${open && 'rotate-[360deg]'}`} alt="" />
-          <h1 className={`text-white origin-left font-medium text-xl duration-200 ${!open && 'scale-0'}`}>Designer</h1>
+          <img
+            src={profile?.avatar_uri}
+            className={`cursor-pointer w-10 rounded-full duration-500 ${open && 'rotate-[360deg]'}`}
+            alt=""
+          />
+          <h1 className={`text-white origin-left font-medium text-xl duration-200 ${!open && 'scale-0'}`}>
+            {profile?.name}
+          </h1>
         </div>
         <ul className="pt-6">
           {sideBarMenu.map((Menu, index) => (

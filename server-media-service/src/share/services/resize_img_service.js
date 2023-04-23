@@ -19,11 +19,9 @@ module.exports = {
         const path_image_convert = STORAGE.getURIFromTemplate(CONSTANTS.PATH_RESIZE, {
             path_image,
         });
-        await sharp(path_image)
-            .resize(1024, 764)
-            .toFile(path_image_convert);
+        await sharp(path_image).resize(1024, 764).toFile(path_image_convert);
         // Update the temporary file path to the resized image
         return path_image_convert;
     },
-    handleValideResizeImage: async (path_image) => await sharp(path_image).metadata().size,
+    handleValidResizeImage: async (path_image) => await sharp(path_image).metadata().size,
 };

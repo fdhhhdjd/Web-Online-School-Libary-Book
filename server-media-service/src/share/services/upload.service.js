@@ -19,9 +19,13 @@ module.exports = {
                 { resource_type: CONSTANTS.OPTION_CLOUD, folder: CONSTANTS.OPTION_FOLDER_DOCUMENT, public_id: `${name_image}`, format: CONSTANTS.OPTION_CLOUD_DOCUMENT_FORMAT }
                 : { resource_type: CONSTANTS.OPTION_CLOUD, folder: CONSTANTS.OPTION_FOLDER_IMAGE, public_id: `${name_image}` },
             async (err, result) => {
-                if (err) throw (data = err);
+                if (err) {
+                     data = err;
+                } else {
+                    data = result
+                }
                 handleRemoveTmp(path_image);
-                return (data = result);
+                return data
             },
         );
         return data;

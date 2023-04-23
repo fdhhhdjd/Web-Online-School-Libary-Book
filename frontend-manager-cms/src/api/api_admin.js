@@ -2,6 +2,7 @@ const API_ADMIN = {
   //! auth api
   LOGIN_ADMIN_CMS: '/manager/v1/admin/login',
   RENEW_TOKEN_CMS: '/manager/v1/admin/renew-token',
+  GET_PROFILE_CMS: '/manager/v1/admin/private/profile',
 
   //! book api
   GET_ALL_BOOK_CMS: '/manager/v1/admin/private/book/all',
@@ -29,6 +30,7 @@ const API_ADMIN = {
   GET_DETAIL_ACCOUNT_CMS: '/manager/v1/admin/private/student/detail',
   EDIT_ACCOUNT_CMS: '/manager/v1/admin/private/student/update',
   CREATE_ACCOUNT_CMS: '/manager/v1/admin/private/student/create',
+  CREATE_ACCOUNT_EXCEL: '/manager/v1/admin/private/add/student',
   DELETE_ACCOUNT_CMS: '/manager/v1/admin/private/student/delete',
 };
 export default API_ADMIN;

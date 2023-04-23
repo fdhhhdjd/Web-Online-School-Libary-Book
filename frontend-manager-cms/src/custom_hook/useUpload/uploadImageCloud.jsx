@@ -22,10 +22,6 @@ const useUploadCloud = () => {
       const file = e.target.files[0];
       if (!file) return NOTIFICATION.notifyError('File not Exists');
 
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return NOTIFICATION.notifyError('Size too large !');
-
       //Check type file
       if (file.type !== CONSTANTS.MEDIA_TYPE.JPEG && file.type !== CONSTANTS.MEDIA_TYPE.PNG) {
         // 1mb

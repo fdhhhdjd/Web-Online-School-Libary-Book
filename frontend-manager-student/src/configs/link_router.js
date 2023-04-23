@@ -8,6 +8,7 @@ const LINK_ROUTER = {
     _RESET_PASSWORD: '/password/reset/:id',
     _PROFILE: '/user/profile',
     _BORROW_BOOK: '/user/borrow',
+    _FAVORITE_BOOK: '/user/favorite',
   },
 };
 export default LINK_ROUTER;

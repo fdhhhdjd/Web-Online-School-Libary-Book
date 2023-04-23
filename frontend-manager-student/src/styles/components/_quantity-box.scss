@@ -1,0 +1,42 @@
+.cart {
+  &__item {
+    &__info {
+      &__quantity {
+        .product__info__item__quantity {
+          margin-top: unset;
+        }
+      }
+    }
+  }
+}
+
+.product {
+  &__info {
+    &__item {
+      &__quantity {
+        @include flex(flex-start, flex-start);
+        margin-top: 1rem;
+
+        &__btn {
+          @include flex(center, center);
+
+          width: 30px;
+          height: 30px;
+          border: 2px solid $txt-second-color;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+
+        &__input {
+          @include flex(center, center);
+
+          height: 30px;
+          width: 90px;
+          font-size: 1.5rem;
+          border-top: 2px solid $txt-second-color;
+          border-bottom: 2px solid $txt-second-color;
+        }
+      }
+    }
+  }
+}

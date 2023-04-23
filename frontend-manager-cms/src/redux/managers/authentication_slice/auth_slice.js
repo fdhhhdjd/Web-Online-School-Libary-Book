@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //! CALL API REDUX THUNK
-import { Login_Cms_Initial, Renew_Token_Cms_Initial } from './auth_thunk';
+import { Login_Cms_Initial, Profile_Admin_Initial, Renew_Token_Cms_Initial } from './auth_thunk';
 
 const initialState = {
   loading: false,
@@ -17,6 +17,7 @@ const Authentication = createSlice({
   reducers: {
     reset_auth: (state) => {
       state.admin_auth = [];
+      state.admin_profile = null;
     },
   },
   extraReducers: {
@@ -29,6 +30,19 @@ const Authentication = createSlice({
       state.admin_auth = action.payload;
     },
     [Login_Cms_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Get Profile CMS
+    [Profile_Admin_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Profile_Admin_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.admin_profile = action.payload;
+    },
+    [Profile_Admin_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

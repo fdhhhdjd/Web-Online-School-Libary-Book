@@ -2,10 +2,13 @@
 import jwt_decode from 'jwt-decode';
 
 //! SHARE
-import { getDeviceId, getToken } from './auth';
 import CONSTANTS from 'configs/constants';
-import REGEX from './regex';
 import moment from 'moment';
+import { Borrow_Book_Student_Initial } from 'redux/student/borrow_book_slice/borrow_thunk';
+import Swal from 'sweetalert2';
+import { getDeviceId, getToken } from './auth';
+import REGEX from './regex';
+import { Add_Favorite_Initial } from 'redux/student/favorite_slice/favorite_thunk';
 
 const HELPERS = {
   /**
@@ -151,6 +154,13 @@ const HELPERS = {
     return moment(time).format('DD-MM-YYYY');
   },
 
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 06/04/2023
+   * @description Get execute time
+   * @param {start, end}
+   */
+
   getStatusBorrow: (status, dueDate) => {
     const today = moment().format();
     const dueDateFormat = moment(dueDate).diff(today, 'days');
@@ -192,6 +202,112 @@ const HELPERS = {
       default:
         return 'Chưa xác định';
     }
+  },
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 10/04/2023
+   * @description Handle borrow book
+   * @param {detailBook, quantity, dispatch}
+   */
+  handleBorrowBook: (detailBook, quantity, dispatch) => {
+    Swal.fire({
+      title: 'Xác nhận đăng kí mượn sách',
+      text: 'Ấn "Xác nhận" để đăng kí mượn sách này',
+      icon: 'warning',
+      customClass: 'swal-wide',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Xác nhận',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if ((detailBook?.quantity_book || detailBook?.quantity) > 0) {
+          dispatch(Borrow_Book_Student_Initial({ book_id: detailBook.book_id, quantity })).then((result) => {
+            if (result?.payload?.status === 400) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Lỗi xử lý',
+                customClass: 'swal-wide',
+                text: result?.payload?.element?.result,
+              });
+            } else {
+              Swal.fire({
+                title: 'Đăng kí mượn sách thành công',
+                text: 'Bạn có 24 giờ kể từ thời gian đăng kí mượn để lên thư viện ITC nhận sách. \n Nếu sau 24 giờ vẫn chưa lấy sách thì xem như đã hủy mượn sách',
+                icon: 'success',
+                customClass: 'swal-wide',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Xác nhận',
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi xử lý',
+            customClass: 'swal-wide',
+            text: 'Sách này hiện tại đã hết',
+          });
+        }
+      }
+    });
+  },
+
+  handleFavoriteBook: (book_id, dispatch) => {
+    Swal.fire({
+      title: 'Thêm vào danh sách yêu thích?',
+      text: 'Bạn có muốn thêm quyển sách này vào danh sách yêu thích ?',
+      icon: 'warning',
+      customClass: 'swal-wide',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(Add_Favorite_Initial({ book_id }));
+      }
+    });
+  },
+
+  mergeCommentArray: (commentList) => {
+    // eslint-disable-next-line array-callback-return
+    const mainCommentList = [];
+    const subCommentList = [];
+
+    if (commentList) {
+      for (const item of commentList) {
+        if (item.parent_slug === '') {
+          mainCommentList.push({ ...item, sub_comment: [] });
+        } else {
+          subCommentList.push(item);
+        }
+      }
+    }
+
+    subCommentList?.forEach((sub) => {
+      mainCommentList?.forEach((main) => {
+        if (sub?.parent_slug === main?.slug) {
+          main.sub_comment.push(sub);
+        }
+      });
+    });
+
+    return mainCommentList;
+  },
+
+  getDiffTimeComment: (commentDate) => {
+    console.log(commentDate);
+  },
+
+  sliceComment: (commentList, amount) => {
+    return commentList.slice(0, amount);
+  },
+
+  countMainComment: (commentList) => {
+    return commentList?.filter((item) => item.parent_slug === '').length;
   },
 };
 

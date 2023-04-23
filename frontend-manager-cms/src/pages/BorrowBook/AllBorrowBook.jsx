@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 //! REDUX THUNK
 import { Delete_Book_Cms_Initial, Get_All_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
+import { reset_all_borrow } from 'redux/managers/borrow_slice/borrow_slice';
 import { Get_All_Borrow_Cms_Initial } from 'redux/managers/borrow_slice/borrow_thunk';
 import { borrowSearchOption, statusBorrowOption } from 'utils/dummy';
 import HELPERS from 'utils/helper';
@@ -26,6 +27,10 @@ const AllBorrowBook = () => {
 
   useEffect(() => {
     dispatch(Get_All_Borrow_Cms_Initial());
+
+    return () => {
+      dispatch(reset_all_borrow());
+    };
   }, [dispatch]);
 
   useEffect(() => {
