@@ -14,6 +14,8 @@ const session = require('express-session');
 const CONFIGS = require('../share/configs/config');
 const CONSTANTS = require('../share/configs/constants');
 const OPTIONS = require('../share/configs/option');
+const MESSAGES = require('../share/configs/message');
+const { returnReasons } = require('../share/middleware/handle_error');
 
 //! CACHE MEMORY
 const { REDIS_MASTER } = require('../share/db/init_multiple_redis');
@@ -89,6 +91,25 @@ app.use(DEVICE_MIDDLEWARE);
 
 //! ROUTE
 app.use(USER_API);
+
+//! INIT HANDLE ERROR
+app.use((req, res, next) => {
+    const error = new Error(MESSAGES.GENERAL.NOTFOUND);
+    error.status = CONSTANTS.HTTP.STATUS_4XX_NOT_FOUND;
+    next(error);
+});
+
+/* eslint-disable no-unused-vars */
+app.use((error, req, res, next) => {
+    const statusCode = error.status || CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR;
+    const message = error.message || MESSAGES.GENERAL.INTERNAL_SERVER;
+    return res.status(statusCode).json({
+        status: statusCode,
+        stack: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV ? error.stack : MESSAGES.MEDIA.STRING_EMPTY,
+        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_NOT_FOUND),
+        element: message,
+    });
+});
 
 //! REDIS PUBSUB
 require('../share/db/redis_queue');

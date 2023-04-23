@@ -10,12 +10,14 @@ const swaggerJsDoc = require('swagger-jsdoc');
 
 //! SHARE GENERAL
 const DEVICE_MIDDLEWARE = require('../share/middlewares/device.middleware');
+const { returnReasons } = require('../share/middlewares/handle_error');
 
 //! SHARE
 const MEDIA_API = require('./v1/routes/index.route');
 const CONSTANTS = require('../share/configs/constants');
 const OPTIONS = require('../share/configs/option');
 const CONFIGS = require('../share/configs/config');
+const MESSAGES = require('../share/configs/message');
 
 //! USED LIBRARY
 const app = express();
@@ -61,6 +63,26 @@ app.use(DEVICE_MIDDLEWARE);
 //! ROUTE
 app.use(MEDIA_API);
 
-//! REDIS PUBSUB
+//! INIT HANDLE ERROR
+app.use((req, res, next) => {
+    const error = new Error(MESSAGES.MEDIA.NOT_FOUND);
+    error.status = CONSTANTS.HTTP.STATUS_4XX_NOT_FOUND;
+    next(error);
+});
+
+/* eslint-disable no-unused-vars */
+app.use((error, req, res, next) => {
+    const statusCode = error.status || CONSTANTS.HTTP.STATUS_5XX_INTERNAL_SERVER_ERROR;
+    const message = error.message || MESSAGES.MEDIA.INTERNAL_SERVER;
+    return res.status(statusCode).json({
+        status: statusCode,
+        stack:
+            CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV
+                ? error.stack
+                : MESSAGES.MEDIA.STRING_EMPTY,
+        message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_NOT_FOUND),
+        element: message,
+    });
+});
 
 module.exports = app;

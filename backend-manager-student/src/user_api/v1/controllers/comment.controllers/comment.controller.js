@@ -62,7 +62,7 @@ const commentController = {
             }
 
             const search_data = {
-                _id: 0,
+                _id: 1,
                 user_id: 1,
                 book_id: 1,
                 content: 1,
@@ -70,6 +70,8 @@ const commentController = {
                 full_slug: 1,
                 parent_slug: 1,
                 comment_replies_num: 1,
+                createdAt: 1,
+                updatedAt: 1,
             };
             const comments = await list_comment(match, search_data);
 
