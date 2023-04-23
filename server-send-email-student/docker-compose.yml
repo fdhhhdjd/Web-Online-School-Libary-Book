@@ -6,8 +6,6 @@ services:
         container_name: send_email_student
         external_links:
             - backend-manager-student_libary_school
-        depends_on:
-            - redis-master
         image: send_email_student
         restart: always
         build:

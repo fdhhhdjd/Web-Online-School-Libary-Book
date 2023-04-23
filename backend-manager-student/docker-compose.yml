@@ -1,8 +1,8 @@
 #!@ Author: Nguyễn Tiến Tài.
-#! Description: Docker Compose Production
-#!@ Created_At: 20-12-2022.
-#!@ Updated_At: 12-04-2023
+#! Description: Docker Compose Dev
+#!@ Created_At : 20-12-2022.
 #!@ Update_At: 21-12-2022, 22-12-2022, 16-01-2023, 12-03-2023, 18-03-2023.
+#!@ Updated_At: 12-04-2023
 
 version: '3.7'
 
@@ -12,6 +12,7 @@ services:
         container_name: server_admin_api
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         build:
@@ -20,7 +21,6 @@ services:
         environment:
             NODE_ENV: PRODUCTION
         volumes:
-            # - ./:/app
             - './src:/usr/src/app/src'
         env_file:
             - .env
@@ -33,6 +33,7 @@ services:
         container_name: server_user_api
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         build:
@@ -56,6 +57,7 @@ services:
             context: .
         depends_on:
             - redis-master
+            - redis-slave
             - postgresql
         restart: always
         environment:
@@ -71,24 +73,28 @@ services:
     ###! Redis Master ###
     redis-master:
         container_name: redis-master
+        image: redis
         build:
             dockerfile: dockerfile.redis
             context: .
-        image: redis
         restart: always
         environment:
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
-            NODE_ENV: PRODUCTION
+            TZ: '${TIME_DATE_TZ}'
         command: sh -c "redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD} --maxmemory ${MAXMEMORY} & cd /usr/local/bin/scrip && ./scrip_redis.sh && logrotate /usr/local/bin/logs/logrotate.conf"
         env_file:
             - .env
         volumes:
             - redis-master:/data
-            - /setup:/usr/local/etc/redis/redis.conf
+            - ./setup:/usr/local/etc/redis/redis.conf
+            - ./scrip:/usr/local/bin/scrip
+            - ./scrip:/usr/local/bin/logs
         ports:
             - ${REDIS_PORT}:${REDIS_PORT}
         networks:
             - libary_school
+            - server-send-email-student_sendemail
+            - server-media-service_upload-network
         healthcheck:
             test: ['CMD', 'redis-cli', 'ping']
             interval: 30s
@@ -98,12 +104,13 @@ services:
     ###! Redis Slave from Master ###
     redis-slave:
         container_name: redis-slave
-        restart: always
+        depends_on:
+            - redis-master
         environment:
             REDIS_PASSWORD: ${REDIS_PASSWORD_SLAVE}
             NODE_ENV: PRODUCTION
+        restart: always
         image: redis
-
         volumes:
             - redis-slave:/data
         ports:
@@ -156,6 +163,7 @@ services:
             - .env
         networks:
             - libary_school
+            - server-media-service_upload-network
         healthcheck:
             test: ['CMD-SHELL', "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
             interval: 10s
@@ -200,6 +208,7 @@ services:
             - postgresql
             - mongodb
             - redis-master
+            - redis-slave
             - admin_api
             - user_api
             - cron_job
