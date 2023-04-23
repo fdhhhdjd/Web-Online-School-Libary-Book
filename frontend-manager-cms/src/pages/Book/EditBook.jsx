@@ -1,14 +1,19 @@
-import Loading from 'components/Loading';
-import SelectBox from 'components/SelectBox';
-import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
+//! LIBRARY
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
+//! COMPONENTS
+import Loading from 'components/Loading';
+import SelectBox from 'components/SelectBox';
+import { nationOption } from 'utils/dummy';
+
+//! REDUX
+import useUploadCloud from 'custom_hook/useUpload/uploadImageCloud';
 import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 import { reset_detail_book } from 'redux/managers/book_slice/book_slice';
 import { Edit_Book_Cms_Initial, Get_Detail_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
-import { nationOption } from 'utils/dummy';
 
 const EditBook = () => {
   const dispatch = useDispatch();

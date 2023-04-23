@@ -126,3 +126,50 @@ export const Renew_Token_Cms_Initial = createAsyncThunk('student/new/token', asy
     }
   }
 });
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 03/03/2023
+ * @descriptionKey Call api Profile Student
+ * @function Profile_Student_Initial
+ * @return {Object}
+ */
+export const Profile_Admin_Initial = createAsyncThunk('admin/profile', async (_, { rejectWithValue }) => {
+  try {
+    //Call Api axios
+    const response = await REQUEST.get(`${API_ADMIN.GET_PROFILE_CMS}`, {
+      headers: HELPERS.headerBrowser(),
+      withCredentials: CONSTANTS.DELETED_ENABLE,
+    });
+
+    //Take response Success
+    const successData = response.data;
+
+    console.log(successData);
+
+    //Check data
+    if (successData) {
+      // return result data
+      const result_data = HELPERS.takeDataResponse(successData);
+      return result_data;
+    }
+  } catch (error) {
+    if (error) {
+      //Take response Error
+      const errorData = error.response.data;
+
+      if (errorData) {
+        const error_general = {
+          message: errorData?.element?.result || errorData.message,
+          status: errorData.status,
+        };
+
+        // Notification Error
+        NOTIFICATION.notifyError(error_general.message);
+      }
+
+      // return error
+      return rejectWithValue(errorData);
+    }
+  }
+});

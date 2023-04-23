@@ -34,6 +34,7 @@ const Media_Cloud = createSlice({
       state.loading_media = false;
       state.error = action.payload;
     },
+
     //* Destroy Cloud
     [Destroy_Media_Initial.pending]: (state, action) => {
       state.loading_media = true;

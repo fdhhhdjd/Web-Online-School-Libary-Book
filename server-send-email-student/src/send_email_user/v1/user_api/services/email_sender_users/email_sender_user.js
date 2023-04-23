@@ -45,18 +45,19 @@ const emailSenderUsers = {
             console.error('Lỗi khi gửi email:', error.message);
             await retry(send_email.bind(null, option), { retries: CONSTANTS.NUMBER_RETRY_EMAIL });
         }
-    }, /**
+    }
+    /**
      * @author Nguyễn Tiến Tài
      * @created_at 23/02/2023
      * @description Send Email reset Password
      * @function sendEmailUserLinkResetPassword
      * @return { Object }
-     */
+     */,
     sendEmailUserLinkResetPassword: async (message_sub) => {
         const type = CONSTANTS.TYPE_STUDENT;
         const message = message_sub.data_reset;
         message.support_email = CONFIGS.SMTP_MAIL;
-        const name_subject = HELPERS.getURIFromTemplate1(TEMPLATE_EMAIL.STUDENT_RESET_PASSWORD.SUBJECT, {
+        const name_subject = HELPERS.getURIFromTemplate(TEMPLATE_EMAIL.STUDENT_RESET_PASSWORD.SUBJECT, {
             name: message.name,
         });
         const option = {
@@ -84,12 +85,12 @@ const emailSenderUsers = {
         }
     },
     /**
- * @author Nguyễn Tiến Tài
- * @created_at 27/02/2023
- * @description Send Email verification
- * @function sendEmailUserLinkVerification
- * @return { Object }
- */
+     * @author Nguyễn Tiến Tài
+     * @created_at 27/02/2023
+     * @description Send Email verification
+     * @function sendEmailUserLinkVerification
+     * @return { Object }
+     */
     sendEmailUserLinkVerification: async (message_sub) => {
         const type = CONSTANTS.TYPE_STUDENT;
         const message = message_sub;

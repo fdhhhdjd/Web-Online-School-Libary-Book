@@ -3,13 +3,12 @@ import Loading from 'components/Loading';
 import SelectBox from 'components/SelectBox';
 
 //! LIBRARY
-import { useState } from 'react';
 import Calendar from 'react-calendar';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 //! REDUX THUNK
-import useUploadCloud from 'custom_hook/useUpload/uploadMediaCloud';
+import useUploadCloud from 'custom_hook/useUpload/uploadImageCloud';
 
 //! DUMMY DATA
 import { genderOption, nationOption } from 'utils/dummy';
@@ -31,9 +30,6 @@ const AuthorForm = (props) => {
   const { result_upload, loading_media } = useSelector((state) => ({
     ...state.media,
   }));
-
-  // state
-  const [isReset, setIsReset] = useState(false);
 
   const onSelectFile = (e) => {
     handleUpload(e);
@@ -78,7 +74,7 @@ const AuthorForm = (props) => {
                   setData={props.setGender}
                 />
               ) : (
-                <SelectBox optionData={genderOption} isReset={isReset} setData={props.setGender} />
+                <SelectBox optionData={genderOption} setData={props.setGender} />
               )}
             </div>
             <div className="w-full md:w-1/2 px-3">
@@ -95,7 +91,7 @@ const AuthorForm = (props) => {
                   setData={props.setNation}
                 />
               ) : (
-                <SelectBox optionData={nationOption} isReset={isReset} setData={props.setNation} />
+                <SelectBox optionData={nationOption} setData={props.setNation} />
               )}
             </div>
           </div>

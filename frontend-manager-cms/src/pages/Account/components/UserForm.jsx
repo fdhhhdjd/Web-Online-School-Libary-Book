@@ -8,11 +8,14 @@ import SelectBox from 'components/SelectBox';
 
 //! DUMMY DATA
 import { classOption, genderOption, tabBorrowBook } from 'utils/dummy';
+import useUploadCloud from 'custom_hook/useUpload/uploadExcelCloud';
+import { useDispatch, useSelector } from 'react-redux';
+import { Create_Account_Excel_Cms_Initial } from 'redux/managers/student_slice/student_thunk';
 
 const UserForm = (props) => {
+  const dispatch = useDispatch();
   // state
   const [activeTab, setActiveTab] = useState(0);
-
   const lineRef = useRef(null);
 
   // react hook form
@@ -21,6 +24,23 @@ const UserForm = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  //upload file
+  const { handleUpload } = useUploadCloud();
+
+  const { result_upload } = useSelector((state) => ({
+    ...state.media,
+  }));
+
+  const onSelectFile = (e) => {
+    handleUpload(e);
+  };
+
+  const handleCreateExcel = (e) => {
+    e.preventDefault();
+    console.log({ url_document: result_upload?.result?.url });
+    dispatch(Create_Account_Excel_Cms_Initial({ url_document: result_upload?.url }));
+  };
 
   // select tabs
   const tabRefs = useMemo(() => {
@@ -69,12 +89,14 @@ const UserForm = (props) => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="file_input"
                   type="file"
+                  onChange={(e) => onSelectFile(e)}
                 />
               </div>
 
               <div className="flex flex-wrap -mx-3 mt-5">
                 <div className="w-full px-3">
                   <button
+                    onClick={(e) => handleCreateExcel(e)}
                     type="submit"
                     className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded"
                   >

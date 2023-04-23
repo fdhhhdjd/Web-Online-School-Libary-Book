@@ -17,7 +17,11 @@ const initialState = {
 const Book = createSlice({
   name: CONSTANTS.REDUX_NAME._BOOK,
   initialState,
-  reducers: {},
+  reducers: {
+    reset_detail_book: (state) => {
+      state.detail_book = null;
+    },
+  },
   extraReducers: {
     //* Get all books
     [Get_All_Book_Student_Initial.pending]: (state, action) => {
@@ -47,4 +51,5 @@ const Book = createSlice({
   },
 });
 const BookSlice = Book.reducer;
+export const { reset_detail_book } = Book.actions;
 export default BookSlice;

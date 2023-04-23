@@ -1,5 +1,5 @@
 //! LIBRARY
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 //! CONTEXT CHILD
 import AuthStudent from './auth_student/auth_student';
@@ -17,9 +17,15 @@ export const store_library_school_contextUser = createContext();
 export const useContextStudent = () => useContext(store_library_school_contextUser);
 
 export const DataProviderStudent = ({ children }) => {
+  // state
+  const [showLogin, setShowLogin] = useState(false);
+  const [showCommentReply, setShowCommentReply] = useState(false);
+
   //! Data
   const data = {
     profile_student_context: AuthStudent(),
+    login: [showLogin, setShowLogin],
+    commentReply: [showCommentReply, setShowCommentReply],
   };
 
   //! Name conText

@@ -15,8 +15,8 @@ import CONSTANTS from 'configs/constants';
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 15/03/2023
- * @descriptionKey Destroy Media
- * @function Destroy_Media_Initial
+ * @descriptionKey Upload Media
+ * @function Upload_Media_Initial
  * @return {Object}
  */
 export const Upload_Media_Initial = createAsyncThunk('media/upload', async ({ formData }, { rejectWithValue }) => {

@@ -92,7 +92,7 @@ export const Get_Detail_Book_Student_Initial = createAsyncThunk(
  */
 export const Borrow_Book_Student_Initial = createAsyncThunk(
   'customer/book/borrow',
-  async ({ book_id }, { rejectWithValue }) => {
+  async ({ book_id, quantity }, { rejectWithValue }) => {
     try {
       //Call Api axios
       const response = await REQUEST.post(
@@ -101,6 +101,7 @@ export const Borrow_Book_Student_Initial = createAsyncThunk(
           input: {
             borrow_book_input: {
               book_id,
+              quantity,
             },
           },
         },

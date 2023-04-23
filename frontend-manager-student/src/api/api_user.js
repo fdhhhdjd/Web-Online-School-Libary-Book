@@ -65,22 +65,64 @@ const API_STUDENT = {
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
-   * @descriptionKey API GET ALL BOOK
+   * @descriptionKey API EMAIL
    */
   EMAIL_FORGET_PASSWORD: '/student/v1/user/forget-password',
 
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 10/03/2023
-   * @descriptionKey API GET ALL BOOK
+   * @descriptionKey API RESET
    */
   RESET_FORGET_PASSWORD: '/student/v1/user/reset',
 
   /**
    * @author Nguyễn Tiến Tài
    * @created_at 22/03/2023
-   * @descriptionKey API GET ALL BOOK
+   * @descriptionKey API GET ALL BORROW
    */
   GET_ALL_BORROWED_BOOK: '/student/v1/user/private/borrow_book/all',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey API GET CREATE RATING
+   */
+  RATE_BOOK: '/student/v1/user/private/rating/create',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey API CREATE FAVORITE
+   */
+  ADD_FAVORITE: '/student/v1/user/private/favorite/create',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey API GET ALL FAVORITE
+   */
+  GET_FAVORITE: '/student/v1/user/private/favorite/get/all',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API GET COMMENT
+   */
+  GET_COMMENT: '/student/v1/user/comment/list',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API CREATE COMMENT
+   */
+  CREATE_COMMENT: '/student/v1/user/private/comment/create',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API GET ALL CATEGORY
+   */
+  GET_ALL_CATEGORY: '/student/v1/user/categories/all',
 };
 export default API_STUDENT;
