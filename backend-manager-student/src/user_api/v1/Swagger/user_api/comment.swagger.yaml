@@ -272,8 +272,8 @@ paths:
                                                     type: number
                                                     example: 1551993628342091778
                         required:
-                            - book_id                
-                            - slug                
+                            - book_id
+                            - slug
             responses:
                 200:
                     description: success
