@@ -7,7 +7,7 @@ const cron = require('node-cron');
 //! MODEL
 const cron_verification_student = require('./v1/cron_student/controllers/cron_verification.controller');
 const cron_reset_password_student = require('./v1/cron_student/controllers/cron_reset_password.controller');
-const cron_borrow_book_student = require('./v1/cron_student/controllers/cron_borrow_book.controler');
+const cron_borrow_book_student = require('./v1/cron_student/controllers/cron_borrow_book.controller');
 
 /**
  * @author Nguyễn Tiến Tài

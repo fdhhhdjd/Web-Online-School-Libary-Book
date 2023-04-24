@@ -9,6 +9,7 @@ const categoriesPrivateRouter = require('./categories.routes/categories.private.
 const borrowBookPrivateRouter = require('./borrow_book_routes/borrow_book_private.route');
 const studentPrivateRouter = require('./student.routes/student.private.route');
 const categoriesBookPrivateRouter = require('./book_categories.routes/book_categories.private.route');
+const industryCodePrivateRouter = require('./industry_code.routes/industry_code.private.route');
 
 /**
  * @author Nguyễn Tiến Tài
@@ -49,15 +50,22 @@ router_private.use('/borrow_book', borrowBookPrivateRouter);
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 24/03/2023
- * @description Route borrow book
+ * @description Route student
  */
 router_private.use('/student', studentPrivateRouter);
 
 /**
  * @author Nguyễn Tiến Tài
  * @created_at 15/04/2023
- * @description Route categories Book book
+ * @description Route categories
  */
 router_private.use('/book-categories', categoriesBookPrivateRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 24/04/2023
+ * @description Route industry code
+ */
+router_private.use('/industry-code', industryCodePrivateRouter);
 
 module.exports = router_private;

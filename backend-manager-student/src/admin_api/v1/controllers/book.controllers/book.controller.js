@@ -21,7 +21,7 @@ const bookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
-     * @created_at 27/03/2023, 14/04/2023
+     * @created_at 27/03/2023, 14/04/2023, 24/04/2023
      * @description create book
      * @function createBook
      * @return {Object:{Number,String}}
@@ -33,6 +33,7 @@ const bookController = {
             image_uri,
             description,
             page_number,
+            industry_code_id,
             bookshelf,
             language,
             quantity,
@@ -51,6 +52,7 @@ const bookController = {
             || !quantity
             || !public_id_image
             || !page_number
+            || !industry_code_id
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -83,6 +85,7 @@ const bookController = {
             public_id_image,
             page_number,
             real_quantity: quantity,
+            industry_code_id,
         };
         try {
             // create book database
@@ -137,7 +140,7 @@ const bookController = {
     /**
      * @author Nguyễn Tiến Tài
      * @created_at 03/02/2023
-     * @updated_at 17/04/2023
+     * @updated_at 17/04/2023 24/04/2023
      * @description update book
      * @function updateBook
      * @return {Object:{Number,String}}
@@ -156,6 +159,7 @@ const bookController = {
             page_number,
             public_id_image,
             book_categories_array,
+            industry_code_id,
         } = req.body.input.book_input;
 
         // Check input
@@ -171,9 +175,18 @@ const bookController = {
 
         // Check Input is empty
         if (
-            [name, author_id, image_uri, description, bookshelf, language, quantity, public_id_image, page_number].some(
-                (field) => field !== undefined && field.trim() === '',
-            )
+            [
+                name,
+                author_id,
+                industry_code_id,
+                image_uri,
+                description,
+                bookshelf,
+                language,
+                quantity,
+                public_id_image,
+                page_number,
+            ].some((field) => field !== undefined && field.trim() === '')
         ) {
             return res.status(CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST).json({
                 status: CONSTANTS.HTTP.STATUS_4XX_BAD_REQUEST,
@@ -216,6 +229,7 @@ const bookController = {
             status,
             public_id_image,
             page_number,
+            industry_code_id,
             real_quantity: Number(book[0].quantity) + Number(quantity_update),
         };
         try {
@@ -440,6 +454,7 @@ const bookController = {
                 });
             }
         } catch (error) {
+            console.error('error::::', error);
             return res.status(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE).json({
                 status: CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE,
                 message: returnReasons(CONSTANTS.HTTP.STATUS_5XX_SERVICE_UNAVAILABLE),

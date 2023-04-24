@@ -7,6 +7,7 @@ const bookRouter = require('./books.routes/book.route');
 const authorRouter = require('./author.routes/author.route');
 const categoriesRouter = require('./categories.routes/categories.route');
 const commentsRouter = require('./comment.routes/comment.route');
+const industryCodePrivateRouter = require('./industry_code.routes/industry_code.route');
 
 /**
  * @author Nguyễn Tiến Tài
@@ -42,5 +43,12 @@ router_general.use('/categories', categoriesRouter);
  * @description Route comment
  */
 router_general.use('/comment', commentsRouter);
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 24/04/2023
+ * @description Route Industry Code
+ */
+router_general.use('/industry-code', industryCodePrivateRouter);
 
 module.exports = router_general;

@@ -2,6 +2,11 @@
 const CONSTANTS = require('./constants');
 
 module.exports = {
+    /**
+     * @author Nguyễn Tiến Tài
+     * @created_at 01/01/2023
+     * @description setup Swagger
+     */
     SWAGGER_ADMIN: {
         definition: {
             openapi: CONSTANTS.OPEN_API_SWAGGER,

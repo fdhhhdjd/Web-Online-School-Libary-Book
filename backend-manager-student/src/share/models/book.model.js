@@ -30,6 +30,7 @@ module.exports = {
         const result = await knex('books')
             .join('authors', 'books.author_id', '=', 'authors.author_id')
             .leftJoin('book_rates', 'books.book_id', '=', 'book_rates.book_id')
+            .leftJoin('industry_code', 'books.industry_code_id', '=', 'industry_code.industry_code_id')
             .where({
                 'books.isdeleted': student_query.isdeleted,
                 'books.book_id': student_query.book_id,
@@ -40,6 +41,9 @@ module.exports = {
                     dob_author: 'authors.dob',
                     gender_author: 'authors.gender',
                     image_author: 'authors.avatar_uri',
+                },
+                {
+                    industry_code_name: 'industry_code.name',
                 },
                 {
                     star: 'book_rates.rating',
@@ -71,6 +75,7 @@ module.exports = {
     getAllBook: async () => {
         const result = await knex('books')
             .join('authors', 'books.author_id', '=', 'authors.author_id')
+            .leftJoin('industry_code', 'books.industry_code_id', '=', 'industry_code.industry_code_id')
             .leftJoin('book_rates', 'books.book_id', '=', 'book_rates.book_id')
             .where('books.isdeleted', '=', CONSTANTS.DELETED_DISABLE)
             .select(
@@ -79,6 +84,9 @@ module.exports = {
                     dob_author: 'authors.dob',
                     gender_author: 'authors.gender',
                     image_author: 'authors.avatar_uri',
+                },
+                {
+                    industry_code_name: 'industry_code.name',
                 },
                 {
                     star: 'book_rates.rating',

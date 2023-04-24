@@ -105,7 +105,7 @@ app.use((error, req, res, next) => {
     const message = error.message || MESSAGES.GENERAL.INTERNAL_SERVER;
     return res.status(statusCode).json({
         status: statusCode,
-        stack: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV ? error.stack : MESSAGES.MEDIA.STRING_EMPTY,
+        stack: CONFIGS.NODE_ENV === CONSTANTS.ENVIRONMENT_DEV ? error.stack : MESSAGES.GENERAL.STRING_EMPTY,
         message: returnReasons(CONSTANTS.HTTP.STATUS_4XX_NOT_FOUND),
         element: message,
     });
