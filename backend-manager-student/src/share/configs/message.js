@@ -50,6 +50,7 @@ module.exports = {
         EXITS_DELETE_BOOK: 'Book already delete!',
         EXITS_DELETE_AUTHOR: 'Author already delete!',
         EXITS_DELETE_CATEGORIES: 'Categories already delete !',
+        EXITS_DELETE_INDUSTRY_CODE: 'Industry Code already delete !',
         EXITS_UPDATE_BORROW: 'Already update borrow book !',
         EXITS_CAN_ONLY_TOW_BORROW: 'You can only borrow tow book!',
         EXITS_EMAIL: 'Email not exit!',
