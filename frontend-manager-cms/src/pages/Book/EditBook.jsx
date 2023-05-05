@@ -14,15 +14,28 @@ import useUploadCloud from 'custom_hook/useUpload/uploadImageCloud';
 import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 import { reset_detail_book } from 'redux/managers/book_slice/book_slice';
 import { Edit_Book_Cms_Initial, Get_Detail_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
+import {
+  Get_All_Category_Cms_Initial,
+  Get_Book_Category_Cms_Initial,
+} from 'redux/managers/category_slice/category_thunk';
+import HELPERS from 'utils/helper';
+import { Get_All_Major_Cms_Initial } from 'redux/managers/major_slice/major_thunk';
 
 const EditBook = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
-  const [language, setLanguage] = useState(null);
 
+  // ref
   const authorList = useRef([]);
+  const categoryList = useRef([]);
+  const majorList = useRef([]);
+
+  //state
   const [authorID, setAuthorID] = useState(null);
+  const [language, setLanguage] = useState(null);
+  const [categoriesList, setCategoriesList] = useState(null);
+  const [majorID, setMajorID] = useState(null);
 
   const { handleUpload } = useUploadCloud();
 
@@ -58,14 +71,30 @@ const EditBook = () => {
         language: language || detailBook?.language,
         image_uri: result_upload?.result?.url || detailBook?.image_uri,
         public_id_image: result_upload?.result?.public_id || detailBook?.public_id_image,
+        book_categories_array: JSON.stringify(categoriesList),
+        industry_code_id: majorID || detailBook?.industry_code_id,
       }),
     );
   };
 
   useEffect(() => {
-    dispatch(Get_Detail_Book_Cms_Initial({ book_id: id })).then((result) => {
-      const data = result?.payload?.element?.result;
-      reset({ ...data });
+    Promise.all([
+      dispatch(Get_Detail_Book_Cms_Initial({ book_id: id })),
+      dispatch(Get_Book_Category_Cms_Initial()),
+      dispatch(Get_All_Category_Cms_Initial()),
+    ]).then((result) => {
+      const dataDetailBook = result[0]?.payload?.element?.result;
+      const dataCategory = result[2]?.payload?.element?.result;
+      dataCategory?.forEach((item) =>
+        categoryList.current.push({
+          value: item.category_id,
+          label: item.name,
+        }),
+      );
+      reset({ ...dataDetailBook });
+      setCategoriesList(
+        HELPERS.filterCategoryBook(id, result[1]?.payload?.element?.result, result[2]?.payload?.element?.result),
+      );
     });
 
     return () => {
@@ -80,6 +109,16 @@ const EditBook = () => {
         authorList.current.push({
           value: item.author_id,
           label: `${item.author_id} ${item.name}`,
+        }),
+      );
+    });
+
+    dispatch(Get_All_Major_Cms_Initial()).then((result) => {
+      const data = result?.payload?.element?.result;
+      data?.forEach((item) =>
+        majorList.current.push({
+          value: item.industry_code_id,
+          label: `${item.name}`,
         }),
       );
     });
@@ -183,7 +222,7 @@ const EditBook = () => {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full px-3">
+            <div className="w-full md:w-1/2 px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
                 Tác giả
               </label>
@@ -191,10 +230,41 @@ const EditBook = () => {
                 <SelectBox
                   defaultValue={{
                     value: detailBook?.author_id,
-                    label: detailBook?.author_id,
+                    label: detailBook?.name_author,
                   }}
                   optionData={authorList.current}
                   setData={setAuthorID}
+                />
+              )}
+            </div>
+            <div className="w-full md:w-1/2 px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
+                Ngành
+              </label>
+              {detailBook?.industry_code_id && (
+                <SelectBox
+                  defaultValue={{
+                    value: detailBook?.industry_code_id,
+                    label: detailBook?.industry_code_name,
+                  }}
+                  optionData={majorList.current}
+                  setData={setMajorID}
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
+                Thể loại
+              </label>
+              {categoriesList && (
+                <SelectBox
+                  isMulti
+                  defaultValue={categoriesList}
+                  optionData={categoryList.current}
+                  setData={setCategoriesList}
                 />
               )}
             </div>

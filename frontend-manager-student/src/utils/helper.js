@@ -8,7 +8,7 @@ import { Borrow_Book_Student_Initial } from 'redux/student/borrow_book_slice/bor
 import Swal from 'sweetalert2';
 import { getDeviceId, getToken } from './auth';
 import REGEX from './regex';
-import { Add_Favorite_Initial } from 'redux/student/favorite_slice/favorite_thunk';
+import { Add_Favorite_Initial, Delete_Favorite_Initial } from 'redux/student/favorite_slice/favorite_thunk';
 
 const HELPERS = {
   /**
@@ -188,15 +188,22 @@ const HELPERS = {
 
       case 50: {
         return {
-          label: 'Đã mất (Chưa xử lý)',
-          className: 'blue',
+          label: 'Đã hủy',
+          className: 'expired',
         };
       }
 
       case 60: {
         return {
+          label: 'Đã mất (Chưa xử lý)',
+          className: 'expired',
+        };
+      }
+
+      case 70: {
+        return {
           label: 'Đã mất (Đã xử lý)',
-          className: 'blue',
+          className: 'refund',
         };
       }
       default:
@@ -255,8 +262,8 @@ const HELPERS = {
     });
   },
 
-  handleFavoriteBook: (book_id, dispatch) => {
-    Swal.fire({
+  handleFavoriteBook: async (book_id, dispatch) => {
+    await Swal.fire({
       title: 'Thêm vào danh sách yêu thích?',
       text: 'Bạn có muốn thêm quyển sách này vào danh sách yêu thích ?',
       icon: 'warning',
@@ -268,6 +275,23 @@ const HELPERS = {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(Add_Favorite_Initial({ book_id }));
+      }
+    });
+  },
+
+  handleDeleteFavoriteBook: async (favorite_book_id, dispatch) => {
+    await Swal.fire({
+      title: 'Xóa khỏi danh sách yêu thích?',
+      text: 'Bạn có muốn xóa quyển sách này khỏi danh sách yêu thích ?',
+      icon: 'warning',
+      customClass: 'swal-wide',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(Delete_Favorite_Initial({ favorite_book_id }));
       }
     });
   },
@@ -308,6 +332,31 @@ const HELPERS = {
 
   countMainComment: (commentList) => {
     return commentList?.filter((item) => item.parent_slug === '').length;
+  },
+
+  mergeFavoriteBook: (allBook, allFavorite) => {
+    allBook = allBook?.map((item) => {
+      return { ...item, isFavorite: false, favorite_book_id: null };
+    });
+
+    allBook?.forEach((book) => {
+      allFavorite.forEach((fav) => {
+        if (book.book_id === fav.book_id) {
+          book.isFavorite = true;
+          book.favorite_book_id = fav.favorite_book_id;
+        }
+      });
+    });
+
+    return allBook;
+  },
+
+  filterBookByMajor: (majorID, bookList) => {
+    const result = bookList.filter((item) => item.industry_code_id === majorID);
+    console.log(majorID, bookList, 'filterList');
+
+    console.log(result, 'filterList');
+    return result;
   },
 };
 

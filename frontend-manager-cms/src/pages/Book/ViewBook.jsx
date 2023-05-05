@@ -1,43 +1,46 @@
 import SelectBox from 'components/SelectBox';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Get_All_Author_Cms_Initial } from 'redux/managers/author_slice/author_thunk';
 import { reset_detail_book } from 'redux/managers/book_slice/book_slice';
 import { Get_Detail_Book_Cms_Initial } from 'redux/managers/book_slice/book_thunk';
-import { nationOption } from 'utils/dummy';
+import {
+  Get_All_Category_Cms_Initial,
+  Get_Book_Category_Cms_Initial,
+} from 'redux/managers/category_slice/category_thunk';
+import HELPERS from 'utils/helper';
 
 const ViewBook = () => {
+  // redux
   const dispatch = useDispatch();
   const { id } = useParams();
   const detailBook = useSelector((state) => state.book.detail_book?.element?.result);
-  const authorList = useRef([]);
+
+  // ref
+
+  // state
+  const [categoryList, setCategoryList] = useState(null);
 
   // react hook form
   const { register, reset } = useForm();
 
   useEffect(() => {
-    dispatch(Get_Detail_Book_Cms_Initial({ book_id: id })).then((result) => {
-      const data = result?.payload?.element?.result;
+    Promise.all([
+      dispatch(Get_Detail_Book_Cms_Initial({ book_id: id })),
+      dispatch(Get_Book_Category_Cms_Initial()),
+      dispatch(Get_All_Category_Cms_Initial()),
+    ]).then((result) => {
+      const data = result[0]?.payload?.element?.result;
       reset({ ...data });
+      setCategoryList(
+        HELPERS.filterCategoryBook(id, result[1]?.payload?.element?.result, result[2]?.payload?.element?.result),
+      );
     });
 
     return () => {
       dispatch(reset_detail_book());
     };
-  }, []);
-
-  useEffect(() => {
-    dispatch(Get_All_Author_Cms_Initial()).then((result) => {
-      const data = result?.payload?.element?.result;
-      data?.forEach((item) =>
-        authorList.current.push({
-          value: item.author_id,
-          label: `${item.author_id} ${item.name}`,
-        }),
-      );
-    });
   }, []);
 
   return (
@@ -111,7 +114,6 @@ const ViewBook = () => {
               {detailBook?.language && (
                 <SelectBox
                   isDisabled={true}
-                  optionData={nationOption}
                   defaultValue={{
                     value: detailBook?.language,
                     label: detailBook?.language,
@@ -122,7 +124,7 @@ const ViewBook = () => {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full px-3">
+            <div className="w-full md:w-1/2 px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
                 Tác giả
               </label>
@@ -131,11 +133,33 @@ const ViewBook = () => {
                   isDisabled={true}
                   defaultValue={{
                     value: detailBook?.author_id,
-                    label: detailBook?.author_id,
+                    label: detailBook?.name_author,
                   }}
-                  optionData={authorList.current}
                 />
               )}
+            </div>
+            <div className="w-full md:w-1/2 px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
+                Ngành
+              </label>
+              {detailBook?.industry_code_id && (
+                <SelectBox
+                  isDisabled={true}
+                  defaultValue={{
+                    value: detailBook?.industry_code_id,
+                    label: detailBook?.industry_code_name,
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
+                Thể loại
+              </label>
+              {categoryList && <SelectBox isDisabled={true} isMulti defaultValue={categoryList} />}
             </div>
           </div>
 

@@ -39,7 +39,7 @@ const UserForm = (props) => {
   const handleCreateExcel = (e) => {
     e.preventDefault();
     console.log({ url_document: result_upload?.result?.url });
-    dispatch(Create_Account_Excel_Cms_Initial({ url_document: result_upload?.url }));
+    dispatch(Create_Account_Excel_Cms_Initial({ url_document: result_upload?.result?.url }));
   };
 
   // select tabs

@@ -75,7 +75,7 @@ const ViewUser = () => {
                   Giới tính
                 </label>
 
-                {detailAccount.gender >= 0 && (
+                {detailAccount?.gender >= 0 && (
                   <SelectBox
                     isDisabled={true}
                     optionData={genderOption}
@@ -90,7 +90,7 @@ const ViewUser = () => {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nation">
                   Lớp
                 </label>
-                {detailAccount.class && (
+                {detailAccount?.class && (
                   <SelectBox
                     isDisabled={true}
                     optionData={classOption}
@@ -136,7 +136,7 @@ const ViewUser = () => {
                   Ngày sinh
                 </label>
                 <div className="date-picker">
-                  {detailAccount.dob && (
+                  {detailAccount?.dob && (
                     <Calendar
                       defaultValue={new Date(moment(detailAccount.dob).format())}
                       value={new Date(moment(detailAccount.dob).format())}

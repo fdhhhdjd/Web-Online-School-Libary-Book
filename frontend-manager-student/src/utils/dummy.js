@@ -71,6 +71,10 @@ export const tabBorrowBook = [
     path: '/book/borrow',
     displayText: 'Đã trả',
   },
+  {
+    path: '/book/borrow',
+    displayText: 'Đã mất',
+  },
 ];
 
 export const mockDataEvents = [

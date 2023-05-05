@@ -34,7 +34,6 @@ const BookBorrowInfo = () => {
   }, []);
 
   const handleSelectTab = (e, idx) => {
-    console.log(idx, 'indexxx');
     let productFilter = [];
     setActiveTab(idx);
     switch (idx) {
@@ -43,7 +42,11 @@ const BookBorrowInfo = () => {
         break;
 
       default:
-        productFilter = borrowList?.filter((item) => item?.status === idx * 10);
+        if (idx >= 4) {
+          productFilter = borrowList?.filter((item) => item?.status === 60 || item?.status === 70);
+        } else {
+          productFilter = borrowList?.filter((item) => item?.status === idx * 10);
+        }
         setProduct(productFilter);
     }
     lineRef.current.style.left = tabRefs[idx].current.offsetLeft + 'px';

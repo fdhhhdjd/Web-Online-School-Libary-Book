@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 //! DUMMY
-import { sideBarMenu } from 'utils/dummy';
-import { ControlIcon, logo } from '../imports/home_import/index';
 import { useSelector } from 'react-redux';
+import { sideBarMenu } from 'utils/dummy';
+import { ControlIcon } from '../imports/home_import/index';
 
 const Sidebar = (props) => {
   const pathName = useLocation().pathname;
@@ -14,7 +14,7 @@ const Sidebar = (props) => {
   //redux
   const profile = useSelector((state) => state.admin_user.admin_profile?.data);
 
-  console.log(profile, 'profile');
+  // console.log(profile, 'profile');
 
   return (
     <div className="flex">
@@ -32,9 +32,14 @@ const Sidebar = (props) => {
             className={`cursor-pointer w-10 rounded-full duration-500 ${open && 'rotate-[360deg]'}`}
             alt=""
           />
-          <h1 className={`text-white origin-left font-medium text-xl duration-200 ${!open && 'scale-0'}`}>
-            {profile?.name}
-          </h1>
+          <div>
+            <h1 className={`text-white origin-left font-medium text-xl duration-200 ${!open && 'scale-0'}`}>
+              {profile?.name}
+            </h1>
+            <h1 className={`text-white origin-left font-medium text-sm duration-200 ${!open && 'scale-0'}`}>
+              {profile?.role === 1 ? 'Admin' : 'Supervisor'}
+            </h1>
+          </div>
         </div>
         <ul className="pt-6">
           {sideBarMenu.map((Menu, index) => (

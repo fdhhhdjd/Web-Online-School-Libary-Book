@@ -5,14 +5,18 @@ import Loading from 'components/Loading';
 import NewsCard from 'components/NewsCard';
 import Section, { SectionBody, SectionTitle } from 'components/Section';
 import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SlickSlider from 'react-slick';
+import { Get_All_Book_Student_Initial } from 'redux/student/book_slice/book_thunk';
+import { Get_All_Category_Initial } from 'redux/student/category_slice/category_thunk';
 import { mockDataEvents } from 'utils/dummy';
 
 const TabHome = () => {
   const settings = {
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -44,6 +48,15 @@ const TabHome = () => {
       },
     ],
   };
+
+  // redux
+  const dispatch = useDispatch();
+  const categoryList = useSelector((state) => state.category.all_categories?.element?.result);
+  const bookList = useSelector((state) => state.book.all_books_list?.element?.result);
+
+  useEffect(() => {
+    Promise.all([dispatch(Get_All_Book_Student_Initial()), dispatch(Get_All_Category_Initial())]);
+  }, []);
 
   return (
     <>
@@ -84,30 +97,13 @@ const TabHome = () => {
       </Section>
 
       <Section>
-        <SectionTitle subTitle={'Tất cả danh mục'} left>
+        <SectionTitle route={'/book/all'} subTitle={'Tất cả danh mục'} left>
           Danh mục nổi bật
         </SectionTitle>
         <SectionBody>
           <Grid col={4} mdCol={2} smCol={1} gap={20}>
-            {[
-              {
-                name: 'Nghệ thuật & nhiếp ảnh',
-                icon: 'bx bx-images',
-              },
-              {
-                name: 'Ẩm thực',
-                icon: 'bx bx-restaurant',
-              },
-              {
-                name: 'Tình cảm & lãng mạn',
-                icon: 'bx bx-book-heart',
-              },
-              {
-                name: 'Sức khỏe',
-                icon: 'bx bx-plus-medical',
-              },
-            ].map((item, index) => (
-              <Link to="/category" key={index}>
+            {categoryList?.slice(0, 4)?.map((item, index) => (
+              <Link to="/book/all" key={index}>
                 <CategoryCard name={item.name} icon={item.icon} />
               </Link>
             ))}
@@ -120,12 +116,11 @@ const TabHome = () => {
           Tài liệu nổi bật
         </SectionTitle>
         <SectionBody>
-          {/* <SlickSlider {...settings}>
-            {mockDataBook.map((item, index) => (
-              <BookCard key={index} img01={item.image01} name={item.title} slug={item.slug} author={item.author} />
+          <SlickSlider {...settings}>
+            {bookList?.map((item, index) => (
+              <BookCard key={index} img01={item.image_uri} name={item.name} slug={item.book_id} author={item.author} />
             ))}
-          </SlickSlider> */}
-          <Loading />
+          </SlickSlider>
         </SectionBody>
       </Section>
     </>

@@ -8,7 +8,7 @@ import Button from './Button';
 const BookCard = (props) => {
   return (
     <div className="book-card">
-      <Link to={`/catalogue/${props.slug}`}>
+      <Link to={`/book/${props.slug}`}>
         <div className="book-card__image">
           <img src={props.img01} alt="" />
         </div>
@@ -16,7 +16,9 @@ const BookCard = (props) => {
         <h3 className="book-card__author">{props.author}</h3>
       </Link>
       <div className="book-card__btn">
-        <Button size="sm">Xem chi tiết</Button>
+        <Link to={`/book/${props.slug}`}>
+          <Button size="sm">Xem chi tiết</Button>
+        </Link>
       </div>
     </div>
   );
