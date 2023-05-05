@@ -1,5 +1,9 @@
 .book__container {
   margin-top: $header-height;
+  .header__data__big {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
 
   &__header {
     @include flex(center, space-between);
@@ -112,7 +116,22 @@
           text-decoration: underline;
         }
       }
+
+      &.flex-name {
+        @include flex(center, space-between);
+
+        i {
+          font-size: 2rem;
+          color: #ec1d25;
+          cursor: pointer;
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
     }
+
     &__img {
       min-width: 120px;
       height: 100%;

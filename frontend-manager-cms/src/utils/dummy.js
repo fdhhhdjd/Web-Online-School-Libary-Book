@@ -186,8 +186,16 @@ export const statusBorrowOption = [
     label: 'Đã trả',
   },
   {
-    value: 40,
-    label: 'Quá hạn',
+    value: 50,
+    label: 'Hủy',
+  },
+  {
+    value: 60,
+    label: 'Mất sách (chưa xử lý)',
+  },
+  {
+    value: 70,
+    label: 'Mất sách (đã xử lý)',
   },
 ];
 
@@ -451,11 +459,10 @@ export const sideBarMenu = [
   { title: 'Tài khoản', src: UserIcon, route: '/user/all', gap: true },
   { title: 'Sách', src: CalenderIcon, route: '/book/all' },
   { title: 'Tác giả', src: UserIcon, route: '/author/all' },
+  { title: 'Thể loại', src: CalenderIcon, route: '/category/all' },
+  { title: 'Ngành', src: CalenderIcon, route: '/major/all' },
   { title: 'Sách mượn', src: CalenderIcon, route: '/borrow/all' },
-  { title: 'Search', src: SearchIcon, route: '/search' },
-  { title: 'Analytics', src: ChartIcon, route: '/report' },
-  { title: 'Files ', src: FolderIcon, gap: true, route: '/files' },
-  { title: 'Setting', src: SettingIcon, route: 'settings' },
+  // { title: 'Setting', src: SettingIcon, route: '/setting/', gap: true },
 ];
 
 export const tabBorrowBook = [
@@ -531,6 +538,28 @@ export const bookSearchOption = [
   {
     label: 'Kệ sách',
     value: 'bookshelf',
+  },
+];
+
+export const categorySearchOption = [
+  {
+    label: 'Mã thể loại',
+    value: 'category_id',
+  },
+  {
+    label: 'Tên thể loại',
+    value: 'name',
+  },
+];
+
+export const majorSearchOption = [
+  {
+    label: 'Mã thể loại',
+    value: 'industry_code_id',
+  },
+  {
+    label: 'Tên thể loại',
+    value: 'name',
   },
 ];
 

@@ -3,6 +3,7 @@ const LINK_ROUTER = {
     _HOME: '/',
     _LOGIN: '/login',
     _BOOK_ALL: '/book/all',
+    _FILTER_FIELD: '/filter/field/:id',
     _BOOK_DETAIL: '/book/:id',
     _CHANGE_PASSWORD: '/user/changePassword',
     _RESET_PASSWORD: '/password/reset/:id',

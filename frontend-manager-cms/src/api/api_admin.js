@@ -25,6 +25,21 @@ const API_ADMIN = {
   EDIT_AUTHOR_CMS: '/manager/v1/admin/private/author/update',
   DELETE_AUTHOR_CMS: '/manager/v1/admin/private/author/delete',
 
+  //! category api
+  GET_ALL_CATEGORY_CMS: '/manager/v1/admin/private/categories/all',
+  GET_DETAIL_CATEGORY_CMS: '/manager/v1/admin/private/categories/detail',
+  CREATE_CATEGORY_CMS: '/manager/v1/admin/private/categories/create',
+  EDIT_CATEGORY_CMS: '/manager/v1/admin/private/categories/update',
+  DELETE_CATEGORY_CMS: '/manager/v1/admin/private/categories/delete',
+  GET_ALL_BOOK_CATEGORY_CMS: '/manager/v1/admin/private/book-categories/all',
+
+  //! major api
+  GET_ALL_MAJOR_CMS: '/manager/v1/admin/private/industry-code/all',
+  GET_DETAIL_MAJOR_CMS: '/manager/v1/admin/private/industry-code/detail',
+  CREATE_MAJOR_CMS: '/manager/v1/admin/private/industry-code/create',
+  EDIT_MAJOR_CMS: '/manager/v1/admin/private/industry-code/update',
+  DELETE_MAJOR_CMS: '/manager/v1/admin/private/industry-code/delete',
+
   //! student api
   GET_ALL_ACCOUNT_CMS: '/manager/v1/admin/private/student/all',
   GET_DETAIL_ACCOUNT_CMS: '/manager/v1/admin/private/student/detail',

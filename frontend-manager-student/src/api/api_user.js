@@ -106,6 +106,13 @@ const API_STUDENT = {
 
   /**
    * @author Nguyễn Tiến Tài
+   * @created_at 22/03/2023
+   * @descriptionKey API CREATE FAVORITE
+   */
+  DELETE_FAVORITE: '/student/v1/user/private/favorite/delete',
+
+  /**
+   * @author Nguyễn Tiến Tài
    * @created_at 19/04/2023
    * @descriptionKey API GET COMMENT
    */
@@ -124,5 +131,19 @@ const API_STUDENT = {
    * @descriptionKey API GET ALL CATEGORY
    */
   GET_ALL_CATEGORY: '/student/v1/user/categories/all',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API GET ALL CATEGORY
+   */
+  GET_BOOK_CATEGORY: '/student/v1/user/categories/all',
+
+  /**
+   * @author Nguyễn Tiến Tài
+   * @created_at 19/04/2023
+   * @descriptionKey API GET ALL MAJOR
+   */
+  GET_ALL_MAJOR: '/student/v1/user/industry-code/all',
 };
 export default API_STUDENT;

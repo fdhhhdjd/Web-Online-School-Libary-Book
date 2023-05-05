@@ -8,6 +8,7 @@ import {
   Get_All_Book_Cms_Initial,
   Get_Detail_Book_Cms_Initial,
 } from './book_thunk';
+import { Get_Book_Category_Cms_Initial } from '../category_slice/category_thunk';
 
 const initialState = {
   loading: false,
@@ -72,6 +73,18 @@ const Book = createSlice({
       state.loading = false;
     },
     [Delete_Book_Cms_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Get category book CMS
+    [Get_Book_Category_Cms_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Get_Book_Category_Cms_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [Get_Book_Category_Cms_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

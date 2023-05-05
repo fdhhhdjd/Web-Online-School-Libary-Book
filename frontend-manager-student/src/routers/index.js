@@ -25,6 +25,14 @@ const RouteDataMain = [
     ),
   },
   {
+    path: LINK_ROUTER.LINK._FILTER_FIELD,
+    main: (
+      <>
+        <Layout content={<AllBook textFilter={'Ngành: '} filter={'field'} />} />
+      </>
+    ),
+  },
+  {
     path: LINK_ROUTER.LINK._BOOK_ALL,
     main: (
       <>

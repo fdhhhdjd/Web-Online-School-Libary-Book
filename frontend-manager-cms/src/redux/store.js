@@ -13,6 +13,8 @@ import AuthorSlice from './managers/author_slice/author_slice';
 import MediaSlice from './media/upload_remove_media/media_slice';
 import StudentSlice from './managers/student_slice/student_slice';
 import BorrowBookSlice from './managers/borrow_slice/borrow_slice';
+import CategorySlice from './managers/category_slice/category_slice';
+import MajorSlice from './managers/major_slice/major_slice';
 const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
 };
@@ -26,6 +28,8 @@ store = configureStore({
     media: MediaSlice,
     student: StudentSlice,
     borrow: BorrowBookSlice,
+    category: CategorySlice,
+    major: MajorSlice,
     reducer: rootReducer,
   },
   middleware:

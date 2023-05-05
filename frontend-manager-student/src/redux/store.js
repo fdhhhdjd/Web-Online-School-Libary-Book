@@ -15,6 +15,7 @@ import CatgorySlice from './student/category_slice/category_slice';
 import CommentSlice from './student/comment_slice/comment_slice';
 import FavoriteSlice from './student/favorite_slice/favorite_slice';
 import RatingSlice from './student/rating_slice/rating_slice';
+import MajorSlice from './student/major_slice/major_slice';
 
 const rootReducer = (state, action) => {
   return AuthenticationSlice(state, action);
@@ -30,6 +31,7 @@ const store = configureStore({
     favorite: FavoriteSlice,
     comment: CommentSlice,
     category: CatgorySlice,
+    major: MajorSlice,
     reducer: rootReducer,
   },
   middleware:

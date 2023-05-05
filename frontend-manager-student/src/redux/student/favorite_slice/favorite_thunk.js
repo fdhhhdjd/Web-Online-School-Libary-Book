@@ -92,3 +92,50 @@ export const Get_All_Favorite_Initial = createAsyncThunk('customer/favorite/all'
     }
   }
 });
+
+/**
+ * @author Nguyễn Tiến Tài
+ * @created_at 05/04/2023
+ * @descriptionKey Call api add favorite admin cms
+ * @function Add_Favorite_Cms_Initial
+ * @return {Object}
+ */
+export const Delete_Favorite_Initial = createAsyncThunk(
+  'admin/cms/favorite/delete',
+  async ({ favorite_book_id }, { rejectWithValue }) => {
+    try {
+      //Call Api axios
+      const response = await REQUEST.post(
+        `${USER_API.DELETE_FAVORITE}`,
+        {
+          input: {
+            favorite_input: {
+              favorite_book_id,
+            },
+          },
+        },
+        {
+          headers: HELPERS.headerBrowser(),
+          withCredentials: true,
+        },
+      );
+
+      //Take response Success
+      const successData = response.data;
+
+      //Check data
+      if (successData) {
+        // return result data
+        NOTIFICATION.swalSuccess('Đã xóa khỏi danh sách yêu thích', '');
+        return successData;
+      }
+    } catch (error) {
+      if (error) {
+        //Take response Error
+        const errorData = error.response.data;
+        // return error
+        return rejectWithValue(errorData);
+      }
+    }
+  },
+);

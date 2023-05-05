@@ -53,9 +53,9 @@ const AllAuthor = () => {
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
                       Giới tính
                     </th>
-                    <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
+                    {/* <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
                       Số lượng sách
-                    </th>
+                    </th> */}
                     <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase ">
                       Quốc gia
                     </th>
@@ -81,13 +81,10 @@ const AllAuthor = () => {
                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                           {HELPERS.getGenderLabel(author?.gender)}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">03</td>
+                        {/* <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">03</td> */}
                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{author?.nation}</td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <Link
-                            to={`/author/view/${author?.author_id}`}
-                            className="text-green-500 hover:text-green-700"
-                          >
+                          <Link to={`/author/view/${author?.author_id}`} className="text-blue-500 hover:text-blue-700">
                             Truy cập
                           </Link>
                         </td>
