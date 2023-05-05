@@ -67,7 +67,7 @@ export const Login_Mssv_Initial = createAsyncThunk('student/mssv', async ({ mssv
 
       if (errorData) {
         // Notification Error
-        NOTIFICATION.notifyError(result_data.data || result_data.message);
+        // NOTIFICATION.notifyError(result_data.data || result_data.message);
       }
 
       // return error
@@ -114,7 +114,7 @@ export const Profile_Student_Initial = createAsyncThunk('student/profile', async
         };
 
         // Notification Error
-        NOTIFICATION.notifyError(error_general.message);
+        // NOTIFICATION.notifyError(error_general.message);
       }
 
       // return error
@@ -263,7 +263,7 @@ export const Renew_Token_Student_Initial = createAsyncThunk('student/new/token',
         };
 
         // Notification Error
-        NOTIFICATION.notifyError(error_general.message);
+        // NOTIFICATION.notifyError(error_general.message);
       }
 
       // return error

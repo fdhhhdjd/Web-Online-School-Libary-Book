@@ -1,8 +1,8 @@
 //! LIBRARY
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Filter = ({ data }) => {
-  console.log(data, 'category');
+const Filter = ({ category, major }) => {
   return (
     <div className="shop__sidebar">
       <div className="shop__sidebar__search">
@@ -25,7 +25,7 @@ const Filter = ({ data }) => {
               <div className="card-body">
                 <div className="shop__sidebar__categories">
                   <ul className="nice-scroll">
-                    {data?.map((item, idx) => (
+                    {category?.map((item, idx) => (
                       <li key={idx}>
                         <a href="ok">{item.name}</a>
                       </li>
@@ -46,23 +46,19 @@ const Filter = ({ data }) => {
                 <div className="shop__sidebar__brand">
                   <ul>
                     <li>
-                      <a href="#">Sách tham khảo</a>
+                      <Link to={`/book/all`}>Tất cả</Link>
                     </li>
-                    <li>
-                      <a href="#">Sách tham khảo</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo</a>
-                    </li>
-                    <li>
-                      <a href="#">Sách tham khảo</a>
-                    </li>
+                    {major?.map((item, idx) => (
+                      <li key={idx}>
+                        <Link to={`/filter/field/${item.industry_code_id}`}>{item.name}</Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
             </div>
           </div>
-          <div className="card">
+          {/* <div className="card">
             <div className="card-heading">
               <a data-toggle="collapse" data-target="#collapseSix">
                 Tags
@@ -81,7 +77,7 @@ const Filter = ({ data }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

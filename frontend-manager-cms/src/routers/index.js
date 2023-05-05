@@ -22,6 +22,12 @@ import AdminPrivateRouterlogin from 'private/Admin_Private_Router_login';
 import ViewAuthor from 'pages/Author/ViewAuthor';
 import ViewUser from 'pages/Account/ViewUser';
 import ViewBorrowBook from 'pages/BorrowBook/ViewBorrowBook';
+import AllCategories from 'pages/Category/AllCategories';
+import EditCategory from 'pages/Category/EditCategory';
+import AddCategory from 'pages/Category/AddCategory';
+import AllMajors from 'pages/Major/AllMajor';
+import AddMajor from 'pages/Major/AddMajor';
+import EditMajor from 'pages/Major/EditMajor';
 
 const RouteDataMain = [
   {
@@ -93,6 +99,60 @@ const RouteDataMain = [
     main: (
       <>
         <Sidebar title="Thông tin sách mượn" content={<ViewBorrowBook />} />
+      </>
+    ),
+  },
+  {
+    path: '/category/all',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Tất cả thể loại" content={<AllCategories />} />
+      </>
+    ),
+  },
+  {
+    path: '/category/add',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Thêm thể loại" content={<AddCategory />} />
+      </>
+    ),
+  },
+  {
+    path: '/category/edit/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Chỉnh sửa thể loại" content={<EditCategory />} />
+      </>
+    ),
+  },
+  {
+    path: '/major/all',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Tất cả ngành học" content={<AllMajors />} />
+      </>
+    ),
+  },
+  {
+    path: '/major/add',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="Tất cả ngành học" content={<AddMajor />} />
+      </>
+    ),
+  },
+  {
+    path: '/major/edit/:id',
+    private: <AdminPrivateRouterlogin />,
+    main: (
+      <>
+        <Sidebar title="chỉnh sửa ngành học" content={<EditMajor />} />
       </>
     ),
   },

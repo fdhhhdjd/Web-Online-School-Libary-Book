@@ -123,16 +123,22 @@ const HELPERS = {
 
       case 50: {
         return {
-          label: 'Đã mất (Chưa xử lý)',
+          label: 'Đã hủy',
           className: 'blue',
         };
       }
 
       case 60: {
         return {
+          label: 'Đã mất (Chưa xử lý)',
+          className: 'errror',
+        };
+      }
+
+      case 70: {
+        return {
           label: 'Đã mất (Đã xử lý)',
-          txtColor: 'blue',
-          bgColor: 'white',
+          className: 'success',
         };
       }
       default:
@@ -146,6 +152,45 @@ const HELPERS = {
 
   handleSearchText: (item, searchValue) => {
     return item.toLowerCase().trim().includes(searchValue.toLowerCase().trim());
+  },
+
+  checkRequiredSelect: (data, key, setError) => {
+    if (!data) {
+      setError((prev) => {
+        return {
+          ...prev,
+          [key]: {
+            type: 'required',
+          },
+        };
+      });
+    } else {
+      setError((prev) => {
+        return {
+          ...prev,
+          [key]: {},
+        };
+      });
+    }
+  },
+
+  filterCategoryBook: (bookID, bookCategoryList, categoryList) => {
+    const result = [];
+    const filteredCategory = bookCategoryList?.filter((item) => item.book_id === bookID);
+
+    filteredCategory?.forEach((filterItem) => {
+      categoryList.forEach((categoryItem) => {
+        console.log(filterItem.category_id, categoryItem.category_id);
+        if (filterItem.category_id === categoryItem.category_id) {
+          result.push({
+            label: categoryItem.name,
+            value: categoryItem.category_id,
+          });
+        }
+      });
+    });
+
+    return result;
   },
 };
 

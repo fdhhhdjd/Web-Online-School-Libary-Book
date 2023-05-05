@@ -129,7 +129,7 @@ const AllBorrowBook = () => {
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                           <Link
                             to={`/borrow/view/${book?.borrowed_book_id}`}
-                            className="text-green-500 hover:text-green-700"
+                            className="text-blue-500 hover:text-blue-700"
                           >
                             Truy cập
                           </Link>

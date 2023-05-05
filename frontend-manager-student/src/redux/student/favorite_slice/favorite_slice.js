@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 //! SHARE
 import CONSTANTS from 'configs/constants';
-import { Add_Favorite_Initial, Get_All_Favorite_Initial } from './favorite_thunk';
+import { Add_Favorite_Initial, Delete_Favorite_Initial, Get_All_Favorite_Initial } from './favorite_thunk';
 
 //! CALL API REDUX THUNK
 
@@ -39,6 +39,18 @@ const Favorite = createSlice({
       state.favorite_list = action.payload;
     },
     [Get_All_Favorite_Initial.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //* Delete Favorite
+    [Delete_Favorite_Initial.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [Delete_Favorite_Initial.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [Delete_Favorite_Initial.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -91,7 +91,7 @@ const AllUser = () => {
                           {HELPERS.getGenderLabel(account?.gender)}
                         </td>
                         <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <Link to={`/user/view/${account?.user_id}`} className="text-green-500 hover:text-green-700">
+                          <Link to={`/user/view/${account?.user_id}`} className="text-blue-500 hover:text-blue-700">
                             Truy cập
                           </Link>
                         </td>
