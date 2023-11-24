@@ -21,7 +21,7 @@
 
 ## System Business  
 
-<img src="https://res.cloudinary.com/taithinhnam/image/upload/v1681640705/hinh1_ymse31.png" width="100%">
+<img src="https://res.cloudinary.com/taidev/image/upload/v1681640705/hinh1_ymse31.png" width="100%">
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄.
 
